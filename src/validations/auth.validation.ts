@@ -4,7 +4,19 @@ import { password } from './custom.validation'
 const register = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password)
+    password: Joi.string().required().custom(password),
+    username: Joi.string().required(),
+    role: Joi.string().valid('MOD', 'ADMIN').optional()
+  })
+}
+
+const registerProvider = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    username: Joi.string().required(),
+    isEmailVerified: Joi.boolean(),
+    profileImage: Joi.string(),
+    role: Joi.string().valid('MOD', 'ADMIN').optional()
   })
 }
 
@@ -48,12 +60,31 @@ const verifyEmail = {
   })
 }
 
+const verificationEmail = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required()
+  })
+}
+
+const addProvider = {
+  params: Joi.object().keys({
+    userId: Joi.number().integer()
+  }),
+  body: Joi.object().keys({
+    response: Joi.object(),
+    providerType: Joi.string().required().valid('GOOGLE', 'FACEBOOK')
+  })
+}
+
 export default {
   register,
+  registerProvider,
   login,
   logout,
   refreshTokens,
   forgotPassword,
   resetPassword,
-  verifyEmail
+  verifyEmail,
+  verificationEmail,
+  addProvider
 }

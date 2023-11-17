@@ -1,8 +1,9 @@
-import { Role } from '@prisma/client'
+import { RoleType } from '@prisma/client'
 
 const allRoles = {
-  [Role.USER]: [],
-  [Role.ADMIN]: ['getUsers', 'manageUsers']
+  ['USER']: [],
+  [RoleType.MOD]: [],
+  [RoleType.ADMIN]: ['getUsers', 'manageUsers']
 }
 
 export const roles = Object.keys(allRoles)
