@@ -4,6 +4,8 @@ import userRoute from './user.route'
 import docsRoute from './docs.route'
 import jobRoute from './job.route'
 import gameRoute from './game.route'
+import albumRoute from './album.route'
+
 import config from '../../config/config'
 
 const router = express.Router()
@@ -24,6 +26,10 @@ const defaultRoutes = [
   {
     path: '/game',
     route: gameRoute
+  },
+  {
+    path: '/album',
+    route: albumRoute
   }
 ]
 
