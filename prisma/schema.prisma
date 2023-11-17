@@ -261,11 +261,9 @@ model HelpCategory {
 model Job {
   id              Int              @id @default(autoincrement())
   slug            String?          @default(uuid())
-  // role            String?
   banner          String?
   publishDate     DateTime?
   title           String
-  // description     String?
   jobDetails      Json?
   remote          Boolean
   country         String?

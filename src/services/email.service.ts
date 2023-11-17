@@ -26,7 +26,7 @@ if (config.env !== 'test') {
  * Send an email
  * @param {string} to
  * @param {string} subject
- * @param {string} text
+ * @param {string} html
  * @returns {Promise}
  */
 const sendEmail = async (to: string, subject: string, html: string) => {
@@ -67,8 +67,6 @@ const sendVerificationEmail = async (email: string) => {
   const subject = 'Email Verification'
   // replace this url with the link to the email verification page of your front-end app
   const verificationEmailUrl = `${config.frontend.url}/verify-email?token=${token}`
-  //   const text = `Dear user,
-  // To verify your email, click on this link: ${verificationEmailUrl}`
   const html = verfiyEmailTemplate(verificationEmailUrl)
   await sendEmail(email, subject, html)
 }
