@@ -3,18 +3,20 @@ import pick from '../utils/pick'
 import ApiError from '../utils/api-error'
 import catchAsync from '../utils/catch-async'
 import { userService } from '../services'
+import { sendResponse } from '../utils/response'
+import prisma from '../client'
 
 const createUser = catchAsync(async (req, res) => {
-  const { email, password, name, role } = req.body
-  const user = await userService.createUser(email, password, name, role)
-  res.status(httpStatus.CREATED).send(user)
+  const { email, password, username, role } = req.body
+  const user = await userService.createUser(email, password, username, role)
+  sendResponse(res, httpStatus.CREATED, null, { user }, 'User Created successfully')
 })
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role'])
+  const filter = pick(req.query, ['username', 'role'])
   const options = pick(req.query, ['sortBy', 'limit', 'page'])
   const result = await userService.queryUsers(filter, options)
-  res.send(result)
+  sendResponse(res, httpStatus.OK, null, { result }, 'Users fetched Successfully')
 })
 
 const getUser = catchAsync(async (req, res) => {
@@ -22,17 +24,255 @@ const getUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
   }
-  res.send(user)
+  sendResponse(res, httpStatus.OK, null, { user }, 'User fetched Successfully')
 })
 
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body)
-  res.send(user)
+  sendResponse(res, httpStatus.CREATED, null, { user }, 'User updated Successfully')
 })
 
 const deleteUser = catchAsync(async (req, res) => {
   await userService.deleteUserById(req.params.userId)
-  res.status(httpStatus.NO_CONTENT).send()
+  sendResponse(res, httpStatus.OK, null, null, 'User deleted Successfully')
+})
+
+const getSocials = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userSocials = await userService.getSocialsByUserId(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { socials: userSocials },
+    'User Socials fetched Successfully'
+  )
+})
+
+const createSocials = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const socialsBody = req.body
+  const userSocials = await userService.createSocialsByUserId(userId, socialsBody)
+  sendResponse(
+    res,
+    httpStatus.CREATED,
+    null,
+    { socials: userSocials },
+    'User Socials created Successfully'
+  )
+})
+
+const updateSocials = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const socialsBody = req.body
+  const userSocials = await userService.updateSocialsByUserId(userId, socialsBody)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { socials: userSocials },
+    'User Socials updated Successfully'
+  )
+})
+
+const deleteSocials = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  await userService.deleteSocialsByUserId(userId)
+  sendResponse(res, httpStatus.OK, null, null, 'User Socials deleted Successfully')
+})
+
+const getEducation = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userEducation = await userService.getEducationByUserId(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { education: userEducation },
+    'User Eduction fetched Successfully'
+  )
+})
+
+const createEducation = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const educationBody = req.body
+  const userEducation = await userService.createEducationByUserId(userId, educationBody)
+  sendResponse(
+    res,
+    httpStatus.CREATED,
+    null,
+    { education: userEducation },
+    'User Eduction created Successfully'
+  )
+})
+
+const updateEducation = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const id = parseInt(req.params.id as string)
+  const educationUpdateBody = req.body
+  const userEducation = await userService.updateEducationByUserId(userId, id, educationUpdateBody)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { education: userEducation },
+    'User Eduction updated Successfully'
+  )
+})
+
+const deleteEducation = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const id = parseInt(req.params.id as string)
+  await userService.deleteEducationById(id, userId)
+  sendResponse(res, httpStatus.OK, null, null, 'User Eduction deleted Successfully')
+})
+
+const getExperience = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userExperience = await userService.getExperienceByUserId(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { Experience: userExperience },
+    'User Experience fetched Successfully'
+  )
+})
+
+const createExperience = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const experienceBody = req.body
+  const userExperience = await userService.createExperienceByUserId(userId, experienceBody)
+  sendResponse(
+    res,
+    httpStatus.CREATED,
+    null,
+    { Experience: userExperience },
+    'User Experience created Successfully'
+  )
+})
+
+const updateExperience = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const id = parseInt(req.params.id as string)
+  const experienceUpdateBody = req.body
+  const userExperience = await userService.updateExperienceByUserId(
+    userId,
+    id,
+    experienceUpdateBody
+  )
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { Experience: userExperience },
+    'User Experience updated Successfully'
+  )
+})
+
+const deleteExperience = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const id = parseInt(req.params.id as string)
+  await userService.deleteExperienceById(id, userId)
+  sendResponse(res, httpStatus.OK, null, null, 'User Experience deleted Successfully')
+})
+
+const getUserDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userDetails = await userService.getUserDetailsByUserId(userId)
+  sendResponse(res, httpStatus.OK, null, { userDetails }, 'User details fetched Successfully')
+})
+
+const createUserDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userDetailsBody = req.body
+  const userDetails = await userService.createUserDetailsByUserId(userId, userDetailsBody)
+  sendResponse(res, httpStatus.CREATED, null, { userDetails }, 'User details created Successfully')
+})
+
+const updateUserDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userDetailsUpdateBody = req.body
+  const userDetails = await userService.updateUserDetailsByUserId(userId, userDetailsUpdateBody)
+  sendResponse(res, httpStatus.CREATED, null, { userDetails }, 'User details updated Successfully')
+})
+
+const deleteUserDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  await userService.deleteUserDetailsByUserId(userId)
+  sendResponse(res, httpStatus.OK, null, null, 'User details deleted Successfully')
+})
+
+const getKeywords = catchAsync(async (req, res) => {
+  const keywords = await prisma.keyword.findMany({
+    select: {
+      keyword: true
+    }
+  })
+  const Keyword = keywords.map((k) => k.keyword)
+  sendResponse(res, httpStatus.OK, null, { Keyword }, 'Keywords fetched Successfully')
+})
+const getSkills = catchAsync(async (req, res) => {
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills.map((k) => k.skill)
+  sendResponse(res, httpStatus.OK, null, { skill }, 'Skills fetched Successfully')
+})
+const getSoftwares = catchAsync(async (req, res) => {
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares.map((k) => k.software)
+  sendResponse(res, httpStatus.OK, null, { software }, 'Softwares fetched Successfully')
+})
+const getGenre = catchAsync(async (req, res) => {
+  const Genres = await prisma.genre.findMany({
+    select: {
+      name: true
+    }
+  })
+  const genre = Genres.map((k) => k.name)
+  sendResponse(res, httpStatus.OK, null, { genre }, 'Genres fetched Successfully')
+})
+
+const getPlatforms = catchAsync(async (req, res) => {
+  const Platforms = await prisma.platform.findMany({
+    select: {
+      name: true
+    }
+  })
+  const platform = Platforms.map((k) => k.name)
+  sendResponse(res, httpStatus.OK, null, { platform }, 'Platforms fetched Successfully')
+})
+
+const getAllDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const userSocials = await userService.getSocialsByUserId(userId)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares.map((k) => k.software)
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills.map((k) => k.skill)
+  const userDetails = await userService.getUserDetailsByUserId(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software, socials: userSocials, details: userDetails },
+    'Details fetched Successfully'
+  )
 })
 
 export default {
@@ -40,5 +280,27 @@ export default {
   getUsers,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getSocials,
+  createSocials,
+  updateSocials,
+  deleteSocials,
+  getEducation,
+  createEducation,
+  updateEducation,
+  deleteEducation,
+  getExperience,
+  createExperience,
+  updateExperience,
+  deleteExperience,
+  getUserDetails,
+  createUserDetails,
+  updateUserDetails,
+  deleteUserDetails,
+  getKeywords,
+  getSkills,
+  getSoftwares,
+  getGenre,
+  getPlatforms,
+  getAllDetails
 }

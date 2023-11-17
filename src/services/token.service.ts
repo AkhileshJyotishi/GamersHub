@@ -83,8 +83,11 @@ const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
  * @returns {Promise<AuthTokensResponse>}
  */
 const generateAuthTokens = async (user: { id: number }): Promise<AuthTokensResponse> => {
-  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes')
+  await deleteAuthTokens(user)
+
+  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minute')
   const accessToken = generateToken(user.id, accessTokenExpires, TokenType.ACCESS)
+  await saveToken(accessToken, user.id, accessTokenExpires, TokenType.ACCESS)
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days')
   const refreshToken = generateToken(user.id, refreshTokenExpires, TokenType.REFRESH)
@@ -102,20 +105,27 @@ const generateAuthTokens = async (user: { id: number }): Promise<AuthTokensRespo
   }
 }
 
+interface resetPasswordResponse {
+  resetPasswordToken: string
+  username: string
+}
+
 /**
  * Generate reset password token
  * @param {string} email
  * @returns {Promise<string>}
  */
-const generateResetPasswordToken = async (email: string): Promise<string> => {
+const generateResetPasswordToken = async (email: string): Promise<resetPasswordResponse> => {
   const user = await userService.getUserByEmail(email)
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email')
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes')
   const resetPasswordToken = generateToken(user.id as number, expires, TokenType.RESET_PASSWORD)
+  await deleteResetPasswordToken(user)
   await saveToken(resetPasswordToken, user.id as number, expires, TokenType.RESET_PASSWORD)
-  return resetPasswordToken
+  const username = user.username
+  return { resetPasswordToken, username }
 }
 
 /**
@@ -126,8 +136,79 @@ const generateResetPasswordToken = async (email: string): Promise<string> => {
 const generateVerifyEmailToken = async (user: { id: number }): Promise<string> => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes')
   const verifyEmailToken = generateToken(user.id, expires, TokenType.VERIFY_EMAIL)
+  await deleteVerifyEmailToken(user)
   await saveToken(verifyEmailToken, user.id, expires, TokenType.VERIFY_EMAIL)
   return verifyEmailToken
+}
+
+/**
+ * Delete Auth Tokens
+ * @param {User} user
+ * @returns {Promise<void>}
+ */
+const deleteAuthTokens = async (user: { id: number }): Promise<void> => {
+  const tokens = await prisma.token.findMany({
+    where: {
+      userId: user.id,
+      type: {
+        in: ['ACCESS', 'REFRESH']
+      }
+    }
+  })
+  if (tokens) {
+    await prisma.token.deleteMany({
+      where: {
+        userId: user.id,
+        type: {
+          in: ['ACCESS', 'REFRESH']
+        }
+      }
+    })
+  }
+}
+
+/**
+ * Delete Refresh Tokens
+ * @param {User} user
+ * @returns {Promise<void>}
+ */
+const deleteResetPasswordToken = async (user: { id: number }): Promise<void> => {
+  const tokens = await prisma.token.findFirst({
+    where: {
+      userId: user.id,
+      type: TokenType.RESET_PASSWORD
+    }
+  })
+  if (tokens) {
+    await prisma.token.deleteMany({
+      where: {
+        userId: user.id,
+        type: TokenType.RESET_PASSWORD
+      }
+    })
+  }
+}
+
+/**
+ * Delete Verify E-mail Tokens
+ * @param {User} user
+ * @returns {Promise<void>}
+ */
+const deleteVerifyEmailToken = async (user: { id: number }): Promise<void> => {
+  const tokens = await prisma.token.findFirst({
+    where: {
+      userId: user.id,
+      type: TokenType.VERIFY_EMAIL
+    }
+  })
+  if (tokens) {
+    await prisma.token.deleteMany({
+      where: {
+        userId: user.id,
+        type: TokenType.VERIFY_EMAIL
+      }
+    })
+  }
 }
 
 export default {
@@ -136,5 +217,8 @@ export default {
   verifyToken,
   generateAuthTokens,
   generateResetPasswordToken,
-  generateVerifyEmailToken
+  generateVerifyEmailToken,
+  deleteAuthTokens,
+  deleteResetPasswordToken,
+  deleteVerifyEmailToken
 }

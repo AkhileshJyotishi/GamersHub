@@ -2,7 +2,7 @@ import httpStatus from 'http-status'
 import tokenService from './token.service'
 import userService from './user.service'
 import ApiError from '../utils/api-error'
-import { TokenType, User } from '@prisma/client'
+import { ProviderType, TokenType, User } from '@prisma/client'
 import prisma from '../client'
 import { encryptPassword, isPasswordMatch } from '../utils/encryption'
 import { AuthTokensResponse } from '../types/response'
@@ -21,16 +21,33 @@ const loginUserWithEmailAndPassword = async (
   const user = await userService.getUserByEmail(email, [
     'id',
     'email',
-    'name',
+    'username',
     'password',
-    'role',
     'isEmailVerified',
     'createdAt',
-    'updatedAt'
+    'updatedAt',
+    'profileImage',
+    'bannerImage',
+    'matureContent'
   ])
-  if (!user || !(await isPasswordMatch(password, user.password as string))) {
+
+  if (user) {
+    const provider = await prisma.provider.findUnique({
+      where: {
+        userId: user.id
+      }
+    })
+    if (provider) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'User registered through 3rd party auth')
+    }
+  }
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User does not exist')
+  }
+  if (!(await isPasswordMatch(password, user.password as string))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password')
   }
+  await isUserValid(user.id)
   return exclude(user, ['password'])
 }
 
@@ -50,7 +67,8 @@ const logout = async (refreshToken: string): Promise<void> => {
   if (!refreshTokenData) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found')
   }
-  await prisma.token.delete({ where: { id: refreshTokenData.id } })
+  // delete both refresh and access token associated with the user
+  await prisma.token.deleteMany({ where: { userId: refreshTokenData.userId } })
 }
 
 /**
@@ -62,7 +80,6 @@ const refreshAuth = async (refreshToken: string): Promise<AuthTokensResponse> =>
   try {
     const refreshTokenData = await tokenService.verifyToken(refreshToken, TokenType.REFRESH)
     const { userId } = refreshTokenData
-    await prisma.token.delete({ where: { id: refreshTokenData.id } })
     return tokenService.generateAuthTokens({ id: userId })
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate')
@@ -113,6 +130,58 @@ const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
   }
 }
 
+const addProvider = async (
+  userId: number,
+  response: object,
+  providerType: ProviderType
+): Promise<void> => {
+  try {
+    await prisma.provider.upsert({
+      where: {
+        userId
+      },
+      update: {
+        data: response,
+        providerType
+      },
+      create: {
+        data: response,
+        providerType,
+        userId
+      }
+    })
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Provider creation failed')
+  }
+}
+
+/**
+ * Valid User
+ * @param {number} userId
+ * @returns {Promise<void>}
+ */
+const isUserValid = async (userId: number): Promise<void> => {
+  const verifiedUser = await prisma.user.findUnique({
+    where: {
+      id: userId,
+      isEmailVerified: true
+    }
+  })
+  if (!verifiedUser) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified')
+  }
+  const validUserToken = await prisma.token.findFirst({
+    where: {
+      userId: userId,
+      type: 'ACCESS',
+      blacklisted: true
+    }
+  })
+  if (validUserToken) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Access not granted')
+  }
+}
+
 export default {
   loginUserWithEmailAndPassword,
   isPasswordMatch,
@@ -120,5 +189,7 @@ export default {
   logout,
   refreshAuth,
   resetPassword,
-  verifyEmail
+  verifyEmail,
+  addProvider,
+  isUserValid
 }
