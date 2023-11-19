@@ -19,8 +19,8 @@ import Button from "@/components/ui/button"
 // import ViewIcon from "@/components/icons/viewIcon.svg"
 
 interface Props {
-  currentUser?: any
-  authUser?: any
+  currentUser?: Allow
+  authUser?: Allow
   className?: string
   isFollowing?: boolean
 }

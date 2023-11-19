@@ -22,7 +22,6 @@ import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
 interface Props {
   userSession?: any
-  router?: any
 }
 
 const AuthButtons = ({
@@ -59,9 +58,10 @@ const AuthButtons = ({
   )
 }
 
-const LoggedInUserButtons = ({ userSession, router }: Props) => {
-  const [showProfileSettings, setShowProfileSettings] = useState(false)
+const LoggedInUserButtons = ({ userSession }: Props) => {
+  const router = useRouter()
 
+  const [showProfileSettings, setShowProfileSettings] = useState(false)
   // const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
 
   return (

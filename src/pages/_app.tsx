@@ -28,7 +28,12 @@ const App: NextPage<AppProps> = ({ Component, pageProps: { session, ...pageProps
     </>
   )
 }
-const RootLayout: NextPage<any> = ({ Component, pageProps }) => {
+
+interface RootLayoutProps extends Omit<AppProps, "Component" | "router"> {
+  Component: AppProps["Component"] & { getLayout?: (page: React.ReactNode) => React.ReactNode }
+}
+
+const RootLayout: NextPage<RootLayoutProps> = ({ Component, pageProps }) => {
   if (Component.getLayout) {
     return Component.getLayout(<Component {...pageProps} />)
   } else {

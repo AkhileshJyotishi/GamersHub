@@ -3,7 +3,7 @@ import React from "react"
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   onKeyUp?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>
-  value: any
+  value: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>["value"]
   name: string
   className?: string
   element?: "input" | "textarea"

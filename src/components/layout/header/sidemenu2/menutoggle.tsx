@@ -21,7 +21,7 @@ type MenuToggleProps = {
   toggle: () => void
 }
 
-export const MenuToggle: React.FC<MenuToggleProps> = ({}) => {
+export const MenuToggle: React.FC<MenuToggleProps> = () => {
   const {
     // isOpen,
     toggleOpen,

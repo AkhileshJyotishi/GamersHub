@@ -72,7 +72,7 @@ const EditProfilePage = ({
 
   const [education, setEducation] = useState<IuserEducation[]>(profileDetails.userEducation || [])
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [, setSelectedTags] = useState<string[]>([])
   const handleCityOptions = (isoCode: string) => {
     const city = City.getCitiesOfCountry(isoCode)
     const cityList = city?.map((city1) => {
@@ -270,7 +270,7 @@ const EditProfilePage = ({
   }))
   // console.log(predefinedTagsAsSelectOptions)
 
-  const [selectedSoftwareTags, setSelectedSoftwareTags] = useState<string[]>([])
+  const [, setSelectedSoftwareTags] = useState<string[]>([])
   const predefinedSoftwareTagsAsSelectOptions = allSoftwares.map((tag) => ({
     label: tag,
     value: tag,

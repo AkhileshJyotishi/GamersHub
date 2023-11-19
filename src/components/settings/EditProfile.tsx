@@ -181,7 +181,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({ props }) => {
 
   // export default filterArray;
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [, setSelectedTags] = useState<string[]>([])
   const predefinedTags = [
     "programming",
     "design",
@@ -215,7 +215,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({ props }) => {
     "Docker",
     // Add more software tags as needed
   ]
-  const [selectedSoftwareTags, setSelectedSoftwareTags] = useState<string[]>([])
+  const [, setSelectedSoftwareTags] = useState<string[]>([])
   const predefinedSoftwareTagsAsSelectOptions = predefinedSoftwareTags.map((tag) => ({
     label: tag,
     value: tag,

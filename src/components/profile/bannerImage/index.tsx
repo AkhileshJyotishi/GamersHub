@@ -22,7 +22,7 @@ const BannerImage = ({
   const router = useRouter()
   const url = currentUser?.banner?.url
 
-  const [bannerImage, setBannerImage] = useState<File | undefined>()
+  const [, setBannerImage] = useState<File | undefined>()
 
   const [bannerImageLink, setBannerImageLink] = useState<string | undefined>(
     url ? MEDIA_HOST_URL + url : undefined

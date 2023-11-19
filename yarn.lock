@@ -1077,13 +1077,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-slick@^0.23.12":
-  version "0.23.12"
-  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.12.tgz#41db46f837a453770123ebd84b0adc773ab8a583"
-  integrity sha512-WjY/wIjzgXCh6gXRZL75OC9n/Hn4MwKWI7ZJ4iA2OxavN9eKvkV5MPFjSgH5sofabq78Ucrl6u3okiBUNNIrDQ==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react@*":
   version "18.2.8"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.8.tgz#a77dcffe4e9af148ca4aa8000c51a1e8ed99e2c8"

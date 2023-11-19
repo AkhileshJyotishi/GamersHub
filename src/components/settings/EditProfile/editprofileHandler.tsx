@@ -115,7 +115,7 @@ export const removeUserEducation = async (
 
 export const removefromarray = (
   index: number | undefined,
-  arraytoupdate: (value: React.SetStateAction<any[]>) => void
+  arraytoupdate: (value: React.SetStateAction<Array<Allow>>) => void
 ) => {
   arraytoupdate((prev) => {
     const newexp = prev.filter((_, i) => i !== index)

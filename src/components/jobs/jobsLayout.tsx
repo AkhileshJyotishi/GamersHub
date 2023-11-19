@@ -202,7 +202,7 @@ const Layout: React.FC<LayoutProps> = ({
               ]}
               value={sortBy}
               onChange={(e) => {
-                sortBy = e.target.value as any
+                sortBy = e.target.value as "" | "payment-high-to-low" | "payment-low-to-high"
               }}
             />
           </div>

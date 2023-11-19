@@ -1,6 +1,8 @@
-import React, { useState } from "react"
+import React, { LegacyRef, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import Slider from "react-slick"
 
 import "slick-carousel/slick/slick.css"
@@ -83,10 +85,19 @@ const AfroStyles = [
   },
 ]
 
+type SlickSlider = LegacyRef<Slider> & {
+  innerSlider: {
+    state: {
+      currentSlide: number
+    }
+  }
+  slickGoTo: (index: number) => void
+}
+
 //   export default AfroStyles;
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [slider1, setSlider1] = useState<any>(null)
+  const [slider1, setSlider1] = useState<SlickSlider | null>(null)
 
   const settings = {
     dots: true,
@@ -97,7 +108,7 @@ const Carousel = () => {
     autoplay: false,
     autoplaySpeed: 1500,
     lazyLoad: true,
-    onReInit: () => setCurrentSlide(slider1?.innerSlider.state.currentSlide),
+    onReInit: () => setCurrentSlide(slider1?.innerSlider?.state?.currentSlide ?? 0),
     // asNavFor: ".slider-nav",
     focusOnSelect: true,
     responsive: [
@@ -120,11 +131,9 @@ const Carousel = () => {
     <>
       <div className={clsx(carousel["content"])}>
         <div className={clsx(carousel["container"])}>
-          {/* @ts-ignore */}
           <Slider
             {...settings}
-            ref={(slider: any) => setSlider1(slider)}
-            // style={{}}
+            ref={(slider: SlickSlider) => setSlider1(slider)}
             className="whah md:h-[700px] h-[300px]"
           >
             {AfroStyles.map((item) => (

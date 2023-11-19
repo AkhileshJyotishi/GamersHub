@@ -3,7 +3,7 @@ interface IPostbackend {
   userId: number
   slug: string
   title: string
-  description: string | null // This is optional, so it can be null
+  description: string | null
   banner: string
   matureContent: boolean
   content: {
@@ -21,9 +21,9 @@ interface IPostbackend {
     id: number
     keyword: string
   }[]
-  comments: any[] // You might want to replace 'any' with a specific comment type
-  postLikes: null | any // Replace 'any' with the type for post likes
-  postSkills: any[] // Replace 'any' with the type for post skills
+  comments: { [key: string]: unknown }[]
+  postLikes: null | number
+  postSkills: { [key: string]: unknown }[]
   _count: {
     postKeywords: number
     postSkills: number

@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from "axios"
+
 import instance from "@/lib/axios"
 
 export function getLocalRecentSearches(): string[] | null {
@@ -35,7 +37,7 @@ export const fetchWithAuthorization = async (
   url: string,
   token: string,
   method: string,
-  data?: any,
+  data?: AxiosRequestConfig["data"],
   customHeaders?: { [key: string]: string }
 ) => {
   const headers = {
@@ -55,7 +57,7 @@ export const fetchData = async (
   url: string,
   token: string,
   method: string,
-  data?: any,
+  data?: AxiosRequestConfig["data"],
   customHeaders?: { [key: string]: string }
 ): Promise<APITypes | null> => {
   try {

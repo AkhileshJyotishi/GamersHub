@@ -17,7 +17,7 @@ import SaveIcon from "@/components/icons/SaveIcon"
 import styles from "./postcard.module.css"
 interface Props {
   id: number
-  cover: any
+  cover: string
   views: number
   likes: number
   userProfileLink: string

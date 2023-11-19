@@ -32,7 +32,7 @@ const PostImage: React.FC = () => {
   return <Image src="https://picsum.photos/id/244/900/900" alt="Post" height={200} width={200} />
 }
 
-const PostActions: React.FC<PostActionsProps> = ({}) => {
+const PostActions: React.FC<PostActionsProps> = () => {
   return (
     <div className="flex items-center justify-between mx-4 mt-3 mb-2">
       <div className="flex gap-5">

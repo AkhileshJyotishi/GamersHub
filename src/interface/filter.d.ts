@@ -39,13 +39,13 @@ interface filterprops {
   setCity?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-interface FilterDetail {
+interface FilterDetail<SO = { label: string; value: string | boolean | number }> {
   title: string
   inputType: "text" | "checkbox" | "radio" | "select" | "date" | "tags" | "file" | "number"
   onTagsChange?: (tags: string[]) => void
   placeholder?: string
   value?: string | boolean | Date | number | null
-  selectOptions?: { label?: string; value?: string | boolean | number }[]
+  selectOptions?: { label?: SO["label"]; value?: SO["value"] }[]
   onChange?: (value: string | boolean | Date | number | File) => void
   className?: string
   Variant?: string

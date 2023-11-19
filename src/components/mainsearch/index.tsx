@@ -102,9 +102,10 @@ const Search = () => {
           </div>
           <div className="flex flex-col items-start mt-5 ">
             <span className="text-[14px] font-medium text-user_interface_6">SEARCH FOR</span>
-            {SearchFor.map((val) => (
+            {SearchFor.map((val, i) => (
               <Link
                 href={val?.link}
+                key={i}
                 className="flex flex-row gap-2 my-1 items-center border-user_interface_4 rounded-[11px] py-[5px] px-2 border-[2px] w-full"
               >
                 <span className="flex items-center justify-center w-10 h-10 rounded-md bg-user_interface_3">

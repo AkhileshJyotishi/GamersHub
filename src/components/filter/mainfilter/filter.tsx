@@ -80,7 +80,7 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={(e) => onChange!(e.target.value)}
             type="text"
             className={className}
-            value={value}
+            value={value as string}
             name="text"
             placeholder={placeholder}
             id={title}
@@ -93,7 +93,7 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={(e) => onChange!(e.target.value)}
             type="number"
             className={className}
-            value={value}
+            value={value as number}
             name="number"
             placeholder={placeholder}
             id={title}

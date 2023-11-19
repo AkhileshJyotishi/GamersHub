@@ -24,6 +24,7 @@ declare interface IsettingsDetails {
   software: IuserSoftware[]
   socials: Isocials
 }
+
 declare interface IuserEducation {
   id?: number
   university: string
