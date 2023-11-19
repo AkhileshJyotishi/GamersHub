@@ -131,11 +131,14 @@ const Carousel = () => {
     <>
       <div className={clsx(carousel["content"])}>
         <div className={clsx(carousel["container"])}>
+        {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+{/* // @ts-ignore */}
           <Slider
             {...settings}
-            ref={(slider: SlickSlider) => setSlider1(slider)}
+            ref={(slider: SlickSlider) => setSlider1!(slider)}
             className="whah md:h-[700px] h-[300px]"
-          >
+            children={
+              <>
             {AfroStyles.map((item) => (
               <div key={item.id} className="">
                 <div className="">
@@ -149,7 +152,11 @@ const Carousel = () => {
                 </div>
               </div>
             ))}
-          </Slider>
+              </>
+            }
+            /
+          >
+          {/* </Slider> */}
           <div className={clsx(thumbnail["thumb-wrapper"], "")}>
             {AfroStyles.map((item, idx) => (
               <div

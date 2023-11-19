@@ -84,7 +84,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       } else {
         router.push("/")
       }
-    } catch (error: unknown) {
+    } catch (error: Allow) {
       toast.error(error)
 
       console.log(error)

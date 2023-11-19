@@ -23,7 +23,7 @@ const Albums = () => {
       if (data?.error) {
         router.push(`/?error=Please authenticate`)
       } else {
-        setalbumDetails(data?.data.albums)
+        setalbumDetails(data?.data?.albums)
       }
       // console.log(data?.data)
 

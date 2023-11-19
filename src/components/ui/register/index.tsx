@@ -66,7 +66,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
               router.push("/auth/signup")
             }}
           >
-            <MailIcon className="" />
+            <MailIcon className="w-[39px] h-[20px] " fill="#000" />
             Sign up with Email
           </Button>
         </div>

@@ -61,7 +61,7 @@ export default function SignUpPage() {
         }
         setFormValues({ username: "", email: "", password: "" })
         res.status === 201 && router.push("/auth/login")
-      } catch (error: unknown) {
+      } catch (error: Allow) {
         console.log("auth/signup ", error)
         toast.error(error)
       }
@@ -153,7 +153,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -193,6 +193,7 @@ export default function SignUpPage() {
               type="submit"
               variant="primary"
               className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
+            // onClick={()}
             >
               Create account
             </Button>

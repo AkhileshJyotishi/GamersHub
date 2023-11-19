@@ -57,7 +57,7 @@ export const fetchData = async (
   url: string,
   token: string,
   method: string,
-  data?: AxiosRequestConfig["data"],
+  data?: Allow,
   customHeaders?: { [key: string]: string }
 ): Promise<APITypes | null> => {
   try {

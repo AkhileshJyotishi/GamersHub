@@ -94,7 +94,7 @@ const LoggedInUserButtons = ({ userSession }: Props) => {
             width={18}
             height={21}
           /> */}
-          <MailIcon className="" />
+          <MailIcon className="" fill="#fff" />
         </Button>
 
         <div className="group w-[20px] h-[20px]">
@@ -157,9 +157,8 @@ export default function Navbar() {
       >
         <div className=" flex flex-row md:min-w-[70%] xl:w-fit">
           <div
-            className={` transform transition-all -translate-y-5 ${
-              tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
-            } duration-[1s] ease-in-out`}
+            className={` transform transition-all -translate-y-5 ${tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
+              } duration-[1s] ease-in-out`}
           ></div>
           <div className="flex flex-row items-center justify-start w-full sm:items-center ">
             <Button
@@ -235,19 +234,16 @@ export default function Navbar() {
             }}
           >
             <div
-              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
-                tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
-              } duration-[0.5s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
+                } duration-[0.5s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
-                tap ? "opacity-0" : "opacity-100"
-              } duration-[1s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${tap ? "opacity-0" : "opacity-100"
+                } duration-[1s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
-                tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
-              } duration-[1s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
+                } duration-[1s] ease-out`}
             ></div>
           </Button>
         </div>
