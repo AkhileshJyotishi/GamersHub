@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
@@ -6,6 +6,8 @@ import Link from "next/link"
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
 import SaveIcon from "@/components/icons/SaveIcon"
+import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
+import { fetchData } from "@/utils/functions"
 
 interface JobCardProps {
   title: string
@@ -113,8 +115,8 @@ const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) 
     </div>
     {chips &&
       chips.map((chip, index) => (
-        <span key={index} className="flex items-center">
-          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full">
+        <span key={index} className="flex items-center cursor-pointer ">
+          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2" >
             {/* Add your Chip SVG or Icon here */}
             <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
               {chip}
@@ -136,9 +138,22 @@ const Card: React.FC<JobCardProps> = ({
   title,
   href,
 }) => {
+
+  const [saved,setSaved]=useState();
+  // const savePost = async () => {
+  //   const data = await fetchData(`/v1/post/user/save/${id}`, , "POST")
+  //   if (data?.error) {
+  //     toast.error(data.message)
+  //   } else {
+  //     toast.success(data?.message)
+  //     setSaved(!saved)
+  //   }
+  // }
+
+  
   return (
     <>
-      <div className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between", className)}>
+      <div className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit ", className)}>
         <div className="">
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
@@ -147,7 +162,21 @@ const Card: React.FC<JobCardProps> = ({
                 <UserInfo title={title} location={location} />
               </div>
               <div className="flex items-center">
-                <SaveIcon className="w-5 h-5" />
+                
+                {/* <SaveIcon className="w-5 h-5" /> */}
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill={saved ? "#fff" : "none"}
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
               </div>
             </div>
             <JobDescription desc={desc} />
@@ -159,8 +188,15 @@ const Card: React.FC<JobCardProps> = ({
             <AdditionalDetails type={type} chips={chips!} />
           </div>
         </div>
-        <Link className="flex items-center text-secondary" href={href}>
+        <Link className="flex items-center text-secondary group" href={href}>
           Know More
+          <Image
+            width={2060}
+            height={2060}
+            className="w-2 h-2 ml-2 -mr-1 transition duration-200 group-hover:translate-x-2 text-secondary hover:text-secondary"
+            alt=""
+            src={ChevronDownIcon}
+          />
         </Link>
       </div>
     </>

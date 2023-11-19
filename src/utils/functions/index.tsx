@@ -76,3 +76,31 @@ export const fetchData = async (
     }
   }
 }
+export const fetchWithoutAuthorization = async (
+  url: string,
+  method: string,
+  data?: Allow,
+  customHeaders?: { [key: string]: string }
+): Promise<APITypes | null> => {
+  try {
+    const response = await instance.request({
+      url,
+      method,
+      data,
+      headers: customHeaders,
+    });
+
+    console.log("Response without authorization:", response.data);
+
+    const resp = response.data;
+    return await resp;
+  } catch (error: unknown) {
+    console.error(error);
+    console.log("Null is coming");
+    return {
+      error: error,
+      message: "Request failed",
+      data: null,
+    };
+  }
+};

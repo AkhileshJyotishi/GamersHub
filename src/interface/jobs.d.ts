@@ -13,7 +13,7 @@ interface JobFilterProps {
 
 interface Job {
   title: string
-  desc: string
+  // desc: string
   date: string
   salary: string
   type: string
@@ -21,7 +21,7 @@ interface Job {
   href: string
   chips?: string[]
 }
-interface IjobsDetails {}
+interface IjobsDetails { }
 
 interface BackendJob {
   id: number
@@ -29,12 +29,14 @@ interface BackendJob {
   role: string
   title: string
   // backgroundImage;
-  banner: string | null
-  description: string
+  // banner: string | null
+  // description: string
   publishDate: string | null
-  jobDetails: object | null
-  requirements: {
+  jobDetails: {
     skills: string[]
+
+  }
+  requirements: {
     experience: string
   }
 

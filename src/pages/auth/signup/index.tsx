@@ -1,8 +1,8 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { signIn } from "next-auth/react"
+import { useRouter } from "next/router"
+import { signIn, useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import logo from "@/assets/image/logo-with-text.png"
@@ -12,6 +12,7 @@ import FacebookIcon from "@/components/icons/facebook"
 import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import TextInput from "@/components/ui/textInput"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 interface FormErrors {
   username: string
   email: string
@@ -19,6 +20,7 @@ interface FormErrors {
 }
 
 export default function SignUpPage() {
+  const { data: session } = useSession()
   const router = useRouter()
   console.log("server")
   const SignUpForm = () => {
@@ -43,28 +45,41 @@ export default function SignUpPage() {
         setErrors(newErrors)
         return
       }
+      const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
+        ...formValues,
+        role: "ADMIN"
+      })
+      if (res?.error) {
+        toast.error(res.message);
 
-      try {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          body: JSON.stringify(formValues),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        const res2: APITypes = await res.json()
-
-        if (res2.error) {
-          toast.error(res2.message)
-          console.log("this is res 2 message ", res2.message)
-          return
-        }
-        setFormValues({ username: "", email: "", password: "" })
-        res.status === 201 && router.push("/auth/login")
-      } catch (error: Allow) {
-        console.log("auth/signup ", error)
-        toast.error(error)
       }
+      else {
+        setFormValues({ username: "", email: "", password: "" })
+        // router.replace("/")
+        router.replace('/?verify=true', undefined, { shallow: true })
+
+      }
+      // try {
+      //   const res = await fetch("/v1//register", {
+      //     method: "POST",
+      //     body: JSON.stringify(formValues),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   })
+      //   const res2: APITypes = await res.json()
+
+      //   if (res2.error) {
+      //     toast.error(res2.message)
+      //     console.log("this is res 2 message ", res2.message)
+      //     return
+      //   }
+      //   setFormValues({ username: "", email: "", password: "" })
+      //   res.status === 201 && router.push("/auth/login")
+      // } catch (error: Allow) {
+      //   console.log("auth/signup ", error)
+      //   toast.error(error)
+      // }
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,7 +208,7 @@ export default function SignUpPage() {
               type="submit"
               variant="primary"
               className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
-            // onClick={()}
+
             >
               Create account
             </Button>

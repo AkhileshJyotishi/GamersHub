@@ -49,19 +49,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const parsedjobsDetails: BackendJob[] = jobsDetails?.data.jobs
-
+  console.log(parsedjobsDetails)
   // console.log("this is the job details ", parsedjobsDetails)
 
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     return {
       title: backendJob.title,
-      desc: backendJob.description,
+      // desc: backendJob.description,
       date: "SomeDate", // Replace with the relevant date field from the backend
       salary: `${backendJob.paymentValue} ${backendJob.paymentType}`, // Adjust based on your backend structure
       type: backendJob.jobType,
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
-      chips: backendJob.requirements.skills,
+      chips: backendJob.jobDetails.skills,
     }
   }
 
