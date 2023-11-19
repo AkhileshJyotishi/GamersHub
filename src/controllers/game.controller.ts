@@ -28,9 +28,8 @@ const getAllGames = catchAsync(async (req, res) => {
 })
 
 const getGameById = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
   const id = parseInt(req.params.id)
-  const game = await gameService.getGameById(id, userId)
+  const game = await gameService.getGameById(id)
   sendResponse(res, httpStatus.OK, null, { game }, 'User Game fetched Successfully')
 })
 

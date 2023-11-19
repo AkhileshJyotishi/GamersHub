@@ -17,6 +17,12 @@ const getUserGames = async (userId: number): Promise<Game[] | []> => {
     select: {
       games: {
         include: {
+          user: {
+            select: {
+              username: true,
+              profileImage: true
+            }
+          },
           platforms: {
             select: {
               name: true
@@ -41,6 +47,11 @@ const getUserGames = async (userId: number): Promise<Game[] | []> => {
           distributionPlatforms: {
             select: {
               name: true
+            }
+          },
+          savedUsers: {
+            select: {
+              id: true
             }
           }
         }
@@ -273,6 +284,17 @@ const getAllGames = async (): Promise<Game[]> => {
         select: {
           name: true
         }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      user: {
+        select: {
+          username: true,
+          profileImage: true
+        }
       }
     }
   })
@@ -286,11 +308,10 @@ const getAllGames = async (): Promise<Game[]> => {
  * @returns {Promise<Game>}
  */
 
-const getGameById = async (id: number, userId: number): Promise<Game | object> => {
+const getGameById = async (id: number): Promise<Game | object> => {
   const game = await prisma.game.findUnique({
     where: {
-      id,
-      userId
+      id
     },
     include: {
       user: {
@@ -323,6 +344,11 @@ const getGameById = async (id: number, userId: number): Promise<Game | object> =
       distributionPlatforms: {
         select: {
           name: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
         }
       }
     }
@@ -737,6 +763,17 @@ const getSavedGames = async (userId: number): Promise<Game[]> => {
             select: {
               name: true
             }
+          },
+          user: {
+            select: {
+              username: true,
+              profileImage: true
+            }
+          },
+          savedUsers: {
+            select: {
+              id: true
+            }
           }
         }
       }
@@ -830,6 +867,17 @@ const getAllGamesExceptCurrentUser = async (userId: number): Promise<Game[]> => 
       distributionPlatforms: {
         select: {
           name: true
+        }
+      },
+      user: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
         }
       }
     }

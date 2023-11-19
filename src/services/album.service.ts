@@ -17,9 +17,23 @@ const getUserAlbums = async (userId: number): Promise<Album[]> => {
     select: {
       albums: {
         include: {
-          posts: true,
-          keyword: true,
-          _count: true
+          posts: {
+            select: {
+              title: true,
+              id: true
+            }
+          },
+          keyword: {
+            select: {
+              keyword: true
+            }
+          },
+          user: {
+            select: {
+              profileImage: true,
+              username: true
+            }
+          }
         }
       }
     }
@@ -205,9 +219,23 @@ const updateAlbumById = async (
 const getAllAlbums = async (): Promise<Album[]> => {
   const albums = await prisma.album.findMany({
     include: {
-      posts: true,
-      keyword: true,
-      _count: true
+      posts: {
+        select: {
+          title: true,
+          id: true
+        }
+      },
+      keyword: {
+        select: {
+          keyword: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   return albums
@@ -246,9 +274,23 @@ const getAlbumById = async (id: number, userId: number): Promise<Album> => {
       userId
     },
     include: {
-      posts: true,
-      keyword: true,
-      _count: true
+      posts: {
+        select: {
+          title: true,
+          id: true
+        }
+      },
+      keyword: {
+        select: {
+          keyword: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   if (!album) {

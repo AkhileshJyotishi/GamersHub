@@ -30,7 +30,6 @@ const getUserJobs = async (userId: number): Promise<Job[]> => {
           },
           user: {
             select: {
-              id: true,
               username: true,
               profileImage: true
             }
@@ -173,6 +172,11 @@ const getJobById = async (id: number): Promise<Job | object> => {
       jobSoftwares: {
         select: {
           software: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
         }
       },
       user: {

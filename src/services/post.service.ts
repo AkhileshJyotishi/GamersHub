@@ -17,9 +17,24 @@ const getUserPosts = async (userId: number): Promise<Post[]> => {
     select: {
       posts: {
         include: {
-          Album: true,
-          postKeywords: true,
-          comments: true,
+          Album: {
+            select: {
+              id: true,
+              title: true
+            }
+          },
+          postKeywords: {
+            select: {
+              keyword: true
+            }
+          },
+          comments: {
+            select: {
+              comment: true,
+              userId: true,
+              id: true
+            }
+          },
           postLikes: {
             include: {
               likedUsers: {
@@ -29,8 +44,22 @@ const getUserPosts = async (userId: number): Promise<Post[]> => {
               }
             }
           },
-          postSkills: true,
-          _count: true
+          postSkills: {
+            select: {
+              skill: true
+            }
+          },
+          savedUsers: {
+            select: {
+              id: true
+            }
+          },
+          user: {
+            select: {
+              profileImage: true,
+              username: true
+            }
+          }
         }
       }
     }
@@ -175,9 +204,24 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
       }
     },
     include: {
-      Album: true,
-      postKeywords: true,
-      comments: true,
+      Album: {
+        select: {
+          id: true,
+          title: true
+        }
+      },
+      postKeywords: {
+        select: {
+          keyword: true
+        }
+      },
+      comments: {
+        select: {
+          comment: true,
+          userId: true,
+          id: true
+        }
+      },
       postLikes: {
         include: {
           likedUsers: {
@@ -187,8 +231,22 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
           }
         }
       },
-      postSkills: true,
-      _count: true
+      postSkills: {
+        select: {
+          skill: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   return posts
@@ -202,9 +260,24 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
 const getAllPosts = async (): Promise<Post[]> => {
   const posts = await prisma.post.findMany({
     include: {
-      Album: true,
-      postKeywords: true,
-      comments: true,
+      Album: {
+        select: {
+          id: true,
+          title: true
+        }
+      },
+      postKeywords: {
+        select: {
+          keyword: true
+        }
+      },
+      comments: {
+        select: {
+          comment: true,
+          userId: true,
+          id: true
+        }
+      },
       postLikes: {
         include: {
           likedUsers: {
@@ -214,8 +287,22 @@ const getAllPosts = async (): Promise<Post[]> => {
           }
         }
       },
-      postSkills: true,
-      _count: true
+      postSkills: {
+        select: {
+          skill: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   return posts
@@ -235,9 +322,24 @@ const getPostById = async (id: number, userId: number): Promise<Post | object> =
       userId
     },
     include: {
-      Album: true,
-      postKeywords: true,
-      comments: true,
+      Album: {
+        select: {
+          id: true,
+          title: true
+        }
+      },
+      postKeywords: {
+        select: {
+          keyword: true
+        }
+      },
+      comments: {
+        select: {
+          comment: true,
+          userId: true,
+          id: true
+        }
+      },
       postLikes: {
         include: {
           likedUsers: {
@@ -247,8 +349,22 @@ const getPostById = async (id: number, userId: number): Promise<Post | object> =
           }
         }
       },
-      postSkills: true,
-      _count: true
+      postSkills: {
+        select: {
+          skill: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   return post || {}
@@ -633,9 +749,24 @@ const getSavedPosts = async (userId: number): Promise<Post[]> => {
     select: {
       savedPosts: {
         include: {
-          Album: true,
-          postKeywords: true,
-          comments: true,
+          Album: {
+            select: {
+              id: true,
+              title: true
+            }
+          },
+          postKeywords: {
+            select: {
+              keyword: true
+            }
+          },
+          comments: {
+            select: {
+              comment: true,
+              userId: true,
+              id: true
+            }
+          },
           postLikes: {
             include: {
               likedUsers: {
@@ -645,8 +776,22 @@ const getSavedPosts = async (userId: number): Promise<Post[]> => {
               }
             }
           },
-          postSkills: true,
-          _count: true
+          postSkills: {
+            select: {
+              skill: true
+            }
+          },
+          savedUsers: {
+            select: {
+              id: true
+            }
+          },
+          user: {
+            select: {
+              profileImage: true,
+              username: true
+            }
+          }
         }
       }
     }
@@ -668,9 +813,24 @@ const getAllPostExceptCurrentUser = async (userId: number): Promise<Post[]> => {
       }
     },
     include: {
-      Album: true,
-      postKeywords: true,
-      comments: true,
+      Album: {
+        select: {
+          id: true,
+          title: true
+        }
+      },
+      postKeywords: {
+        select: {
+          keyword: true
+        }
+      },
+      comments: {
+        select: {
+          comment: true,
+          userId: true,
+          id: true
+        }
+      },
       postLikes: {
         include: {
           likedUsers: {
@@ -680,8 +840,22 @@ const getAllPostExceptCurrentUser = async (userId: number): Promise<Post[]> => {
           }
         }
       },
-      postSkills: true,
-      _count: true
+      postSkills: {
+        select: {
+          skill: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
     }
   })
   return posts
