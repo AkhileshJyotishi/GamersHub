@@ -4,6 +4,12 @@ import { authService, userService, tokenService, emailService } from '../service
 import exclude from '../utils/exclude'
 import { sendResponse } from '../utils/response'
 
+const getUser = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const user = await userService.getUser(userId)
+  const userWithoutPassword = exclude(user, ['password', 'createdAt', 'updatedAt'])
+  sendResponse(res, httpStatus.OK, null, { user: userWithoutPassword }, 'User fetched successfully')
+})
 const register = catchAsync(async (req, res) => {
   const { email, password, username, role } = req.body
   const user = await userService.createUser(email, password, username, role)
@@ -100,6 +106,7 @@ const addProvider = catchAsync(async (req, res) => {
 })
 
 export default {
+  getUser,
   register,
   registerProvider,
   login,
