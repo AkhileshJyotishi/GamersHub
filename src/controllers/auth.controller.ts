@@ -93,8 +93,8 @@ const verifyEmail = catchAsync(async (req, res) => {
 })
 
 const addProvider = catchAsync(async (req, res) => {
-  const { response, providerType } = req.body
-  const { userId } = req.params
+  const { response, providerType, userId } = req.body
+  // const { userId } = req.params
   await authService.addProvider(userId, response, providerType)
   sendResponse(res, httpStatus.CREATED, null, null, 'success')
 })

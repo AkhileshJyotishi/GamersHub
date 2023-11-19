@@ -264,6 +264,7 @@ model Job {
   banner          String?
   publishDate     DateTime?
   title           String
+  description     String?
   jobDetails      Json?
   remote          Boolean
   country         String?
