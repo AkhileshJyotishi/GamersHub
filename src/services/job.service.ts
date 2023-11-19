@@ -164,11 +164,10 @@ const getAllJobs = async (): Promise<Job[]> => {
  * @returns {Promise<Job>}
  */
 
-const getJobById = async (id: number, userId: number): Promise<Job | object> => {
+const getJobById = async (id: number): Promise<Job | object> => {
   const job = await prisma.job.findUnique({
     where: {
-      id,
-      userId
+      id
     },
     include: {
       jobSoftwares: {

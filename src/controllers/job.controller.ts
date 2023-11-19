@@ -28,9 +28,8 @@ const getAllJobs = catchAsync(async (req, res) => {
 })
 
 const getJobById = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
   const id = parseInt(req.params.id)
-  const job = await jobService.getJobById(id, userId)
+  const job = await jobService.getJobById(id)
   sendResponse(res, httpStatus.OK, null, { job }, 'User Job fetched Successfully')
 })
 
