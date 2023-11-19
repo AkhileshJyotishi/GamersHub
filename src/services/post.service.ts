@@ -311,15 +311,13 @@ const getAllPosts = async (): Promise<Post[]> => {
 /**
  * Get a particular Post
  * @param {ObjectId} id
- * @param {ObjectId} userId
  * @returns {Promise<Post>}
  */
 
-const getPostById = async (id: number, userId: number): Promise<Post | object> => {
+const getPostById = async (id: number): Promise<Post | object> => {
   const post = await prisma.post.findUnique({
     where: {
-      id,
-      userId
+      id
     },
     include: {
       Album: {

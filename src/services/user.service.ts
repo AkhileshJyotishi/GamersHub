@@ -144,7 +144,6 @@ const getUserById = async <Key extends keyof User>(
     'profileImage'
   ] as Key[]
 ): Promise<Pick<User, Key> | null> => {
-  console.log('EQdqe', id)
   return prisma.user.findUnique({
     where: { id },
     select: keys.reduce((obj, k) => ({ ...obj, [k]: true }), {})
@@ -157,7 +156,6 @@ const getUserById = async <Key extends keyof User>(
  * @returns {User}
  */
 const getUser = async (id: number): Promise<User> => {
-  console.log('EQdqe', id)
   return prisma.user.findUnique({
     where: { id }
   }) as Promise<User>

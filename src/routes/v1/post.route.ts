@@ -12,7 +12,7 @@ router
   .post(auth(), validate(postValidation.createPost), postController.createUserPost)
   .delete(auth(), postController.deleteUserPosts)
 
-router.get('/', auth(), postController.getAllPosts)
+router.get('/', postController.getAllPosts)
 router.get('/others', auth(), postController.getAllPostExceptCurrentUser)
 
 router
@@ -37,7 +37,7 @@ router
 
 router
   .route('/:id')
-  .get(auth(), validate(postValidation.paramValidation), postController.getPostById)
+  .get(validate(postValidation.paramValidation), postController.getPostById)
   .patch(auth(), validate(postValidation.updatePost), postController.updatePostById)
   .delete(auth(), validate(postValidation.paramValidation), postController.deletePostById)
 

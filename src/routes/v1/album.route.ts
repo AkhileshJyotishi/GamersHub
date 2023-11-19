@@ -12,11 +12,11 @@ router
   .post(auth(), validate(albumValidation.createAlbum), albumController.createUserAlbum)
   .delete(auth(), albumController.deleteUserAlbums)
 
-router.get('/', auth(), albumController.getAllAlbums)
+router.get('/', albumController.getAllAlbums)
 
 router
   .route('/:id')
-  .get(auth(), validate(albumValidation.paramsValidation), albumController.getAlbumById)
+  .get(validate(albumValidation.paramsValidation), albumController.getAlbumById)
   .patch(auth(), validate(albumValidation.updateAlbumValidation), albumController.updateAlbumById)
   .delete(auth(), validate(albumValidation.paramsValidation), albumController.deleteAlbumById)
 

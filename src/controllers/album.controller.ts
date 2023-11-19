@@ -38,9 +38,8 @@ const getAllAlbums = catchAsync(async (req, res) => {
 })
 
 const getAlbumById = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
   const id = parseInt(req.params.id)
-  const album = await albumService.getAlbumById(id, userId)
+  const album = await albumService.getAlbumById(id)
   // res.status(httpStatus.OK).send({ album })
   sendResponse(res, httpStatus.OK, null, { album }, 'User Album fetched Successfully')
 })

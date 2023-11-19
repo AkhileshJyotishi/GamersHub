@@ -263,15 +263,13 @@ const deleteAlbumById = async (userId: number, id: number): Promise<void> => {
 /**
  * Get a particular Album
  * @param {ObjectId} id
- * @param {ObjectId} userId
  * @returns {Promise<Album>}
  */
 
-const getAlbumById = async (id: number, userId: number): Promise<Album> => {
+const getAlbumById = async (id: number): Promise<Album> => {
   const album = await prisma.album.findUnique({
     where: {
-      id,
-      userId
+      id
     },
     include: {
       posts: {

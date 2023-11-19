@@ -39,9 +39,8 @@ const getLikedPosts = catchAsync(async (req, res) => {
 })
 
 const getPostById = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
   const id = parseInt(req.params.id)
-  const post = await postService.getPostById(id, userId)
+  const post = await postService.getPostById(id)
   // res.status(httpStatus.OK).send({ post })
   sendResponse(res, httpStatus.OK, null, { post }, 'User Post fetched Successfully')
 })
