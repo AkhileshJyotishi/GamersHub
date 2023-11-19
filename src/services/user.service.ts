@@ -152,6 +152,18 @@ const getUserById = async <Key extends keyof User>(
 }
 
 /**
+ * Get user
+ * @param {ObjectId} id
+ * @returns {User}
+ */
+const getUser = async (id: number): Promise<User> => {
+  console.log('EQdqe', id)
+  return prisma.user.findUnique({
+    where: { id }
+  }) as Promise<User>
+}
+
+/**
  * Get user by username
  * @param {string} username
  * @param {Array<Key>} keys
@@ -880,6 +892,7 @@ const deleteUserDetailsByUserId = async (userId: number): Promise<void> => {
 export default {
   createUser,
   createProviderUser,
+  getUser,
   queryUsers,
   getUserById,
   getUserByEmail,
