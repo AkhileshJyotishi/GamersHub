@@ -25,19 +25,19 @@ router.post(
 
 router
   .route('/application')
-  .get(auth(), jobController.getUserApplication)
+  .get(jobController.getUserApplication)
   .post(auth(), validate(jobValidation.createApplication), jobController.createApplication)
   .delete(auth(), jobController.deleteApplication)
 
 router
   .route('/application/:id')
-  .get(auth(), validate(jobValidation.idValidation), jobController.getApplicationById)
+  .get(validate(jobValidation.idValidation), jobController.getApplicationById)
   .patch(auth(), validate(jobValidation.updateApplication), jobController.updateApplicationById)
   .delete(auth(), validate(jobValidation.idValidation), jobController.deleteApplicationById)
 
 router
   .route('/:id')
-  .get(auth(), validate(jobValidation.idValidation), jobController.getJobById)
+  .get(validate(jobValidation.idValidation), jobController.getJobById)
   .patch(auth(), validate(jobValidation.updateJob), jobController.updateJobById)
   .delete(auth(), validate(jobValidation.idValidation), jobController.deleteJobById)
 

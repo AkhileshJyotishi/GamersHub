@@ -36,7 +36,7 @@ const getUserPosts = async (userId: number): Promise<Post[]> => {
             }
           },
           postLikes: {
-            include: {
+            select: {
               likedUsers: {
                 select: {
                   id: true
@@ -223,7 +223,7 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
         }
       },
       postLikes: {
-        include: {
+        select: {
           likedUsers: {
             select: {
               id: true
@@ -279,7 +279,7 @@ const getAllPosts = async (): Promise<Post[]> => {
         }
       },
       postLikes: {
-        include: {
+        select: {
           likedUsers: {
             select: {
               id: true
@@ -341,7 +341,7 @@ const getPostById = async (id: number, userId: number): Promise<Post | object> =
         }
       },
       postLikes: {
-        include: {
+        select: {
           likedUsers: {
             select: {
               id: true
@@ -768,7 +768,7 @@ const getSavedPosts = async (userId: number): Promise<Post[]> => {
             }
           },
           postLikes: {
-            include: {
+            select: {
               likedUsers: {
                 select: {
                   id: true
@@ -832,7 +832,7 @@ const getAllPostExceptCurrentUser = async (userId: number): Promise<Post[]> => {
         }
       },
       postLikes: {
-        include: {
+        select: {
           likedUsers: {
             select: {
               id: true

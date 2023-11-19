@@ -63,6 +63,9 @@ const sendVerificationEmail = async (email: string) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
   }
+  if (user.isEmailVerified) {
+    throw new ApiError(httpStatus.OK, 'Email Already Verified')
+  }
   const token = await tokenService.generateVerifyEmailToken(user)
   const subject = 'Email Verification'
   // replace this url with the link to the email verification page of your front-end app

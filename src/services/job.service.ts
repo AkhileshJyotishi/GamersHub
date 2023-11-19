@@ -17,7 +17,12 @@ const getUserJobs = async (userId: number): Promise<Job[]> => {
     select: {
       jobs: {
         include: {
-          jobApplications: true,
+          jobApplications: {
+            select: {
+              id: true,
+              userId: true
+            }
+          },
           jobSoftwares: {
             select: {
               software: true
@@ -135,6 +140,12 @@ const deleteUserJobs = async (userId: number): Promise<void> => {
 const getAllJobs = async (): Promise<Job[]> => {
   const jobs = await prisma.job.findMany({
     include: {
+      jobApplications: {
+        select: {
+          id: true,
+          userId: true
+        }
+      },
       jobSoftwares: {
         select: {
           software: true
@@ -183,6 +194,12 @@ const getJobById = async (id: number): Promise<Job | object> => {
         select: {
           username: true,
           profileImage: true
+        }
+      },
+      jobApplications: {
+        select: {
+          id: true,
+          userId: true
         }
       }
     }
@@ -495,7 +512,6 @@ const getSavedJobs = async (userId: number): Promise<Job[]> => {
     select: {
       savedJobs: {
         include: {
-          jobApplications: true,
           jobSoftwares: {
             select: {
               software: true
@@ -511,6 +527,12 @@ const getSavedJobs = async (userId: number): Promise<Job[]> => {
               id: true,
               username: true,
               profileImage: true
+            }
+          },
+          jobApplications: {
+            select: {
+              id: true,
+              userId: true
             }
           }
         }
@@ -595,6 +617,12 @@ const getAllJobsExceptCurrentUser = async (userId: number): Promise<Job[]> => {
       savedUsers: {
         select: {
           id: true
+        }
+      },
+      jobApplications: {
+        select: {
+          id: true,
+          userId: true
         }
       }
     }

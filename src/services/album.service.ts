@@ -9,7 +9,7 @@ import { Album } from '@prisma/client'
  * @returns {Promise<Album[]>}
  */
 
-const getUserAlbums = async (userId: number): Promise<Album[]> => {
+const getUserAlbums = async (userId: number): Promise<Album[] | []> => {
   const user = await prisma.user.findUnique({
     where: {
       id: userId
@@ -39,10 +39,10 @@ const getUserAlbums = async (userId: number): Promise<Album[]> => {
     }
   })
   // if need to return empty album remove this
-  if (!user || !user.albums.length) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User Albums not found')
-  }
-  return user.albums
+  // if (!user || !user.albums.length) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'User Albums not found')
+  // }
+  return user?.albums || []
 }
 
 interface albumBody {
