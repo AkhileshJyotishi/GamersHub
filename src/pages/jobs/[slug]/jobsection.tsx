@@ -438,6 +438,8 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
             className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
             editable={false}
             defaultValue={defaultjobDetails}
+            disableLocalStorage
+
           />
         </div>
       </div>

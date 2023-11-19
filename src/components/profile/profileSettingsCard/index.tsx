@@ -15,18 +15,11 @@ interface Props {
   authUser: any
   className?: string
   onSignOut?: React.MouseEventHandler<HTMLDivElement>
+  userData: Iuser | null
 }
 
-export default function ProfileSettingsCard({ className, authUser, onSignOut }: Props) {
-  // const [alertData, setAlertData] = useState<any>({
-  //   show: false,
-  //   duration: 6000,
-  //   message: "",
-  //   title: "",
-  //   type: "success",
-  // })
-  // const profileImage = authUser?.profile_image?.url
-  // const bannerImage = authUser?.banner?.url
+export default function ProfileSettingsCard({ className, authUser, onSignOut, userData }: Props) {
+
   const router = useRouter()
   return (
     <div
@@ -43,7 +36,7 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut }: 
             // bannerImage
             //     ? MediaHostURL + bannerImage
             //     :
-            defaultbannerImage
+            userData?.bannerImage || ""
           }
         />
 
@@ -57,7 +50,8 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut }: 
             //     ? MediaHostURL + profileImage
             //     :
             // "/assets/placeholders/user-profile.png"
-            defaultbannerImage
+            userData?.profileImage ||
+             defaultbannerImage
           }
         />
       </div>
@@ -65,9 +59,9 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut }: 
 
       {/* Profile Info */}
       <div className="flex flex-col items-center gap-[3px] mt-[3.2rem] md:mt-[70px] w-[100%]">
-        <h2 className="text-[18px]  font-semibold ">{authUser?.username} akhilesh</h2>
+        <h2 className="text-[18px]  font-semibold ">{userData?.username} </h2>
         <h3 className="font-medium text-user_interface_6 mt-[20px] mb-1">
-          {authUser?.email} xyz@gmai..com
+          {userData?.email} 
         </h3>
         <Button
           onClick={() => router.push("/user/profile")}

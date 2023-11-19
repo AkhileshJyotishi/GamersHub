@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
@@ -8,8 +8,12 @@ import MapPinIcon from "@/components/icons/mappinicon"
 import SaveIcon from "@/components/icons/SaveIcon"
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { fetchData } from "@/utils/functions"
+import { toast } from "react-toastify"
+import { useSession } from "next-auth/react"
+import { useUserContext } from "@/providers/user-context"
 
 interface JobCardProps {
+  id: number
   title: string
   desc: string
   date: string
@@ -19,6 +23,10 @@ interface JobCardProps {
   href: string
   className: string
   chips?: string[]
+  savedUsers?: {
+    id: number
+  }[]
+  // userId:number
 }
 
 const UserImage = ({ href }: { href: string }) => (
@@ -83,50 +91,34 @@ const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
   </div>
 )
 
-const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => (
-  <div className="flex flex-wrap gap-3 p-3">
-    <div className="flex flex-wrap gap-2">
-      {/* <span className="flex items-center ">
-                <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 mr-2"
-                        viewBox="0 0 20 20"
-                        fill="#fff "
-                    >
-                        <path
-                            fillRule="evenodd"
-                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                        />
-                    </svg>
-                    <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
-                        {location}
-                    </div>
-                </div>
-            </span> */}
-      <span className="flex items-center ">
-        <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full ">
-          <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px]">
-            {type}
-          </div>
-        </div>
-      </span>
-    </div>
-    {chips &&
-      chips.map((chip, index) => (
-        <span key={index} className="flex items-center cursor-pointer ">
-          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2" >
-            {/* Add your Chip SVG or Icon here */}
-            <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
-              {chip}
+const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => {
+
+  return (
+    <div className="flex flex-wrap gap-3 p-3">
+      <div className="flex flex-wrap gap-2">
+
+        <span className="flex items-center ">
+          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full ">
+            <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px]">
+              {type}
             </div>
           </div>
         </span>
-      ))}
-  </div>
-)
-
+      </div>
+      {chips &&
+        chips.map((chip, index) => (
+          <span key={index} className="flex items-center cursor-pointer ">
+            <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2" >
+              {/* Add your Chip SVG or Icon here */}
+              <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
+                {chip}
+              </div>
+            </div>
+          </span>
+        ))}
+    </div>
+  )
+}
 const Card: React.FC<JobCardProps> = ({
   className,
   date,
@@ -137,20 +129,37 @@ const Card: React.FC<JobCardProps> = ({
   chips,
   title,
   href,
+  id,
+  savedUsers
 }) => {
+  const { data: session } = useSession();
+  const { userData } = useUserContext();
+  // if(userData.id)
+  // console.log(title)
+  // console.log(userData?.id)
+  // arrayOfObjects.some(obj => obj.id === targetId);
+  const [saved, setSaved] = useState<boolean>(false);
+  // console.log(saved) 
+  useEffect(() => {
+    if (savedUsers?.length) {
+      setSaved(savedUsers?.some(obj => obj.id == (userData?.id ?? 0)))
+    }
+  }, [savedUsers])
+  // console.log(id)
+  // const issaved=
+  // issaved?
 
-  const [saved,setSaved]=useState();
-  // const savePost = async () => {
-  //   const data = await fetchData(`/v1/post/user/save/${id}`, , "POST")
-  //   if (data?.error) {
-  //     toast.error(data.message)
-  //   } else {
-  //     toast.success(data?.message)
-  //     setSaved(!saved)
-  //   }
-  // }
+  const savePost = async (id: number) => {
+    const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      setSaved(!saved)
+    }
+  }
 
-  
+
   return (
     <>
       <div className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit ", className)}>
@@ -161,23 +170,27 @@ const Card: React.FC<JobCardProps> = ({
                 <UserImage href={href} />
                 <UserInfo title={title} location={location} />
               </div>
-              <div className="flex items-center">
-                
-                {/* <SaveIcon className="w-5 h-5" /> */}
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill={saved ? "#fff" : "none"}
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-              </div>
+              {
+                session && (
+                  <>
+                    <div className="flex items-center" onClick={() => savePost(id)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill={saved ? "#fff" : "none"}
+                        stroke="#fff"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </div>
+                  </>
+                )
+              }
             </div>
             <JobDescription desc={desc} />
           </div>

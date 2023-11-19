@@ -147,11 +147,11 @@ const Layout: React.FC<LayoutProps> = ({
           {
             <Button
               onClick={() => {
-                router.push(`/jobs/post-job`)
+                router.push(`/user/profile/portfolio/CreateJob`)
               }}
               className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"
             >
-              <span className="text-sm">Post job</span>
+              <span className="text-sm">Post job </span>
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
           }

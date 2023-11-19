@@ -29,7 +29,7 @@ export default Sett
 export const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwMDIyMTU1MiwiZXhwIjoxNzAwMjI1MDkyLCJ0eXBlIjoiQUNDRVNTIn0.wyZ69lhBGEPcqPrcMfQfATjctNzlMU5KAplb5637_BY"
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res,query }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   // console.log(session?.user?.name)
   if (!session) {
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   let settingsDetails = await fetchData(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/allDetails/`,
+    `/v1/users/allDetails/`,
     session?.user?.name as string,
     "GET"
   )

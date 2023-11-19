@@ -1,18 +1,5 @@
 import { StaticImageData } from "next/image"
 
-interface Games {
-  id: number
-  cover?: string | StaticImageData
-  likes?: number
-  banner?: string | StaticImageData
-  username?: string
-  title?: string
-  album_slug?: string
-  // slug: string;
-  // className?: string;
-  // authUser?: any;
-  // isSavedPost?: boolean;
-}
 
 interface GamesFilterProps {
   searchText: string
@@ -60,4 +47,17 @@ declare interface BackendGame {
   genre: Genre[]
   distributionPlatforms: DistributionPlatform[]
   GameAssets: string[]
+}
+interface Games {
+  id: number
+  cover?: string | StaticImageData
+  // likes?: number
+  banner?: string | StaticImageData
+  username?: string
+  title?: string
+  // album_slug?: string
+  // slug: string;
+  // className?: string;
+  // authUser?: any;
+  // isSavedPost?: boolean;
 }

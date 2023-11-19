@@ -21,7 +21,8 @@ import RegisterModal from "@/components/ui/register"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
 interface Props {
-  userSession?: any
+  userSession?: any,
+  userData:Iuser |null
 }
 
 const AuthButtons = ({
@@ -58,7 +59,7 @@ const AuthButtons = ({
   )
 }
 
-const LoggedInUserButtons = ({ userSession }: Props) => {
+const LoggedInUserButtons = ({ userSession,userData }: Props) => {
   const router = useRouter()
 
   const [showProfileSettings, setShowProfileSettings] = useState(false)
@@ -116,6 +117,7 @@ const LoggedInUserButtons = ({ userSession }: Props) => {
             onSignOut={() => signOut()}
             className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] `}
             authUser={userSession}
+            userData={userData}
           />
         </div>
       </div>
@@ -137,6 +139,7 @@ export default function Navbar() {
     containerRef,
     // handleLogout,
     userSession,
+    userData
   } = useUserContext()
   const { data: session } = useSession()
 
@@ -176,30 +179,7 @@ export default function Navbar() {
               />
             </Button>
           </div>
-          {/* <div className="flex-row items-center hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif] ml-[250px]">
-            <Button onClick={() => { router.push("/") }} className="text-[#96969a] text-[16px]">
-              Home
-            </Button>
-            <Button onClick={() => { router.push("/jobs") }} className="text-[16px] text-[#96969a] whitespace-nowrap">
-              jobs
-            </Button>
-            <Button onClick={() => { router.push("/creator") }} className="text-[16px] text-[#96969a] whitespace-nowrap">
-              Creators
-            </Button>
-            <Button onClick={() => { router.push("/games") }} className="text-[16px] text-[#96969a] whitespace-nowrap">
-              Games
-            </Button>
-            <Button onClick={() => { router.push("/user/profile") }} className="text-[16px] text-[#96969a] whitespace-nowrap">
-              Profile
-            </Button>
-
-            {userSession && (
-              <Button onClick={() => { router.push("/help") }} className="text-[16px] text-[#96969a] whitespace-nowrap">
-                Assets
-              </Button>
-            )}
-
-          </div> */}
+     
           <div className="flex-row items-center hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif] ml-[250px]">
             <NavbarLink label="Home" href="/" />
             <NavbarLink label="Jobs" href="/jobs" />
@@ -214,7 +194,7 @@ export default function Navbar() {
         <div className="relative flex items-center gap-2 mb-1 xl:gap-12 ">
           <div className="">
             {session ? (
-              <LoggedInUserButtons userSession={session} />
+              <LoggedInUserButtons userSession={session} userData={userData} />
             ) : (
               <AuthButtons
                 className="hidden md:flex"

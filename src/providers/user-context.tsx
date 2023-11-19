@@ -1,15 +1,9 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Cycle, useCycle } from "framer-motion"
 import { useSession } from "next-auth/react"
+import { fetchData } from "@/utils/functions"
 
-// type IhandleCredentialsLoginProps = {
-//   credentials: {
-//     redirect: boolean
-//     email: string
-//     password: string
-//     callbackUrl: string
-//   }
-// }
+
 interface IUserContext {
   // handleLogin: (email: string, password: string) => Promise<{ success: boolean; message: string }>
   isLoginModalOpen: boolean
@@ -23,24 +17,25 @@ interface IUserContext {
   tap: boolean
   setTap: React.Dispatch<React.SetStateAction<boolean>>
   containerRef: React.RefObject<HTMLDivElement>
+  setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
+  userData: Iuser | null
   userSession:
-    | {
+  | {
+    name?: string | null | undefined
+    email?: string | null | undefined
+    image?: string | null | undefined
+  }
+  | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
-    | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
-          name?: string | null | undefined
-          email?: string | null | undefined
-          image?: string | null | undefined
-        }
       | undefined
     >
   >
-  // handleCredentialsLogin: ({ credentials }: IhandleCredentialsLoginProps) => Promise<SignInResponse | undefined>
 }
 
 interface IUserProvider {
@@ -50,12 +45,22 @@ interface IUserProvider {
 const Context = React.createContext<IUserContext>({} as IUserContext)
 
 const UserProvider = ({ children }: IUserProvider) => {
+  const session = useSession()
   const [userSession, setUserSession] = useState(useSession().data?.user)
-
-  // const handleLogout = async () => {
-  //   await signOut();
-  //   setUserSession(undefined);
-  // };
+  const [userData, setuserData] = useState<Iuser | null>(null);
+  useEffect(() => {
+    console.log("session  ", session)
+    if (session) {
+      const loaddata = async () => {
+        const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
+        console.log("this is user0  ", data)
+        setuserData(data?.data?.user) 
+        // data?.data.user
+      }
+      loaddata()
+    }
+    // userdata
+  }, [session])
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
@@ -89,6 +94,8 @@ const UserProvider = ({ children }: IUserProvider) => {
         containerRef,
         userSession,
         setUserSession,
+        userData,
+        setuserData
       }}
     >
       {children}

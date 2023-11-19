@@ -12,14 +12,19 @@ interface JobFilterProps {
 }
 
 interface Job {
+  id: number
   title: string
-  // desc: string
+  desc: string
   date: string
   salary: string
   type: string
   location: string
   href: string
   chips?: string[]
+  savedUsers: {
+    id: number
+  }[]
+
 }
 interface IjobsDetails { }
 
@@ -30,7 +35,7 @@ interface BackendJob {
   title: string
   // backgroundImage;
   // banner: string | null
-  // description: string
+  description: string
   publishDate: string | null
   jobDetails: {
     skills: string[]
@@ -44,6 +49,7 @@ interface BackendJob {
   //     company: string;
   //     culture: string;
   // };
+  banner:string
   remote: boolean
   country: string
   city: string
@@ -54,6 +60,9 @@ interface BackendJob {
   userId: number
   jobSoftwares: {
     software: string
+  }[]
+  savedUsers: {
+    id: number
   }[]
   user: {
     username: string

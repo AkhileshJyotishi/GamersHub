@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 
 import { getSession } from "@/lib/auth"
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import JobsPage from "@/components/jobs"
 
@@ -25,18 +25,24 @@ export default Jobs
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  let jobsDetails;
   if (!session) {
     // signOut();
 
-    return {
-      redirect: {
-        destination: "/?error=Please Authenticate&logout=true",
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: "/?error=Please Authenticate&logout=true",
+    //     permanent: false,
+    //   },
+    // }
+    jobsDetails = await fetchWithoutAuthorization(`/v1/job`, "GET")
   }
-  console.log("this  is session", session)
-  const jobsDetails = await fetchData(`/v1/job`, session.user?.name as string, "GET")
+  else {
+
+    jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
+
+  }
+  // console.log("this  is session", session)
 
   if (jobsDetails?.error) {
     // toast.error(jobsDetails.message)]
@@ -54,14 +60,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     return {
+      id: backendJob.id,
       title: backendJob.title,
-      // desc: backendJob.description,
+      desc: backendJob.description,
       date: "SomeDate", // Replace with the relevant date field from the backend
       salary: `${backendJob.paymentValue} ${backendJob.paymentType}`, // Adjust based on your backend structure
       type: backendJob.jobType,
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       chips: backendJob.jobDetails.skills,
+      savedUsers: backendJob.savedUsers
     }
   }
 
