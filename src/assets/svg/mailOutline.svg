@@ -1,0 +1,23 @@
+ <svg
+
+            width="21"
+            height="21"
+            fill="#fff"
+            
+            viewBox="0 0 21 21"
+        >
+            <path
+                stroke="#F7F7F7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.667"
+                d="M3.962 3.833h13.334c.916 0 1.666.75 1.666 1.667v10c0 .917-.75 1.667-1.666 1.667H3.962c-.916 0-1.666-.75-1.666-1.667v-10c0-.917.75-1.667 1.666-1.667z"
+            ></path>
+            <path
+                stroke="#F7F7F7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.667"
+                d="M18.962 5.5l-8.333 5.833L2.296 5.5"
+            ></path>
+        </svg>

@@ -1,5 +1,5 @@
 declare type APITypes = {
   data: any
-  error: any
+  error: unknown
   message: string
 }

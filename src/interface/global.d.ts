@@ -1,1 +1,1 @@
-declare type Callback<T = any, P = Error | null> = (error?: P, data?: T) => void
+// declare type Callback<T = any, P = Error | null> = (error?: P, data?: T) => void
