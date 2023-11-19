@@ -67,10 +67,10 @@ const verificationEmail = {
 }
 
 const addProvider = {
-  params: Joi.object().keys({
-    userId: Joi.number().integer()
-  }),
+  // params: Joi.object().keys({
+  // }),
   body: Joi.object().keys({
+    userId: Joi.number().integer(),
     response: Joi.object(),
     providerType: Joi.string().required().valid('GOOGLE', 'FACEBOOK')
   })

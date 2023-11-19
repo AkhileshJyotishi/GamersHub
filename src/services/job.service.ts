@@ -55,6 +55,7 @@ interface jobBody {
   publishDate?: string | null
   jobDetails?: object
   country?: string
+  description?: string
   city?: string
   paymentValue?: number
   expertise?: 'ENTRY' | 'INTERMEDIATE' | 'EXPERT'
@@ -144,6 +145,11 @@ const getAllJobs = async (): Promise<Job[]> => {
         select: {
           username: true,
           profileImage: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
         }
       }
     }
@@ -581,6 +587,11 @@ const getAllJobsExceptCurrentUser = async (userId: number): Promise<Job[]> => {
         select: {
           username: true,
           profileImage: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
         }
       }
     }

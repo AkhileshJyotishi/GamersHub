@@ -26,11 +26,7 @@ router.post(
   authController.sendVerificationEmail
 )
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail)
-router.post(
-  '/add-provider/:userId',
-  validate(authValidation.addProvider),
-  authController.addProvider
-)
+router.post('/add-provider', validate(authValidation.addProvider), authController.addProvider)
 
 export default router
 
