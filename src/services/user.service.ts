@@ -887,6 +887,49 @@ const deleteUserDetailsByUserId = async (userId: number): Promise<void> => {
   })
 }
 
+/**
+ * Get custom userDetails by userId
+ * @param {ObjectId} userId
+ * @returns {Promise<object>}
+ */
+const getCustomDetails = async (userId: number): Promise<object | null> => {
+  const userDetails = prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    select: {
+      id: true,
+      username: true,
+      createdAt: true,
+      userDetails: {
+        select: {
+          city: true,
+          country: true
+        }
+      },
+      profileImage: true,
+      socials: {
+        select: {
+          facebook: true,
+          linkedin: true,
+          twitter: true,
+          artstation: true,
+          github: true,
+          youtube: true,
+          portfolio: true
+        }
+      },
+      _count: {
+        select: {
+          followers_users: true,
+          following_users: true
+        }
+      }
+    }
+  })
+  return userDetails
+}
+
 export default {
   createUser,
   createProviderUser,
@@ -912,5 +955,6 @@ export default {
   getUserDetailsByUserId,
   createUserDetailsByUserId,
   updateUserDetailsByUserId,
-  deleteUserDetailsByUserId
+  deleteUserDetailsByUserId,
+  getCustomDetails
 }

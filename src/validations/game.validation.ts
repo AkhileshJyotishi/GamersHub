@@ -21,7 +21,7 @@ const createGame = {
     distributionPlatforms: Joi.array().items(Joi.string()).optional(),
     platforms: Joi.array().items(Joi.string()).optional(),
     tags: Joi.array().items(Joi.string()).optional(),
-    gameGallery: Joi.array().items(Joi.string()).optional()
+    gameAssets: Joi.array().items(Joi.string()).optional()
   })
 }
 
@@ -40,7 +40,7 @@ const updateGame = {
       distributionPlatforms: Joi.array().items(Joi.string()).optional(),
       platforms: Joi.array().items(Joi.string()).optional(),
       tags: Joi.array().items(Joi.string()).optional(),
-      gameGallery: Joi.array().items(Joi.string()).optional()
+      gameAssets: Joi.array().items(Joi.string()).optional()
     })
     .min(1)
 }

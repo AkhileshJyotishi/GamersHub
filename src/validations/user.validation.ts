@@ -147,6 +147,12 @@ const updateUserDetails = {
     .min(1)
 }
 
+const getCustomDetails = {
+  params: Joi.object().keys({
+    id: Joi.number().integer()
+  })
+}
+
 export default {
   createUser,
   getUsers,
@@ -160,5 +166,6 @@ export default {
   updateExperience,
   deleteExperience,
   createUserDetails,
-  updateUserDetails
+  updateUserDetails,
+  getCustomDetails
 }

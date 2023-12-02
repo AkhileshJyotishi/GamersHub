@@ -275,6 +275,18 @@ const getAllDetails = catchAsync(async (req, res) => {
   )
 })
 
+const getCustomDetails = catchAsync(async (req, res) => {
+  const id = parseInt(req.params.id as string)
+  const customDetails = await userService.getCustomDetails(id)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { user: customDetails },
+    'User Details fetched Successfully'
+  )
+})
+
 export default {
   createUser,
   getUsers,
@@ -297,6 +309,7 @@ export default {
   createUserDetails,
   updateUserDetails,
   deleteUserDetails,
+  getCustomDetails,
   getKeywords,
   getSkills,
   getSoftwares,

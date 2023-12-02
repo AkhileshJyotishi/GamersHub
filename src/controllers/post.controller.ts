@@ -4,7 +4,7 @@ import { postService } from '../services'
 import { sendResponse } from '../utils/response'
 
 const getUserPosts = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
+  const userId = parseInt(req.params.id)
   const userPosts = await postService.getUserPosts(userId)
   // res.status(httpStatus.OK).send({ posts: userPosts })
   sendResponse(res, httpStatus.OK, null, { posts: userPosts }, 'User Posts fetched Successfully')

@@ -8,9 +8,10 @@ const router = express.Router()
 
 router
   .route('/user')
-  .get(auth(), postController.getUserPosts)
   .post(auth(), validate(postValidation.createPost), postController.createUserPost)
   .delete(auth(), postController.deleteUserPosts)
+
+router.get('/user/:id', validate(postValidation.paramValidation), postController.getUserPosts)
 
 router.get('/', postController.getAllPosts)
 router.get('/others', auth(), postController.getAllPostExceptCurrentUser)

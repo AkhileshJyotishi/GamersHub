@@ -8,11 +8,12 @@ const router = express.Router()
 
 router
   .route('/user')
-  .get(auth(), albumController.getUserAlbums)
   .post(auth(), validate(albumValidation.createAlbum), albumController.createUserAlbum)
   .delete(auth(), albumController.deleteUserAlbums)
 
 router.get('/', albumController.getAllAlbums)
+
+router.get('/user/:id', validate(albumValidation.paramsValidation), albumController.getUserAlbums)
 
 router
   .route('/:id')

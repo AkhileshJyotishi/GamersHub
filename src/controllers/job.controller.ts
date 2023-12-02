@@ -4,8 +4,8 @@ import { jobService } from '../services'
 import { sendResponse } from '../utils/response'
 
 const getUserJobs = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
-  const userJobs = await jobService.getUserJobs(userId)
+  const id = parseInt(req.params.id)
+  const userJobs = await jobService.getUserJobs(id)
   sendResponse(res, httpStatus.OK, null, { jobs: userJobs }, 'User Jobs fetched Successfully')
 })
 
@@ -50,7 +50,7 @@ const deleteJobById = catchAsync(async (req, res) => {
 
 // application
 const getUserApplication = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
+  const userId = parseInt(req.params.id)
   const userJobsApplications = await jobService.getUserApplications(userId)
   sendResponse(
     res,

@@ -9,9 +9,10 @@ const router = express.Router()
 router.get('/', jobController.getAllJobs)
 router
   .route('/user')
-  .get(auth(), jobController.getUserJobs)
   .post(auth(), validate(jobValidation.createJob), jobController.createUserJob)
   .delete(auth(), jobController.deleteUserJobs)
+
+router.get('/user/:id', validate(jobValidation.idValidation), jobController.getUserJobs)
 
 router.get('/others', auth(), jobController.getAllJobsExceptCurrentUser)
 
@@ -25,9 +26,14 @@ router.post(
 
 router
   .route('/application')
-  .get(jobController.getUserApplication)
   .post(auth(), validate(jobValidation.createApplication), jobController.createApplication)
   .delete(auth(), jobController.deleteApplication)
+
+router.get(
+  '/applications/:id',
+  validate(jobValidation.idValidation),
+  jobController.getUserApplication
+)
 
 router
   .route('/application/:id')

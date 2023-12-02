@@ -45,6 +45,11 @@ router
   .delete(auth(), userController.deleteUserDetails)
   .patch(auth(), validate(userValidation.updateUserDetails), userController.updateUserDetails)
 
+router.get(
+  '/customDetails/:id',
+  validate(userValidation.getCustomDetails),
+  userController.getCustomDetails
+)
 router.get('/keyword', auth(), userController.getKeywords)
 router.get('/skill', auth(), userController.getSkills)
 router.get('/software', auth(), userController.getSoftwares)

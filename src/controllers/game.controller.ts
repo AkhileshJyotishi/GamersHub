@@ -4,7 +4,7 @@ import { gameService } from '../services'
 import { sendResponse } from '../utils/response'
 
 const getUserGames = catchAsync(async (req, res) => {
-  const userId = res.locals.user.id
+  const userId = parseInt(req.params.id)
   const userGames = await gameService.getUserGames(userId)
   sendResponse(res, httpStatus.OK, null, { games: userGames }, 'User Games fetched Successfully')
 })
