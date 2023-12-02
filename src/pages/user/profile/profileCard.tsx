@@ -138,7 +138,7 @@ export default function ProfileCard({
                 className="w-full"
               >
                 <span className="flex justify-center w-full p-2 bg-secondary rounded-xl">
-                  <MailIcon className="w-[14px] h-[14px]" />
+                  <MailIcon className="w-[14px] h-[14px]" fill="#000"/>
                   <p className="">Message</p>
                 </span>
               </Button>
@@ -148,10 +148,10 @@ export default function ProfileCard({
         {/* Action Button  End*/}
 
         <div className="flex flex-col items-center w-full gap-4 mx-auto mt-12 text-text_dull">
-          <div className="flex flex-row items-center justify-between w-[80%]">
+          {/* <div className="flex flex-row items-center justify-between w-[80%]">
             <h4>Likes</h4>
             <h4>{currentUser?.likes} 34</h4>
-          </div>
+          </div> */}
 
           <div className="flex flex-row items-center justify-between w-[80%]">
             <h4>Followers</h4>

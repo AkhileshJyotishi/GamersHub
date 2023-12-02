@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 import testImage from "@/assets/image/profiles-slide-show.png"
-import { Games } from "@/interface/games"
+import { BackendGame, Games } from "@/interface/games"
 
 import Card from "./gamesCard"
 import Layout from "./gamesLayout"
@@ -9,34 +9,38 @@ import Layout from "./gamesLayout"
 // : {
 //   gamesDetails: BackendGame[]
 // }
-const GamesPage = () => {
-  const sampleGames: Games[] = [
-    {
-      id: 1,
-      cover: testImage,
-      likes: 500,
-      banner: testImage,
-      username: "user1",
-      title: "Game 1",
-      album_slug: "album-1",
-      //   slug: "game-1",
-      //   isSavedPost: true,
-    },
-    {
-      id: 2,
-      cover: testImage,
-      likes: 300,
-      banner: testImage,
-      username: "user2",
-      title: "Game 2",
-      album_slug: "album-2",
-      //   slug: "game-2",
-      //   isSavedPost: false,
-    },
-    // Add more game entries as needed
-  ]
+type GamesTypes = {
+};
+const GamesPage = ({
+  gameDetails
+}:{
+  gameDetails: BackendGame[]
 
-  const [games, setGames] = useState<Games[]>(sampleGames)
+}) => {
+ 
+
+  function convertToGamesInterface(backendGame: BackendGame): Games {
+    const { id, banner, user, title } = backendGame;
+
+    // Assuming you want to use the profileImage property if available, otherwise fallback to a default value
+    const profileImage = user?.profileImage || 'default-profile-image.jpg';
+
+    // Create the simplified Games object
+    const gamesInterface: Games = {
+      id,
+      banner,
+      username: user?.username || 'Unknown User',
+      title,
+      cover: profileImage,
+    };
+
+    return gamesInterface;
+  }
+  const games2 = gameDetails.map((game, idx) => {
+    return convertToGamesInterface(game);
+  })
+  // convertToGamesInterface(parsedgamesDetails)
+  const [games, setGames] = useState<Games[]>(games2)
 
   return (
     <Layout games={games} setGames={setGames}>

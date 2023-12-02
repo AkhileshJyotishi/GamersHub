@@ -66,12 +66,12 @@ export const fetchData = async (
 
     const resp = response.data
     return await resp
-  } catch (error: unknown) {
+  } catch (error: Allow) {
     console.log(error)
     console.log("nulliscoming")
     return {
       error: error,
-      message: "please authenticate",
+      message: error.response.data.message,
       data: null,
     }
   }

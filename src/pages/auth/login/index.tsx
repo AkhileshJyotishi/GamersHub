@@ -75,7 +75,7 @@ const LoginPage = () => {
       } else {
         router.push("/")
       }
-    } catch (error: unknown) {
+    } catch (error: Allow) {
       console.log("catch in auth login ", error)
       toast.error(error)
     }

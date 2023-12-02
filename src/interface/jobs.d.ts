@@ -14,8 +14,8 @@ interface JobFilterProps {
 interface Job {
   id: number
   title: string
-  desc: string
-  date: string
+  desc: string|null
+  date: string|null
   salary: string
   type: string
   location: string
@@ -31,42 +31,37 @@ interface IjobsDetails { }
 interface BackendJob {
   id: number
   slug: string
-  role: string
+  banner: string | null
+  publishDate: string | null
   title: string
+  description: string | null
+  jobDetails: object | null
   // backgroundImage;
   // banner: string | null
-  description: string
-  publishDate: string | null
-  jobDetails: {
-    skills: string[]
+  // skills: string[]
 
-  }
-  requirements: {
-    experience: string
-  }
-
-  // about: {
-  //     company: string;
-  //     culture: string;
-  // };
-  banner:string
   remote: boolean
   country: string
   city: string
+  jobSoftwares: {
+    software: string
+  }[]
   expertise: string
   paymentType: string
   paymentValue: number
   jobType: string
   userId: number
-  jobSoftwares: {
-    software: string
-  }[]
   savedUsers: {
     id: number
   }[]
   user: {
     username: string
     profileImage: string
+  },
+  jobApplications: {
+    id: number,
+    userId: number,
+
   }
   // website: string;
   // logoSrc: string;

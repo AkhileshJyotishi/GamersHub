@@ -96,334 +96,335 @@ const JobDetails: React.FC<{ jobData: jobdataprop }> = ({ jobData }) => (
   </>
 )
 
-const defaultjobDetails = {
-  type: "doc",
-  content: [
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "fsidftet",
-          type: "text",
-          marks: [
-            {
-              type: "textStyle",
-              attrs: {
-                color: "#FFA500",
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sldfhsl",
-          type: "text",
-          marks: [
-            {
-              type: "textStyle",
-              attrs: {
-                color: "#FFA500",
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sfsdf",
-          type: "text",
-          marks: [
-            {
-              type: "textStyle",
-              attrs: {
-                color: "#FFA500",
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "taskList",
-      content: [
-        {
-          type: "taskItem",
-          attrs: {
-            checked: false,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "this is code ",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "taskItem",
-          attrs: {
-            checked: false,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "hahah ",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "taskItem",
-          attrs: {
-            checked: false,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "===",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "anot her one nldfknlsadssldfslflds;klsdaflk hon ther one adn tis ois working ",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "taskList",
-      content: [
-        {
-          type: "taskItem",
-          attrs: {
-            checked: false,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "sfsfsd",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "taskItem",
-          attrs: {
-            checked: true,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "fsfdf",
-                  type: "text",
-                  marks: [
-                    {
-                      type: "bold",
-                    },
-                  ],
-                },
-                {
-                  text: "sFDGDFG ",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "taskItem",
-          attrs: {
-            checked: false,
-          },
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "xznczl;",
-                  type: "text",
-                  marks: [
-                    {
-                      type: "link",
-                      attrs: {
-                        rel: "noopener noreferrer nofollow",
-                        href: "https://swww.google.com/",
-                        class:
-                          "novel-text-stone-400 novel-underline novel-underline-offset-[3px] hover:novel-text-stone-600 novel-transition-colors novel-cursor-pointer",
-                        target: "_blank",
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "heading",
-      attrs: {
-        level: 2,
-      },
-      content: [
-        {
-          text: "heading two",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "blockquote",
-      content: [
-        {
-          type: "paragraph",
-          content: [
-            {
-              text: "a quote to display",
-              type: "text",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "the code pladfddsfhldf;d",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "dfd",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "fs",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "df",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "dsf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "-dsf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "dsf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sdfsd",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sdf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "sdf",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-    },
-  ],
-}
+// const defaultjobDetails = {
+//   type: "doc",
+//   content: [
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "fsidftet",
+//           type: "text",
+//           marks: [
+//             {
+//               type: "textStyle",
+//               attrs: {
+//                 color: "#FFA500",
+//               },
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sldfhsl",
+//           type: "text",
+//           marks: [
+//             {
+//               type: "textStyle",
+//               attrs: {
+//                 color: "#FFA500",
+//               },
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sfsdf",
+//           type: "text",
+//           marks: [
+//             {
+//               type: "textStyle",
+//               attrs: {
+//                 color: "#FFA500",
+//               },
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "taskList",
+//       content: [
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: false,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "this is code ",
+//                   type: "text",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: false,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "hahah ",
+//                   type: "text",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: false,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "===",
+//                   type: "text",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "anot her one nldfknlsadssldfslflds;klsdaflk hon ther one adn tis ois working ",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "taskList",
+//       content: [
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: false,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "sfsfsd",
+//                   type: "text",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: true,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "fsfdf",
+//                   type: "text",
+//                   marks: [
+//                     {
+//                       type: "bold",
+//                     },
+//                   ],
+//                 },
+//                 {
+//                   text: "sFDGDFG ",
+//                   type: "text",
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           type: "taskItem",
+//           attrs: {
+//             checked: false,
+//           },
+//           content: [
+//             {
+//               type: "paragraph",
+//               content: [
+//                 {
+//                   text: "xznczl;",
+//                   type: "text",
+//                   marks: [
+//                     {
+//                       type: "link",
+//                       attrs: {
+//                         rel: "noopener noreferrer nofollow",
+//                         href: "https://swww.google.com/",
+//                         class:
+//                           "novel-text-stone-400 novel-underline novel-underline-offset-[3px] hover:novel-text-stone-600 novel-transition-colors novel-cursor-pointer",
+//                         target: "_blank",
+//                       },
+//                     },
+//                   ],
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "heading",
+//       attrs: {
+//         level: 2,
+//       },
+//       content: [
+//         {
+//           text: "heading two",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "blockquote",
+//       content: [
+//         {
+//           type: "paragraph",
+//           content: [
+//             {
+//               text: "a quote to display",
+//               type: "text",
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "the code pladfddsfhldf;d",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "dfd",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "fs",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "df",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "dsf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "-dsf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "dsf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sdfsd",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sdf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//       content: [
+//         {
+//           text: "sdf",
+//           type: "text",
+//         },
+//       ],
+//     },
+//     {
+//       type: "paragraph",
+//     },
+//   ],
+// }
 
 const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
+  console.log("jobdetails from backend", jobData.jobDetails)
   return (
     <div className="flex flex-col gap-5 p-3">
       <div className="text-[25px] font-bold">Job Description</div>
@@ -437,7 +438,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
           <Editor
             className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
             editable={false}
-            defaultValue={defaultjobDetails}
+            defaultValue={jobData.jobDetails || {}}
             disableLocalStorage
 
           />

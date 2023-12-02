@@ -1,30 +1,92 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image" // Import your Image component library
+import defaultbannerImage from "@/assets/image/user-banner.png"
+import { toast } from "react-toastify"
+import { fetchData } from "@/utils/functions"
+import { useSession } from "next-auth/react"
+import { useUserContext } from "@/providers/user-context"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
 interface CardProps {
+  id: number
   username: string
-  userProfilePhoto: string
-  coverPhoto: string
+  userProfilePhoto: string | null
+  coverPhoto: string | null
+  title: string
   // location: string;
   // views: string;
   className?: string
   imageWidth?: number
   matureContent: boolean
+  savedPost: {
+    id: number;
+  }[]
+  likedPost:Allow
+
 }
 
 const Card: React.FC<CardProps> = ({
-  // username,
+  username,
   userProfilePhoto,
   coverPhoto,
+  title,
   // location,
   // views,
   className,
   imageWidth,
-  // matureContent,
+  matureContent,
+  savedPost,
+  likedPost,
+
+  id
 }) => {
+  const { userData } = useUserContext();
+
+  const session = useSession()
+  const [liked, setLiked] = useState<boolean>(false)
+  const [saved, setSaved] = useState<boolean>(false)
+  const likePost = async () => {
+    let method
+    if (liked) {
+      method = "DELETE"
+    } else {
+      method = "POST"
+    }
+
+    const data = await fetchData(`/v1/post/like/${id}`, session.data?.user?.name as string, method)
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      setLiked(!liked)
+    }
+  }
+
+  const savePost = async () => {
+    const data = await fetchData(`/v1/post/user/save/${id}`, session.data?.user?.name as string, "POST")
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      setSaved(!saved)
+    }
+  }
+  useEffect(() => {
+    if (savedPost?.length) {
+      setSaved(savedPost?.some(obj => obj.id == (userData?.id ?? 0)))
+    }
+    if (likedPost?.length) {
+          setLiked(likedPost?.some(obj => obj.id == (userData?.id ?? 0)))
+        }
+  }, [savedPost,likePost])
+  // useEffect(() => {
+  //   if (likedPost?.length) {
+  //     setLiked(likedPost?.some(obj => obj.id == (userData?.id ?? 0)))
+  //   }
+  // }, [likedPost])
+
   return (
     <div
       className={clsx(
@@ -35,7 +97,7 @@ const Card: React.FC<CardProps> = ({
       <div className="relative w-[inherit] h-[inherit]">
         <div className="absolute inset-0 w-[inherit] h-[inherit]">
           <Image
-            src={coverPhoto}
+            src={coverPhoto || defaultbannerImage}
             alt=""
             width={imageWidth || 320}
             height={200}
@@ -47,16 +109,16 @@ const Card: React.FC<CardProps> = ({
         <div className="w-full h-[350px] absolute top-0 bg-[#00000050] bg-gradient-to-b from-[#00000005] to-[#00000095]">
           <div className="h-[40px]">
             <div className="flex items-center p-1 py-3 px-4 text-[#fff] justify-between">
-              <div className="flex justify-between">
+              <div className="flex justify-between ">
                 <Image
                   width={8}
                   height={8}
                   className="w-10 h-10 rounded-full"
-                  src={userProfilePhoto}
+                  src={userProfilePhoto || defaultbannerImage}
                   alt={``}
                 />
-                <div className="ml-3">
-                  {/* <span className="block antialiased font-bold leading-tight text-md">{username}</span> */}
+                <div className="flex justify-center ml-3">
+                  <span className="block antialiased font-bold leading-tight break-words text-md">{username}</span>
                   {/* <span className="block text-xs">{location}</span> */}
                 </div>
               </div>
@@ -67,13 +129,13 @@ const Card: React.FC<CardProps> = ({
             </div>
           </div>
           <div className="flex justify-between h-[200px] items-end px-6 translate-y-36 group-hover:translate-y-20 transition duration-200">
-            <div className="flex gap-5 cursor-pointer">
+            <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
-                fill="none"
+                fill={liked ? "#fff" : "none"}
                 stroke="#fff"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -82,13 +144,16 @@ const Card: React.FC<CardProps> = ({
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </div>
-            <div className="flex cursor-pointer">
+            <div>
+              {title}
+            </div>
+            <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
-                fill="none"
+                fill={saved ? "#fff" : "none"}
                 stroke="#fff"
                 strokeWidth="2"
                 strokeLinecap="round"

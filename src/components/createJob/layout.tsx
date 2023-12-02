@@ -17,7 +17,6 @@ interface JobInfo {
   paymentType: string
   paymentValue: number
 
-  // rolesNeeded: string[];
   banner: File | null | string
   expertise: string
   jobSoftwares: string[]
@@ -161,6 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Expected payment",
       inputType: "select",
+      
       onChange: (value) =>
         setJobInfo({
           ...jobInfo,
@@ -211,14 +211,14 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       onChange: (value) => setJobInfo((prevState) => ({ ...prevState, banner: value as File })),
       className: "",
     },
-    {
-      title: "Roles Needed*",
-      inputType: "tags",
-      onTagsChange: (tags) => setJobInfo((prevState) => ({ ...prevState, rolesNeeded: tags })),
-      placeholder: "roles needed",
-      // onChange: (value) =>setJobInfo({ ...jobInfo, rolesNeeded: jobInfo.rolesNeeded }),
-      // value: roleNeedInput,
-    },
+    // {
+    //   title: "Roles Needed*",
+    //   inputType: "tags",
+    //   onTagsChange: (tags) => setJobInfo((prevState) => ({ ...prevState, rolesNeeded: tags })),
+    //   placeholder: "roles needed",
+    //   // onChange: (value) =>setJobInfo({ ...jobInfo, rolesNeeded: jobInfo.rolesNeeded }),
+    //   // value: roleNeedInput,
+    // },
     {
       title: "Level of Expertise",
       inputType: "select",

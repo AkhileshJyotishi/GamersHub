@@ -1,10 +1,9 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
-
-import { token } from "@/pages/settings"
 import { fetchData } from "@/utils/functions"
 
 import Layout from "@/components/createGame/layout"
+import { useSession } from "next-auth/react"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -47,6 +46,7 @@ const CreateGame: React.FC = () => {
     releaseDate: "",
     gameAssets: null,
   })
+  const session=useSession()
   const uploadGame = async () => {
     const storedContent = localStorage.getItem("novel__content")
     if (storedContent !== null) {
@@ -62,7 +62,7 @@ const CreateGame: React.FC = () => {
     gameInfo.developerId = 11
     console.log(gameInfo)
 
-    fetchData("v1/job/user", token, "POST", gameInfo)
+    fetchData("v1/game/user", session.data?.user?.name as string, "POST", gameInfo)
   }
 
   return (

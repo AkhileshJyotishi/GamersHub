@@ -6,6 +6,9 @@ import { BackendGame } from "@/interface/games"
 
 import GamePageHeader from "./GamePageHeader"
 import Gamesection from "./Gamesection"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import { getSession } from "@/lib/auth"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 // import JobPageHeader from './jobPageHeader'
 // import Jobsection from './jobsection'
 
@@ -67,9 +70,10 @@ const GameData: BackendGame = {
   ],
 }
 
-const Particularpage = () => {
+const Particularpage = ({parsedgamesDetails}:{parsedgamesDetails:BackendGame}) => {
   // user,
-  const { title, banner, ...profileDataGameSection } = GameData
+  const { title, banner, ...profileDataGameSection } = parsedgamesDetails
+  // console.log(profileDataGameSection)
   return (
     <>
       <div
@@ -94,3 +98,28 @@ const Particularpage = () => {
 }
 
 export default Particularpage
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res ,query}) => {
+  const {slug}=query
+  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  let gameDetails=await fetchWithoutAuthorization(`/v1/game/${slug}`,"GET");
+
+
+  if (gameDetails?.error) {
+    // toast.error(jobsDetails.message)
+    return {
+      redirect: {
+        destination: `/?error=${gameDetails.message}`,
+        permanent: false,
+      },
+    }
+  }
+  console.log(gameDetails?.data.game.gameAssets)
+  const parsedgamesDetails: BackendGame = gameDetails?.data?.game
+
+  return {
+    props: {
+      parsedgamesDetails,
+    },
+  }
+}

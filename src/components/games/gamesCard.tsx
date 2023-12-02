@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image" // Import your Image component library
 import { toast } from "react-toastify"
@@ -8,6 +8,7 @@ import { token } from "@/pages/settings"
 import { fetchData } from "@/utils/functions"
 
 import viewIcon from "@/components/icons/viewIcon.svg"
+import Link from "next/link"
 
 interface GamesCardProps extends Games {
   // location: string;
@@ -19,17 +20,19 @@ interface GamesCardProps extends Games {
 const Card: React.FC<GamesCardProps> = ({
   id,
   username,
-  // title,
+  title,
   banner,
-
+// savedUsers
   // location,
-  album_slug,
-  likes,
+  // album_slug,
+  // likes,
   className,
   imageWidth,
 }) => {
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
+
+  
   const likePost = async () => {
     let method
     if (liked) {
@@ -38,7 +41,7 @@ const Card: React.FC<GamesCardProps> = ({
       method = "POST"
     }
 
-    const data = await fetchData(`/v1/post/like/${id}`, token, method)
+    const data = await fetchData(`/v1/game/like/${id}`, token, method)
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -48,7 +51,7 @@ const Card: React.FC<GamesCardProps> = ({
   }
 
   const savePost = async () => {
-    const data = await fetchData(`/v1/post/user/save/${id}`, token, "POST")
+    const data = await fetchData(`/v1/game/user/save/${id}`, token, "POST")
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -76,9 +79,9 @@ const Card: React.FC<GamesCardProps> = ({
             )}
           />
         </div>
-        <div className="w-full h-[inherit] absolute top-0 bg-[#00000050] bg-gradient-to-b from-[#00000005] to-[#00000095]">
+        <div className="w-full h-[inherit] absolute top-0 bg-[#000] opacity-0 hover:opacity-70  transition duration-200">
           <div className="h-[40px]">
-            <div className="flex items-center p-1 py-3 px-4 text-[#fff] justify-between flex-wrap gap-y-2">
+            <div className="flex items-center p-1 py-3 px-4 text-[#fff] justify-between flex-wrap gap-y-2 backdrop:blur-3xl">
               <div className="flex flex-wrap items-center justify-between">
                 <Image
                   width={8}
@@ -91,22 +94,22 @@ const Card: React.FC<GamesCardProps> = ({
                   <span className="block antialiased font-bold leading-tight text-md">
                     {username}
                   </span>
-                  <span className="block text-xs">{album_slug}</span>
+                  {/* <span className="block text-xs">{album_slug}</span> */}
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <span className="w-5 h-5 text-xs">{likes}</span>
+                {/* <span className="w-5 h-5 text-xs">{likes}</span>
                 <Image
                   width={8}
                   height={8}
                   className="w-5 h-5 rounded-full cursor-pointer"
                   src={viewIcon}
                   alt="View Icon"
-                />
+                /> */}
               </div>
             </div>
           </div>
-          <div className="flex justify-between h-[200px] items-end px-6 translate-y-36 group-hover:translate-y-20 transition duration-200">
+          <div className="flex justify-between h-[40px] items-end px-6 translate-y-80 group-hover:translate-y-60 transition duration-200">
             <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +125,9 @@ const Card: React.FC<GamesCardProps> = ({
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </div>
+            <Link  href={`/games/${id}`}>
+              {title}
+            </Link>
             <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

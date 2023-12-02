@@ -16,19 +16,7 @@ const Albums = () => {
 
   //
   const [postsDetails, setpostsDetails] = useState<IPostbackend[]>([])
-  // let albumDetails = await fetchData(`/v1/album/user`, token, "GET");
 
-  // content: <Card
-  //     key={1}
-  //     username={data.username}
-  //     userProfilePhoto={data.userProfilePhoto}
-  //     coverPhoto={data.coverPhoto}
-  //     location={data.location}
-  //     views={data.views}
-  //     className="h-[350px] w-[100%] md:w-[300px] justify-self-center"
-  //     imageWidth={400}
-
-  // />,
   useEffect(() => {
     // console.log("jwt  ", document.cookie.length)
     const loadData = async () => {
@@ -36,8 +24,9 @@ const Albums = () => {
       if (data?.error) {
         toast.error(data.message)
       }
-      console.log(data?.data)
-      setpostsDetails(data?.data.posts)
+      console.log("psot data", data?.data)
+
+      setpostsDetails(data?.data?.posts || [])
 
       // return data?.data;
     }
@@ -51,11 +40,16 @@ const Albums = () => {
         postsDetails.map((post) => (
           <>
             <Card
+            id={post.id}
               key={post.id}
-              username={post.username}
-              userProfilePhoto={post.userProfilePhoto}
+              username={post.user.username}
+              userProfilePhoto={post.user.profileImage}
               coverPhoto={post.banner}
               matureContent={post.matureContent}
+              title={post.title}
+              savedPost={post.savedUsers}
+              likedPost={post.postLikes}
+              
               // location={data.location}
               // views={data.views}
               className="h-[350px] w-[100%] md:w-[300px] justify-self-center"

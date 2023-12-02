@@ -201,7 +201,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
             <Button className="p-2 bg-secondary" onClick={() => uploadGame()}>
               Upload Game
             </Button>
-            <>{JSON.stringify(gameInfo)}</>
+            {/* <>{JSON.stringify(gameInfo)}</> */}
           </div>
         </div>
         {children}

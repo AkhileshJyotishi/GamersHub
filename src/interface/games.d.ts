@@ -34,8 +34,8 @@ interface DistributionPlatform {
 declare interface BackendGame {
   id: number
   title: string
-  description: string
-  banner: string
+  description: object|null
+  banner: string|null
   developerId: number
   gameMode: string
   releaseDate: string
@@ -46,18 +46,20 @@ declare interface BackendGame {
   developer: Developer
   genre: Genre[]
   distributionPlatforms: DistributionPlatform[]
-  GameAssets: string[]
+  gameAssets: string[]
+  savedUsers: {
+    id: number
+  }[]
+  user: {
+    username: string
+    profileImage: string
+  },
 }
 interface Games {
   id: number
   cover?: string | StaticImageData
-  // likes?: number
-  banner?: string | StaticImageData
+  banner?: string | StaticImageData |null
   username?: string
   title?: string
-  // album_slug?: string
-  // slug: string;
-  // className?: string;
-  // authUser?: any;
-  // isSavedPost?: boolean;
+
 }

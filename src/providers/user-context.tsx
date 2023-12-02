@@ -49,15 +49,18 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [userSession, setUserSession] = useState(useSession().data?.user)
   const [userData, setuserData] = useState<Iuser | null>(null);
   useEffect(() => {
-    console.log("session  ", session)
-    if (session) {
+    console.log("session  ", session.data?.user?.name, session.status)
+    if (session.data?.user?.name && session.status == "authenticated" && session !==undefined) {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
         console.log("this is user0  ", data)
-        setuserData(data?.data?.user) 
+        setuserData(data?.data?.user)
         // data?.data.user
       }
-      loaddata()
+      if(session.status == "authenticated"){
+        loaddata()
+
+      }
     }
     // userdata
   }, [session])

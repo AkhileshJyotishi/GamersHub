@@ -4,30 +4,37 @@ interface IPostbackend {
   slug: string
   title: string
   description: string | null
-  banner: string
+  banner: string|null
   matureContent: boolean
-  content: {
-    [key: string]: string
-  }
+  content:object
   albumId: number
   Album: {
     id: number
     title: string
-    banner: string
-    userId: number
-    slug: string
   }
   postKeywords: {
-    id: number
     keyword: string
   }[]
-  comments: { [key: string]: unknown }[]
-  postLikes: null | number
-  postSkills: { [key: string]: unknown }[]
-  _count: {
-    postKeywords: number
-    postSkills: number
-    comments: number
-    savedUsers: number
-  }
+  
+  comments: { 
+    comment:string,
+    userId:number,
+    id:number
+    }[]
+  postLikes: {
+    likedUsers:{
+      id:number
+    }
+  }[],
+  
+  postSkills: { 
+    skill:string
+  }[]
+  savedUsers: {
+    id: number
+  }[]
+  user: {
+    username: string
+    profileImage: string
+  },
 }

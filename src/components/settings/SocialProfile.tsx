@@ -99,7 +99,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
         console.log("resp ", resp)
 
         resp.error ? toast.error(resp.message) : toast.success(resp.message)
-      } catch (error: unknown) {
+      } catch (error: Allow) {
         console.log(error)
         toast.error(error)
       }

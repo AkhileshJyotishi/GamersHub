@@ -166,12 +166,12 @@ const Layout: React.FC<gamesLayoutProps> = ({
           {
             <Button
               onClick={() => {
-                router.push(`/jobs/add-project`)
+                router.push(`/user/profile/portfolio/createGame`)
               }}
               // variant="primary"
               className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"
             >
-              <span className="text-sm">Add Project</span>
+              <span className="text-sm">Add Game</span>
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
           }

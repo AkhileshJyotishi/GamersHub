@@ -24,6 +24,8 @@ const TextInput: React.FC<Props> = ({
   onKeyUp,
   onKeyPress,
   onBlur,
+pattern,
+onInvalid
 }: Props) => {
   return (
     <div className="relative flex flex-col items-start w-full">
@@ -40,6 +42,8 @@ const TextInput: React.FC<Props> = ({
           onKeyPress={onKeyPress}
           onBlur={onBlur}
           autoComplete="off"
+          pattern={pattern}
+          onInvalid={onInvalid}
         />
       ) : (
         <textarea

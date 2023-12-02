@@ -17,9 +17,12 @@ interface Section {
   render: (data: Gamedataprop) => React.ReactNode
 }
 const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
+  // GameData.GameAssets
   const Editor = dynamic(() => import("@/components/NovalEditor"), {
     ssr: false,
   })
+// console.log("gamesection ",GameData)
+  
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
     <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
       <h3 className="mb-2 font-medium text-[18px]">{title}</h3>
@@ -41,7 +44,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "releaseDate",
       render: (data) => (
         <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-          {data.releaseDate}
+          {new Date(data.releaseDate).toDateString()}
         </span>
       ),
     },
@@ -143,7 +146,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
           </div>
         </div>
         <div className={clsx(" carousel-body w-[60vw]", carousel["carousel-body"])}>
-          <Carousel />
+          <Carousel GameAssets={GameData.gameAssets} />
         </div>
       </div>
       <div className="w-full">

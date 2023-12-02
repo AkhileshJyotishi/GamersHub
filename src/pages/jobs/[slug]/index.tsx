@@ -7,6 +7,7 @@ import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 import { toast } from "react-toastify"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 const index = ({profileData}:{profileData:BackendJob}) => {
   console.log("prifle data ti is ",profileData)

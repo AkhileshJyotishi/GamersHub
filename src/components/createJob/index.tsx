@@ -2,12 +2,16 @@ import React, { useState } from "react"
 import dynamic from "next/dynamic"
 
 import Layout from "./layout"
+import { fetchData } from "@/utils/functions"
+import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
 })
 
 const CreateJob: React.FC = () => {
+  const { data: session } = useSession()
   interface JobInfo {
     jobType: string
 
@@ -27,7 +31,7 @@ const CreateJob: React.FC = () => {
   }
 
   const initialJobInfo: JobInfo = {
-    title: "xgf",
+    title: "",
     banner: null,
     publishDate: null,
     jobType: "",
@@ -38,15 +42,16 @@ const CreateJob: React.FC = () => {
     city: "",
 
     paymentType: "",
-    paymentValue: 60,
+    paymentValue: 0,
 
-    jobSoftwares: ["sfs", "dfdf"],
+    jobSoftwares: [],
   }
 
   const [jobInfo, setJobInfo] = useState<JobInfo>(initialJobInfo)
 
   const uploadJob = async () => {
     const storedContent = localStorage.getItem("novel__content")
+    console.log("stored_contnetn " , storedContent)
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
@@ -55,7 +60,14 @@ const CreateJob: React.FC = () => {
     jobInfo.publishDate = new Date().toISOString()
     // jobInfo.title;
     // console.log(jobInfo.jobDetails)
-    console.log(jobInfo)
+    console.log("jobinfo  ", jobInfo)
+    // delete jobInfo.roles
+    const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
+      if (data?.error) {
+        toast.error(data.message);
+        return;
+      }
+      toast.success(data?.message)
 
     // fetchData("v1/job/user", token, "POST", {
 

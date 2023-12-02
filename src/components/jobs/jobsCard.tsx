@@ -15,8 +15,8 @@ import { useUserContext } from "@/providers/user-context"
 interface JobCardProps {
   id: number
   title: string
-  desc: string
-  date: string
+  desc: string | null
+  date: string |null
   salary: string
   type: string
   location: string
@@ -51,7 +51,11 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
 
 const JobDescription = ({ desc }: { desc: string }) => (
   <div className="w-full min-h-[100px] overflow-hidden mt-2 p-3">
-    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}</p>
+    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}
+    sdada
+    sdads
+    aszdfsdfdf
+    </p>
   </div>
 )
 
@@ -86,19 +90,19 @@ const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
           clipRule="evenodd"
         />
       </svg>
-      {date}
+      {new Date(date).toDateString()}
     </span>
   </div>
 )
 
 const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => {
-
+// chips?.push(type)
   return (
     <div className="flex flex-wrap gap-3 p-3">
       <div className="flex flex-wrap gap-2">
 
         <span className="flex items-center ">
-          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full ">
+          <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full cursor-pointer hover:border-secondary">
             <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px]">
               {type}
             </div>

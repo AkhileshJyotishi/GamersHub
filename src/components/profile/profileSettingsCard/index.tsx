@@ -51,20 +51,20 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut, us
             //     :
             // "/assets/placeholders/user-profile.png"
             userData?.profileImage ||
-             defaultbannerImage
+            defaultbannerImage
           }
         />
       </div>
       {/* IMAGE  END*/}
 
       {/* Profile Info */}
-      <div className="flex flex-col items-center gap-[3px] mt-[3.2rem] md:mt-[70px] w-[100%]">
-        <h2 className="text-[18px]  font-semibold ">{userData?.username} </h2>
-        <h3 className="font-medium text-user_interface_6 mt-[20px] mb-1">
-          {userData?.email} 
-        </h3>
+      <div className="flex flex-col items-center overflow-hidden gap-[3px] mt-[3.2rem] md:mt-[70px] w-[100%]">
+        <div className="mt-[10px] text-[12px]  font-semibold ">{userData?.username} </div>
+        <div className=" text-[10px] font-medium text-user_interface_6 mt-[20px] mb-1">
+          {userData?.email}
+        </div>
         <Button
-          onClick={() => router.push("/user/profile")}
+          onClick={() => router.push("/user/profile/albums")}
           className="text-center rounded-xl  text-user_interface_3 py-[15px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
         >
           View Profile
@@ -116,9 +116,9 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut, us
 
       {/* Manage  End*/}
 
-      <div className="flex flex-col items-start w-full py-[15px] ">
+      <div className="flex flex-col items-start w-full py-[15px] hover:bg-user_interface_4 group ">
         <div
-          className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full  pl-[32px] cursor-pointer"
+          className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px] cursor-pointer group-hover:text-red-500 transition duration-200"
           onClick={onSignOut}
         >
           <LogOutIcon className={"w-[17px] h-[17px]"} />

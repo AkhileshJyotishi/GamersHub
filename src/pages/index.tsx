@@ -14,7 +14,7 @@ import Modal from "@/components/ui/modal"
 import CloseIcon from "@/components/icons/closeIcon"
 import Filter from "@/components/filter/mainfilter/filter"
 import Image from "next/image"
-import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -34,6 +34,7 @@ const HomePage = () => {
     }
     else if (verify && verify == "true") {
       setVerifyModal(true);
+      router.replace("/", undefined, { shallow: true })
     }
   }, [logout, router])
   const [mail, setMail] = useState<string>("");
@@ -169,7 +170,10 @@ const HomePage = () => {
               matureContent={data.matureContent}
               // location={data.location}
               // views={data.views}
-              className="w-[320px] h-[350px]"
+              className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
+              // id={id}
+              // title={title}
+              
             />
           ))}
         </div>

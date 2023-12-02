@@ -3,17 +3,17 @@ import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 
 import { BackendGame } from "@/interface/games"
 import { getSession } from "@/lib/auth"
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamesPage from "@/components/games"
 
 type GamesProps = {
-  parsedgamesDetails: BackendGame[]
+  
 }
-const Games: React.FC<GamesProps> = ({ parsedgamesDetails }) => {
+const Games = ( {parsedgamesDetails}:{parsedgamesDetails: BackendGame[]} ) => {
   return (
     <>
-      <GamesPage gamesDetails={parsedgamesDetails} />
+      <GamesPage gameDetails={parsedgamesDetails} />
     </>
   )
 }
@@ -22,15 +22,15 @@ export default Games
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  let gameDetails
   if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
+   
+gameDetails=await fetchWithoutAuthorization("/v1/game/others","GET");
   }
-  const gameDetails = await fetchData(`/v1/game`, session.user?.name as string, "GET")
+  else{
+
+   gameDetails= await fetchData(`/v1/game`, session.user?.name as string, "GET")
+  }
 
   if (gameDetails?.error) {
     // toast.error(jobsDetails.message)
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   console.log(gameDetails?.data.games)
-  const parsedgamesDetails: BackendGame[] = gameDetails?.data.games
+  const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 
   return {
     props: {

@@ -15,6 +15,7 @@ import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
 import ProfileCard from "./profileCard"
+import { toast } from "react-toastify"
 
 // const data = {
 //   username: "Alice Smith",
@@ -29,7 +30,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log("kya ye mount hua")
   }, [])
-  const tabs = ["posts", "albums", "settings"]
+  const tabs = ["posts", "albums"]
 
   const Tab = () => {
     return tabs.map((tab) => {
@@ -62,12 +63,24 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
     AlbumKeywords: [],
   })
   const handlecreateAlbum = async () => {
+
+    newAlbum.banner = "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
     const albumData = await fetchData(
       "/v1/album/user",
       session.data?.user?.name as string,
-      "POST",
-      newAlbum
+      "POST", {
+      title: newAlbum.title,
+      banner: newAlbum.banner,
+      keywords: newAlbum.AlbumKeywords
+    }
     )
+    if (albumData?.error) {
+      toast.error(albumData.message)
+    }
+    else {
+      toast.success(albumData?.message)
+
+    }
     console.log(albumData)
   }
   return (

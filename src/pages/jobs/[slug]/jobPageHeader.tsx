@@ -1,17 +1,18 @@
 import React from "react"
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import Button from "@/components/ui/button"
 
 interface JobPageHeaderProps {
-  logoSrc: string
+  logoSrc: string |null
   title: string
   // company: string;
   // website: string;
   location: string
 }
-const UserImage = ({ href }: { href: string }) => (
+const UserImage = ({ href }: { href: string|StaticImageData }) => (
   <Link href={"#"} className="my-auto">
     <div className="flex items-center">
       <Image width={400} height={400} alt={""} className="w-20 h-20 rounded-full" src={href} />
@@ -44,7 +45,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
         <div className="flex gap-[25px] flex-wrap">
-          <UserImage href={logoSrc} />
+          <UserImage href={logoSrc || defaultbannerImage} />
           <UserInfo title={title} />
         </div>
         <div className="flex gap-[25px]"></div>

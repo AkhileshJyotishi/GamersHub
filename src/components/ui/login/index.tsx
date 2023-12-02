@@ -12,6 +12,7 @@ import SigninIcon from "@/components/icons/signin"
 import Button from "../button"
 import Modal from "../modal"
 import TextInput from "../textInput"
+import { useUserContext } from "@/providers/user-context"
 interface LoginModaProps {
   isOpen: boolean
   onClose: () => void
@@ -91,6 +92,19 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     }
   }
 
+  const userContext = useUserContext()
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    userContext.setIsLoginModalOpen(false)
+    router.push("/?verify=true")
+  }
+  const handleForgot = async (e: React.FormEvent) => {
+    e.preventDefault()
+    userContext.setIsLoginModalOpen(false)
+    router.push("/auth/forgotpassword")
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="text-text text-[16px]  flex p-5  flex-col items-start  w-full  mb-6 justify-center">
@@ -155,8 +169,14 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             <div className="flex items-center justify-between h-[21px]">
               <div className="my-2 text-[14px]">Password</div>
 
-              <div className=" text-secondary text-[14px] ">
-                <Link href={"/auth/forgotpassword"}>Forgot Password?</Link>
+              <div className="cursor-pointer text-secondary text-[14px] ">
+                <div
+                  onClick={(e) => {
+                    handleForgot(e)
+                  }}
+                >
+                  Forgot Password?
+                </div>
               </div>
             </div>
             <div className="relative flex flex-row items-center">
@@ -167,7 +187,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
                 className="mt-2 tracking-wider bg-transparent rounded-md"
                 value={formValues.password}
                 name="password"
-                placeholder="*********"
+                placeholder="***"
                 errorMessage={errors.password}
               />
             </div>
@@ -180,6 +200,15 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             <SigninIcon className="" />
             Sign in
           </Button>
+          <div className=" text-secondary text-[14px] pt-4 cursor-pointer">
+            <div
+              onClick={(e) => {
+                handleVerify(e)
+              }}
+            >
+              Verify Email
+            </div>
+          </div>
           {/* <div className='flex justify-between'>
                         <div className='py-4 text-secondary text-[14px]'>
                             <Link href={"hash"}>
