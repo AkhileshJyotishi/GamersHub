@@ -286,6 +286,11 @@ const getCustomDetails = catchAsync(async (req, res) => {
     'User Details fetched Successfully'
   )
 })
+const getAllCreators = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const creators = await userService.getAllCreators(userId)
+  sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
+})
 
 export default {
   createUser,
@@ -310,6 +315,7 @@ export default {
   updateUserDetails,
   deleteUserDetails,
   getCustomDetails,
+  getAllCreators,
   getKeywords,
   getSkills,
   getSoftwares,
