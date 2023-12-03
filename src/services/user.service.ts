@@ -930,17 +930,49 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
   return userDetails
 }
 /**
- * Get Creators
+ * Get Creators except user
  * @param {ObjectId} userId
  * @returns {Promise<object>}
  */
-const getAllCreators = async (userId: number): Promise<object | null> => {
+const getAllCreatorsExceptUser = async (userId: number): Promise<object | null> => {
   const userDetails = prisma.user.findMany({
     where: {
       NOT: {
         id: userId
       }
     },
+    select: {
+      id: true,
+      username: true,
+      bannerImage: true,
+      profileImage: true,
+      userDetails: {
+        select: {
+          userBio: true,
+          userSkills: {
+            select: {
+              skill: true
+            }
+          },
+          userSoftwares: {
+            select: {
+              software: true
+            }
+          },
+          city: true,
+          country: true
+        }
+      }
+    }
+  })
+  return userDetails
+}
+/**
+ * Get Creators
+ * @returns {Promise<object>}
+ */
+const getAllCreators = async (): Promise<object | null> => {
+  const userDetails = prisma.user.findMany({
     select: {
       id: true,
       username: true,
@@ -995,5 +1027,6 @@ export default {
   updateUserDetailsByUserId,
   deleteUserDetailsByUserId,
   getCustomDetails,
+  getAllCreatorsExceptUser,
   getAllCreators
 }

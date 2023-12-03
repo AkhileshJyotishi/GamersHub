@@ -286,10 +286,14 @@ const getCustomDetails = catchAsync(async (req, res) => {
     'User Details fetched Successfully'
   )
 })
-const getAllCreators = catchAsync(async (req, res) => {
+const getAllCreatorsExceptUser = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
-  const creators = await userService.getAllCreators(userId)
+  const creators = await userService.getAllCreatorsExceptUser(userId)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
+})
+const getAllCreators = catchAsync(async (req, res) => {
+  const creators = await userService.getAllCreators()
+  sendResponse(res, httpStatus.OK, null, { creators }, 'Creators fetched Successfully')
 })
 
 export default {
@@ -315,6 +319,7 @@ export default {
   updateUserDetails,
   deleteUserDetails,
   getCustomDetails,
+  getAllCreatorsExceptUser,
   getAllCreators,
   getKeywords,
   getSkills,

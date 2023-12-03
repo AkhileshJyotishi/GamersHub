@@ -51,7 +51,8 @@ router.get(
   userController.getCustomDetails
 )
 
-router.get('/creators', auth(), userController.getAllCreators)
+router.get('/creators', auth(), userController.getAllCreatorsExceptUser)
+router.get('/creators/all', userController.getAllCreators)
 router.get('/keyword', auth(), userController.getKeywords)
 router.get('/skill', auth(), userController.getSkills)
 router.get('/software', auth(), userController.getSoftwares)
