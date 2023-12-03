@@ -1,9 +1,11 @@
 // import { BannerComponent } from '@/components/filter/filterbanner'
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
 import { Games, GamesFilterProps } from "@/interface/games"
+import { useUserContext } from "@/providers/user-context"
 
 import BannerComponent from "@/components/filter/filterbanner"
 import PlusIcon from "@/components/icons/plus"
@@ -16,15 +18,18 @@ interface gamesLayoutProps {
   children: React.ReactNode
   games: Games[]
   setGames: React.Dispatch<React.SetStateAction<Games[]>>
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
 }
 const Layout: React.FC<gamesLayoutProps> = ({
   children,
+  setActiveTab,
   // games,
   //  setGames
 }) => {
   const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
-
+  const { setIsLoginModalOpen, userData } = useUserContext()
+  const { data: session } = useSession()
   const clearFilters = () => {
     setGamesFilter({
       searchText: "",
@@ -162,11 +167,16 @@ const Layout: React.FC<gamesLayoutProps> = ({
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["Trending", "Latest", "Saved"]} />
+          <TabButtons tabNames={["All", "Saved", "My Games"]} setActiveTab={setActiveTab} />
+
+          {/* <TabButtons tabNames={["Trending", "Latest", "Saved"]} /> */}
           {
             <Button
               onClick={() => {
-                router.push(`/user/profile/portfolio/createGame`)
+                if (session) router.push(`/${userData?.id}/profile/portfolio/createGame`)
+                else {
+                  setIsLoginModalOpen(true)
+                }
               }}
               // variant="primary"
               className=" flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"

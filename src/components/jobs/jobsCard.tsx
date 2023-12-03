@@ -163,8 +163,12 @@ const Card: React.FC<JobCardProps> = ({
 
   return (
     <>
-      <div
-        className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit ", className)}
+      <Link
+        className={clsx(
+          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit rounded-xl  hover:border-[0.1px] ",
+          className
+        )}
+        href={href}
       >
         <div className="">
           <div>
@@ -212,7 +216,7 @@ const Card: React.FC<JobCardProps> = ({
             src={ChevronDownIcon}
           />
         </Link>
-      </div>
+      </Link>
     </>
   )
 }

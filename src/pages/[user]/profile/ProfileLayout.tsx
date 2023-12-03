@@ -65,7 +65,7 @@ const ProfileLayout = ({
       )
 
       if (users?.error) {
-        router.replace(`/?error=${users.message}`)
+        router.replace(`/?emessage=Please Authenticate`)
       } else {
         setData(users?.data.user)
       }
@@ -130,7 +130,7 @@ const ProfileLayout = ({
     console.log(albumData)
   }
   if (loading) {
-    return <>laoding...</>
+    return <>loading...</>
   } else {
     console.log("why this user not coming  ", data)
     return (
@@ -195,7 +195,7 @@ const ProfileLayout = ({
           <BannerImage setisCreateAlbumOpen={setisCreateAlbumOpen} />
           <ProfileAccordion className=" lg:hidden" />
 
-          <div className="bg-[#00000085] w-[90%] sm:w-[50%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-50 p-5 lg:sticky top-[61px] mt-[20px] ">
+          <div className="bg-user_interface_2 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
             <Tab />
           </div>
           <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">

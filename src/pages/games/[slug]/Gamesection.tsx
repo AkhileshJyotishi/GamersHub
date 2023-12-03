@@ -153,6 +153,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable={false}
+          storageKey="noval__content"
         />
       </div>
     </div>

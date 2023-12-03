@@ -17,11 +17,14 @@ import { BannerComponent, DesktopFilter, FilterMobileDialog } from "../filter"
 interface LayoutProps {
   children: React.ReactNode
   jobs?: Job[]
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
+  activeTab: string
   // setJobs: React.Dispatch<React.SetStateAction<Job[]>>
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
+  setActiveTab,
   //  setJobs,
   // jobs
 }) => {
@@ -145,7 +148,7 @@ const Layout: React.FC<LayoutProps> = ({
       />
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["All", "Saved", "My Job Posts"]} />
+          <TabButtons tabNames={["All", "Saved", "My Job Posts"]} setActiveTab={setActiveTab} />
           {session && (
             <Button
               onClick={() => {

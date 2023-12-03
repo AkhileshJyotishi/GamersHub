@@ -8,11 +8,13 @@ const Editor = ({
   editable = false,
   defaultValue,
   disableLocalStorage = false,
+  storageKey,
 }: {
   className: string
   editable: boolean
   defaultValue?: string | JSONContent | undefined
   disableLocalStorage?: boolean
+  storageKey: string
 }) => {
   // console.log("tis should work ", defaultValue)
   return (
@@ -21,6 +23,7 @@ const Editor = ({
       editorProps={{ editable: () => editable }}
       defaultValue={defaultValue}
       disableLocalStorage={disableLocalStorage}
+      storageKey={storageKey}
     />
   )
 }

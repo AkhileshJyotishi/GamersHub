@@ -29,6 +29,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
           key={"1"}
           location={city + " " + country}
           logoSrc={user.profileImage || banner}
+          jobId={profileData.id}
         />
         <Jobsection jobData={profileDataJobSection} />
       </div>

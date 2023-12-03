@@ -35,6 +35,7 @@ interface BackendJob {
   title: string
   description: string | null
   jobDetails: object | null
+  aboutRecuiter: object | null
   // backgroundImage;
   // banner: string | null
   // skills: string[]

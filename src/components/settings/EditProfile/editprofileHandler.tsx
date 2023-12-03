@@ -1,6 +1,6 @@
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { token } from "@/pages/settings"
 import { fetchData } from "@/utils/functions"
 
 export const uploadUserEducation = async (
@@ -14,6 +14,7 @@ export const uploadUserEducation = async (
     description: "",
   }
 ) => {
+  const token = useSession().data?.user?.name as string
   const hasDataChanged =
     userEducation.university !== initialUserEducation.university ||
     userEducation.degree !== initialUserEducation.degree ||

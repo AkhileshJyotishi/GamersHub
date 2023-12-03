@@ -60,4 +60,7 @@ interface Games {
   banner?: string | StaticImageData
   username: string
   title: string
+  savedUsers: {
+    id: number
+  }[]
 }

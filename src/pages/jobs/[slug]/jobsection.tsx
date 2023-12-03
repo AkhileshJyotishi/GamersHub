@@ -96,333 +96,6 @@ const JobDetails: React.FC<{ jobData: jobdataprop }> = ({ jobData }) => (
   </>
 )
 
-// const defaultjobDetails = {
-//   type: "doc",
-//   content: [
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "fsidftet",
-//           type: "text",
-//           marks: [
-//             {
-//               type: "textStyle",
-//               attrs: {
-//                 color: "#FFA500",
-//               },
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sldfhsl",
-//           type: "text",
-//           marks: [
-//             {
-//               type: "textStyle",
-//               attrs: {
-//                 color: "#FFA500",
-//               },
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sfsdf",
-//           type: "text",
-//           marks: [
-//             {
-//               type: "textStyle",
-//               attrs: {
-//                 color: "#FFA500",
-//               },
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "taskList",
-//       content: [
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: false,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "this is code ",
-//                   type: "text",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: false,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "hahah ",
-//                   type: "text",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: false,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "===",
-//                   type: "text",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "anot her one nldfknlsadssldfslflds;klsdaflk hon ther one adn tis ois working ",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "taskList",
-//       content: [
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: false,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "sfsfsd",
-//                   type: "text",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: true,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "fsfdf",
-//                   type: "text",
-//                   marks: [
-//                     {
-//                       type: "bold",
-//                     },
-//                   ],
-//                 },
-//                 {
-//                   text: "sFDGDFG ",
-//                   type: "text",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: "taskItem",
-//           attrs: {
-//             checked: false,
-//           },
-//           content: [
-//             {
-//               type: "paragraph",
-//               content: [
-//                 {
-//                   text: "xznczl;",
-//                   type: "text",
-//                   marks: [
-//                     {
-//                       type: "link",
-//                       attrs: {
-//                         rel: "noopener noreferrer nofollow",
-//                         href: "https://swww.google.com/",
-//                         class:
-//                           "novel-text-stone-400 novel-underline novel-underline-offset-[3px] hover:novel-text-stone-600 novel-transition-colors novel-cursor-pointer",
-//                         target: "_blank",
-//                       },
-//                     },
-//                   ],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "heading",
-//       attrs: {
-//         level: 2,
-//       },
-//       content: [
-//         {
-//           text: "heading two",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "blockquote",
-//       content: [
-//         {
-//           type: "paragraph",
-//           content: [
-//             {
-//               text: "a quote to display",
-//               type: "text",
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "the code pladfddsfhldf;d",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "dfd",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "fs",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "df",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "dsf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "-dsf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "dsf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sdfsd",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sdf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//       content: [
-//         {
-//           text: "sdf",
-//           type: "text",
-//         },
-//       ],
-//     },
-//     {
-//       type: "paragraph",
-//     },
-//   ],
-// }
-
 const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
   console.log("jobdetails from backend", jobData.jobDetails)
   return (
@@ -435,12 +108,49 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
           </div>
         </div>
         <div className="w-full">
-          <Editor
+          <div className="flex flex-col w-full gap-4">
+            <>
+              <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
+              {/* <Editor
+          className={"bg-user_interface_2 w-full rounded-xl "}
+          editable={false}
+          storageKey="noval__content3"    
+          defaultValue={jobData.jobDetails || {}}
+
+          disableLocalStorage
+        /> */}
+              <div className="w-full p-12 bg-user_interface_2 rounded-xl">
+                {jobData.description}
+              </div>
+            </>
+            <>
+              <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
+              <Editor
+                className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
+                editable={false}
+                storageKey="noval__content2"
+                defaultValue={jobData.jobDetails || {}}
+                disableLocalStorage
+              />
+            </>
+
+            <>
+              <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
+              <Editor
+                className={"bg-user_interface_2 w-full rounded-xl "}
+                editable={false}
+                storageKey="noval__content1"
+                defaultValue={jobData.aboutRecuiter || {}}
+                disableLocalStorage
+              />
+            </>
+          </div>
+          {/* <Editor
             className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
             editable={false}
             defaultValue={jobData.jobDetails || {}}
             disableLocalStorage
-          />
+          /> */}
         </div>
       </div>
     </div>

@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react"
 import { Country } from "country-state-city"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
+import { useUserContext } from "@/providers/user-context"
 
 import BannerComponent from "@/components/filter/filterbanner"
 import PlusIcon from "@/components/icons/plus"
-import TabButtons from "@/components/tabbuttons"
 import Button from "@/components/ui/button"
 
 import { DesktopFilter, FilterMobileDialog } from "../filter"
@@ -20,7 +21,8 @@ interface creatorLayoutProps {
 const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
   const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
-
+  const { userData, setIsLoginModalOpen } = useUserContext()
+  const { data: session } = useSession()
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   const [city, setCity] = useState<string[]>([])
   const clearFilters = () => {
@@ -111,14 +113,18 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["Trending", "Latest", "Saved"]} />
+          {/* <TabButtons tabNames={["Trending"]} /> */}
           {
             <Button
               onClick={() => {
-                router.push(`/jobs/add-project`)
+                if (session) {
+                  router.push(`${userData?.id}/profile/portfolio/CreatePost`)
+                } else {
+                  setIsLoginModalOpen(true)
+                }
               }}
               // variant="primary"
-              className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"
+              className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl ml-auto"
             >
               <span className="text-sm">Add Project</span>
               <PlusIcon className="w-6 h-4 sm:h-6" />

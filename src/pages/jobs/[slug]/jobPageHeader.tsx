@@ -1,14 +1,19 @@
 import React from "react"
 import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { fetchData } from "@/utils/functions"
 
+import MapPinIcon from "@/components/icons/mappinicon"
 import Button from "@/components/ui/button"
 
 interface JobPageHeaderProps {
   logoSrc: string | null
   title: string
+  jobId: number
   // company: string;
   // website: string;
   location: string
@@ -33,16 +38,17 @@ const UserInfo = ({ title }: { title: string }) => (
   </div>
 )
 
-const JobPageHeader: React.FC<JobPageHeaderProps> = ({
-  logoSrc,
-  title,
+const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, jobId, location }) => {
+  const router = useRouter()
+  const { data: session } = useSession()
+  const saveJob = async (jobId: number) => {
+    fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
+  }
 
-  location,
-}) => {
   return (
     <div>
       <div className="p-4 font-extrabold">
-        <Button> Back</Button>
+        <Button onClick={() => router.back()}> Back</Button>
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
         <div className="flex gap-[25px] flex-wrap">
@@ -55,17 +61,16 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
                 </div> */}
       </div>
 
-      <div className="flex flex-col gap-3 p-2">
-        {/* <div>
+      <div className="flex flex-wrap gap-3 p-2">
+        <MapPinIcon className="w-4 h-4 text-user_interface_6" />
 
-                    {website}
-                </div> */}
         <div>{location}</div>
-        {/* sgsg website='adfhsl' */}
-        {/* location={"as"} */}
       </div>
       <div className="flex mt-3 gap-x-4 ">
-        <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
+        <Button
+          className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
+          onClick={() => saveJob(jobId)}
+        >
           Save Job
         </Button>
         <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">

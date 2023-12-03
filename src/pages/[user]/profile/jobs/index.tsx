@@ -55,19 +55,7 @@ const Jobs = () => {
           const x = FrontendCompatibleObject(job)
           return (
             <>
-              <Card
-                // title={job.title}
-                // className=""
-                // date={job.date}
-                // desc={"fdlsjlfd"}
-                // salary={job.salary}
-                // href={job.href}
-                // imageSrc={job.banner}
-                // key={album.id}
-                // tags={album.keyword}
-                {...x}
-                className=""
-              />
+              <Card {...x} className="" />
             </>
           )
         })}

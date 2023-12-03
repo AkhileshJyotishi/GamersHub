@@ -49,7 +49,7 @@ const CreateGame: React.FC = () => {
   })
   const session = useSession()
   const uploadGame = async () => {
-    const storedContent = localStorage.getItem("novel__content")
+    const storedContent = localStorage.getItem("novel__content4")
     if (storedContent !== null) {
       gameInfo.description = JSON.parse(storedContent)
     }
@@ -71,9 +71,11 @@ const CreateGame: React.FC = () => {
     <Layout gameInfo={gameInfo} setGameInfo={setGameInfo} uploadGame={uploadGame}>
       {/* Render the filterDetails here */}
       <>
+        <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
+          storageKey="noval__content4"
         />
       </>
     </Layout>

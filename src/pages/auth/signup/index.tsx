@@ -46,14 +46,21 @@ export default function SignUpPage() {
       }
       const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
         ...formValues,
-        role: "ADMIN",
       })
       if (res?.error) {
-        toast.error(res.message)
+        toast.error(res.error?.response?.data?.message || res.message)
       } else {
+        const ress = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
+          email: formValues.email + "90",
+        })
+        if (ress?.error) {
+          router.replace(`/?verify=true&message=Registration successfull`, undefined, {
+            shallow: true,
+          })
+          return
+        }
         setFormValues({ username: "", email: "", password: "" })
-        // router.replace("/")
-        router.replace("/?verify=true", undefined, { shallow: true })
+        router.replace("/?message=Verification mail sent", undefined, { shallow: true })
       }
       // try {
       //   const res = await fetch("/v1//register", {

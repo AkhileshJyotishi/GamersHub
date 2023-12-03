@@ -12,7 +12,7 @@ import Gamesection from "./Gamesection"
 // import Jobsection from './jobsection'
 
 //  website locaation
-const GameData: Omit<BackendGame, "user" | "savedUsers"> = {
+const GameData: Omit<BackendGame, "user"> = {
   id: 1,
   title: "Example Game",
   description: {},

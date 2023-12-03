@@ -59,12 +59,14 @@ const CreatePortfolio = ({ albums }: { albums: Allow }) => {
       albums={albums}
     >
       {/* Render the filterDetails here */}
-      <>
+      <div className="flex flex-col w-full gap-4">
+        <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable={true}
+          storageKey="noval__content"
         />
-      </>
+      </div>
     </Layout>
   )
 }

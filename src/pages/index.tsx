@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
@@ -6,7 +7,8 @@ import { toast } from "react-toastify"
 import logo from "@/assets/image/logo-with-text.png"
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
-import { fetchWithoutAuthorization } from "@/utils/functions"
+import { getSession } from "@/lib/auth"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import TalentSection from "@/components/home/banner"
@@ -17,87 +19,34 @@ import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 
-const HomePage = () => {
+const HomePage = ({ users }: { users: Allow }) => {
   const router = useRouter()
   // const { data: session } = useSession()
-  const { logout, verify } = router.query
+  const { logout, verify, message, emessage } = router.query
   const [verifyModal, setVerifyModal] = useState(false)
 
   useEffect(() => {
+    console.log("thse post are to  be mapped  ", users)
     console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
       // signOut();
 
       router.replace("/", undefined, { shallow: true })
-    } else if (verify && verify == "true") {
+    }
+    if (verify && verify == "true") {
       setVerifyModal(true)
       router.replace("/", undefined, { shallow: true })
     }
+    if (message) {
+      toast.success(message)
+      router.replace("/", undefined, { shallow: true })
+    }
+    if (emessage) {
+      toast.error(message)
+    }
   }, [verify, logout, router])
   const [mail, setMail] = useState<string>("")
-  const cardData = [
-    {
-      username: "John Doe",
-      userProfilePhoto: "https://picsum.photos/200/300",
-      coverPhoto: "https://picsum.photos/id/249/900/900",
-      matureContent: true,
-      location: "New York, USA",
-      views: "1,234",
-    },
-    {
-      username: "Alice Smith",
-      userProfilePhoto: "https://picsum.photos/200/301",
-      coverPhoto: "https://picsum.photos/id/250/900/900",
-      matureContent: true,
-
-      location: "Los Angeles, USA",
-      views: "2,345",
-    },
-    {
-      username: "Bob Johnson",
-      userProfilePhoto: "https://picsum.photos/200/302",
-      coverPhoto: "https://picsum.photos/id/251/900/900",
-      matureContent: true,
-
-      location: "Chicago, USA",
-      views: "3,456",
-    },
-    {
-      username: "Eve Williams",
-      userProfilePhoto: "https://picsum.photos/200/303",
-      coverPhoto: "https://picsum.photos/id/252/900/900",
-      matureContent: true,
-
-      location: "San Francisco, USA",
-      views: "4,567",
-    },
-    {
-      username: "Michael Brown",
-      userProfilePhoto: "https://picsum.photos/200/304",
-      coverPhoto: "https://picsum.photos/id/253/900/900",
-      matureContent: true,
-
-      location: "Miami, USA",
-      views: "5,678",
-    },
-    {
-      username: "Sophia Lee",
-      userProfilePhoto: "https://picsum.photos/200/305",
-      matureContent: true,
-      coverPhoto: "https://picsum.photos/id/254/900/900",
-      location: "Seattle, USA",
-      views: "6,789",
-    },
-    {
-      username: "William Davis",
-      matureContent: true,
-      userProfilePhoto: "https://picsum.photos/200/306",
-      coverPhoto: "https://picsum.photos/id/255/900/900",
-      location: "Houston, USA",
-      views: "7,890",
-    },
-  ]
 
   const verifyEmail = async () => {
     const res = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
@@ -155,18 +104,18 @@ const HomePage = () => {
         <OverlayContent />
 
         <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
-          {cardData.map((data, index) => (
+          {users.map((data, index) => (
             <Card
               key={index}
-              username={data.username}
-              userProfilePhoto={data.userProfilePhoto}
-              coverPhoto={data.coverPhoto}
+              username={data.user.username}
+              userProfilePhoto={data.user.profileImage}
+              coverPhoto={data.banner}
               matureContent={data.matureContent}
               // location={data.location}
               // views={data.views}
               className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
-              // id={id}
-              // title={title}
+              id={data.id}
+              title={data.title}
             />
           ))}
         </div>
@@ -189,3 +138,31 @@ const HomePage = () => {
 }
 
 export default HomePage
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  let users
+  if (session) {
+    users = await fetchData(`/v1/post/?skip=5`, session.user?.name as string, "GET")
+  } else {
+    users = await fetchWithoutAuthorization("/v1/post/", "GET")
+  }
+
+  if (users?.error) {
+    // toast.error(jobsDetails.message)
+    return {
+      redirect: {
+        destination: `/?error=${users.message}`,
+        permanent: false,
+      },
+    }
+  }
+  users = users?.data.posts
+  console.log("home page ", users)
+  // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
+
+  return {
+    props: {
+      users,
+    },
+  }
+}

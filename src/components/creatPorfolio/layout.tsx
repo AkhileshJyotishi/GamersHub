@@ -137,25 +137,36 @@ const Layout: React.FC<LayoutProps> = ({
             "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
           )}
         >
-          <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
-            {filterDetails?.map((filter, index) => (
-              <Filter
-                key={index}
-                inputType={filter.inputType}
-                title={filter.title}
-                placeholder={filter.placeholder}
-                value={filter.value}
-                onChange={filter.onChange}
-                selectOptions={filter.selectOptions}
-                className={filter.className}
-                Variant="flex flex-col items-start gap-[10px] text-[14px]"
-              />
-            ))}
+          <div className="flex flex-col w-full gap-4 p-2">
+            <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
+              <Button
+                className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
+                onClick={() => uploadPost()}
+              >
+                Upload Job
+              </Button>
+            </div>
 
+            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+              {filterDetails?.map((filter, index) => (
+                <Filter
+                  key={index}
+                  inputType={filter.inputType}
+                  title={filter.title}
+                  placeholder={filter.placeholder}
+                  value={filter.value}
+                  onChange={filter.onChange}
+                  selectOptions={filter.selectOptions}
+                  className={filter.className}
+                  Variant="flex flex-col items-start gap-[10px] text-[14px]"
+                />
+              ))}
+              {/* 
             <Button className="p-2 bg-secondary w-[80%] mx-auto" onClick={uploadPost}>
               Create Post
             </Button>
-            <></>
+           */}
+            </div>
           </div>
         </div>
         {children}
