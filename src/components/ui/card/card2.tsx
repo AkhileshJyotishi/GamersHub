@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image" // Import your Image component library
-import defaultbannerImage from "@/assets/image/user-banner.png"
-import { toast } from "react-toastify"
-import { fetchData } from "@/utils/functions"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
+
+import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
+import { fetchData } from "@/utils/functions"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
@@ -21,10 +22,9 @@ interface CardProps {
   imageWidth?: number
   matureContent: boolean
   savedPost: {
-    id: number;
+    id: number
   }[]
-  likedPost:Allow
-
+  likedPost: Allow
 }
 
 const Card: React.FC<CardProps> = ({
@@ -36,13 +36,12 @@ const Card: React.FC<CardProps> = ({
   // views,
   className,
   imageWidth,
-  matureContent,
   savedPost,
   likedPost,
 
-  id
+  id,
 }) => {
-  const { userData } = useUserContext();
+  const { userData } = useUserContext()
 
   const session = useSession()
   const [liked, setLiked] = useState<boolean>(false)
@@ -65,7 +64,11 @@ const Card: React.FC<CardProps> = ({
   }
 
   const savePost = async () => {
-    const data = await fetchData(`/v1/post/user/save/${id}`, session.data?.user?.name as string, "POST")
+    const data = await fetchData(
+      `/v1/post/user/save/${id}`,
+      session.data?.user?.name as string,
+      "POST"
+    )
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -75,12 +78,12 @@ const Card: React.FC<CardProps> = ({
   }
   useEffect(() => {
     if (savedPost?.length) {
-      setSaved(savedPost?.some(obj => obj.id == (userData?.id ?? 0)))
+      setSaved(savedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
     if (likedPost?.length) {
-          setLiked(likedPost?.some(obj => obj.id == (userData?.id ?? 0)))
-        }
-  }, [savedPost,likePost])
+      setLiked(likedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
+    }
+  }, [savedPost, likePost])
   // useEffect(() => {
   //   if (likedPost?.length) {
   //     setLiked(likedPost?.some(obj => obj.id == (userData?.id ?? 0)))
@@ -118,7 +121,9 @@ const Card: React.FC<CardProps> = ({
                   alt={``}
                 />
                 <div className="flex justify-center ml-3">
-                  <span className="block antialiased font-bold leading-tight break-words text-md">{username}</span>
+                  <span className="block antialiased font-bold leading-tight break-words text-md">
+                    {username}
+                  </span>
                   {/* <span className="block text-xs">{location}</span> */}
                 </div>
               </div>
@@ -144,9 +149,7 @@ const Card: React.FC<CardProps> = ({
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </div>
-            <div>
-              {title}
-            </div>
+            <div>{title}</div>
             <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

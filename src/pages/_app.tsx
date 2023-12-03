@@ -17,6 +17,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps: { session, ...pageProps
         stopDelayMs={200}
         height={2}
         showOnShallow={true}
+        options={{ showSpinner: false }}
       />
 
       <SessionProvider session={session}>

@@ -1,42 +1,43 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import Card from "./creatorCard"
 import Layout from "./creatorsLayout"
 
-const CreatorsPage = () => {
-  const sampleCreators: Creator[] = [
-    {
-      username: "JohnDoe",
-      occupation: "Graphic Designer",
-      user_bio: {
-        bio: "Passionate graphic designer with years of experience.",
-      },
-      skills_lists: ["Graphic Design", "Illustration", "Web Design"],
-      softwares_lists: ["Adobe Photoshop", "Adobe Illustrator", "Figma"],
-      profile_image: "path-to-profile-image.jpg", // Provide the URL to the profile image
+const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
+  // const sampleCreators: Creator[] = [
+  //   {
+  //     username: "JohnDoe",
+  //     user_bio: {
+  //       bio: "Passionate graphic designer with years of experience.",
+  //     },
+  //     skills_lists: ["Graphic Design", "Illustration", "Web Design"],
+  //     softwares_lists: ["Adobe Photoshop", "Adobe Illustrator", "Figma"],
+  //     profile_image: "path-to-profile-image.jpg", // Provide the URL to the profile image
 
-      banner: "path-to-banner-image.jpg",
-    },
-    {
-      username: "JohnDoe",
-      occupation: "Graphic Designer",
-      user_bio: {
-        bio: "Passionate graphic designer with years of experience.",
-      },
-      skills_lists: ["Graphic Design", "Illustration", "Web Design"],
-      softwares_lists: ["Adobe Photoshop", "Adobe Illustrator", "Figma"],
-      profile_image: "path-to-profile-image.jpg", // Provide the URL to the profile image
+  //     banner: "path-to-banner-image.jpg",
+  //   },
+  //   {
+  //     username: "JohnDoe",
+  //     occupation: "Graphic Designer",
+  //     user_bio: {
+  //       bio: "Passionate graphic designer with years of experience.",
+  //     },
+  //     skills_lists: ["Graphic Design", "Illustration", "Web Design"],
+  //     softwares_lists: ["Adobe Photoshop", "Adobe Illustrator", "Figma"],
+  //     profile_image: "path-to-profile-image.jpg", // Provide the URL to the profile image
 
-      banner: "path-to-banner-image.jpg",
-    },
-  ]
-
-  const [creators, setCreators] = useState<Creator[]>(sampleCreators)
+  //     banner: "path-to-banner-image.jpg",
+  //   },
+  // ]
+  useEffect(() => {
+    console.log("abhi to ye aa rha hai ", creatorsData)
+  }, [])
+  const [creators, setCreators] = useState<Creator[]>(creatorsData)
 
   return (
     <Layout creators={creators} setCreators={setCreators}>
-      <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 ">
-        {sampleCreators.map((sampleCreator, idx) => (
+      <div className="grid w-[73vw] grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
+        {creators.map((sampleCreator, idx) => (
           <Card {...sampleCreator} key={idx} />
         ))}
       </div>

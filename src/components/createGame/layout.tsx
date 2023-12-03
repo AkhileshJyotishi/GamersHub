@@ -21,7 +21,7 @@ interface GameInfo {
   // publisherName: string;
   releaseDate: string
   gameAssets: File[] | null | string[]
-  developerId: number | null
+  // developerId: number | null
 }
 
 interface LayoutProps {
@@ -72,16 +72,12 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           value: "",
         },
         {
-          label: "Indie",
-          value: "indie",
+          label: "single player",
+          value: "singlePlayer",
         },
         {
-          label: "Studio",
-          value: "studio",
-        },
-        {
-          label: "Collaboration",
-          value: "collaboration",
+          label: "multi player",
+          value: "multiPlayer",
         },
       ],
       value: gameInfo.gameMode,
@@ -173,6 +169,8 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
         })),
     },
   ]
+  // const shadeVariant =
+  //   " left-0 right-0 top-0  bg-gradient-to-b to-transparent from- group-hover:from-token-surface-primary dark:from-[#000]"
 
   return (
     <>
@@ -182,39 +180,47 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
             "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
           )}
         >
-          <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex ">
-            {initialDetailsArray?.map((filter, index) => (
-              <Filter
-                key={index}
-                inputType={filter.inputType}
-                title={filter.title}
-                placeholder={filter.placeholder}
-                value={filter.value}
-                onChange={filter.onChange}
-                selectOptions={filter.selectOptions}
-                onTagsChange={filter.onTagsChange}
-                className={filter.className}
-                Variant="flex flex-col items-start gap-[10px] text-[14px] "
-              />
-            ))}
+          <div className="flex flex-col w-full gap-4 p-2">
+            <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
+              <Button
+                className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
+                onClick={() => uploadGame()}
+              >
+                Upload Game
+              </Button>
+            </div>
+            <div className=" relative h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex ">
+              {/* <div className={clsx("h-7 ")}></div> */}
+              {initialDetailsArray?.map((filter, index) => (
+                <Filter
+                  key={index}
+                  inputType={filter.inputType}
+                  title={filter.title}
+                  placeholder={filter.placeholder}
+                  value={filter.value}
+                  onChange={filter.onChange}
+                  selectOptions={filter.selectOptions}
+                  onTagsChange={filter.onTagsChange}
+                  className={filter.className}
+                  Variant="flex flex-col items-start gap-[10px] text-[14px] "
+                />
+              ))}
 
-            <Button className="p-2 bg-secondary" onClick={() => uploadGame()}>
-              Upload Game
-            </Button>
-            {/* <>{JSON.stringify(gameInfo)}</> */}
+              {/* <>{JSON.stringify(gameInfo)}</> */}
+            </div>
           </div>
         </div>
-        {children}
-      </div>
-      <div className="flex gap-4 p-6 pt-0 mt-3 w-[100%] mx-auto md:flex-row flex-col items-center md:items-start flex-wrap">
-        <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
-          {
-            <MultipleFileInput
-              onFileChange={(files) =>
-                setGameInfo((prevState) => ({ ...prevState, gameAssets: files }))
-              }
-            />
-          }
+        <div className="flex flex-col w-full gap-4 p-4">
+          <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
+            {
+              <MultipleFileInput
+                onFileChange={(files) =>
+                  setGameInfo((prevState) => ({ ...prevState, gameAssets: files }))
+                }
+              />
+            }
+          </div>
+          {children}
         </div>
       </div>
     </>

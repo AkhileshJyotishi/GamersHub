@@ -65,7 +65,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
               tokens: response?.data?.tokens.access.token,
             }
             return user
-          } catch (error: unknown) {
+          } catch (error: Allow) {
             throw new Error(
               JSON.stringify({
                 status: error?.response?.status,
@@ -76,7 +76,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
         },
       }),
       GoogleProvider({
-        clientId: process.env.NEXT_GOOGLE_CLIENT_ID!,
+        clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
       }),
       FacebookProvider({
@@ -94,7 +94,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
               isEmailVerified: true,
               profileImage: user?.image,
             })
-            // console.log(registerUser)
+            console.log("this is the register user", registerUser)
             const userId = registerUser?.data?.user?.id
             await instance.post(`/v1/auth/add-provider/${userId}`, {
               response: account,

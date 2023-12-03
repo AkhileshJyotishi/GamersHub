@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Cycle, useCycle } from "framer-motion"
 import { useSession } from "next-auth/react"
-import { fetchData } from "@/utils/functions"
 
+import { fetchData } from "@/utils/functions"
 
 interface IUserContext {
   // handleLogin: (email: string, password: string) => Promise<{ success: boolean; message: string }>
@@ -20,19 +20,19 @@ interface IUserContext {
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
   userSession:
-  | {
-    name?: string | null | undefined
-    email?: string | null | undefined
-    image?: string | null | undefined
-  }
-  | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
+    | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
+    | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
+          name?: string | null | undefined
+          email?: string | null | undefined
+          image?: string | null | undefined
+        }
       | undefined
     >
   >
@@ -47,19 +47,18 @@ const Context = React.createContext<IUserContext>({} as IUserContext)
 const UserProvider = ({ children }: IUserProvider) => {
   const session = useSession()
   const [userSession, setUserSession] = useState(useSession().data?.user)
-  const [userData, setuserData] = useState<Iuser | null>(null);
+  const [userData, setuserData] = useState<Iuser | null>(null)
   useEffect(() => {
     console.log("session  ", session.data?.user?.name, session.status)
-    if (session.data?.user?.name && session.status == "authenticated" && session !==undefined) {
+    if (session.data?.user?.name && session.status == "authenticated" && session !== undefined) {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
         console.log("this is user0  ", data)
         setuserData(data?.data?.user)
         // data?.data.user
       }
-      if(session.status == "authenticated"){
+      if (session.status == "authenticated") {
         loaddata()
-
       }
     }
     // userdata
@@ -98,7 +97,7 @@ const UserProvider = ({ children }: IUserProvider) => {
         userSession,
         setUserSession,
         userData,
-        setuserData
+        setuserData,
       }}
     >
       {children}

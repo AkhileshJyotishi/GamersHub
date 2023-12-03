@@ -4,6 +4,7 @@ import {
   Country,
 } from "country-state-city"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
 
@@ -25,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({
   // jobs
 }) => {
   const router = useRouter()
+  const { data: session } = useSession()
   const [jobsFilters, setJobsFilters] = useState<JobFilterProps>({
     // searchText: "",
     rolesNeeded: "",
@@ -144,7 +146,7 @@ const Layout: React.FC<LayoutProps> = ({
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
           <TabButtons tabNames={["All", "Saved", "My Job Posts"]} />
-          {
+          {session && (
             <Button
               onClick={() => {
                 router.push(`/user/profile/portfolio/CreateJob`)
@@ -154,7 +156,7 @@ const Layout: React.FC<LayoutProps> = ({
               <span className="text-sm">Post job </span>
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
-          }
+          )}
         </div>
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">

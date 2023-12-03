@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
+
+import { useUserContext } from "@/providers/user-context"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import FacebookIcon from "@/components/icons/facebook"
@@ -12,7 +13,6 @@ import SigninIcon from "@/components/icons/signin"
 import Button from "../button"
 import Modal from "../modal"
 import TextInput from "../textInput"
-import { useUserContext } from "@/providers/user-context"
 interface LoginModaProps {
   isOpen: boolean
   onClose: () => void

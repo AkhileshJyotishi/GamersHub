@@ -1,7 +1,8 @@
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import { useRouter } from "next/router"
 import React, { useEffect } from "react"
+import { useRouter } from "next/router"
 import { toast } from "react-toastify"
+
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 const Verify = () => {
   const router = useRouter()
@@ -25,7 +26,7 @@ const Verify = () => {
     if (token) {
       loaddata()
     }
-  }, [token])
+  }, [router, token])
   return (
     <>
       <div className=" text-secondary text-[14px] p-8">Verifying your E-mail...</div>

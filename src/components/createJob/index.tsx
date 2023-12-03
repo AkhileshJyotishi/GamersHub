@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
-
-import Layout from "./layout"
-import { fetchData } from "@/utils/functions"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
+
+import { fetchData } from "@/utils/functions"
+
+import Layout from "./layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -51,7 +52,7 @@ const CreateJob: React.FC = () => {
 
   const uploadJob = async () => {
     const storedContent = localStorage.getItem("novel__content")
-    console.log("stored_contnetn " , storedContent)
+    console.log("stored_contnetn ", storedContent)
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
@@ -63,11 +64,11 @@ const CreateJob: React.FC = () => {
     console.log("jobinfo  ", jobInfo)
     // delete jobInfo.roles
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
-      if (data?.error) {
-        toast.error(data.message);
-        return;
-      }
-      toast.success(data?.message)
+    if (data?.error) {
+      toast.error(data.message)
+      return
+    }
+    toast.success(data?.message)
 
     // fetchData("v1/job/user", token, "POST", {
 

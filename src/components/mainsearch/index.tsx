@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 
 // import SearchIcon from '@/components/Icons/search'
 import { getLocalRecentSearches, setLocalRecentSearches } from "@/utils/functions/index"
-interface Props {}
 
 const SearchFor = [
   {

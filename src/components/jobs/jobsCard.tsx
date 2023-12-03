@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
+
+import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
+import { useUserContext } from "@/providers/user-context"
+import { fetchData } from "@/utils/functions"
 
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
-import SaveIcon from "@/components/icons/SaveIcon"
-import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
-import { fetchData } from "@/utils/functions"
-import { toast } from "react-toastify"
-import { useSession } from "next-auth/react"
-import { useUserContext } from "@/providers/user-context"
 
 interface JobCardProps {
   id: number
   title: string
   desc: string | null
-  date: string |null
+  date: string | null
   salary: string
   type: string
   location: string
@@ -51,10 +51,9 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
 
 const JobDescription = ({ desc }: { desc: string }) => (
   <div className="w-full min-h-[100px] overflow-hidden mt-2 p-3">
-    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}
-    sdada
-    sdads
-    aszdfsdfdf
+    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">
+      {desc}
+      sdada sdads aszdfsdfdf
     </p>
   </div>
 )
@@ -96,11 +95,10 @@ const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
 )
 
 const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => {
-// chips?.push(type)
+  // chips?.push(type)
   return (
     <div className="flex flex-wrap gap-3 p-3">
       <div className="flex flex-wrap gap-2">
-
         <span className="flex items-center ">
           <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full cursor-pointer hover:border-secondary">
             <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px]">
@@ -112,7 +110,7 @@ const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) 
       {chips &&
         chips.map((chip, index) => (
           <span key={index} className="flex items-center cursor-pointer ">
-            <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2" >
+            <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2">
               {/* Add your Chip SVG or Icon here */}
               <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
                 {chip}
@@ -134,19 +132,19 @@ const Card: React.FC<JobCardProps> = ({
   title,
   href,
   id,
-  savedUsers
+  savedUsers,
 }) => {
-  const { data: session } = useSession();
-  const { userData } = useUserContext();
+  const { data: session } = useSession()
+  const { userData } = useUserContext()
   // if(userData.id)
   // console.log(title)
   // console.log(userData?.id)
   // arrayOfObjects.some(obj => obj.id === targetId);
-  const [saved, setSaved] = useState<boolean>(false);
-  // console.log(saved) 
+  const [saved, setSaved] = useState<boolean>(false)
+  // console.log(saved)
   useEffect(() => {
     if (savedUsers?.length) {
-      setSaved(savedUsers?.some(obj => obj.id == (userData?.id ?? 0)))
+      setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedUsers])
   // console.log(id)
@@ -163,10 +161,11 @@ const Card: React.FC<JobCardProps> = ({
     }
   }
 
-
   return (
     <>
-      <div className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit ", className)}>
+      <div
+        className={clsx("p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit ", className)}
+      >
         <div className="">
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
@@ -174,32 +173,30 @@ const Card: React.FC<JobCardProps> = ({
                 <UserImage href={href} />
                 <UserInfo title={title} location={location} />
               </div>
-              {
-                session && (
-                  <>
-                    <div className="flex items-center" onClick={() => savePost(id)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 24 24"
-                        fill={saved ? "#fff" : "none"}
-                        stroke="#fff"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                    </div>
-                  </>
-                )
-              }
+              {session && (
+                <>
+                  <div className="flex items-center" onClick={() => savePost(id)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill={saved ? "#fff" : "none"}
+                      stroke="#fff"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </div>
+                </>
+              )}
             </div>
-            <JobDescription desc={desc} />
+            <JobDescription desc={desc as string} />
           </div>
           <div>
-            <JobDetails salary={salary} date={date} />
+            <JobDetails salary={salary} date={date as string} />
           </div>
           <div>
             <AdditionalDetails type={type} chips={chips!} />

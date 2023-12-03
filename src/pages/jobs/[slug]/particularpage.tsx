@@ -6,8 +6,8 @@ import Jobsection from "./jobsection"
 
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
-  const { title, city, banner,country, user, ...profileDataJobSection } = profileData
-  console.log("is this rendering  ",profileData)
+  const { title, city, banner, country, user, ...profileDataJobSection } = profileData
+  console.log("is this rendering  ", profileData)
   return (
     <>
       <div
@@ -17,7 +17,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
           "h-[490px]",
           banner && banner
         )}
-        style={{backgroundImage:`url(${banner})`}}
+        style={{ backgroundImage: `url(${banner})` }}
       >
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>

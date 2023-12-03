@@ -25,7 +25,7 @@ export default Jobs
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
-  let jobsDetails;
+  let jobsDetails
   if (!session) {
     // signOut();
 
@@ -36,11 +36,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     //   },
     // }
     jobsDetails = await fetchWithoutAuthorization(`/v1/job`, "GET")
-  }
-  else {
-
+  } else {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
-
   }
   // console.log("this  is session", session)
 
@@ -69,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
-      savedUsers: backendJob.savedUsers
+      savedUsers: backendJob.savedUsers,
     }
   }
 
@@ -81,4 +78,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   }
 }
-

@@ -160,7 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Expected payment",
       inputType: "select",
-      
+
       onChange: (value) =>
         setJobInfo({
           ...jobInfo,

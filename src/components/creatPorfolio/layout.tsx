@@ -26,12 +26,20 @@ interface LayoutProps {
   filtersState: FiltersState
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>
   uploadPost: () => void
-  albums:Allow
+  albums: Allow
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, filtersState, setFiltersState, uploadPost,albums }) => {
-const albumsselectoptions=albums.map((album,idx)=>({label:album.title,value:album.id}))
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  filtersState,
+  setFiltersState,
+  uploadPost,
+  albums,
+}) => {
+  let albumsselectoptions = [{ label: "select an album", value: "" }]
 
+  const alb = albums.map((album: Allow) => ({ label: album.title, value: album.id }))
+  albumsselectoptions = albumsselectoptions.concat(alb)
   const filterDetails: FilterDetail[] = [
     {
       inputType: "text",
@@ -88,9 +96,9 @@ const albumsselectoptions=albums.map((album,idx)=>({label:album.title,value:albu
     // },
 
     {
-      inputType: "checkbox",
+      inputType: "select",
       title: "Album Selection",
-      selectOptions:albumsselectoptions,
+      selectOptions: albumsselectoptions,
       value: filtersState.albumId,
       onChange: (value) =>
         setFiltersState((prevState) => ({ ...prevState, albumId: value as number })),

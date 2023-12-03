@@ -1,6 +1,5 @@
 import { StaticImageData } from "next/image"
 
-
 interface GamesFilterProps {
   searchText: string
   tags: string
@@ -34,8 +33,8 @@ interface DistributionPlatform {
 declare interface BackendGame {
   id: number
   title: string
-  description: object|null
-  banner: string|null
+  description: object | null
+  banner: string
   developerId: number
   gameMode: string
   releaseDate: string
@@ -53,13 +52,12 @@ declare interface BackendGame {
   user: {
     username: string
     profileImage: string
-  },
+  }
 }
 interface Games {
   id: number
   cover?: string | StaticImageData
-  banner?: string | StaticImageData |null
-  username?: string
-  title?: string
-
+  banner?: string | StaticImageData
+  username: string
+  title: string
 }

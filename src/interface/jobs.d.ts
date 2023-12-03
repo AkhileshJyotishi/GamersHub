@@ -14,8 +14,8 @@ interface JobFilterProps {
 interface Job {
   id: number
   title: string
-  desc: string|null
-  date: string|null
+  desc: string | null
+  date: string | null
   salary: string
   type: string
   location: string
@@ -24,9 +24,8 @@ interface Job {
   savedUsers: {
     id: number
   }[]
-
 }
-interface IjobsDetails { }
+interface IjobsDetails {}
 
 interface BackendJob {
   id: number
@@ -57,11 +56,10 @@ interface BackendJob {
   user: {
     username: string
     profileImage: string
-  },
+  }
   jobApplications: {
-    id: number,
-    userId: number,
-
+    id: number
+    userId: number
   }
   // website: string;
   // logoSrc: string;

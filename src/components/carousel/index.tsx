@@ -128,42 +128,48 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
   console.log("carousel  ", GameAssets)
   return (
     <>
-
-        <div className={clsx(carousel["content"])}>
-            <div className={clsx(carousel["container"])}>
-                <Slider {...settings}
-                    ref={(slider) => setSlider1(slider)}
-                    // style={{}}
-                    className="whah md:h-[700px] h-[300px]"
-                >
-                    {GameAssets.map((item,idx) => (
-                        <div key={idx} className="">
-                            <div className="">
-                                <Image src={item} alt={""} height={500} width={500} className={clsx(carousel["img"], "md:h-[700px] h-[300px]")} />
-                            </div>
-
-                        </div>
-                    ))}
-                </Slider>
-                <div className={clsx(thumbnail["thumb-wrapper"], "")}>
-                    {GameAssets.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className={clsx(currentSlide === idx ? "active" : "", "p-2 w-[200px]")}
-                            onClick={() => {
-                                slider1?.slickGoTo(idx)
-                            }}>
-                            <Image src={item} alt={""} height={500} width={500} />
-
-                            {/* <img src={item.src} alt={item.alt} /> */}
-                            {/* {currentSlide} */}
-                        </div>
-                    ))}
+      <div className={clsx(carousel["content"])}>
+        <div className={clsx(carousel["container"])}>
+          <Slider
+            {...settings}
+            ref={(slider) => setSlider1(slider)}
+            // style={{}}
+            className="whah md:h-[700px] h-[300px]"
+          >
+            {GameAssets.map((item, idx) => (
+              <div key={idx} className="">
+                <div className="">
+                  <Image
+                    src={item}
+                    alt={""}
+                    height={500}
+                    width={500}
+                    className={clsx(carousel["img"], "md:h-[700px] h-[300px]")}
+                  />
                 </div>
-            </div>
+              </div>
+            ))}
+          </Slider>
+          <div className={clsx(thumbnail["thumb-wrapper"], "")}>
+            {GameAssets.map((item, idx) => (
+              <div
+                key={idx}
+                className={clsx(currentSlide === idx ? "active" : "", "p-2 w-[200px]")}
+                onClick={() => {
+                  slider1?.slickGoTo(idx)
+                }}
+              >
+                <Image src={item} alt={""} height={500} width={500} />
+
+                {/* <img src={item.src} alt={item.alt} /> */}
+                {/* {currentSlide} */}
+              </div>
+            ))}
+          </div>
         </div>
+      </div>
     </>
-)
+  )
 }
 
 export default Carousel

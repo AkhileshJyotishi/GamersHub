@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { useUserContext } from "@/providers/user-context"
 
 import UploadIcon from "@/components/icons/upload"
 import Button from "@/components/ui/button"
@@ -20,6 +21,7 @@ const BannerImage = ({
   setisCreateAlbumOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const router = useRouter()
+  const { userData } = useUserContext()
   const url = currentUser?.banner?.url
 
   const [, setBannerImage] = useState<File | undefined>()
@@ -46,15 +48,15 @@ const BannerImage = ({
           >
             <div className="absolute top-0 right-0 flex flex-wrap justify-center gap-4 mt-3 md:justify-normal ">
               <Button
-                className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
+                className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
                 onClick={() => setisCreateAlbumOpen(true)}
               >
                 New Album
               </Button>
               <Button
-                className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
+                className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
                 onClick={() => {
-                  router.push("/user/profile/portfolio/CreatePost")
+                  router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
                 }}
               >
                 New Post

@@ -26,10 +26,10 @@ const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
 
 export default Sett
 
-export const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwMDIyMTU1MiwiZXhwIjoxNzAwMjI1MDkyLCJ0eXBlIjoiQUNDRVNTIn0.wyZ69lhBGEPcqPrcMfQfATjctNzlMU5KAplb5637_BY"
+// export const token =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcwMDIyMTU1MiwiZXhwIjoxNzAwMjI1MDkyLCJ0eXBlIjoiQUNDRVNTIn0.wyZ69lhBGEPcqPrcMfQfATjctNzlMU5KAplb5637_BY"
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res,query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   // console.log(session?.user?.name)
   if (!session) {

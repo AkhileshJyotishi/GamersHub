@@ -1,22 +1,21 @@
 // import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, Image as SliderImage, DotGroup, Dot, } from 'pure-react-carousel';
 import React from "react"
 import clsx from "clsx"
+import { GetServerSideProps } from "next"
 
 import { BackendGame } from "@/interface/games"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamePageHeader from "./GamePageHeader"
 import Gamesection from "./Gamesection"
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "@/lib/auth"
-import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 // import JobPageHeader from './jobPageHeader'
 // import Jobsection from './jobsection'
 
 //  website locaation
-const GameData: BackendGame = {
+const GameData: Omit<BackendGame, "user" | "savedUsers"> = {
   id: 1,
   title: "Example Game",
-  description: "This is an example game.",
+  description: {},
   banner:
     "bg-[url(https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg)]",
   developerId: 1,
@@ -63,16 +62,16 @@ const GameData: BackendGame = {
       name: "Epic Games Store",
     },
   ],
-  GameAssets: [
+  gameAssets: [
     "https://picsum.photos/id/244/900/900",
     "https://picsum.photos/id/244/900/900",
     "https://picsum.photos/id/244/900/900",
   ],
 }
 
-const Particularpage = ({parsedgamesDetails}:{parsedgamesDetails:BackendGame}) => {
+const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame }) => {
   // user,
-  const { title, banner, ...profileDataGameSection } = parsedgamesDetails
+  const { title, banner } = parsedgamesDetails
   // console.log(profileDataGameSection)
   return (
     <>
@@ -91,7 +90,7 @@ const Particularpage = ({parsedgamesDetails}:{parsedgamesDetails:BackendGame}) =
       <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3 z-20 w-full ">
         {/* profileData?.user?.profileImage ||  */}
         <GamePageHeader title={title} logoSrc={"https://picsum.photos/id/250/900/900"} />
-        <Gamesection GameData={profileDataGameSection} />
+        <Gamesection GameData={GameData} />
       </div>
     </>
   )
@@ -99,11 +98,9 @@ const Particularpage = ({parsedgamesDetails}:{parsedgamesDetails:BackendGame}) =
 
 export default Particularpage
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res ,query}) => {
-  const {slug}=query
-  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
-  let gameDetails=await fetchWithoutAuthorization(`/v1/game/${slug}`,"GET");
-
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { slug } = query
+  const gameDetails = await fetchWithoutAuthorization(`/v1/game/${slug}`, "GET")
 
   if (gameDetails?.error) {
     // toast.error(jobsDetails.message)

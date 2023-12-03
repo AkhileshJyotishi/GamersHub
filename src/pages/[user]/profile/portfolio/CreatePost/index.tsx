@@ -1,28 +1,30 @@
 import React from "react"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+
+import { getSession } from "@/lib/auth"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreatePortfolio from "@/components/creatPorfolio"
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
-import { fetchData } from "@/utils/functions"
-import { getSession } from "@/lib/auth"
 
-const index = ({albums}:{albums:Allow}) => {
+const index = ({ albums }: { albums: Allow }) => {
   return (
     <>
-      <CreatePortfolio albums={albums}/>
+      <CreatePortfolio albums={albums} />
     </>
   )
 }
 
 export default index
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let albums
+  // query;
+  console.log("user query  ", query)
   if (session) {
-   
-albums=await fetchData("/v1/album/user",session.user?.name as string ,"GET");
+    albums = await fetchWithoutAuthorization(`/v1/album/user/${query.user}`, "GET")
+    // console.log()
   }
- 
 
   if (albums?.error) {
     // toast.error(jobsDetails.message)
@@ -33,7 +35,7 @@ albums=await fetchData("/v1/album/user",session.user?.name as string ,"GET");
       },
     }
   }
-albums=  albums?.data.albums
+  albums = albums?.data.albums
   // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 
   return {

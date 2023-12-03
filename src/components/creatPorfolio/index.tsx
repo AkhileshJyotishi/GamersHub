@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { token } from "@/pages/settings"
 import { fetchData } from "@/utils/functions"
 
 import Layout from "@/components/creatPorfolio/layout"
-import { useSession } from "next-auth/react"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -15,7 +14,6 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 // import { Editor } from "novel";
 
 const CreatePortfolio = ({ albums }: { albums: Allow }) => {
-
   const { data: session } = useSession()
   interface FiltersState {
     postKeywords: string[]
@@ -38,8 +36,14 @@ const CreatePortfolio = ({ albums }: { albums: Allow }) => {
 
   const uploadPost = async () => {
     filtersState.content = JSON.parse(localStorage.getItem("novel__content") ?? "")
-filtersState.banner="https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
-    const res = await fetchData("/v1/post/user", session?.user?.name as string, "POST", filtersState)
+    filtersState.banner =
+      "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
+    const res = await fetchData(
+      "/v1/post/user",
+      session?.user?.name as string,
+      "POST",
+      filtersState
+    )
     if (res?.error) toast.error(res.message)
     else {
       toast.success(res?.message)
@@ -48,7 +52,12 @@ filtersState.banner="https://cdnb.artstation.com/p/recruitment_companies/headers
   }
 
   return (
-    <Layout filtersState={filtersState} setFiltersState={setFiltersState} uploadPost={uploadPost} albums={albums}>
+    <Layout
+      filtersState={filtersState}
+      setFiltersState={setFiltersState}
+      uploadPost={uploadPost}
+      albums={albums}
+    >
       {/* Render the filterDetails here */}
       <>
         <Editor

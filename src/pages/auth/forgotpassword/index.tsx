@@ -1,13 +1,12 @@
 import React, { useState } from "react"
-import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
+
+import { useUserContext } from "@/providers/user-context"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Button from "@/components/ui/button"
 import TextInput from "@/components/ui/textInput"
-
-import { useUserContext } from "@/providers/user-context"
-import { useRouter } from "next/navigation"
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import { toast } from "react-toastify"
 const Forgotpassword = () => {
   const [formValues, setFormValues] = useState({
     email: "",
@@ -58,7 +57,7 @@ const Forgotpassword = () => {
 
           <Button
             className="px-[12px] py-[6px] border-[#323235] bg-secondary border-[0.01px] flex items-center mt-6 rounded-xl"
-            onClick={(e) =>handleReset(e)}
+            onClick={(e) => handleReset(e)}
           >
             Reset Password
           </Button>

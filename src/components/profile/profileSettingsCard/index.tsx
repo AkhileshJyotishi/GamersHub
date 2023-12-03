@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { useUserContext } from "@/providers/user-context"
 
 import GearIcon from "@/components/icons/gear"
 import HelpIcon from "@/components/icons/gear"
@@ -18,9 +19,9 @@ interface Props {
   userData: Iuser | null
 }
 
-export default function ProfileSettingsCard({ className, authUser, onSignOut, userData }: Props) {
-
+export default function ProfileSettingsCard({ className, onSignOut, userData }: Props) {
   const router = useRouter()
+  const { userData: newuserData } = useUserContext()
   return (
     <div
       className={`p-4 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[6px] min-h-[560px] w-[340px] rounded-xl ${className}`}
@@ -50,8 +51,7 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut, us
             //     ? MediaHostURL + profileImage
             //     :
             // "/assets/placeholders/user-profile.png"
-            userData?.profileImage ||
-            defaultbannerImage
+            userData?.profileImage || defaultbannerImage
           }
         />
       </div>
@@ -64,7 +64,7 @@ export default function ProfileSettingsCard({ className, authUser, onSignOut, us
           {userData?.email}
         </div>
         <Button
-          onClick={() => router.push("/user/profile/albums")}
+          onClick={() => router.replace(`/${newuserData?.id}/profile/albums`)}
           className="text-center rounded-xl  text-user_interface_3 py-[15px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
         >
           View Profile

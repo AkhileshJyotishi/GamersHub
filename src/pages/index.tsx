@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
-import logo from "@/assets/image/logo-with-text.png"
+import { toast } from "react-toastify"
 
+import logo from "@/assets/image/logo-with-text.png"
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
+import Filter from "@/components/filter/mainfilter/filter"
 import TalentSection from "@/components/home/banner"
 import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
 import JobSection from "@/components/home/Jobs"
+import CloseIcon from "@/components/icons/closeIcon"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
-import CloseIcon from "@/components/icons/closeIcon"
-import Filter from "@/components/filter/mainfilter/filter"
-import Image from "next/image"
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import { useSession } from "next-auth/react"
-import { toast } from "react-toastify"
 
 const HomePage = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
   const { logout, verify } = router.query
-  const [verifyModal, setVerifyModal] = useState(false);
+  const [verifyModal, setVerifyModal] = useState(false)
 
   useEffect(() => {
     console.log("router ", router.query)
@@ -31,13 +30,12 @@ const HomePage = () => {
       // signOut();
 
       router.replace("/", undefined, { shallow: true })
-    }
-    else if (verify && verify == "true") {
-      setVerifyModal(true);
+    } else if (verify && verify == "true") {
+      setVerifyModal(true)
       router.replace("/", undefined, { shallow: true })
     }
-  }, [logout, router])
-  const [mail, setMail] = useState<string>("");
+  }, [verify, logout, router])
+  const [mail, setMail] = useState<string>("")
   const cardData = [
     {
       username: "John Doe",
@@ -103,14 +101,13 @@ const HomePage = () => {
 
   const verifyEmail = async () => {
     const res = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
-      email: mail
-    });
+      email: mail,
+    })
     if (res?.error) {
-      toast.error(res.message);
-      return;
+      toast.error(res.message)
+      return
     }
-    toast.success(res?.message);
-
+    toast.success(res?.message)
   }
 
   return (
@@ -124,7 +121,6 @@ const HomePage = () => {
             <CloseIcon className="absolute right-0 cursor-pointer fill-light hover:fill-secondary flex-end" />
           </div>
           <div className="flex justify-center w-full h-[25px] relative">
-
             <Image
               src={logo}
               width={200}
@@ -139,9 +135,7 @@ const HomePage = () => {
             title={"Verify your Email"}
             placeholder={""}
             value={mail}
-            onChange={(value) =>
-              setMail(value as string)
-            }
+            onChange={(value) => setMail(value as string)}
             className={"bg-transparent rounded-md"}
             Variant="flex flex-col items-start gap-[10px] text-[14px] "
           />
@@ -173,7 +167,6 @@ const HomePage = () => {
               className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
               // id={id}
               // title={title}
-              
             />
           ))}
         </div>

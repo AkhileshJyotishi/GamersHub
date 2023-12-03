@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import Image from "next/image" // Import your Image component library
+import Link from "next/link"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import { Games } from "@/interface/games"
-import { token } from "@/pages/settings"
+// import { token } from "@/pages/settings"
 import { fetchData } from "@/utils/functions"
-
-import viewIcon from "@/components/icons/viewIcon.svg"
-import Link from "next/link"
 
 interface GamesCardProps extends Games {
   // location: string;
@@ -22,7 +21,7 @@ const Card: React.FC<GamesCardProps> = ({
   username,
   title,
   banner,
-// savedUsers
+  // savedUsers
   // location,
   // album_slug,
   // likes,
@@ -31,8 +30,8 @@ const Card: React.FC<GamesCardProps> = ({
 }) => {
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
+  const { data: session } = useSession()
 
-  
   const likePost = async () => {
     let method
     if (liked) {
@@ -41,7 +40,7 @@ const Card: React.FC<GamesCardProps> = ({
       method = "POST"
     }
 
-    const data = await fetchData(`/v1/game/like/${id}`, token, method)
+    const data = await fetchData(`/v1/game/like/${id}`, session?.user?.name as string, method)
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -51,7 +50,7 @@ const Card: React.FC<GamesCardProps> = ({
   }
 
   const savePost = async () => {
-    const data = await fetchData(`/v1/game/user/save/${id}`, token, "POST")
+    const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -125,9 +124,7 @@ const Card: React.FC<GamesCardProps> = ({
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </div>
-            <Link  href={`/games/${id}`}>
-              {title}
-            </Link>
+            <Link href={`/games/${id}`}>{title}</Link>
             <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

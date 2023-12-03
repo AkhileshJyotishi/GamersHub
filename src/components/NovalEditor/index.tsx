@@ -7,12 +7,12 @@ const Editor = ({
   className,
   editable = false,
   defaultValue,
-  disableLocalStorage=false
+  disableLocalStorage = false,
 }: {
   className: string
   editable: boolean
   defaultValue?: string | JSONContent | undefined
-  disableLocalStorage?:boolean
+  disableLocalStorage?: boolean
 }) => {
   // console.log("tis should work ", defaultValue)
   return (

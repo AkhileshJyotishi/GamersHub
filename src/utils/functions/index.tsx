@@ -88,19 +88,19 @@ export const fetchWithoutAuthorization = async (
       method,
       data,
       headers: customHeaders,
-    });
+    })
 
-    console.log("Response without authorization:", response.data);
+    console.log("Response without authorization:", response.data)
 
-    const resp = response.data;
-    return await resp;
+    const resp = response.data
+    return await resp
   } catch (error: unknown) {
-    console.error(error);
-    console.log("Null is coming");
+    console.error(error)
+    console.log("Null is coming")
     return {
       error: error,
       message: "Request failed",
       data: null,
-    };
+    }
   }
-};
+}

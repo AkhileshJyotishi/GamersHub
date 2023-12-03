@@ -4,9 +4,9 @@ interface IPostbackend {
   slug: string
   title: string
   description: string | null
-  banner: string|null
+  banner: string | null
   matureContent: boolean
-  content:object
+  content: object
   albumId: number
   Album: {
     id: number
@@ -15,20 +15,20 @@ interface IPostbackend {
   postKeywords: {
     keyword: string
   }[]
-  
-  comments: { 
-    comment:string,
-    userId:number,
-    id:number
-    }[]
+
+  comments: {
+    comment: string
+    userId: number
+    id: number
+  }[]
   postLikes: {
-    likedUsers:{
-      id:number
+    likedUsers: {
+      id: number
     }
-  }[],
-  
-  postSkills: { 
-    skill:string
+  }[]
+
+  postSkills: {
+    skill: string
   }[]
   savedUsers: {
     id: number
@@ -36,5 +36,5 @@ interface IPostbackend {
   user: {
     username: string
     profileImage: string
-  },
+  }
 }

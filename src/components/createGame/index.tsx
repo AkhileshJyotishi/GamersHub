@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
+import { useSession } from "next-auth/react"
+
 import { fetchData } from "@/utils/functions"
 
 import Layout from "@/components/createGame/layout"
-import { useSession } from "next-auth/react"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -21,7 +22,7 @@ const CreateGame: React.FC = () => {
     gameMode: string
     developerName: string
     developerType: string
-    developerId: number | null
+    // developerId?: number | null
     distributionPlatforms: string[]
     tags: string[] | null
     // publisherName: string;
@@ -39,14 +40,14 @@ const CreateGame: React.FC = () => {
     gameMode: "",
     developerName: "",
     developerType: "",
-    developerId: null,
+    // developerId: null,
     distributionPlatforms: [],
     tags: [], //tags
     // publisherName: "",
     releaseDate: "",
     gameAssets: null,
   })
-  const session=useSession()
+  const session = useSession()
   const uploadGame = async () => {
     const storedContent = localStorage.getItem("novel__content")
     if (storedContent !== null) {
@@ -59,7 +60,8 @@ const CreateGame: React.FC = () => {
       "https://picsum.photos/id/250/900/900",
       "https://picsum.photos/id/250/900/900",
     ]
-    gameInfo.developerId = 11
+    // gameInfo.developerId = 11
+    // delete gameInfo.developerId
     console.log(gameInfo)
 
     fetchData("v1/game/user", session.data?.user?.name as string, "POST", gameInfo)

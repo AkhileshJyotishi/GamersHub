@@ -24,8 +24,8 @@ const TextInput: React.FC<Props> = ({
   onKeyUp,
   onKeyPress,
   onBlur,
-pattern,
-onInvalid
+  pattern,
+  onInvalid,
 }: Props) => {
   return (
     <div className="relative flex flex-col items-start w-full">

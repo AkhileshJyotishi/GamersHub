@@ -65,7 +65,7 @@ export default function ProfileAccordion({
                 loading="lazy"
                 src={sample}
                 className="w-[100px] h-[100px] rounded-full"
-                alt={"currentUser?.username"}
+                alt={""}
               />
             </div>
             <h1 className="text-xl font-bold">ahilesh</h1>
@@ -108,12 +108,7 @@ export default function ProfileAccordion({
               followers
             </div>
           </div>
-          {/* ==== On the web ==== */}
           {
-            // currentUser?.add_on_web &&
-            //     Object.values(currentUser?.add_on_web).some(
-            //         (value) => value !== ""
-            //     ) &&
             <div className="flex flex-col w-full mt-10">
               <div className="flex flex-wrap justify-center mt-5 gap-7">
                 {
@@ -137,22 +132,21 @@ export default function ProfileAccordion({
                     <TwitterIcon className="w-6 h-6" />
                   </Link>
                 }
-                {/* 
-                                {(
-                                    <Link
-                                        title="Artstation"
-                                        target="_blank"
-                                        href={"currentUser?.add_on_web?.artstation"}
-                                    >
-                                        <Image
-                                            src="/assets/icons/artstation.svg"
-                                            alt=""
-                                            width={50}
-                                            height={50}
-                                            className="w-10 h-10 mt-[-0.5rem] "
-                                        />
-                                    </Link>
-                                )} */}
+                {
+                  <Link
+                    title="Artstation"
+                    target="_blank"
+                    href={"currentUser?.add_on_web?.artstation"}
+                  >
+                    <Image
+                      src="/assets/icons/artstation.svg"
+                      alt=""
+                      width={50}
+                      height={50}
+                      className="w-10 h-10 mt-[-0.5rem] "
+                    />
+                  </Link>
+                }
 
                 {
                   <Link title="Github" target="_blank" href={"currentUser?.add_on_web?.github"}>

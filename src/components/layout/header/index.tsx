@@ -21,8 +21,8 @@ import RegisterModal from "@/components/ui/register"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
 interface Props {
-  userSession?: any,
-  userData:Iuser |null
+  userSession?: any
+  userData: Iuser | null
 }
 
 const AuthButtons = ({
@@ -59,7 +59,7 @@ const AuthButtons = ({
   )
 }
 
-const LoggedInUserButtons = ({ userSession,userData }: Props) => {
+const LoggedInUserButtons = ({ userSession, userData }: Props) => {
   const router = useRouter()
 
   const [showProfileSettings, setShowProfileSettings] = useState(false)
@@ -139,7 +139,7 @@ export default function Navbar() {
     containerRef,
     // handleLogout,
     userSession,
-    userData
+    userData,
   } = useUserContext()
   const { data: session } = useSession()
 
@@ -160,8 +160,9 @@ export default function Navbar() {
       >
         <div className=" flex flex-row md:min-w-[70%] xl:w-fit">
           <div
-            className={` transform transition-all -translate-y-5 ${tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
-              } duration-[1s] ease-in-out`}
+            className={` transform transition-all -translate-y-5 ${
+              tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
+            } duration-[1s] ease-in-out`}
           ></div>
           <div className="flex flex-row items-center justify-start w-full sm:items-center ">
             <Button
@@ -179,13 +180,13 @@ export default function Navbar() {
               />
             </Button>
           </div>
-     
+
           <div className="flex-row items-center hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif] ml-[250px]">
             <NavbarLink label="Home" href="/" />
             <NavbarLink label="Jobs" href="/jobs" />
             <NavbarLink label="Creators" href="/creator" />
             <NavbarLink label="Games" href="/games" />
-            <NavbarLink label="Profile" href="/user/profile/albums" />
+            <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />
 
             {userSession && <NavbarLink label="Assets" href="/help" />}
           </div>
@@ -214,16 +215,19 @@ export default function Navbar() {
             }}
           >
             <div
-              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
-                } duration-[0.5s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
+                tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
+              } duration-[0.5s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${tap ? "opacity-0" : "opacity-100"
-                } duration-[1s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+                tap ? "opacity-0" : "opacity-100"
+              } duration-[1s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
-                } duration-[1s] ease-out`}
+              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+                tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
+              } duration-[1s] ease-out`}
             ></div>
           </Button>
         </div>

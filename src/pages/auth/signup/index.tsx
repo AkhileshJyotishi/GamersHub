@@ -2,17 +2,17 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import logo from "@/assets/image/logo-with-text.png"
 import showPassword from "@/assets/svg/view-white.svg"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import FacebookIcon from "@/components/icons/facebook"
 import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import TextInput from "@/components/ui/textInput"
-import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 interface FormErrors {
   username: string
   email: string
@@ -20,7 +20,6 @@ interface FormErrors {
 }
 
 export default function SignUpPage() {
-  const { data: session } = useSession()
   const router = useRouter()
   console.log("server")
   const SignUpForm = () => {
@@ -47,17 +46,14 @@ export default function SignUpPage() {
       }
       const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
         ...formValues,
-        role: "ADMIN"
+        role: "ADMIN",
       })
       if (res?.error) {
-        toast.error(res.message);
-
-      }
-      else {
+        toast.error(res.message)
+      } else {
         setFormValues({ username: "", email: "", password: "" })
         // router.replace("/")
-        router.replace('/?verify=true', undefined, { shallow: true })
-
+        router.replace("/?verify=true", undefined, { shallow: true })
       }
       // try {
       //   const res = await fetch("/v1//register", {
@@ -168,7 +164,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -208,7 +204,6 @@ export default function SignUpPage() {
               type="submit"
               variant="primary"
               className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
-
             >
               Create account
             </Button>

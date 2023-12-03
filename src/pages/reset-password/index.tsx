@@ -1,9 +1,11 @@
+import React, { useState } from "react"
+import { useRouter } from "next/router"
+import { toast } from "react-toastify"
+
+import { fetchWithoutAuthorization } from "@/utils/functions"
+
 import Button from "@/components/ui/button"
 import TextInput from "@/components/ui/textInput"
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import { useRouter } from "next/router"
-import React, { useState } from "react"
-import { toast } from "react-toastify"
 
 const ResetPassword = () => {
   const [formValues, setFormValues] = useState({

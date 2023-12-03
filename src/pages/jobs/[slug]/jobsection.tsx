@@ -440,7 +440,6 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
             editable={false}
             defaultValue={jobData.jobDetails || {}}
             disableLocalStorage
-
           />
         </div>
       </div>

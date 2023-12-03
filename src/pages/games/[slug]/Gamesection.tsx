@@ -21,8 +21,8 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
   const Editor = dynamic(() => import("@/components/NovalEditor"), {
     ssr: false,
   })
-// console.log("gamesection ",GameData)
-  
+  // console.log("gamesection ",GameData)
+
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
     <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
       <h3 className="mb-2 font-medium text-[18px]">{title}</h3>

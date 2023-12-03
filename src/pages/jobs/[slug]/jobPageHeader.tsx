@@ -1,18 +1,19 @@
 import React from "react"
 import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
+
 import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import Button from "@/components/ui/button"
 
 interface JobPageHeaderProps {
-  logoSrc: string |null
+  logoSrc: string | null
   title: string
   // company: string;
   // website: string;
   location: string
 }
-const UserImage = ({ href }: { href: string|StaticImageData }) => (
+const UserImage = ({ href }: { href: string | StaticImageData }) => (
   <Link href={"#"} className="my-auto">
     <div className="flex items-center">
       <Image width={400} height={400} alt={""} className="w-20 h-20 rounded-full" src={href} />
