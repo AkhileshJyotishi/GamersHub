@@ -12,8 +12,6 @@ router
   .post(auth(), validate(jobValidation.createJob), jobController.createUserJob)
   .delete(auth(), jobController.deleteUserJobs)
 
-router.get('/user/:id', validate(jobValidation.idValidation), jobController.getUserJobs)
-
 router.get('/others', auth(), jobController.getAllJobsExceptCurrentUser)
 
 router.get('/user/saved', auth(), jobController.getSavedJobs)
@@ -41,6 +39,7 @@ router
   .patch(auth(), validate(jobValidation.updateApplication), jobController.updateApplicationById)
   .delete(auth(), validate(jobValidation.idValidation), jobController.deleteApplicationById)
 
+router.get('/user/:id', validate(jobValidation.idValidation), jobController.getUserJobs)
 router
   .route('/:id')
   .get(validate(jobValidation.idValidation), jobController.getJobById)

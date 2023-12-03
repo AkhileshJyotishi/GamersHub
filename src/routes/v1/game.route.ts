@@ -12,8 +12,6 @@ router
   .post(auth(), validate(gameValidation.createGame), gameController.createUserGame)
   .delete(auth(), gameController.deleteUserGames)
 
-router.get('/user/:id', validate(gameValidation.idValidation), gameController.getUserGames)
-
 router.get('/user/saved', auth(), gameController.getSavedGames)
 router.get('/others', auth(), gameController.getAllGameExceptCurrentUser)
 
@@ -24,6 +22,7 @@ router.post(
   gameController.toggleSaveGame
 )
 
+router.get('/user/:id', validate(gameValidation.idValidation), gameController.getUserGames)
 router
   .route('/:id')
   .get(validate(gameValidation.idValidation), gameController.getGameById)

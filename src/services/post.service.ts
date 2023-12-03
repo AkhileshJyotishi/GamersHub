@@ -9,7 +9,7 @@ import { Post } from '@prisma/client'
  * @returns {Promise<Post[]>}
  */
 
-const getUserPosts = async (userId: number): Promise<Post[]> => {
+const getUserPosts = async (userId: number): Promise<Post[] | []> => {
   const user = await prisma.user.findUnique({
     where: {
       id: userId
@@ -64,9 +64,9 @@ const getUserPosts = async (userId: number): Promise<Post[]> => {
       }
     }
   })
-  // if need to return empty post remove this
+  // if need to return empty post
   if (!user || !user.posts.length) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User Posts not found')
+    return []
   }
   return user.posts
 }
