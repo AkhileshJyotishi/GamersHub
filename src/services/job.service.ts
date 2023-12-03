@@ -58,6 +58,7 @@ interface jobBody {
   banner?: string | null
   publishDate?: string | null
   jobDetails?: object
+  aboutRecruiter?: object
   country?: string
   description?: string
   city?: string

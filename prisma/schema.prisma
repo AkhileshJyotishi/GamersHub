@@ -185,7 +185,7 @@ model PostComment {
 model Game {
   id                    Int            @id @default(autoincrement())
   title                 String
-  description           Json?        
+  description           Json?
   banner                String?
   genre                 Genre[]        @relation("GenreToGames")
   developer             GameDeveloper? @relation(fields: [developerId], references: [id], onDelete: Cascade)
@@ -266,6 +266,7 @@ model Job {
   title           String
   description     String?
   jobDetails      Json?
+  aboutRecruiter  Json?
   remote          Boolean
   country         String?
   city            String?
