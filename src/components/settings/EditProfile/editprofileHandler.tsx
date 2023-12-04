@@ -1,10 +1,12 @@
-import { useSession } from "next-auth/react"
+// import { useSession } from "next-auth/react"
+console.log("object")
 import { toast } from "react-toastify"
 
 import { fetchData } from "@/utils/functions"
 
 export const uploadUserEducation = async (
   userEducation: IuserEducation,
+  token: string,
   initialUserEducation = {
     id: -1,
     university: "",
@@ -14,7 +16,9 @@ export const uploadUserEducation = async (
     description: "",
   }
 ) => {
-  const token = useSession().data?.user?.name as string
+  // const token = useSession().data?.user?.name as string
+  // const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+
   const hasDataChanged =
     userEducation.university !== initialUserEducation.university ||
     userEducation.degree !== initialUserEducation.degree ||
@@ -53,17 +57,19 @@ const findEducationToUpdate = (
 export const updateUserEducation = async (
   userId: number | undefined,
   education: IuserEducation[],
-  initialEducation: IuserEducation[] | undefined
+  initialEducation: IuserEducation[] | undefined,
+  token: string
 ) => {
   const educationToUpdate = findEducationToUpdate(education, userId)
-  const initialeducationtoupdate = findEducationToUpdate(initialEducation, userId)
-  console.log(initialEducation)
+  // const initialeducationtoupdate = findEducationToUpdate(initialEducation, userId)
+  // console.log(initialEducation)
+  // const token = useSession().data?.user?.name as string
+
   if (!educationToUpdate) {
     toast.info("Some error occured , please retry")
     return
   }
-  console.log("educationToUpdate ", educationToUpdate)
-  console.log("initialeducationtoupdate ", initialeducationtoupdate)
+
   // const hasDataChanged =
   //   educationToUpdate.university !== initialeducationtoupdate?.university ||
   //   educationToUpdate.degree !== initialeducationtoupdate?.degree ||
@@ -95,8 +101,11 @@ export const updateUserEducation = async (
 export const removeUserEducation = async (
   Id: number | undefined,
   setEducation: React.Dispatch<React.SetStateAction<IuserEducation[]>>,
-  index: number
+  index: number,
+  token: string
 ) => {
+  // const token = useSession().data?.user?.name as string
+
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/education/${Id}`,
     token,
@@ -128,8 +137,11 @@ export const removefromarray = (
 export const removeuserExperience = async (
   Id: number | undefined,
   setExperience: React.Dispatch<React.SetStateAction<IuserExperience[]>>,
-  index: number
+  index: number,
+  token: string
 ) => {
+  // const token = useSession().data?.user?.name as string
+
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/experience/${Id}`,
     token,
@@ -158,17 +170,20 @@ const findExperienceToUpdate = (
 export const updateUserExperience = async (
   userId: number | undefined,
   experience: IuserExperience[],
-  initialExperience: IuserExperience[] | undefined
+  token: string
+
+  // initialExperience: IuserExperience[] | undefined
 ) => {
   const experienceToUpdate = findExperienceToUpdate(experience, userId)
-  const initialexperiencetoupdate = findExperienceToUpdate(initialExperience, userId)
-  console.log(initialExperience)
+  // const initialexperiencetoupdate = findExperienceToUpdate(initialExperience, userId)
+  // console.log(initialExperience)
+  // const token = useSession().data?.user?.name as string
+
   if (!experienceToUpdate) {
     toast.info("Some error occured , please retry")
     return
   }
-  console.log("experienceToUpdate ", experienceToUpdate)
-  console.log("initialexperiencetoupdate ", initialexperiencetoupdate)
+
   // const hasDataChanged =
   //   experienceToUpdate.company !== initialexperiencetoupdate?.company ||
   //   experienceToUpdate.description !== initialexperiencetoupdate?.description
@@ -200,6 +215,7 @@ export const updateUserExperience = async (
 
 export const uploadUserExperience = async (
   userExperience: IuserExperience,
+  token: string,
   initialUserExperience = {
     id: -1,
     company: "",
@@ -210,6 +226,8 @@ export const uploadUserExperience = async (
     presentWorking: false,
   }
 ) => {
+  // const token = useSession().data?.user?.name as string
+
   const hasDataChanged =
     userExperience.company !== initialUserExperience?.company ||
     userExperience.description !== initialUserExperience?.description
@@ -238,4 +256,14 @@ export const uploadUserExperience = async (
   }
 
   return response?.data
+}
+
+export const uploadProfileData = async (profileData: any, token: string) => {
+  // const token = useSession().data?.user?.name as string
+  const response = await fetchData(`/v1/users/details`, token, "PATCH", profileData)
+  if (response?.error) {
+    toast.error(response?.message)
+  } else {
+    toast.success(response?.message)
+  }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -15,6 +16,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 const CreateJob: React.FC = () => {
   const { data: session } = useSession()
+  const router = useRouter()
   interface JobInfo {
     jobType: string
     remote: boolean
@@ -55,17 +57,18 @@ const CreateJob: React.FC = () => {
   const [jobInfo, setJobInfo] = useState<JobInfo>(initialJobInfo)
 
   const uploadJob = async () => {
-    const storedContent = localStorage.getItem("novel__content2")
-    const aboutRecuiter = localStorage.getItem("novel__content1")
-    // console.log("stored_contnetn ", storedContent)
+    const storedContent = localStorage.getItem("noval__content2")
+    const aboutRecuiter = localStorage.getItem("noval__content1")
+    console.log("stored_contnetn ", storedContent)
+    console.log("aboutrecuiter ", aboutRecuiter)
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
     if (aboutRecuiter) {
       jobInfo.aboutRecruiter = JSON.parse(aboutRecuiter)
     }
-    localStorage.removeItem("novel__content1")
-    localStorage.removeItem("novel__content2")
+    localStorage.removeItem("noval__content1")
+    localStorage.removeItem("noval__content2")
     jobInfo.banner = "https://picsum.photos/id/250/900/900"
     jobInfo.publishDate = new Date().toISOString()
     // jobInfo.title;
@@ -78,7 +81,7 @@ const CreateJob: React.FC = () => {
       return
     }
     toast.success(data?.message)
-
+    router.push("/jobs")
     // fetchData("v1/job/user", token, "POST", {
 
     // })

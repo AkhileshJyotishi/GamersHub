@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 
+import image from "@/assets/image/void.svg"
 // import { getSession } from "@/lib/auth"
 // import { token } from "@/pages/settings"
 import { fetchWithoutAuthorization } from "@/utils/functions"
@@ -30,7 +32,7 @@ const Albums = () => {
   return (
     <>
       {/* sdfsdfsdf */}
-      {postsDetails &&
+      {postsDetails.length > 0 ? (
         postsDetails.map((post) => (
           <>
             <Card
@@ -50,7 +52,19 @@ const Albums = () => {
             />
             {/* <HoizontalCard title={album.title} className='' description={"fdlsjlfd"} imageSrc={album.banner} key={album.id} tags={album.keyword} /> */}
           </>
-        ))}
+        ))
+      ) : (
+        <>
+          {
+            <>
+              <div className="flex flex-col items-center w-full gap-20 ">
+                <h3 className="text-3xl font-bold">No posts yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+              </div>
+            </>
+          }
+        </>
+      )}
     </>
   )
 }

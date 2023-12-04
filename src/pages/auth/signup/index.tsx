@@ -51,7 +51,7 @@ export default function SignUpPage() {
         toast.error(res.error?.response?.data?.message || res.message)
       } else {
         const ress = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
-          email: formValues.email + "90",
+          email: formValues.email,
         })
         if (ress?.error) {
           router.replace(`/?verify=true&message=Registration successfull`, undefined, {

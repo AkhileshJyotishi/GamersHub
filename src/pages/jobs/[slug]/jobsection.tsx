@@ -140,7 +140,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
                 className={"bg-user_interface_2 w-full rounded-xl "}
                 editable={false}
                 storageKey="noval__content1"
-                defaultValue={jobData.aboutRecuiter || {}}
+                defaultValue={jobData.aboutRecruiter || {}}
                 disableLocalStorage
               />
             </>

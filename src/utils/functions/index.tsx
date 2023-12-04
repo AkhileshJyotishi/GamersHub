@@ -62,7 +62,7 @@ export const fetchData = async (
 ): Promise<APITypes | null> => {
   try {
     const response = await fetchWithAuthorization(url, token, method, data, customHeaders)
-    console.log("authchecker ", response.data)
+    // console.log("authchecker ", response.data)
 
     const resp = response.data
     return await resp
@@ -90,7 +90,7 @@ export const fetchWithoutAuthorization = async (
       headers: customHeaders,
     })
 
-    console.log("Response without authorization:", response.data)
+    // console.log("Response without authorization:", response.data)
 
     const resp = response.data
     return await resp

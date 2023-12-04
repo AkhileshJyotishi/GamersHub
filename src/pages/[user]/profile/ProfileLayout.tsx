@@ -213,22 +213,3 @@ const ProfilePageLayout = (page: React.JSX.Element, id: number) => (
   </ProfileLayout>
 )
 export default ProfilePageLayout
-// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-//   let users = await fetchWithoutAuthorization("/v1/users/customDetails/4", "GET");
-
-//   if (users?.error) {
-//     return {
-//       redirect: {
-//         destination: `/?error=${users.message}`,
-//         permanent: false,
-//       },
-//     }
-//   }
-//   console.log("this is the user data for common layout",users?.data)
-//   users = users?.data.user
-//   return {
-//     props: {
-//       user: users,
-//     },
-//   }
-// }

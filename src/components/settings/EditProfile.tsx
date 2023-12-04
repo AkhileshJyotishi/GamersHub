@@ -52,7 +52,7 @@ const EditProfilePage: React.FC<EditProfilePageProps> = ({ props }) => {
   const handleFieldChange = (key: string, value: string) => {
     setprofileData((prevState) => ({ ...prevState, [key]: value }))
   }
-
+  // const [activeTab,setactiveTab]=useState<string>("")
   const profileArray: FilterDetail[] = [
     {
       title: "Profile Name",

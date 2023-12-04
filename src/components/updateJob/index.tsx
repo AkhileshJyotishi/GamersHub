@@ -37,7 +37,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
   const [jobInfo, setJobInfo] = useState<JobInfo>(job)
 
   const uploadJob = async () => {
-    const storedContent = localStorage.getItem("novel__content")
+    const storedContent = localStorage.getItem("noval__content")
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
@@ -63,6 +63,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable={true}
+          storageKey="noval__content"
         />
       </>
     </Layout>

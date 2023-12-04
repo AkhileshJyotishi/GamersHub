@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 
+import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import HoizontalCard from "@/components/ui/Horizontalcard"
@@ -30,8 +32,7 @@ const Albums = () => {
 
   return (
     <>
-      {/* sdfsdfsdf */}
-      {albumDetails &&
+      {albumDetails.length > 0 ? (
         albumDetails.map((album) => (
           <>
             <HoizontalCard
@@ -43,7 +44,19 @@ const Albums = () => {
               tags={album.keyword}
             />
           </>
-        ))}
+        ))
+      ) : (
+        <>
+          {
+            <>
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No albums yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+              </div>
+            </>
+          }
+        </>
+      )}
     </>
   )
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -51,10 +52,7 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
 
 const JobDescription = ({ desc }: { desc: string }) => (
   <div className="w-full min-h-[100px] overflow-hidden mt-2 p-3">
-    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">
-      {desc}
-      sdada sdads aszdfsdfdf
-    </p>
+    <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}</p>
   </div>
 )
 
@@ -136,10 +134,7 @@ const Card: React.FC<JobCardProps> = ({
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
-  // if(userData.id)
-  // console.log(title)
-  // console.log(userData?.id)
-  // arrayOfObjects.some(obj => obj.id === targetId);
+  const router = useRouter()
   const [saved, setSaved] = useState<boolean>(false)
   // console.log(saved)
   useEffect(() => {
@@ -163,17 +158,18 @@ const Card: React.FC<JobCardProps> = ({
 
   return (
     <>
-      <Link
+      <div
         className={clsx(
           "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit rounded-xl  hover:border-[0.1px] ",
           className
         )}
-        href={href}
+        // href={href}
+        onClick={() => router.push(href)}
       >
         <div className="">
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
-              <div className="flex gap-[25px] flex-wrap">
+              <div className="flex gap-[25px] flex-wrap justify-center">
                 <UserImage href={href} />
                 <UserInfo title={title} location={location} />
               </div>
@@ -216,7 +212,7 @@ const Card: React.FC<JobCardProps> = ({
             src={ChevronDownIcon}
           />
         </Link>
-      </Link>
+      </div>
     </>
   )
 }

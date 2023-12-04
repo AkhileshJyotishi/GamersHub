@@ -28,7 +28,7 @@ const socialMediaPlatforms: socialMediaPlatforms = [
   },
   {
     name: "linkedin",
-    icon: <LinkedInIcon className="w-6 h-6 text-[#0A66C2]" />,
+    icon: <LinkedInIcon className="w-6 h-6 " />,
     placeholder: "https://linkedin.com/in/gamecreatorshub",
   },
   {

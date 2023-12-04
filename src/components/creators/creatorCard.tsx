@@ -43,23 +43,28 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           {username ?? "Guest"}
           {/* {"Guest"} */}
         </h3>
-        {/* <span className="mt-[10px]">{creator?.occupation ?? "..."}</span> */}
-        <span className="flex items-center gap-2 mt-[10px]">
-          <MapPinIcon className="w-4 h-4 text-user_interface_6" />
-          <span className="text-center text-user_interface_6">
-            {userDetails?.city},{userDetails?.country}
+        {userDetails && userDetails?.country && (
+          <span className="flex items-center gap-2 mt-[10px]">
+            <MapPinIcon className="w-4 h-4 text-user_interface_6" />
+            <span className="text-center text-user_interface_6">
+              {userDetails?.city},{userDetails?.country}
+            </span>
           </span>
-        </span>
+        )}
       </div>
 
       <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
 
-      {/* Bio */}
       {
         <div className="flex flex-col items-start gap-3 p-3 min-h-[100px]">
           <h3 className="text-[18px] font-semibold ">Bio</h3>
-          <p className=" line-clamp-3">{userDetails?.userBio ?? "bio comes here"}</p>
-          {/* <p>{"bio comes here"}</p> */}
+          {userDetails?.userSoftwares?.length > 0 ? (
+            <>
+              <p className=" line-clamp-3">{userDetails?.userBio}</p>
+            </>
+          ) : (
+            <>...</>
+          )}
         </div>
       }
 
@@ -67,9 +72,15 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         <div className="flex flex-col items-start gap-3 p-3">
           <h3 className="text-[18px] font-semibold ">Skills</h3>
           <div className="flex flex-wrap gap-[10px] ">
-            {userDetails?.userSkills?.map((skill: any, idx) => (
-              <SecondaryTag name={skill?.skill} key={idx} />
-            ))}
+            {userDetails?.userSoftwares?.length > 0 ? (
+              <>
+                {userDetails?.userSkills?.map((skill: any, idx) => (
+                  <SecondaryTag name={skill?.skill} key={idx} />
+                ))}
+              </>
+            ) : (
+              <>...</>
+            )}
           </div>
         </div>
       }
@@ -77,18 +88,17 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
       <div className="flex flex-col items-start p-3 gap-3 mt-[10px]">
         <h3 className="text-[18px] font-semibold ">Softwares</h3>
         <div className="flex flex-wrap gap-[10px] ">
-          {userDetails?.userSoftwares?.map((software: any, idx) => (
-            <SecondaryTag name={software?.software} key={idx} />
-          ))}
+          {userDetails?.userSoftwares?.length > 0 ? (
+            <>
+              {userDetails?.userSoftwares?.map((software: any, idx) => (
+                <SecondaryTag name={software?.software} key={idx} />
+              ))}
+            </>
+          ) : (
+            <>...</>
+          )}
         </div>
       </div>
-      {/* <Link
-        href={`/${creator?.username}/portfolio`}
-        className="text-secondary justify-self-end flex flex-row gap-[20px] items-center p-3 font-medium "
-      >
-        View full profile
-        <ArrowDownIcon className={"text-secondary rotate-[270deg]"} />
-      </Link> */}
     </article>
   )
 }

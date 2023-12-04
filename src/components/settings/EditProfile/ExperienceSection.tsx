@@ -1,4 +1,5 @@
 import React from "react"
+import { useSession } from "next-auth/react"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
@@ -30,8 +31,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   setExperience,
   // onaddExperience,
   // handleExperienceChange,
-  initialExperience,
+  // initialExperience,
 }) => {
+  const { data: session } = useSession()
   return (
     <>
       {ExperienceArray.map((filterdetailarray, idx) => (
@@ -66,7 +68,11 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
               onClick={() =>
-                updateUserExperience(filterdetailarray.id, experience, initialExperience)
+                updateUserExperience(
+                  filterdetailarray.id,
+                  experience,
+                  session?.user?.name as string
+                )
               }
             >
               Update
@@ -74,7 +80,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             {ExperienceArray.length > 1 && (
               <Button
                 className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                onClick={() => removeuserExperience(filterdetailarray.id, setExperience, idx)}
+                onClick={() =>
+                  removeuserExperience(
+                    filterdetailarray.id,
+                    setExperience,
+                    idx,
+                    session?.user?.name as string
+                  )
+                }
               >
                 Remove
               </Button>

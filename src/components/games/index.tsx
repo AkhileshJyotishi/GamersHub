@@ -19,7 +19,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
     const { id, banner, user, title, savedUsers } = backendGame
 
     // Assuming you want to use the profileImage property if available, otherwise fallback to a default value
-    const profileImage = user?.profileImage || "default-profile-image.jpg"
+    const profileImage = user?.profileImage || ""
 
     // Create the simplified Games object
     const gamesInterface: Games = {

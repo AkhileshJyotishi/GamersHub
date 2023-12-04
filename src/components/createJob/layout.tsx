@@ -175,7 +175,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         },
         {
           label: "Hourly price",
-          value: "HOURlY",
+          value: "HOURLY",
         },
         {
           label: "Negotiable",

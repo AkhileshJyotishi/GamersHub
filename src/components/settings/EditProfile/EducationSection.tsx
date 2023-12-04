@@ -1,5 +1,6 @@
 import React from "react"
 import clsx from "clsx"
+import { useSession } from "next-auth/react"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
@@ -33,6 +34,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   // handleEducationChange,
   initialEducation,
 }) => {
+  const { data: session } = useSession()
   return (
     <>
       {EducationArray.map((filterdetailarray, idx) => (
@@ -66,7 +68,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               className={
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
-              onClick={() => updateUserEducation(filterdetailarray.id, education, initialEducation)}
+              onClick={() =>
+                updateUserEducation(
+                  filterdetailarray.id,
+                  education,
+                  initialEducation,
+                  session?.user?.name as string
+                )
+              }
             >
               Update
             </Button>
@@ -75,7 +84,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
             {
               <Button
                 className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                onClick={() => removeUserEducation(filterdetailarray.id, setEducation, idx)}
+                onClick={() =>
+                  removeUserEducation(
+                    filterdetailarray.id,
+                    setEducation,
+                    idx,
+                    session?.user?.name as string
+                  )
+                }
               >
                 Remove Education
               </Button>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
+import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Card from "@/components/jobs/jobsCard"
@@ -49,7 +51,7 @@ const Jobs = () => {
   return (
     <>
       {/* sdfsdfsdf */}
-      {jobDetails &&
+      {jobDetails.length > 0 ? (
         jobDetails.map((job) => {
           console.log("job upload  ", job)
           const x = FrontendCompatibleObject(job)
@@ -58,7 +60,19 @@ const Jobs = () => {
               <Card {...x} className="" />
             </>
           )
-        })}
+        })
+      ) : (
+        <>
+          {
+            <>
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No jobs yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+              </div>
+            </>
+          }
+        </>
+      )}
     </>
   )
 }

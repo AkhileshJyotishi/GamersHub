@@ -1,6 +1,8 @@
 import React, { useState } from "react"
+import clsx from "clsx"
 // import clsx from "clsx"
 import { City, Country } from "country-state-city"
+import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
 
@@ -21,7 +23,9 @@ const EditProfilePage = ({
   allSkills: IuserSkill[]
   allSoftwares: IuserSoftware[]
 }) => {
+  const [activeTab, setactiveTab] = useState<string>("Profile")
   const country = Country.getAllCountries()
+  const { data: session } = useSession()
 
   const countryList = country.map((country) => {
     return {
@@ -56,6 +60,7 @@ const EditProfilePage = ({
     country: profileDetails?.country,
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
+    userSoftwares: profileDetails.userSoftwares,
   })
   const initialskillstags = profileDetails.userSkills
     ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
@@ -85,10 +90,14 @@ const EditProfilePage = ({
     return cityList!
   }
 
-  const handleFieldChange = (key: string, value: string) => {
+  const handleFieldChange = (key: string, value: string | string[]) => {
     setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
-      handleCityOptions(codemapping[value])
+      handleCityOptions(codemapping[value as string])
+    } else if (key == "userSoftwares") {
+      handleSoftwareTagsChange(value as string[])
+    } else if (key == "userSkills") {
+      handleTagsChange(value as string[])
     }
   }
 
@@ -310,7 +319,7 @@ const EditProfilePage = ({
       inputType: "tags",
       placeholder: "skills...",
       initialtags: initialskillstags,
-      onTagsChange: handleTagsChange,
+      onTagsChange: (value) => handleFieldChange("userSkills", value as string[]),
       selectOptions: predefinedTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
     },
@@ -319,7 +328,7 @@ const EditProfilePage = ({
       inputType: "tags",
       placeholder: "Softwares...",
       initialtags: initialsoftwaretags,
-      onTagsChange: handleSoftwareTagsChange,
+      onTagsChange: (value) => handleFieldChange("userSoftwares", value as string[]),
       selectOptions: predefinedSoftwareTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
     },
@@ -542,152 +551,196 @@ const EditProfilePage = ({
       className: "bg-transparent rounded-md",
     },
   ])
+  const tabs = ["Profile", "Experience", "Education"]
+
+  const Tab = () => {
+    return tabs.map((tab) => {
+      return (
+        <>
+          <div
+            className={clsx("sm:min-w-[80px] active:current cursor-pointer")}
+            // href={`/${data?.id}/profile/${tab}`}
+            onClick={() => setactiveTab(tab)}
+          >
+            <div
+              // href="#"
+              className={clsx(
+                ` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
+            bg-white
+              text-light outline-none focus:outline-none   `,
+                activeTab === tab && "text-secondary"
+              )}
+            >
+              {tab}
+            </div>
+          </div>
+        </>
+      )
+    })
+  }
 
   return (
     <>
-      <div className="flex p-3 gap-y-6 w-full md:w-[80%] lg:w-[60%] mx-auto flex-wrap justify-evenly">
-        <ProfileSection profileArray={profileArray} />
-        <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
-          Experience
-        </h1>
-        {experience.length > 0 && (
-          <ExperienceSection
-            ExperienceArray={ExperienceArray}
-            experience={experience}
-            setExperience={setExperience}
-            onaddExperience={addExperience}
-            // onremoveExperience={removeExperience}
-            handleExperienceChange={handleExperienceChange}
-            initialExperience={profileDetails.userExperience}
-          />
+      <div className="bg-user_interface_1 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3  mt-[20px] ">
+        <Tab />
+      </div>
+      <div className="flex p-3 gap-y-6 w-full md:w-[80%] lg:w-[60%] mx-auto flex-wrap justify-evenly mt-4">
+        {activeTab == "Profile" && (
+          <ProfileSection profileArray={profileArray} profileData={profileData} />
         )}
-        {newExperienceArray.map((filterdetailarray, idx) => (
+        {activeTab == "Experience" && (
           <>
-            {filterdetailarray.map((field, index) => (
+            {/* <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
+               Experience
+             </h1> */}
+            {experience.length > 0 && (
+              <ExperienceSection
+                ExperienceArray={ExperienceArray}
+                experience={experience}
+                setExperience={setExperience}
+                onaddExperience={addExperience}
+                // onremoveExperience={removeExperience}
+                handleExperienceChange={handleExperienceChange}
+                initialExperience={profileDetails.userExperience}
+              />
+            )}
+            {newExperienceArray.map((filterdetailarray, idx) => (
               <>
-                <div
-                  key={index}
-                  className={`flex items-center p-2 md:gap-8 w-full ${
-                    field.inputType == "date" ? "sm:w-[50%]" : ""
-                  }`}
-                >
-                  <Filter
-                    key={index}
-                    inputType={field.inputType}
-                    title={field.title}
-                    placeholder={field.placeholder}
-                    value={field.value}
-                    onChange={field.onChange}
-                    selectOptions={field.selectOptions}
-                    className={field.className || ""}
-                    Variant="flex-col w-full flex"
-                  />
+                {filterdetailarray.map((field, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
+                    >
+                      <Filter
+                        key={index}
+                        inputType={field.inputType}
+                        title={field.title}
+                        placeholder={field.placeholder}
+                        value={field.value}
+                        onChange={field.onChange}
+                        selectOptions={field.selectOptions}
+                        className={field.className || ""}
+                        Variant="flex-col w-full flex"
+                      />
+                    </div>
+                  </>
+                ))}
+                <div className="flex justify-between w-full">
+                  <Button
+                    className={
+                      "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+                    }
+                    onClick={() =>
+                      uploadUserExperience(newExperience[0], session?.user?.name as string)
+                    }
+                  >
+                    upload
+                  </Button>
+                  {/* {(ExperienceArray.length + newExperienceArray.length)} */}
+                  {ExperienceArray.length + newExperienceArray.length > 1 && (
+                    <Button
+                      className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+                      onClick={() => removenewExperience(idx)}
+                    >
+                      Remove
+                    </Button>
+                  )}
                 </div>
               </>
             ))}
-            <div className="flex justify-between w-full">
+            {newExperienceArray.length < 1 && (
               <Button
                 className={
-                  "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+                  "bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center w-full"
                 }
-                onClick={() => uploadUserExperience(newExperience[0])}
+                onClick={() => addExperience()}
               >
-                upload
+                Add Experience
               </Button>
-              {/* {(ExperienceArray.length + newExperienceArray.length)} */}
-              {ExperienceArray.length + newExperienceArray.length > 1 && (
-                <Button
-                  className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                  onClick={() => removenewExperience(idx)}
-                >
-                  Remove
-                </Button>
-              )}
-            </div>
-          </>
-        ))}
-        {newExperienceArray.length < 1 && (
-          <Button
-            className={
-              "bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center w-full"
-            }
-            onClick={() => addExperience()}
-          >
-            Add Experience
-          </Button>
-        )}
-
-        <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
-          Education
-        </h1>
-        {education.length > 0 && (
-          <>
-            <EducationSection
-              EducationArray={EducationArray}
-              education={education}
-              setEducation={setEducation}
-              onAddEducation={addEducation}
-              // onRemoveEducation={removeEducation}
-              handleEducationChange={handleEducationChange}
-              initialEducation={profileDetails.userEducation}
-            />
+            )}
           </>
         )}
-        {newEducationArray.map((filterdetailarray, idx) => (
+        {activeTab == "Education" && (
           <>
-            {filterdetailarray.map((field, index) => (
+            {/*             
+                    <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
+                      Education
+                    </h1> */}
+            {education.length > 0 && (
               <>
-                <div
-                  key={index}
-                  className={`flex items-center p-2 md:gap-8 w-full ${
-                    field.inputType == "date" ? "sm:w-[50%]" : ""
-                  }`}
-                >
-                  <Filter
-                    key={index}
-                    inputType={field.inputType}
-                    title={field.title}
-                    placeholder={field.placeholder}
-                    value={field.value}
-                    onChange={field.onChange}
-                    selectOptions={field.selectOptions}
-                    className={field.className || ""}
-                    Variant="flex-col w-full flex"
-                  />
+                <EducationSection
+                  EducationArray={EducationArray}
+                  education={education}
+                  setEducation={setEducation}
+                  onAddEducation={addEducation}
+                  // onRemoveEducation={removeEducation}
+                  handleEducationChange={handleEducationChange}
+                  initialEducation={profileDetails.userEducation}
+                />
+              </>
+            )}
+            {newEducationArray.map((filterdetailarray, idx) => (
+              <>
+                {filterdetailarray.map((field, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
+                    >
+                      <Filter
+                        key={index}
+                        inputType={field.inputType}
+                        title={field.title}
+                        placeholder={field.placeholder}
+                        value={field.value}
+                        onChange={field.onChange}
+                        selectOptions={field.selectOptions}
+                        className={field.className || ""}
+                        Variant="flex-col w-full flex"
+                      />
+                    </div>
+                  </>
+                ))}
+                <div className="flex justify-between w-full">
+                  <Button
+                    className={
+                      "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+                    }
+                    onClick={() =>
+                      uploadUserEducation(newEducation[0], session?.user?.name as string)
+                    }
+                  >
+                    Upload
+                  </Button>
+                  {newEducationArray.length + EducationArray.length > 1 && (
+                    <Button
+                      className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+                      onClick={() => removenewEducation(idx)}
+                    >
+                      Remove
+                    </Button>
+                  )}
                 </div>
               </>
             ))}
-            <div className="flex justify-between w-full">
-              <Button
-                className={
-                  "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                }
-                onClick={() => uploadUserEducation(newEducation[0])}
-              >
-                Upload
-              </Button>
-              {newEducationArray.length + EducationArray.length > 1 && (
-                <Button
-                  className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                  onClick={() => removenewEducation(idx)}
-                >
-                  Remove
-                </Button>
-              )}
-            </div>
-          </>
-        ))}
 
-        {newEducationArray.length < 1 && (
-          <>
-            <Button
-              className={
-                "bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center w-full"
-              }
-              onClick={() => addEducation()}
-            >
-              add education
-            </Button>
+            {newEducationArray.length < 1 && (
+              <>
+                <Button
+                  className={
+                    "bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center w-full"
+                  }
+                  onClick={() => addEducation()}
+                >
+                  add education
+                </Button>
+              </>
+            )}
           </>
         )}
       </div>

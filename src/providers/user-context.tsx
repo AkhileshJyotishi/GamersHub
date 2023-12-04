@@ -60,6 +60,9 @@ const UserProvider = ({ children }: IUserProvider) => {
       if (session.status == "authenticated") {
         loaddata()
       }
+    } else {
+      // if(session)
+      // signOut()
     }
     // userdata
   }, [session])

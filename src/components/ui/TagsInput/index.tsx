@@ -68,7 +68,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
   }
 
   return (
-    <div className="relative flex flex-col items-start w-full">
+    <div className="flex flex-col items-start w-full ">
       <TextInput
         type="text"
         placeholder="Enter tags"
@@ -83,8 +83,8 @@ const TagsInput: React.FC<TagsInputProps> = ({
 
       {suggestions.length > 0 && (
         <div
-          className="absolute flex flex-col gap-2 p-4 mt-2 rounded-lg shadow-md bg-background"
-          style={{ zIndex: 11 }}
+          className="absolute flex flex-col gap-2 p-4 mt-12 rounded-lg shadow-md bg-background "
+          style={{ zIndex: 18 }}
         >
           {suggestions.map((tag, index) => (
             <div
