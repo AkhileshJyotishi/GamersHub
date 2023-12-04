@@ -86,9 +86,9 @@ const ProfileLayout = ({
           >
             <div
               // href="#"
-              className={` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
+              className={clsx(` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
             bg-white
-              text-light outline-none focus:outline-none   `}
+              text-light outline-none focus:outline-none   `,)}
             >
               {tab}
             </div>

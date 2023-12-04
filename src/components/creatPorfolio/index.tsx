@@ -84,7 +84,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     >
       {/* Render the filterDetails here */}
       <div className="flex flex-col w-full gap-4">
-        <h1 className="text-[22px] mt-4 font-semibold">Post the content</h1>
+        <h1 className="text-[22px] mt-4 font-semibold">Content</h1>
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable={true}

@@ -119,7 +119,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
       <div className="flex flex-col items-start w-full py-[15px] hover:bg-user_interface_4 group ">
         <div
           className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px] cursor-pointer group-hover:text-red-500 transition duration-200"
-          onClick={onSignOut}
+          onClick={(e)=>{router.push("/");onSignOut!(e)}}
         >
           <LogOutIcon className={"w-[17px] h-[17px]"} />
           <p>Sign Out</p>

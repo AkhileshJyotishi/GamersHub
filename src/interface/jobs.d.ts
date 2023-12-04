@@ -21,6 +21,7 @@ interface Job {
   location: string
   href: string
   chips?: string[]
+  banner:string |null
   savedUsers: {
     id: number
   }[]

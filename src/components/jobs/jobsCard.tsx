@@ -20,6 +20,7 @@ interface JobCardProps {
   date: string | null
   salary: string
   type: string
+  banner:string|null
   location: string
   href: string
   className: string
@@ -30,10 +31,10 @@ interface JobCardProps {
   // userId:number
 }
 
-const UserImage = ({ href }: { href: string }) => (
+const UserImage = ({ href }: { href: string |null}) => (
   <Link href={"#"} className="my-auto">
     <div className="flex items-center">
-      <Image width={100} height={100} alt={""} className="w-10 h-10 rounded-full" src={href} />
+      <Image width={100} height={100} alt={""} className="w-10 h-10 border-[0.1px] rounded-full " src={href || ""} />
     </div>
   </Link>
 )
@@ -131,6 +132,7 @@ const Card: React.FC<JobCardProps> = ({
   href,
   id,
   savedUsers,
+  banner
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
@@ -170,7 +172,7 @@ const Card: React.FC<JobCardProps> = ({
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
               <div className="flex gap-[25px] flex-wrap justify-center">
-                <UserImage href={href} />
+                <UserImage href={banner} />
                 <UserInfo title={title} location={location} />
               </div>
               {session && (

@@ -20,6 +20,7 @@ const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
     // chips: backendJob.jobSoftwares,
     savedUsers: backendJob.savedUsers,
+    banner:backendJob.banner
   }
 }
 type JobsPageProps = {

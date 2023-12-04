@@ -16,7 +16,7 @@ import Layout from "./gamesLayout"
 // }
 const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
   function convertToGamesInterface(backendGame: BackendGame): Games {
-    const { id, banner, user, title, savedUsers } = backendGame
+    const { id, banner, user, title, savedUsers,userId } = backendGame
 
     // Assuming you want to use the profileImage property if available, otherwise fallback to a default value
     const profileImage = user?.profileImage || ""
@@ -29,6 +29,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       title,
       cover: profileImage,
       savedUsers,
+      userId
     }
 
     return gamesInterface
@@ -77,7 +78,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
     })
   })
 
-  console.log(games)
+  // console.log(games)
 
   return (
     <Layout games={games} setGames={setGames} setActiveTab={setactivetab}>
@@ -85,11 +86,11 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         <>
           {games.length > 0 ? (
             <>
-              <div className="w-[70%] grid sm:w-full grid-cols-1 gap-6 p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3">
+            <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
                 {games.map((game, idx) => (
                   <Card
                     {...game}
-                    className="w-[100%] h-[300px] md:h-[250px] lg:h-[350px]"
+                    className="w-[100%] max-w-[380px] h-[310px]"
                     key={idx}
                   />
                 ))}
@@ -113,14 +114,14 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         <>
           {savedGame ? (
             <>
-              <div className="w-[70%] grid sm:w-full grid-cols-1 gap-6 p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3">
+              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
                 {games.map((game, idx) => {
                   const arr = game.savedUsers.map((obj) => obj.id)
                   return arr.filter((id) => {
                     id === userData?.id && (
                       <Card
                         {...game}
-                        className="w-[100%] h-[300px] md:h-[250px] lg:h-[350px]"
+                        className="w-[100%] max-w-[380px] h-[310px]"
                         key={idx}
                       />
                     )
@@ -147,8 +148,8 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
           <>
             {myjob && Array.from(myjob).length > 0 ? (
               // <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
-              <div className="w-[70%] grid sm:w-full grid-cols-1 gap-6 p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3">
-                {myjob && myjob.map((job, idx) => <Card {...job} className="" key={idx} />)}
+              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
+                {myjob && myjob.map((job, idx) => <Card {...job} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />)}
               </div>
             ) : (
               <>

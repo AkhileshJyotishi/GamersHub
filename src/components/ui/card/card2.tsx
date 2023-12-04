@@ -24,7 +24,11 @@ interface CardProps {
   savedPost: {
     id: number
   }[]
-  likedPost: Allow
+  likedPost: {
+    
+      id:number
+    
+  }[]
 }
 
 const Card: React.FC<CardProps> = ({

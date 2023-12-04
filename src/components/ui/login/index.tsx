@@ -22,6 +22,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     email: "",
     password: "",
   })
+  const {setIsLoginModalOpen}=useUserContext()
 
   interface FormType {
     email: string
@@ -83,7 +84,9 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       if (res?.error) {
         toast.error(JSON.parse(res?.error)?.message)
       } else {
+        setIsLoginModalOpen(false)
         router.push("/")
+        
       }
     } catch (error: Allow) {
       toast.error(error)

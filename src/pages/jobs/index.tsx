@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 
 import { getSession } from "@/lib/auth"
@@ -8,12 +8,8 @@ import JobsPage from "@/components/jobs"
 
 // type jobsDetails=
 const Jobs = ({ jobs }: { jobs: Job[] }) => {
-  useEffect(() => {
-    // Check if 'jobs' is being used here
-    console.log("object")
-    console.log("jobs coming ", jobs)
-  }, [jobs])
-  console.log("why ", jobs)
+
+
   return (
     <>
       <JobsPage jobs={jobs} />
@@ -67,6 +63,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
+      banner:backendJob.banner
     }
   }
 

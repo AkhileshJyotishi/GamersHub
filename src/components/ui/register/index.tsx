@@ -12,6 +12,7 @@ import MailIcon from "@/components/icons/mail"
 
 import Button from "../button"
 import Modal from "../modal"
+import { useUserContext } from "@/providers/user-context"
 
 interface RegisterModaProps {
   isOpen: boolean
@@ -19,6 +20,7 @@ interface RegisterModaProps {
 }
 const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
   const router = useRouter()
+  const {setIsRegisterModalOpen}=useUserContext()
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -63,6 +65,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
             type="button"
             className="flex items-center justify-center justify-self-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] max-w-[228px] bg-gray-100  hover:bg-gray-200  focus:outline-none   p-[2px] min-h-[40px] rounded-3xl"
             onClick={() => {
+              setIsRegisterModalOpen(false)
               router.push("/auth/signup")
             }}
           >

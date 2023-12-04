@@ -1,8 +1,9 @@
 import * as React from "react"
 import { motion } from "framer-motion"
-import Link from "next/link"
 
 import styles from "./style.module.css"
+import { useRouter } from "next/router"
+import { useUserContext } from "@/providers/user-context"
 const variants = {
   open: {
     y: 0,
@@ -29,6 +30,8 @@ type menuProps = {
 }
 export const MenuItem = ({ data }: menuProps) => {
   // const style = { border: `2px solid white` }
+  const router=useRouter()
+  const {toggleOpen,setTap,tap}=useUserContext()
   return (
     <>
       <motion.li
@@ -37,10 +40,16 @@ export const MenuItem = ({ data }: menuProps) => {
         whileTap={{ scale: 0.95 }}
         className={styles.li}
       >
-        <Link href={data.path} className="hover:text-secondary hover:scale-125">
+        <div onClick={()=>{
+          toggleOpen()
+          setTap(!tap)
+          router.replace(data.path)
+          
+        }
+        }  className="hover:text-secondary hover:scale-125">
           {" "}
           {data.title}
-        </Link>
+        </div>
       </motion.li>
     </>
   )

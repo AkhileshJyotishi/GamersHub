@@ -63,4 +63,5 @@ interface Games {
   savedUsers: {
     id: number
   }[]
+  userId:number
 }

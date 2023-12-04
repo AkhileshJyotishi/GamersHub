@@ -211,7 +211,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
           <div className="mt-[10px]">Filters</div>
         </Button>
       </div>
-      <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto justify-center">
+      <div className="flex gap-4 p-4 mt-3 w-[100%] mx-auto justify-center">
         <DesktopFilter
           className={"hidden md:flex"}
           key={1}

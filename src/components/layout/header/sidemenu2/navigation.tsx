@@ -17,11 +17,44 @@ const variants = {
 }
 
 export const Navigation = () => {
-  const { toggleOpen, isOpen } = useUserContext()
-
+  const { toggleOpen, isOpen ,userData} = useUserContext()
+  const navmenu = [
+    {
+      title: "Home",
+      path: "/",
+    },
+    {
+      title: "Jobs",
+      path: "/jobs",
+    },
+    {
+      title: "Creators",
+      path: "/creator",
+    },
+    {
+      title: "Games",
+      path: "/games",
+    },
+    {
+      title: "profile",
+      path: `/${userData?.id}/profile/albums`,
+    },
+    {
+      title: "Login",
+      path: "/",
+    },
+    {
+      title: "Sign Up",
+      path: "/",
+    },
+  ]
+  
   return (
     <>
+    <div>
+
       {isOpen && <MenuToggle toggle={() => toggleOpen()} />}
+    </div>
 
       <motion.ul variants={variants} className={styles.ul}>
         {navmenu.map((data, index) => (
@@ -32,29 +65,3 @@ export const Navigation = () => {
   )
 }
 
-const navmenu = [
-  {
-    title: "Home",
-    path: "/",
-  },
-  {
-    title: "My feed",
-    path: "/",
-  },
-  {
-    title: "Find Professionals",
-    path: "/myfeed",
-  },
-  {
-    title: "Tutorials",
-    path: "/",
-  },
-  {
-    title: "Jobs",
-    path: "/",
-  },
-  {
-    title: "Assets",
-    path: "/",
-  },
-]

@@ -19,7 +19,7 @@ import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 
-const HomePage = ({ users }: { users: Allow }) => {
+const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage } = router.query
@@ -116,6 +116,8 @@ const HomePage = ({ users }: { users: Allow }) => {
               className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
               id={data.id}
               title={data.title}
+              likedPost={data.savedUsers ?? []}
+              savedPost={data?.postLikes?.map((liked)=>liked.likedUsers) ?? []}
             />
           ))}
         </div>
