@@ -26,7 +26,12 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
-    FRONTEND_BASE_URL: Joi.string().description('Frontend application base url')
+    FRONTEND_BASE_URL: Joi.string().description('Frontend application base url'),
+    BACKBLAZE_ACCESS_KEY_ID: Joi.string().description('Backblaze access key id'),
+    BACKBLAZE_SECRET_ACCESS_KEY: Joi.string().description('Backblaze secret access key id'),
+    BACKBLAZE_REGION: Joi.string().description('Backblaze region'),
+    BACKBLAZE_BUCKET_NAME: Joi.string().description('Backblaze bucket name'),
+    BACKBLAZE_ENDPOINT_URL: Joi.string().description('Backblaze endpoint url')
   })
   .unknown()
 
@@ -61,5 +66,12 @@ export default {
   },
   frontend: {
     url: envVars.FRONTEND_BASE_URL
+  },
+  backblaze: {
+    accessKey: envVars.BACKBLAZE_ACCESS_KEY_ID,
+    secretAccess: envVars.BACKBLAZE_SECRET_ACCESS_KEY,
+    region: envVars.BACKBLAZE_REGION,
+    bucket: envVars.BACKBLAZE_BUCKET_NAME,
+    url: envVars.BACKBLAZE_ENDPOINT_URL
   }
 }
