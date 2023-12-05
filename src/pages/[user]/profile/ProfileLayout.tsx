@@ -57,6 +57,7 @@ const ProfileLayout = ({
 
   useEffect(() => {
     console.log("para", param)
+    console.log("Mounting new profile")
 
     const loaddata = async () => {
       const users = await fetchWithoutAuthorization(
@@ -64,16 +65,18 @@ const ProfileLayout = ({
         "GET"
       )
 
+      console.log("User fetched", users)
       if (users?.error) {
         router.replace(`/?emessage=Please Authenticate`)
       } else {
-        setData(users?.data.user)
+        setData(users?.data?.user)
       }
     }
+
     loaddata().finally(() => {
       setLoading(false)
     })
-  }, [param, router])
+  }, [param, router.query])
   const tabs = ["posts", "albums", "jobs"]
 
   const Tab = () => {

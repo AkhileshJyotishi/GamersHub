@@ -1,5 +1,5 @@
 // import { MediaHostURL } from "@/utils/apiClient";
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -50,7 +50,7 @@ export default function ProfileCard({
   className,
   isFollowing: _isFollowing,
 }: Props) {
-  const [currentUser] = useState(_currentUser)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   // const profileImage = currentUser?.profile_image?.url
   const { userData } = useUserContext()
   const [authUser] = useState(userData)
@@ -60,6 +60,11 @@ export default function ProfileCard({
     month: "long",
     year: "numeric",
   })
+
+  useEffect(() => {
+    if (_currentUser)
+      setCurrentUser(_currentUser)
+  }, [_currentUser])
 
   return (
     <>

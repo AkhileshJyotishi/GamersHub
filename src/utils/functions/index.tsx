@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from "axios"
 
-import instance from "@/lib/axios"
+import instance, { fileInstance } from "@/lib/axios"
+import { toast } from "react-toastify"
 
 export function getLocalRecentSearches(): string[] | null {
   const recentSearchesString = localStorage.getItem("recent-searches")
@@ -102,5 +103,44 @@ export const fetchWithoutAuthorization = async (
       message: "Request failed",
       data: null,
     }
+  }
+}
+export const fetchFile = async (
+  url: string,
+  token: string,
+  method: string,
+  data?: Allow,
+  customHeaders?: { [key: string]: string }
+): Promise<APITypes | null> => {
+
+  try {
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      ...customHeaders,
+    }
+    const response = await fileInstance.request({
+      url,
+      method,
+      headers,
+      data
+    })
+    const resp =await response.data
+    if(resp?.error){
+      toast.info(resp?.message)
+      // return
+    }
+    return  resp
+
+  } catch (error) {
+
+    console.error(error)
+    console.log("Null is coming")
+    return {
+      error: error,
+      message: "Request failed",
+      data: null,
+    }
+    
   }
 }

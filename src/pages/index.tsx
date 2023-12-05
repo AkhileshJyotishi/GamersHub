@@ -117,7 +117,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
               id={data.id}
               title={data.title}
               likedPost={data.savedUsers ?? []}
-              savedPost={data?.postLikes?.map((liked)=>liked.likedUsers) ?? []}
+              savedPost={data.postLikes && data.postLikes.length>0 ? data?.postLikes?.map((liked)=>liked.likedUsers) : [] }
             />
           ))}
         </div>

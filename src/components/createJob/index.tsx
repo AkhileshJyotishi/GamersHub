@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchFile } from "@/utils/functions"
 
 import Filter from "../filter/mainfilter/filter"
 
@@ -69,7 +69,17 @@ const CreateJob: React.FC = () => {
     }
     localStorage.removeItem("noval__content1")
     localStorage.removeItem("noval__content2")
-    jobInfo.banner = "https://picsum.photos/id/250/900/900"
+    const formdata=new FormData();
+    formdata.append("file",jobInfo.banner as Blob);
+    console.log("jobInfo.banner ",jobInfo.banner)
+    const isuploaded=await fetchFile("/v1/upload/file",session?.user?.name as string,"POST",formdata);
+    // if(isuploaded?.error){
+    // toast.info(isuploaded?.message)
+    //     return
+    // }
+    console.log(isuploaded?.data)
+    // return;
+    jobInfo.banner = isuploaded?.data.image.Location;
     jobInfo.publishDate = new Date().toISOString()
     // jobInfo.title;
     // console.log(jobInfo.jobDetails)
@@ -77,7 +87,7 @@ const CreateJob: React.FC = () => {
     // delete jobInfo.roles
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
     if (data?.error) {
-      toast.error(data.message)
+      toast.error(data?.message)
       return
     }
     toast.success(data?.message)

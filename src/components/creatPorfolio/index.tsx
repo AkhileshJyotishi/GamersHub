@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "@/components/creatPorfolio/layout"
 
@@ -14,7 +14,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 // import { Editor } from "novel";
 
-const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend }) => {
+const  CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend }) => {
   const { data: session } = useSession()
   const path = usePathname()
   // console.log("that is the path  ",path.includes("updatePost"),post)
@@ -51,8 +51,12 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
 
   const uploadPost = async () => {
     filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
-    filtersState.banner =
-      "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
+    const formdata=new FormData();
+    formdata.append("file",filtersState.banner as string)
+    const isuploaded=await fetchFile("/v1/upload/file",session?.user?.name as string,"POST",formdata);
+console.log("is uploaded",isuploaded);
+    filtersState.banner =isuploaded?.data.image.Location;
+      // "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
     let method
     let res
     if (isUpdate) {

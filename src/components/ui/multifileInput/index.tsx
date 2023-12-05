@@ -70,7 +70,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
     return () => {
       selectedFiles.forEach((file) => URL.revokeObjectURL(URL.createObjectURL(file)))
     }
-  }, [selectedFiles])
+  }, [])
 
   return (
     <div>
@@ -149,7 +149,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
               <Image src={URL.createObjectURL(item)} alt={""} height={400} width={400} />
               <div className="absolute top-0 right-0 flex p-1 space-x-2 ">
                 <Button className="hover:text-red-500" onClick={() => handleRemoveFile(idx)}>
-                  <CloseIcon className="hover:stroke-red-500" />
+                  <CloseIcon className="transition duration-200 hover:stroke-red-500 hover:fill-red-500" />
                 </Button>
                 <Button onClick={() => handleFullscreen(idx)}>
                   <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />

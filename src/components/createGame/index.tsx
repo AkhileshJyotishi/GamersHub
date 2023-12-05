@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 
 import { BackendGame } from "@/interface/games"
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "@/components/createGame/layout"
 
@@ -82,8 +82,21 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     if (storedContent !== null) {
       gameInfo.description = JSON.parse(storedContent)
     }
-    gameInfo.banner = "https://picsum.photos/id/250/900/900"
+    const formdata=new FormData();
+    formdata.append("file",gameInfo.banner as Blob);
+    console.log("jobInfo.banner ",gameInfo.banner)
+    const isuploaded=await fetchFile("/v1/upload/file",session?.data?.user?.name as string,"POST",formdata);
+    // if(isuploaded?.error){
+    // toast.info(isuploaded?.message)
+    //     return
+    // }
+    console.log(isuploaded?.data)
+    // return;
+    gameInfo.banner = isuploaded?.data.image.Location;
+    // gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
+    const multiisuploaded=await fetchFile("/v1/upload/multiple",session?.data?.user?.name as string,"POST",formdata);
+    
     gameInfo.gameAssets = [
       "https://picsum.photos/id/250/900/900",
       "https://picsum.photos/id/250/900/900",

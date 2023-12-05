@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdnb.artstation.com",
       },
+      {
+        protocol: "https",
+        hostname: "f003.backblazeb2.com",
+      },
     ],
   },
 }
