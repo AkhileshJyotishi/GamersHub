@@ -1,31 +1,27 @@
 import s3 from '../config/aws-client'
 import config from '../config/config'
+import fs from 'fs'
+import ApiError from '../utils/api-error'
+import httpStatus from 'http-status'
 
 /**
  * Upload a file
  * @param {ObjectId} file
  * @returns {Promise<Album[]>}
  */
-
 const uploadFile = async (file: any): Promise<any> => {
-  console.log('file', file)
-  const params = {
-    Bucket: config.backblaze.bucket,
-    Key: `uploads/${Date.now()}_${file.originalname}`,
-    Body: file.buffer
-  }
-
-  // Upload file to Backblaze B2 Cloud Storage
-  s3.upload(params, (err: any, data: any) => {
-    if (err) {
-      console.error('Error uploading file to Backblaze B2:', err)
-      return { error: 'Internal Server Error' }
+  try {
+    const params = {
+      Bucket: config.backblaze.bucket,
+      Key: `uploads/${Date.now()}_${file.originalname}`,
+      Body: fs.createReadStream(file.path)
     }
 
-    // Optionally, you can save additional information about the file in your database.
-    console.log(data)
+    const data = await s3.upload(params).promise()
     return data
-  })
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'File uploading failed')
+  }
 }
 
 export default {
