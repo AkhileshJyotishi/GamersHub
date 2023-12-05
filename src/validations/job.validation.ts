@@ -10,13 +10,13 @@ const createJob = {
     remote: Joi.boolean().required(),
     paymentType: Joi.string().valid('FIXED', 'HOURLY', 'NEGOTIABLE').required(),
     jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB').required(),
-    banner: Joi.string().allow(null).optional(),
-    description: Joi.string().allow(null).optional(),
-    publishDate: Joi.date().iso().allow(null).optional(),
-    jobDetails: Joi.object().allow(null).optional(),
-    aboutRecruiter: Joi.object().allow(null).optional(),
-    country: Joi.string().allow(null).optional(),
-    city: Joi.string().allow(null).optional(),
+    banner: Joi.string().allow('').optional(),
+    description: Joi.string().allow('').optional(),
+    publishDate: Joi.date().iso().allow('').optional(),
+    jobDetails: Joi.object().allow({}).optional(),
+    aboutRecruiter: Joi.object().allow({}).optional(),
+    country: Joi.string().allow('').optional(),
+    city: Joi.string().allow('').optional(),
     paymentValue: Joi.number().optional(),
     expertise: Joi.string().valid('ENTRY', 'INTERMEDIATE', 'EXPERT').allow(null).optional(),
     jobSoftwares: Joi.array().items(Joi.string()).optional()
@@ -35,13 +35,13 @@ const updateJob = {
       remote: Joi.boolean().optional(),
       paymentType: Joi.string().valid('FIXED', 'HOURLY', 'NEGOTIABLE').optional(),
       jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB').optional(),
-      banner: Joi.string().allow(null).optional(),
-      publishDate: Joi.date().iso().allow(null).optional(),
-      jobDetails: Joi.object().allow(null).optional(),
-      aboutRecruiter: Joi.object().allow(null).optional(),
-      country: Joi.string().allow(null).optional(),
-      city: Joi.string().allow(null).optional(),
-      description: Joi.string().allow(null).optional(),
+      banner: Joi.string().allow('').optional(),
+      publishDate: Joi.date().iso().allow('').optional(),
+      jobDetails: Joi.object().allow({}).optional(),
+      aboutRecruiter: Joi.object().allow({}).optional(),
+      country: Joi.string().allow('').optional(),
+      city: Joi.string().allow('').optional(),
+      description: Joi.string().allow('').optional(),
       paymentValue: Joi.number().optional(),
       expertise: Joi.string().valid('ENTRY', 'INTERMEDIATE', 'EXPERT').allow(null).optional(),
       jobSoftwares: Joi.array().items(Joi.string()).optional()
@@ -53,7 +53,7 @@ const updateApplication = {
   params: idParamsValidation,
   body: Joi.object().keys({
     jobId: Joi.number().integer().required(),
-    resume: Joi.string().allow(null).optional(),
+    resume: Joi.string().allow('').optional(),
     motivationToApply: Joi.string().optional().min(1)
   })
 }
@@ -61,7 +61,7 @@ const updateApplication = {
 const createApplication = {
   body: Joi.object().keys({
     jobId: Joi.number().integer().required(),
-    resume: Joi.string().allow(null).optional(),
+    resume: Joi.string().allow('').optional(),
     motivationToApply: Joi.string().required()
   })
 }

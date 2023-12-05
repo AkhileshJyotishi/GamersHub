@@ -7,6 +7,7 @@ import gameRoute from './game.route'
 import albumRoute from './album.route'
 import postRoute from './post.route'
 import adminRoute from './admin.route'
+import uploadRoute from './upload.route'
 import config from '../../config/config'
 
 const router = express.Router()
@@ -39,6 +40,10 @@ const defaultRoutes = [
   {
     path: '/admin',
     route: adminRoute
+  },
+  {
+    path: '/upload',
+    route: uploadRoute
   }
 ]
 
