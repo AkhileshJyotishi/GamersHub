@@ -45,6 +45,7 @@ const Albums = () => {
               title={post.title}
               savedPost={post.savedUsers}
               likedPost={post.postLikes}
+              userId={post.userId}
               // location={data.location}
               // views={data.views}
               className="h-[350px] w-[100%] md:w-[300px] justify-self-center"

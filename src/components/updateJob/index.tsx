@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
 import Layout from "./layout"
-import { useUserContext } from "@/providers/user-context"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -15,7 +15,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 const UpdateJob = ({ job }: { job: JobInfo }) => {
   const session = useSession()
-const {setLoading}=useUserContext()
+  const { setLoading } = useUserContext()
   const router = useRouter()
 
   // const initialJobInfo: JobInfo = {

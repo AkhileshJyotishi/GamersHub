@@ -1,6 +1,12 @@
-import React from "react";
+import React from "react"
 
-export default function EditIcon({ className,onClick }: { className: string,onClick?: React.MouseEventHandler<SVGSVGElement> | undefined }) {
+export default function EditIcon({
+  className,
+  onClick,
+}: {
+  className: string
+  onClick?: React.MouseEventHandler<SVGSVGElement> | undefined
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,9 +15,9 @@ export default function EditIcon({ className,onClick }: { className: string,onCl
       x="0px"
       y="0px"
       viewBox="0 0 64 80"
-    //   style={{ enableBackground: "new 0 0 64 64" }}
-    className={className}
-    onClick={onClick}
+      //   style={{ enableBackground: "new 0 0 64 64" }}
+      className={className}
+      onClick={onClick}
       xmlSpace="preserve"
     >
       <g>
@@ -21,5 +27,5 @@ export default function EditIcon({ className,onClick }: { className: string,onCl
         <path d="M42.1,52.7c1.9,0,3.4-1.5,3.4-3.4V32.6c0-1.9-1.5-3.4-3.4-3.4s-3.4,1.5-3.4,3.4v16.7C38.7,51.1,40.3,52.7,42.1,52.7z    M40.7,32.6c0-0.8,0.6-1.4,1.4-1.4s1.4,0.6,1.4,1.4v16.7c0,0.8-0.6,1.4-1.4,1.4s-1.4-0.6-1.4-1.4V32.6z" />
       </g>
     </svg>
-  );
+  )
 }

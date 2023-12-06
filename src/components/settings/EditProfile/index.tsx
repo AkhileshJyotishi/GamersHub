@@ -61,7 +61,7 @@ const EditProfilePage = ({
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
     userSoftwares: profileDetails.userSoftwares,
-    profileImage:profileDetails.user?.profileImage,
+    profileImage: profileDetails.user?.profileImage,
   })
   const initialskillstags = profileDetails.userSkills
     ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
@@ -91,7 +91,7 @@ const EditProfilePage = ({
     return cityList!
   }
 
-  const handleFieldChange = (key: string, value: string | string[] |File) => {
+  const handleFieldChange = (key: string, value: string | string[] | File) => {
     setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
       handleCityOptions(codemapping[value as string])

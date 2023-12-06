@@ -24,8 +24,8 @@ const Jobs = () => {
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
-      userId:backendJob.userId,
-      banner:backendJob.banner
+      userId: backendJob.userId,
+      banner: backendJob.banner,
     }
   }
   const router = useRouter()

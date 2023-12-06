@@ -33,10 +33,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           height={300}
           alt={""}
           className="w-full object-cover  h-[100px] rounded-[5px]"
-          src={
-          
-            newuserData?.bannerImage || ""
-          }
+          src={newuserData?.bannerImage || ""}
         />
 
         <Image
@@ -44,10 +41,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           height={100}
           alt={""}
           className="w-[92px] h-[92px] rounded-full absolute bottom-[-50%] object-cover border-solid border-[2px] border-[#D9D9D9]"
-          src={
-        
-            userData?.profileImage || defaultbannerImage
-          }
+          src={userData?.profileImage || defaultbannerImage}
         />
       </div>
       {/* IMAGE  END*/}
@@ -114,7 +108,10 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
       <div className="flex flex-col items-start w-full py-[15px] hover:bg-user_interface_4 group ">
         <div
           className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px] cursor-pointer group-hover:text-red-500 transition duration-200"
-          onClick={(e)=>{router.push("/");onSignOut!(e)}}
+          onClick={(e) => {
+            router.push("/")
+            onSignOut!(e)
+          }}
         >
           <LogOutIcon className={"w-[17px] h-[17px]"} />
           <p>Sign Out</p>

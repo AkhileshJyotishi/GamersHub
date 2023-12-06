@@ -25,7 +25,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({
   children,
   setActiveTab,
-  activeTab
+  activeTab,
   //  setJobs,
   // jobs
 }) => {
@@ -135,21 +135,20 @@ const Layout: React.FC<LayoutProps> = ({
     <>
       <BannerComponent
         className={"w-[100%] py-[52px] text-center bg-user_interface_3 mx-auto"}
-        bannerText={
-          <>
-            Find the world’s best game creators here – the largest <br /> independent community
-            gamecreators
-          </>
-        }
+        bannerText={<>Find Your Dream Career : Browse Our Job Openings</>}
         bannerTitle={
           <>
-            Find game creator’s <span className="text-secondary"> Portfolios</span>
+            Find the <span className="text-secondary"> best jobs</span> in the industry
           </>
         }
       />
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["All", "Saved", "My Job Posts"]} setActiveTab={setActiveTab} activeTab={activeTab}/>
+          <TabButtons
+            tabNames={["All", "Saved", "My Job Posts"]}
+            setActiveTab={setActiveTab}
+            activeTab={activeTab}
+          />
           {session && (
             <Button
               onClick={() => {

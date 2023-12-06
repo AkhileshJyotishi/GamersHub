@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { toast } from "react-toastify"
 
 import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
@@ -8,7 +9,6 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 import HoizontalCard from "@/components/ui/Horizontalcard"
 
 import ProfilePageLayout from "../ProfileLayout"
-import { toast } from "react-toastify"
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Albums = () => {
   const router = useRouter()
@@ -23,8 +23,7 @@ const Albums = () => {
       console.log("yeh wala data ", data)
       if (!data?.error) {
         setalbumDetails(data?.data?.albums)
-      }
-      else{
+      } else {
         toast.error(data.message)
       }
       // console.log(data?.data)
@@ -33,7 +32,7 @@ const Albums = () => {
     }
     loadData()
   }, [router])
-  const memoizedAlbumDetails = useMemo(() => albumDetails, [albumDetails]);
+  const memoizedAlbumDetails = useMemo(() => albumDetails, [albumDetails])
   return (
     <>
       {memoizedAlbumDetails.length > 0 ? (

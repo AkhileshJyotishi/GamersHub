@@ -8,17 +8,16 @@ import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
 
 import { uploadProfileData } from "./editprofileHandler"
-import Image from "next/image"
 
 interface ProfileSectionProps {
   profileData?: {
-    userBio: string | null | undefined;
-    country: string | null | undefined;
-    city: string | null | undefined;
-    userSkills: IuserSkill[];
-    userSoftwares: IuserSoftware[] | undefined;
-    profileImage: string | undefined;
-}
+    userBio: string | null | undefined
+    country: string | null | undefined
+    city: string | null | undefined
+    userSkills: IuserSkill[]
+    userSoftwares: IuserSoftware[] | undefined
+    profileImage: string | undefined
+  }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
 }
@@ -34,7 +33,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
       {/* <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
         Profile
       </h1> */}
-        {/* <Image
+      {/* <Image
             width={300}
             height={300}
             loading="lazy"
@@ -48,7 +47,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             key={index}
             className="flex items-center justify-between w-full p-2 overflow-hidden md:gap-8"
           >
-          {/* vxbc */}
+            {/* vxbc */}
             <Filter
               key={index}
               inputType={filter.inputType}

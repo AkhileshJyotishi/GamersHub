@@ -35,7 +35,7 @@ const FileFilter: React.FC<FileInputProps> = ({
 
   return (
     <>
-    {/* ghgdh */}
+      {/* ghgdh */}
       <div
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
@@ -48,7 +48,7 @@ const FileFilter: React.FC<FileInputProps> = ({
         }}
         className={clsx(
           "  shadow-sm  w-full  flex flex-col  gap-4 relative",
-          !filePreview ? "items-center justify-center" : "items-center justify-end",
+          !filePreview ? "items-center justify-center" : "items-center justify-end"
         )}
       >
         <>
@@ -81,7 +81,7 @@ const FileFilter: React.FC<FileInputProps> = ({
             e.target.files?.length && handleFileChange(e)
           }}
         />
-        
+
         {filePreview && (
           <>
             <div className="w-full relative  bg-[#00000050] rounded-xl" style={{ zIndex: 17 }}>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 
 import logo from "@/assets/image/logo-with-text.png"
+import { useUserContext } from "@/providers/user-context"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import FacebookIcon from "@/components/icons/facebook"
@@ -12,7 +13,6 @@ import MailIcon from "@/components/icons/mail"
 
 import Button from "../button"
 import Modal from "../modal"
-import { useUserContext } from "@/providers/user-context"
 
 interface RegisterModaProps {
   isOpen: boolean
@@ -20,7 +20,7 @@ interface RegisterModaProps {
 }
 const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
   const router = useRouter()
-  const {setIsRegisterModalOpen}=useUserContext()
+  const { setIsRegisterModalOpen } = useUserContext()
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

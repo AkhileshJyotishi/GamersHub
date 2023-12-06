@@ -27,7 +27,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
-    
+
     console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
@@ -44,8 +44,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       router.replace("/", undefined, { shallow: true })
     }
     if (emessage) {
-      router.replace("/",undefined,{shallow:true})
-      
+      router.replace("/", undefined, { shallow: true })
+
       toast.error(emessage)
     }
   }, [verify, logout, router])
@@ -111,6 +111,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
             <Card
               key={index}
               username={data.user.username}
+              userId={data.userId}
               userProfilePhoto={data.user.profileImage}
               coverPhoto={data.banner}
               matureContent={data.matureContent}
@@ -120,11 +121,15 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
               id={data.id}
               title={data.title}
               likedPost={data.savedUsers ?? []}
-              savedPost={data.postLikes && data.postLikes.length>0 ? data?.postLikes?.map((liked)=>liked.likedUsers) : [] }
+              savedPost={
+                data.postLikes && data.postLikes.length > 0
+                  ? data?.postLikes?.map((liked) => liked.likedUsers)
+                  : []
+              }
             />
           ))}
         </div>
-{/* 
+        {/* 
         <Button
           className="
                         bg-user_interface_3 hover:bg--user_interface_2 active:bg--user_interface_2 text-text  

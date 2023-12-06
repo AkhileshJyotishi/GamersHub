@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function MapPinIcon({ className,height }: { className: string,height?:string }) {
+export default function MapPinIcon({ className, height }: { className: string; height?: string }) {
   return (
     <svg className={className} width="19" height={height} fill="none" viewBox="0 0 19 19">
       <g

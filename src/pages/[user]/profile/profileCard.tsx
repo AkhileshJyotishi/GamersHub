@@ -62,8 +62,7 @@ export default function ProfileCard({
   })
 
   useEffect(() => {
-    if (_currentUser)
-      setCurrentUser(_currentUser)
+    if (_currentUser) setCurrentUser(_currentUser)
   }, [_currentUser])
 
   return (

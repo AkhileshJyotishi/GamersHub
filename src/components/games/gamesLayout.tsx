@@ -19,12 +19,12 @@ interface gamesLayoutProps {
   games: Games[]
   setGames: React.Dispatch<React.SetStateAction<Games[]>>
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
-  activeTab:string
+  activeTab: string
 }
 const Layout: React.FC<gamesLayoutProps> = ({
   children,
   setActiveTab,
-  activeTab
+  activeTab,
   // games,
   //  setGames
 }) => {
@@ -156,20 +156,24 @@ const Layout: React.FC<gamesLayoutProps> = ({
         className={"w-[100%] py-[52px] text-center bg-user_interface_3 mx-auto"}
         bannerText={
           <>
-            Find the world’s best game creators here – the largest <br /> independent community
-            gamecreators
+            Expand your portfolio to show off to potential recruiters, <br />
+            also have a place to display your work
           </>
         }
         bannerTitle={
           <>
-            Find game creator’s <span className="text-secondary"> Portfolios</span>
+            A Showcase of Our Community's <span className="text-secondary"> Games</span>
           </>
         }
       />
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["All", "Saved", "My Games"]} setActiveTab={setActiveTab} activeTab={activeTab}/>
+          <TabButtons
+            tabNames={["All", "Saved", "My Games"]}
+            setActiveTab={setActiveTab}
+            activeTab={activeTab}
+          />
 
           {/* <TabButtons tabNames={["Trending", "Latest", "Saved"]} /> */}
           {

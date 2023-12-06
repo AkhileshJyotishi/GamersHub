@@ -5,13 +5,16 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
-import DeleteIcon from "@/components/icons/deleteIcon"
+
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
+import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
+
+import EditIcon from "../icons/editIcon"
 
 interface JobCardProps {
   id: number
@@ -20,7 +23,7 @@ interface JobCardProps {
   date: string | null
   salary: string
   type: string
-  banner:string|null
+  banner: string | null
   location: string
   href: string
   className: string
@@ -28,13 +31,19 @@ interface JobCardProps {
   savedUsers?: {
     id: number
   }[]
-  userId:number
+  userId: number
 }
 
-const UserImage = ({ href }: { href: string |null}) => (
+const UserImage = ({ href }: { href: string | null }) => (
   <Link href={"#"} className="my-auto">
     <div className="flex items-center">
-      <Image width={100} height={100} alt={""} className="w-10 h-10 border-[0.1px] rounded-full " src={href || ""} />
+      <Image
+        width={100}
+        height={100}
+        alt={""}
+        className="w-10 h-10 border-[0.1px] rounded-full "
+        src={href || ""}
+      />
     </div>
   </Link>
 )
@@ -44,11 +53,12 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
     <Link href={"#"} className="font-serif font-bold text-[16px] mx-auto md:mx-0">
       {title}
     </Link>
-  {  location.trim().length>1 &&
-    <span className="flex flex-row items-center gap-2">
-      <MapPinIcon height="19" className="w-4 h-[inherit] text-user_interface_6" />
-      <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
-    </span>}
+    {location.trim().length > 1 && (
+      <span className="flex flex-row items-center gap-2">
+        <MapPinIcon height="19" className="w-4 h-[inherit] text-user_interface_6" />
+        <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
+      </span>
+    )}
   </div>
 )
 
@@ -134,8 +144,7 @@ const Card: React.FC<JobCardProps> = ({
   id,
   savedUsers,
   banner,
-  userId
-  
+  userId,
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
@@ -170,6 +179,10 @@ const Card: React.FC<JobCardProps> = ({
     }
   }
 
+  const updatePost = async (id: number) => {
+    router.push(`/${userId}/profile/portfolio/updateJob/${id}`)
+  }
+
   return (
     <>
       <div
@@ -187,11 +200,16 @@ const Card: React.FC<JobCardProps> = ({
                 <UserImage href={banner} />
                 <UserInfo title={title} location={location} />
               </div>
-            
-              {( userData?.id!==userId)  ?
-              (
+
+              {userData?.id !== userId ? (
                 <>
-                  <div className="flex items-center " onClick={(e) => {e.stopPropagation();savePost(id)}}>
+                  <div
+                    className="flex items-center "
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      savePost(id)
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="28"
@@ -207,18 +225,34 @@ const Card: React.FC<JobCardProps> = ({
                     </svg>
                   </div>
                 </>
-              )
-              :
-              (
+              ) : (
                 <>
-                <div className="flex items-center mx-auto " onClick={(e) => {e.preventDefault();e.stopPropagation();deletePost(id)}}>
-                 <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200"/>
-                </div>
-              </>  
-              )
-              }
+                  <div className="flex items-center justify-center gap-4">
+                    <div
+                      className="flex items-center mx-auto "
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        deletePost(id)
+                      }}
+                    >
+                      <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-110 transition duration-200" />
+                    </div>
+                    <div
+                      className="flex items-center mx-auto "
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        updatePost(id)
+                      }}
+                    >
+                      <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
-              <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3"/>
+            <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
             <JobDescription desc={desc as string} />
           </div>
           <div>

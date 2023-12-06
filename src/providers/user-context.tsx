@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Cycle, useCycle } from "framer-motion"
 import { useSession } from "next-auth/react"
 
@@ -20,19 +20,19 @@ interface IUserContext {
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
   userSession:
-  | {
-    name?: string | null | undefined
-    email?: string | null | undefined
-    image?: string | null | undefined
-  }
-  | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
+    | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
+    | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
+          name?: string | null | undefined
+          email?: string | null | undefined
+          image?: string | null | undefined
+        }
       | undefined
     >
   >
@@ -54,7 +54,7 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
   const [tap, setTap] = useState<boolean>(false)
-  const [loading ,setLoading]=useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false)
   const openLoginModal = () => {
     setIsRegisterModalOpen(false)
     setIsLoginModalOpen(true)
@@ -63,7 +63,7 @@ const UserProvider = ({ children }: IUserProvider) => {
     setIsRegisterModalOpen(true)
     setIsLoginModalOpen(false)
   }
- 
+
   const containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     console.log("session  ", session.data?.user?.name, session.status)
@@ -104,8 +104,7 @@ const UserProvider = ({ children }: IUserProvider) => {
         userData,
         setuserData,
         loading,
-        setLoading
-     
+        setLoading,
       }}
     >
       {children}

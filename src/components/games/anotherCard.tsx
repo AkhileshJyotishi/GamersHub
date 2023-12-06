@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image, { StaticImageData } from "next/image"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
-import {useRouter} from "next/router"
+
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { useUserContext } from "@/providers/user-context"
+import { fetchData } from "@/utils/functions"
+
 import DeleteIcon from "@/components/icons/deleteIcon"
 
-import { fetchData } from "@/utils/functions"
-import { useUserContext } from "@/providers/user-context"
+import EditIcon from "../icons/editIcon"
 
 interface CardProps {
   id: number
@@ -18,7 +21,7 @@ interface CardProps {
   cover?: string | StaticImageData
   banner?: string | StaticImageData
   className: string
-  userId:number
+  userId: number
   savedUsers: {
     id: number
   }[]
@@ -34,21 +37,21 @@ const SocialCard: React.FC<CardProps> = ({
   cover,
   banner,
   className,
-  savedUsers
+  savedUsers,
   //   likes,
 }) => {
   const { data: session } = useSession()
-const {userData}=useUserContext()
+  const { userData } = useUserContext()
   // const isSaved
-  
+
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
-const router=useRouter();
-useEffect(() => {
-  if (savedUsers?.length) {
-    setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
-  }
-}, [savedUsers])
+  const router = useRouter()
+  useEffect(() => {
+    if (savedUsers?.length) {
+      setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
+    }
+  }, [savedUsers])
   // const likePost = async () => {
   //   let method
   //   if (liked) {
@@ -84,43 +87,73 @@ useEffect(() => {
       // setSaved(!saved)
     }
   }
+  const updatePost = async (id: number) => {
+    router.push(`/${userId}/profile/portfolio/updateGame/${id}`)
+  }
 
   return (
     <div className={clsx("p-1 bg-user_interface_2 rounded-xl", className)}>
-    <div className="max-w-md bg-white rounded-sm">
-      <div className="flex items-center px-2 py-2" >
-        <Image
-          className="w-6 h-6 rounded-full"
-          src={cover || defaultbannerImage}
-          alt={""}
-          width={100}
-          height={100}
-        />
-        <div className="ml-2 ">
-          <span className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/${userId}/profile/albums`)} >{username}</span>
-          {/* <span className="block text-xs text-gray-600">{location}</span> */}
+      <div className="max-w-md bg-white rounded-sm">
+        <div className="flex items-center justify-between gap-4 px-2 pb-2 pt-4">
+          <div className="flex items-center">
+            <Image
+              className="w-6 h-6 rounded-full"
+              src={cover || defaultbannerImage}
+              alt={""}
+              width={100}
+              height={100}
+            />
+            <div className="ml-2 ">
+              <span
+                className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary"
+                onClick={() => router.push(`/${userId}/profile/albums`)}
+              >
+                {username}
+              </span>
+              {/* <span className="block text-xs text-gray-600">{location}</span> */}
+            </div>
+          </div>
+          {session && userData?.id == userId && (
+            <div className="flex items-center gap-4">
+              <div className="ml-auto">
+                <DeleteIcon
+                  className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200"
+                  onClick={() => deletePost(id)}
+                />
+              </div>
+              <div
+                className="flex items-center mx-auto "
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  updatePost(id)
+                }}
+              >
+                <EditIcon className="h-[20px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+              </div>
+            </div>
+          )}
         </div>
-        {
-          session && userData?.id ==userId &&  
-        <div className="ml-auto" ><DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200" onClick={()=>deletePost(id)}/></div>
-        }
-      </div>
-      <div className="flex items-center px-2">
-        <span className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/games/${id}`)}>{title}</span>
-      </div>
-      <div className="h-[200px] rounded-sm p-2">
-        
-        <Image
-          src={banner || defaultbannerImage}
-          alt=""
-          // blurDataURL={defaultbannerImage}
-          width={400}
-          height={100}
-          className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
-        />
-      </div>
-      <div className="flex items-center justify-between px-4 py-1">
-        {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
+        <div className="flex items-center px-2">
+          <span
+            className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary"
+            onClick={() => router.push(`/games/${id}`)}
+          >
+            {title}
+          </span>
+        </div>
+        <div className="h-[200px] rounded-sm p-2">
+          <Image
+            src={banner || defaultbannerImage}
+            alt=""
+            // blurDataURL={defaultbannerImage}
+            width={400}
+            height={100}
+            className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
+          />
+        </div>
+        <div className="flex items-center justify-between px-4 py-1">
+          {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -135,29 +168,26 @@ useEffect(() => {
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
         </div> */}
-        {
-          userData?.id !==userId   &&
-       
-        <div className="flex cursor-pointer" onClick={() => savePost()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill={saved ? "#fff" : "none"}
-            stroke="#B4B4B4"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
+          {userData?.id !== userId && (
+            <div className="flex cursor-pointer" onClick={() => savePost()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={saved ? "#fff" : "none"}
+                stroke="#B4B4B4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+          )}
         </div>
-          
-        }
       </div>
     </div>
-  </div>
   )
 }
 

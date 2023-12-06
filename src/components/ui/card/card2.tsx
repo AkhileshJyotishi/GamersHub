@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image" // Import your Image component library
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
+
+import DeleteIcon from "@/components/icons/deleteIcon"
+import EditIcon from "@/components/icons/editIcon"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
@@ -16,6 +20,7 @@ interface CardProps {
   userProfilePhoto: string | null
   coverPhoto: string | null
   title: string
+  userId: number
   // location: string;
   // views: string;
   className?: string
@@ -25,9 +30,7 @@ interface CardProps {
     id: number
   }[]
   likedPost: {
-    
-      id:number
-    
+    id: number
   }[]
 }
 
@@ -42,10 +45,11 @@ const Card: React.FC<CardProps> = ({
   imageWidth,
   savedPost,
   likedPost,
-
+  userId,
   id,
 }) => {
   const { userData } = useUserContext()
+  const router = useRouter()
 
   const session = useSession()
   const [liked, setLiked] = useState<boolean>(false)
@@ -79,6 +83,19 @@ const Card: React.FC<CardProps> = ({
       toast.success(data?.message)
       setSaved(!saved)
     }
+  }
+
+  const deletePost = async (id: number) => {
+    const data = await fetchData(`/v1/post/${id}`, session.data?.user?.name as string, "DELETE")
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      // setSaved(!saved)
+    }
+  }
+  const updatePost = async (id: number) => {
+    router.push(`/${userId}/profile/portfolio/updatePost/${id}`)
   }
   useEffect(() => {
     if (savedPost?.length) {
@@ -125,7 +142,12 @@ const Card: React.FC<CardProps> = ({
                   alt={``}
                 />
                 <div className="flex justify-center ml-3">
-                  <span className="block antialiased font-bold leading-tight break-words text-md">
+                  <span
+                    onClick={() => {
+                      router.push(`/${userId}/profile/albums`)
+                    }}
+                    className="block cursor-pointer antialiased font-bold leading-tight break-words text-md"
+                  >
                     {username}
                   </span>
                   {/* <span className="block text-xs">{location}</span> */}
@@ -138,37 +160,71 @@ const Card: React.FC<CardProps> = ({
             </div>
           </div>
           <div className="flex justify-between h-[200px] items-end px-6 translate-y-36 group-hover:translate-y-20 transition duration-200">
-            <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill={liked ? "#fff" : "none"}
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-              </svg>
+            {userId !== userData?.id && (
+              <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill={liked ? "#fff" : "none"}
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </div>
+            )}
+            <div
+              className="mx-auto cursor-pointer"
+              onClick={() => {
+                router.push(`/jobs/${id}`)
+              }}
+            >
+              {title}
             </div>
-            <div>{title}</div>
-            <div className="flex cursor-pointer" onClick={() => savePost()}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill={saved ? "#fff" : "none"}
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
+            {userId !== userData?.id ? (
+              <div className="flex cursor-pointer" onClick={() => savePost()}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill={saved ? "#fff" : "none"}
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+            ) : (
+              <div className="flex gap-4 items-center">
+                <div
+                  className="flex items-center mx-auto "
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    updatePost(id)
+                  }}
+                >
+                  <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+                </div>
+                <div
+                  className="flex items-center mx-auto "
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    deletePost(id)
+                  }}
+                >
+                  <DeleteIcon className="h-[24px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-110 transition duration-200" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ const variants = {
 }
 
 export const Navigation = () => {
-  const { toggleOpen, isOpen ,userData} = useUserContext()
+  const { toggleOpen, isOpen, userData } = useUserContext()
   const navmenu = [
     {
       title: "Home",
@@ -48,13 +48,10 @@ export const Navigation = () => {
       path: "/",
     },
   ]
-  
+
   return (
     <>
-    <div>
-
-      {isOpen && <MenuToggle toggle={() => toggleOpen()} />}
-    </div>
+      <div>{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
 
       <motion.ul variants={variants} className={styles.ul}>
         {navmenu.map((data, index) => (
@@ -64,4 +61,3 @@ export const Navigation = () => {
     </>
   )
 }
-

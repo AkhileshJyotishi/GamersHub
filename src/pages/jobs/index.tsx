@@ -8,8 +8,6 @@ import JobsPage from "@/components/jobs"
 
 // type jobsDetails=
 const Jobs = ({ jobs }: { jobs: Job[] }) => {
-
-
   return (
     <>
       <JobsPage jobs={jobs} />
@@ -56,8 +54,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
-      banner:backendJob.banner,
-      userId:backendJob.userId
+      banner: backendJob.banner,
+      userId: backendJob.userId,
     }
   }
 

@@ -16,7 +16,7 @@ import Layout from "./gamesLayout"
 // }
 const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
   function convertToGamesInterface(backendGame: BackendGame): Games {
-    const { id, banner, user, title, savedUsers,userId } = backendGame
+    const { id, banner, user, title, savedUsers, userId } = backendGame
 
     // Assuming you want to use the profileImage property if available, otherwise fallback to a default value
     const profileImage = user?.profileImage || ""
@@ -29,7 +29,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       title,
       cover: profileImage,
       savedUsers,
-      userId
+      userId,
     }
 
     return gamesInterface
@@ -86,13 +86,9 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         <>
           {games.length > 0 ? (
             <>
-            <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
+              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
                 {games.map((game, idx) => (
-                  <Card
-                    {...game}
-                    className="w-[100%] max-w-[380px] h-[310px]"
-                    key={idx}
-                  />
+                  <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
                 ))}
               </div>
             </>
@@ -119,11 +115,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
                   const arr = game.savedUsers.map((obj) => obj.id)
                   return arr.filter((id) => {
                     id === userData?.id && (
-                      <Card
-                        {...game}
-                        className="w-[100%] max-w-[380px] h-[310px]"
-                        key={idx}
-                      />
+                      <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
                     )
                   })
                 })}
@@ -149,7 +141,10 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
             {myjob && Array.from(myjob).length > 0 ? (
               // <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {myjob && myjob.map((job, idx) => <Card {...job} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />)}
+                {myjob &&
+                  myjob.map((job, idx) => (
+                    <Card {...job} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
+                  ))}
               </div>
             ) : (
               <>

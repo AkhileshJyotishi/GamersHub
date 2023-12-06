@@ -21,11 +21,11 @@ interface Job {
   location: string
   href: string
   chips?: string[]
-  banner:string |null
+  banner: string | null
   savedUsers: {
     id: number
   }[]
-  userId:number
+  userId: number
 }
 interface IjobsDetails {}
 
@@ -74,7 +74,7 @@ interface JobInfo {
   remote: boolean
   country?: string
   city?: string
-userId:number
+  userId: number
   paymentType: string
   paymentValue: number
 
@@ -84,5 +84,5 @@ userId:number
   title: string
   publishDate: string | null
   jobDetails: object | null
-  userId:number
+  userId: number
 }

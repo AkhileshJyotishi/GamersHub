@@ -1,15 +1,15 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 import { BackendGame } from "@/interface/games"
+import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "@/components/createGame/layout"
-import { toast } from "react-toastify"
-import { useUserContext } from "@/providers/user-context"
-import { useRouter } from "next/router"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -35,11 +35,11 @@ interface GameInfo {
 const CreateGame = ({ game }: { game?: BackendGame }) => {
   console.log("latest error", game)
   const path = usePathname()
-  const router=useRouter()
-console.log("[ath",path)
+  const router = useRouter()
+  console.log("[ath", path)
 
-  let  isUpdate=false;
-  if(path) isUpdate=path.includes("updateGame")
+  let isUpdate = false
+  if (path) isUpdate = path.includes("updateGame")
 
   let initGameInfo
 
@@ -52,8 +52,8 @@ console.log("[ath",path)
       platforms: game?.platforms?.map((plat) => plat.name) ?? [], //platforms
       genre: game?.genre?.map((genre) => genre.name) ?? [],
       gameMode: game?.gameMode,
-      developerName: game?.developer.developerName,
-      developerType: game?.developer.developerType,
+      developerName: game?.developer?.developerName,
+      developerType: game?.developer?.developerType,
       // developerId: null,
       distributionPlatforms: game?.distributionPlatforms.map((dist) => dist.name),
       tags: game?.tags.map((tag) => tag.keyword), //tags
@@ -84,7 +84,7 @@ console.log("[ath",path)
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
   const session = useSession()
   // const router=useRouter()
-  const {setLoading}=useUserContext()
+  const { setLoading } = useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const uploadGame = async () => {
     setLoading(true)
@@ -92,40 +92,47 @@ console.log("[ath",path)
     if (storedContent !== null) {
       gameInfo.description = JSON.parse(storedContent)
     }
-    const formdata=new FormData();
-    const formdata2=new FormData();
+    const formdata = new FormData()
+    const formdata2 = new FormData()
 
-    formdata.append("file",gameInfo.banner as Blob);
-    gameInfo.gameAssets?.map((game)=>{
-      formdata2.append("files",game as Blob);
-
+    formdata.append("file", gameInfo.banner as Blob)
+    gameInfo.gameAssets?.map((game) => {
+      formdata2.append("files", game as Blob)
     })
     console.log(formdata2.entries())
-    console.log("jobInfo.banner ",gameInfo.banner)
-    const isuploaded=await fetchFile("/v1/upload/file",session?.data?.user?.name as string,"POST",formdata);
-    if(isuploaded?.error){
-    // toast.info(isuploaded?.message)
-    setLoading(false)
-        return;
+    console.log("jobInfo.banner ", gameInfo.banner)
+    const isuploaded = await fetchFile(
+      "/v1/upload/file",
+      session?.data?.user?.name as string,
+      "POST",
+      formdata
+    )
+    if (isuploaded?.error) {
+      // toast.info(isuploaded?.message)
+      setLoading(false)
+      return
     }
     console.log(isuploaded?.data)
     // return;
-    gameInfo.banner = isuploaded?.data.image.Location;
+    gameInfo.banner = isuploaded?.data.image.Location
     // gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
-    const multiisuploaded=await fetchFile("/v1/upload/multiple",session?.data?.user?.name as string,"POST",formdata);
+    const multiisuploaded = await fetchFile(
+      "/v1/upload/multiple",
+      session?.data?.user?.name as string,
+      "POST",
+      formdata
+    )
 
-    if(multiisuploaded?.error){
+    if (multiisuploaded?.error) {
       toast.error(multiisuploaded.error)
       setLoading(false)
-      return;
-      
-    }
-    else{
-      gameInfo.gameAssets=[]
-      gameInfo.gameAssets=multiisuploaded?.data.image.map((loc:Allow)=>{
-gameInfo.gameAssets?.push(loc.Location)
-      });
+      return
+    } else {
+      gameInfo.gameAssets = []
+      gameInfo.gameAssets = multiisuploaded?.data.image.map((loc: Allow) => {
+        gameInfo.gameAssets?.push(loc.Location)
+      })
     }
     // gameInfo.gameAssets = [
     //   "https://picsum.photos/id/250/900/900",

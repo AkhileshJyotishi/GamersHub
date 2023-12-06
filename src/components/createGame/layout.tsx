@@ -68,7 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       inputType: "select",
       selectOptions: [
         {
-          label: "Select Developer Type",
+          label: "Select Game Mode",
           value: "",
         },
         {

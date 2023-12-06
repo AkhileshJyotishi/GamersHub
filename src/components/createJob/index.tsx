@@ -4,12 +4,12 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
 import Filter from "../filter/mainfilter/filter"
 
 import Layout from "./layout"
-import { useUserContext } from "@/providers/user-context"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -18,7 +18,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 const CreateJob: React.FC = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  const {setLoading}=useUserContext()
+  const { setLoading } = useUserContext()
   interface JobInfo {
     jobType: string
     remote: boolean
@@ -60,9 +60,8 @@ const CreateJob: React.FC = () => {
 
   const uploadJob = async () => {
     console.log("job uploading")
-setLoading(true);
-    
- 
+    setLoading(true)
+
     const storedContent = localStorage.getItem("noval__content2")
     const aboutRecuiter = localStorage.getItem("noval__content1")
     console.log("stored_contnetn ", storedContent)
@@ -75,30 +74,34 @@ setLoading(true);
     }
     localStorage.removeItem("noval__content1")
     localStorage.removeItem("noval__content2")
-    const formdata=new FormData();
-    formdata.append("file",jobInfo.banner as Blob);
-    console.log("jobInfo.banner ",jobInfo.banner)
-    const isuploaded=await fetchFile("/v1/upload/file",session?.user?.name as string,"POST",formdata);
-    if(isuploaded?.error){
-    toast.info(isuploaded?.message)
-        return
+    const formdata = new FormData()
+    formdata.append("file", jobInfo.banner as Blob)
+    console.log("jobInfo.banner ", jobInfo.banner)
+    const isuploaded = await fetchFile(
+      "/v1/upload/file",
+      session?.user?.name as string,
+      "POST",
+      formdata
+    )
+    if (isuploaded?.error) {
+      toast.info(isuploaded?.message)
+      return
     }
     console.log(isuploaded?.data)
     // return;
-    jobInfo.banner = isuploaded?.data.image.Location;
+    jobInfo.banner = isuploaded?.data.image.Location
     jobInfo.publishDate = new Date().toISOString()
-   
+
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
     if (data?.error) {
       toast.error(data?.message)
       return
     }
     toast.success(data?.message)
-setLoading(false);
-    
+    setLoading(false)
+
     // handleLoadChange()
     router.push("/jobs")
-  
   }
 
   return (

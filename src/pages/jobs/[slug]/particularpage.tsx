@@ -6,7 +6,7 @@ import Jobsection from "./jobsection"
 
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
-  const { title, city, banner, country, user,userId, ...profileDataJobSection } = profileData
+  const { title, city, banner, country, user, userId, ...profileDataJobSection } = profileData
   console.log("is this rendering  ", profileData)
   return (
     <>

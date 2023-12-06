@@ -16,10 +16,10 @@ declare interface IDetails {
   userExperience?: IuserExperience[]
   userSkills: IuserSkill[]
   userSoftwares?: IuserSoftware[]
-  user:{
-    profileImage?:string;
-    bannerImage?:string;
-    matureContent?:boolean;
+  user: {
+    profileImage?: string
+    bannerImage?: string
+    matureContent?: boolean
   }
 }
 
