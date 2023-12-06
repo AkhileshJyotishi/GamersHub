@@ -11,7 +11,7 @@ const paramsValidation = {
 const createAlbum = {
   body: Joi.object().keys({
     title: Joi.string().required(),
-    banner: Joi.string(),
+    banner: Joi.string().allow('').optional(),
     keywords: Joi.array().items(Joi.string()).optional()
   })
 }
