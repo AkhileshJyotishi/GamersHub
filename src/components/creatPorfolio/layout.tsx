@@ -143,7 +143,7 @@ const Layout: React.FC<LayoutProps> = ({
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
                 onClick={() => uploadPost()}
               >
-                Upload Job
+                Upload Post
               </Button>
             </div>
 

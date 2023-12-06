@@ -34,10 +34,8 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           alt={""}
           className="w-full object-cover  h-[100px] rounded-[5px]"
           src={
-            // bannerImage
-            //     ? MediaHostURL + bannerImage
-            //     :
-            userData?.bannerImage || ""
+          
+            newuserData?.bannerImage || ""
           }
         />
 
@@ -47,10 +45,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           alt={""}
           className="w-[92px] h-[92px] rounded-full absolute bottom-[-50%] object-cover border-solid border-[2px] border-[#D9D9D9]"
           src={
-            // profileImage
-            //     ? MediaHostURL + profileImage
-            //     :
-            // "/assets/placeholders/user-profile.png"
+        
             userData?.profileImage || defaultbannerImage
           }
         />

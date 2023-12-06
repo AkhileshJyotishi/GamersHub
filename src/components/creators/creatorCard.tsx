@@ -58,7 +58,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
       {
         <div className="flex flex-col items-start gap-3 p-3 min-h-[100px]">
           <h3 className="text-[18px] font-semibold ">Bio</h3>
-          {userDetails?.userSoftwares?.length > 0 ? (
+          {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
             <>
               <p className=" line-clamp-3">{userDetails?.userBio}</p>
             </>
@@ -72,7 +72,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         <div className="flex flex-col items-start gap-3 p-3">
           <h3 className="text-[18px] font-semibold ">Skills</h3>
           <div className="flex flex-wrap gap-[10px] ">
-            {userDetails?.userSoftwares?.length > 0 ? (
+            {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
               <>
                 {userDetails?.userSkills?.map((skill: any, idx) => (
                   <SecondaryTag name={skill?.skill} key={idx} />
@@ -88,7 +88,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
       <div className="flex flex-col items-start p-3 gap-3 mt-[10px]">
         <h3 className="text-[18px] font-semibold ">Softwares</h3>
         <div className="flex flex-wrap gap-[10px] ">
-          {userDetails?.userSoftwares?.length > 0 ? (
+          {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
             <>
               {userDetails?.userSoftwares?.map((software: any, idx) => (
                 <SecondaryTag name={software?.software} key={idx} />

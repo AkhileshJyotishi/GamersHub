@@ -23,14 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let jobsDetails
   if (!session) {
-    // signOut();
-
-    // return {
-    //   redirect: {
-    //     destination: "/?error=Please Authenticate&logout=true",
-    //     permanent: false,
-    //   },
-    // }
+    console.log("this is jobs ")
     jobsDetails = await fetchWithoutAuthorization(`/v1/job`, "GET")
   } else {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
@@ -63,7 +56,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
-      banner:backendJob.banner
+      banner:backendJob.banner,
+      userId:backendJob.userId
     }
   }
 

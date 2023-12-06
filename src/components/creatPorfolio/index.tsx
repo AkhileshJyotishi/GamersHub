@@ -7,6 +7,8 @@ import { toast } from "react-toastify"
 import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "@/components/creatPorfolio/layout"
+import { useUserContext } from "@/providers/user-context"
+import { useRouter } from "next/router"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -16,7 +18,9 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 const  CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend }) => {
   const { data: session } = useSession()
+  const router=useRouter();
   const path = usePathname()
+  const {setLoading}=useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const isUpdate = path.includes("updatePost")
   interface FiltersState {
@@ -50,6 +54,7 @@ const  CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend
   const [filtersState, setFiltersState] = useState<FiltersState>(initState)
 
   const uploadPost = async () => {
+    setLoading(true)
     filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
     const formdata=new FormData();
     formdata.append("file",filtersState.banner as string)
@@ -77,6 +82,8 @@ console.log("is uploaded",isuploaded);
       toast.success(res?.message)
       setFiltersState(initState)
     }
+    setLoading(false)
+    router.push("/")
   }
 
   return (

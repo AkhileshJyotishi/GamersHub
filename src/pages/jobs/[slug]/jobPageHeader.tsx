@@ -9,11 +9,13 @@ import { fetchData } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
 import Button from "@/components/ui/button"
+import { useUserContext } from "@/providers/user-context"
 
 interface JobPageHeaderProps {
   logoSrc: string | null
   title: string
   jobId: number
+  userId: number
   // company: string;
   // website: string;
   location: string
@@ -38,9 +40,10 @@ const UserInfo = ({ title }: { title: string }) => (
   </div>
 )
 
-const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, jobId, location }) => {
+const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, jobId, location,userId }) => {
   const router = useRouter()
   const { data: session } = useSession()
+  const {userData}=useUserContext()
   const saveJob = async (jobId: number) => {
     fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
   }
@@ -66,6 +69,11 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, jobId, lo
 
         <div>{location}</div>
       </div>
+      {/* {userData?.id} */}
+      {/* {userId} */}
+      {
+        userData?.id!==userId &&
+        
       <div className="flex mt-3 gap-x-4 ">
         <Button
           className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
@@ -77,6 +85,8 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, jobId, lo
           Apply Now
         </Button>
       </div>
+        
+      } 
     </div>
   )
 }

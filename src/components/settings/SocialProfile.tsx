@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import { toast } from "react-toastify"
+import { useSession } from "next-auth/react"
 
 import FaceBookIcon from "@/components/icons/facebook"
 import GitHubIcon from "@/components/icons/github"
@@ -13,6 +14,7 @@ import YoutubeIcon from "@/components/icons/youtube"
 import Button from "../ui/button"
 // import Input from "../ui/input"
 import TextInput from "../ui/textInput"
+import { fetchData } from "@/utils/functions"
 // import { NODE_BACKEND_URL } from '@/config/env';
 type socialMediaPlatforms = {
   name: string
@@ -72,7 +74,7 @@ type EditProfileProps = {
 }
 const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }) => {
   // console.log("session ", socialsprops)
-
+  const { data: session } = useSession();
   const [addOnWeb, setAddOnWeb] = useState<Isocials>({
     ...socialsprops,
   })
@@ -84,25 +86,17 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     // delete addOnWeb.userId;
 
     if (hasDataChanged) {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/socials`, {
-          method: "PATCH",
-          body: JSON.stringify(addOnWeb),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5OTU1Nzk4MiwiZXhwIjoxNjk5NTYxNTIyLCJ0eXBlIjoiQUNDRVNTIn0.tlcfQAz9fABBf5eTtX2mBb1dXdDlFiI8VFddawKHtIw",
-          },
-        })
-        // console.log("fuck res", res)
-        const resp: APITypes = await res.json()
-        console.log("resp ", resp)
 
-        resp.error ? toast.error(resp.message) : toast.success(resp.message)
-      } catch (error: Allow) {
-        console.log(error)
-        toast.error(error)
+      const changeSocials = await fetchData(`/v1/users/socials`, session?.user?.name as string, "PATCH", addOnWeb)
+
+      if (changeSocials?.error) {
+        toast.error(changeSocials.message);
       }
+      else {
+        toast.success(changeSocials?.message);
+
+      }
+
     }
   }
   const handleInputChange = (
@@ -131,9 +125,16 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
             />
           </div>
         ))}
-        <Button className="mx-auto text-2xl font-bold text-center" onClick={() => updateSocials()}>
-          dsfd{" "}
-        </Button>
+       <Button
+                    className={
+                      "px-[12px] py-[6px] border-green-500 mx-auto  border-[0.01px] flex items-center mt-6 rounded-xl"
+                    }
+                    onClick={() =>
+                      updateSocials()
+                    }
+                  >
+                    upload
+                  </Button>
       </div>
     </div>
   )

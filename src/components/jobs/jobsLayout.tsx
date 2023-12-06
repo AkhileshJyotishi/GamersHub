@@ -25,6 +25,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({
   children,
   setActiveTab,
+  activeTab
   //  setJobs,
   // jobs
 }) => {
@@ -148,7 +149,7 @@ const Layout: React.FC<LayoutProps> = ({
       />
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["All", "Saved", "My Job Posts"]} setActiveTab={setActiveTab} />
+          <TabButtons tabNames={["All", "Saved", "My Job Posts"]} setActiveTab={setActiveTab} activeTab={activeTab}/>
           {session && (
             <Button
               onClick={() => {
@@ -213,7 +214,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto">
+      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto">
         <DesktopFilter
           className={"hidden md:flex"}
           key={1}

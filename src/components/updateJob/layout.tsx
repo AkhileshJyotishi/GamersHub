@@ -24,6 +24,7 @@ interface JobInfo {
   title: string
   publishDate: string | null
   jobDetails: object | null
+  userId:number
 }
 
 interface LayoutProps {

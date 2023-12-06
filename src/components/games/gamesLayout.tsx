@@ -19,10 +19,12 @@ interface gamesLayoutProps {
   games: Games[]
   setGames: React.Dispatch<React.SetStateAction<Games[]>>
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
+  activeTab:string
 }
 const Layout: React.FC<gamesLayoutProps> = ({
   children,
   setActiveTab,
+  activeTab
   // games,
   //  setGames
 }) => {
@@ -167,7 +169,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
-          <TabButtons tabNames={["All", "Saved", "My Games"]} setActiveTab={setActiveTab} />
+          <TabButtons tabNames={["All", "Saved", "My Games"]} setActiveTab={setActiveTab} activeTab={activeTab}/>
 
           {/* <TabButtons tabNames={["Trending", "Latest", "Saved"]} /> */}
           {

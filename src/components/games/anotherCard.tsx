@@ -1,11 +1,14 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Image, { StaticImageData } from "next/image"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import {useRouter} from "next/router"
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import DeleteIcon from "@/components/icons/deleteIcon"
+
 import { fetchData } from "@/utils/functions"
+import { useUserContext } from "@/providers/user-context"
 
 interface CardProps {
   id: number
@@ -16,6 +19,9 @@ interface CardProps {
   banner?: string | StaticImageData
   className: string
   userId:number
+  savedUsers: {
+    id: number
+  }[]
   //   likes: number;
 }
 
@@ -28,28 +34,37 @@ const SocialCard: React.FC<CardProps> = ({
   cover,
   banner,
   className,
+  savedUsers
   //   likes,
 }) => {
   const { data: session } = useSession()
+const {userData}=useUserContext()
+  // const isSaved
+  
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
 const router=useRouter();
-  const likePost = async () => {
-    let method
-    if (liked) {
-      method = "DELETE"
-    } else {
-      method = "POST"
-    }
-
-    const data = await fetchData(`/v1/game/like/${id}`, session?.user?.name as string, method)
-    if (data?.error) {
-      toast.error(data.message)
-    } else {
-      // toast.success(data?.message)
-      setLiked(!liked)
-    }
+useEffect(() => {
+  if (savedUsers?.length) {
+    setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
   }
+}, [savedUsers])
+  // const likePost = async () => {
+  //   let method
+  //   if (liked) {
+  //     method = "DELETE"
+  //   } else {
+  //     method = "POST"
+  //   }
+
+  //   const data = await fetchData(`/v1/game/like/${id}`, session?.user?.name as string, method)
+  //   if (data?.error) {
+  //     toast.error(data.message)
+  //   } else {
+  //     // toast.success(data?.message)
+  //     setLiked(!liked)
+  //   }
+  // }
 
   const savePost = async () => {
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
@@ -58,6 +73,15 @@ const router=useRouter();
     } else {
       toast.success(data?.message)
       setSaved(!saved)
+    }
+  }
+  const deletePost = async (id: number) => {
+    const data = await fetchData(`/v1/game/${id}`, session?.user?.name as string, "DELETE")
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      // setSaved(!saved)
     }
   }
 
@@ -76,21 +100,24 @@ const router=useRouter();
           <span className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/${userId}/profile/albums`)} >{username}</span>
           {/* <span className="block text-xs text-gray-600">{location}</span> */}
         </div>
+        <div className="ml-auto" ><DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200" onClick={()=>deletePost(id)}/></div>
       </div>
       <div className="flex items-center px-2">
         <span className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/games/${id}`)}>{title}</span>
       </div>
       <div className="h-[200px] rounded-sm p-2">
+        
         <Image
           src={banner || defaultbannerImage}
           alt=""
+          // blurDataURL={defaultbannerImage}
           width={400}
           height={100}
           className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
         />
       </div>
       <div className="flex items-center justify-between px-4 py-1">
-        <div className="flex cursor-pointer" onClick={() => likePost()}>
+        {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -104,7 +131,10 @@ const router=useRouter();
           >
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
-        </div>
+        </div> */}
+        {
+          userData?.id !==userId   &&
+       
         <div className="flex cursor-pointer" onClick={() => savePost()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,6 +150,8 @@ const router=useRouter();
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
         </div>
+          
+        }
       </div>
     </div>
   </div>

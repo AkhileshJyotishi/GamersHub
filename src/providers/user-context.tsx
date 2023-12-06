@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Cycle, useCycle } from "framer-motion"
 import { useSession } from "next-auth/react"
 
@@ -20,22 +20,24 @@ interface IUserContext {
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
   userSession:
-    | {
+  | {
+    name?: string | null | undefined
+    email?: string | null | undefined
+    image?: string | null | undefined
+  }
+  | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
-    | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
-          name?: string | null | undefined
-          email?: string | null | undefined
-          image?: string | null | undefined
-        }
       | undefined
     >
   >
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  loading: boolean
 }
 
 interface IUserProvider {
@@ -48,6 +50,21 @@ const UserProvider = ({ children }: IUserProvider) => {
   const session = useSession()
   const [userSession, setUserSession] = useState(useSession().data?.user)
   const [userData, setuserData] = useState<Iuser | null>(null)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
+  const [isOpen, toggleOpen] = useCycle(false, true)
+  const [tap, setTap] = useState<boolean>(false)
+  const [loading ,setLoading]=useState<boolean>(false);
+  const openLoginModal = () => {
+    setIsRegisterModalOpen(false)
+    setIsLoginModalOpen(true)
+  }
+  const openRegisterModal = (): void => {
+    setIsRegisterModalOpen(true)
+    setIsLoginModalOpen(false)
+  }
+ 
+  const containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     console.log("session  ", session.data?.user?.name, session.status)
     if (session.data?.user?.name && session.status == "authenticated" && session !== undefined) {
@@ -67,21 +84,6 @@ const UserProvider = ({ children }: IUserProvider) => {
     // userdata
   }, [session])
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
-
-  const openLoginModal = () => {
-    setIsRegisterModalOpen(false)
-    setIsLoginModalOpen(true)
-  }
-  const openRegisterModal = (): void => {
-    setIsRegisterModalOpen(true)
-    setIsLoginModalOpen(false)
-  }
-
-  const [isOpen, toggleOpen] = useCycle(false, true)
-  const [tap, setTap] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
   return (
     <Context.Provider
       value={{
@@ -101,6 +103,9 @@ const UserProvider = ({ children }: IUserProvider) => {
         setUserSession,
         userData,
         setuserData,
+        loading,
+        setLoading
+     
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
-
+import DeleteIcon from "@/components/icons/deleteIcon"
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
@@ -28,7 +28,7 @@ interface JobCardProps {
   savedUsers?: {
     id: number
   }[]
-  // userId:number
+  userId:number
 }
 
 const UserImage = ({ href }: { href: string |null}) => (
@@ -40,14 +40,15 @@ const UserImage = ({ href }: { href: string |null}) => (
 )
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
-  <div className="flex flex-col items-start gap-1">
-    <Link href={"#"} className="font-serif font-bold text-[16px]">
+  <div className="flex flex-col justify-center gap-1 text-center">
+    <Link href={"#"} className="font-serif font-bold text-[16px] mx-auto md:mx-0">
       {title}
     </Link>
+  {  location.trim().length>1 &&
     <span className="flex flex-row items-center gap-2">
-      <MapPinIcon className="w-4 h-4 text-user_interface_6" />
+      <MapPinIcon height="19" className="w-4 h-[inherit] text-user_interface_6" />
       <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
-    </span>
+    </span>}
   </div>
 )
 
@@ -132,7 +133,9 @@ const Card: React.FC<JobCardProps> = ({
   href,
   id,
   savedUsers,
-  banner
+  banner,
+  userId
+  
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
@@ -157,12 +160,21 @@ const Card: React.FC<JobCardProps> = ({
       setSaved(!saved)
     }
   }
+  const deletePost = async (id: number) => {
+    const data = await fetchData(`/v1/job/${id}`, session?.user?.name as string, "DELETE")
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+      // setSaved(!saved)
+    }
+  }
 
   return (
     <>
       <div
         className={clsx(
-          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between h-fit rounded-xl  hover:border-[0.1px] ",
+          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between  rounded-xl  hover:border-[0.1px] w-full max-h-[650px]",
           className
         )}
         // href={href}
@@ -175,9 +187,10 @@ const Card: React.FC<JobCardProps> = ({
                 <UserImage href={banner} />
                 <UserInfo title={title} location={location} />
               </div>
-              {session && (
+              {(session && userData?.id!==userId)  ?
+              (
                 <>
-                  <div className="flex items-center" onClick={() => savePost(id)}>
+                  <div className="flex items-center " onClick={(e) => {e.stopPropagation();savePost(id)}}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="28"
@@ -193,8 +206,18 @@ const Card: React.FC<JobCardProps> = ({
                     </svg>
                   </div>
                 </>
-              )}
+              )
+              :
+              (
+                <>
+                <div className="flex items-center mx-auto " onClick={(e) => {e.preventDefault();e.stopPropagation();deletePost(id)}}>
+                 <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200"/>
+                </div>
+              </>  
+              )
+              }
             </div>
+              <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3"/>
             <JobDescription desc={desc as string} />
           </div>
           <div>

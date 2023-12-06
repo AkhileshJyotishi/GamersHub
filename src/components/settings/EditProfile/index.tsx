@@ -61,6 +61,7 @@ const EditProfilePage = ({
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
     userSoftwares: profileDetails.userSoftwares,
+    profileImage:profileDetails.user.profileImage,
   })
   const initialskillstags = profileDetails.userSkills
     ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
@@ -90,7 +91,7 @@ const EditProfilePage = ({
     return cityList!
   }
 
-  const handleFieldChange = (key: string, value: string | string[]) => {
+  const handleFieldChange = (key: string, value: string | string[] |File) => {
     setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
       handleCityOptions(codemapping[value as string])
@@ -99,6 +100,7 @@ const EditProfilePage = ({
     } else if (key == "userSkills") {
       handleTagsChange(value as string[])
     }
+    // else if()
   }
 
   const addExperience = () => {
@@ -291,6 +293,15 @@ const EditProfilePage = ({
   }
 
   const profileArray: FilterDetail[] = [
+    {
+      inputType: "file",
+      title: "Profile Image",
+      accept: "image/*",
+      multiple: false,
+      value: profileData.profileImage as string,
+      onChange: (value) => handleFieldChange("profileImage", value as File),
+      className: "h-[200px]",
+    },
     {
       title: "Bio",
       inputType: "text",

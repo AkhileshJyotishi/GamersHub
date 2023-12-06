@@ -81,7 +81,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
   // console.log(games)
 
   return (
-    <Layout games={games} setGames={setGames} setActiveTab={setactivetab}>
+    <Layout games={games} setGames={setGames} setActiveTab={setactivetab} activeTab={activetab}>
       {activetab === "All" && (
         <>
           {games.length > 0 ? (

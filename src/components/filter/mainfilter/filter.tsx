@@ -155,6 +155,7 @@ const Filter: React.FC<FilterDetail> = ({
       )}
       {inputType === "file" && (
         <>
+        {/* gfxg */}
           <FileFilter
             id={title}
             accept={accept || ""}

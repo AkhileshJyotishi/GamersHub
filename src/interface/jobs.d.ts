@@ -25,6 +25,7 @@ interface Job {
   savedUsers: {
     id: number
   }[]
+  userId:number
 }
 interface IjobsDetails {}
 
@@ -73,7 +74,7 @@ interface JobInfo {
   remote: boolean
   country?: string
   city?: string
-
+userId:number
   paymentType: string
   paymentValue: number
 
@@ -83,4 +84,5 @@ interface JobInfo {
   title: string
   publishDate: string | null
   jobDetails: object | null
+  userId:number
 }

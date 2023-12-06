@@ -88,31 +88,13 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
             router.push("/inbox")
           }}
         >
-          {/* <Image
-            className="w-full h-full cursor-pointer"
-            src={MailOutLineIcon}
-            alt=" "
-            width={18}
-            height={21}
-          /> */}
+         
           <MailIcon className="" fill="#fff" />
         </Button>
 
         <div className="group w-[20px] h-[20px]">
-          {/* <ProfileImage
-
-            className="cursor-pointer"
-            user={user}
-          /> */}
-          {/* <Image
-            className="w-full h-full cursor-pointer"
-            src={ProfileBannerImage}
-            alt=" "
-            width={18}
-            height={21}
-          /> */}
+        
           <ProfileBannerImage />
-          {/* scale-0 */}
           <ProfileSettingsCard
             onSignOut={() => signOut()}
             className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] `}

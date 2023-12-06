@@ -7,6 +7,9 @@ import { BackendGame } from "@/interface/games"
 import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "@/components/createGame/layout"
+import { toast } from "react-toastify"
+import { useUserContext } from "@/providers/user-context"
+import { useRouter } from "next/router"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -76,8 +79,11 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
   const session = useSession()
+  const router=useRouter()
+  const {setLoading}=useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const uploadGame = async () => {
+    setLoading(true)
     const storedContent = localStorage.getItem("noval__content4")
     if (storedContent !== null) {
       gameInfo.description = JSON.parse(storedContent)
@@ -86,17 +92,26 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     formdata.append("file",gameInfo.banner as Blob);
     console.log("jobInfo.banner ",gameInfo.banner)
     const isuploaded=await fetchFile("/v1/upload/file",session?.data?.user?.name as string,"POST",formdata);
-    // if(isuploaded?.error){
+    if(isuploaded?.error){
     // toast.info(isuploaded?.message)
-    //     return
-    // }
+    setLoading(false)
+        return;
+    }
     console.log(isuploaded?.data)
     // return;
     gameInfo.banner = isuploaded?.data.image.Location;
     // gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
     const multiisuploaded=await fetchFile("/v1/upload/multiple",session?.data?.user?.name as string,"POST",formdata);
-    
+    if(multiisuploaded?.error){
+      toast.error(multiisuploaded.error)
+      setLoading(false)
+      return;
+      
+    }
+    else{
+      gameInfo.gameAssets=multiisuploaded?.data.image.Location;
+    }
     gameInfo.gameAssets = [
       "https://picsum.photos/id/250/900/900",
       "https://picsum.photos/id/250/900/900",
@@ -110,6 +125,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     } else {
       fetchData("v1/game/user", session.data?.user?.name as string, "POST", gameInfo)
     }
+    setLoading(false)
+    router.push("/games")
   }
 
   return (

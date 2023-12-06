@@ -20,7 +20,8 @@ const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
     // chips: backendJob.jobSoftwares,
     savedUsers: backendJob.savedUsers,
-    banner:backendJob.banner
+    banner:backendJob.banner,
+    userId:backendJob.userId
   }
 }
 type JobsPageProps = {
@@ -96,7 +97,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {jobs.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
+              <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
                 {jobs.map((job, idx) => (
                   <Card {...job} className="" key={idx} />
                 ))}
@@ -120,7 +121,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "Saved" && (
         <>
           {savedPost ? (
-            <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
+            <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
               {jobs.map((job, idx) => {
                 const arr = job.savedUsers.map((obj) => obj.id)
                 return arr.filter((id) => {
@@ -152,7 +153,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
+            <div className="md:w-[70%] grid sm:w-full grid-cols-1 gap-6 md:p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3 mx-auto">
               {myjob && myjob.map((job, idx) => <Card {...job} className="" key={idx} />)}
             </div>
           ) : (

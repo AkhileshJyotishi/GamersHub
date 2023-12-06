@@ -5,8 +5,9 @@ import { useParams } from "next/navigation"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
+import { signOut } from "next-auth/react"
 
-import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
+import { fetchData, fetchFile, fetchWithoutAuthorization } from "@/utils/functions"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import CloseIcon from "@/components/icons/closeIcon"
@@ -18,6 +19,7 @@ import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
 import ProfileCard from "./profileCard"
+import { useUserContext } from "@/providers/user-context"
 
 // const data = {
 //   username: "Alice Smith",
@@ -50,6 +52,8 @@ const ProfileLayout = ({
   id: number
 }) => {
   const session = useSession()
+  const { userData } = useUserContext()
+
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<User | null>(null)
@@ -67,6 +71,8 @@ const ProfileLayout = ({
 
       console.log("User fetched", users)
       if (users?.error) {
+        
+      //  toast.success(session.data?.user?.name)
         router.replace(`/?emessage=Please Authenticate`)
       } else {
         setData(users?.data?.user)
@@ -113,8 +119,12 @@ const ProfileLayout = ({
     AlbumKeywords: [],
   })
   const handlecreateAlbum = async () => {
-    newAlbum.banner =
-      "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
+    const formdata = new FormData();
+    formdata.append("file", newAlbum.banner as string)
+    const isuploaded = await fetchFile("/v1/upload/file", session?.data?.user?.name as string, "POST", formdata);
+    console.log("is uploaded", isuploaded);
+    newAlbum.banner = isuploaded?.data.image.Location;
+
     const albumData = await fetchData(
       "/v1/album/user",
       session.data?.user?.name as string,
@@ -195,7 +205,7 @@ const ProfileLayout = ({
           </div>
         </Modal>
         <div className="w-full">
-          <BannerImage setisCreateAlbumOpen={setisCreateAlbumOpen} />
+          <BannerImage setisCreateAlbumOpen={setisCreateAlbumOpen} bannerImage={userData?.bannerImage || ""} />
           <ProfileAccordion className=" lg:hidden" />
 
           <div className="bg-user_interface_2 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">

@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 import { fetchData } from "@/utils/functions"
 
 import Layout from "./layout"
+import { useUserContext } from "@/providers/user-context"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -14,7 +15,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 const UpdateJob = ({ job }: { job: JobInfo }) => {
   const session = useSession()
-
+const {setLoading}=useUserContext()
   const router = useRouter()
 
   // const initialJobInfo: JobInfo = {
@@ -37,6 +38,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
   const [jobInfo, setJobInfo] = useState<JobInfo>(job)
 
   const uploadJob = async () => {
+    setLoading(true)
     const storedContent = localStorage.getItem("noval__content")
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
@@ -54,6 +56,9 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
       toast.success(data?.message)
       router.back()
     }
+    setLoading(false)
+
+    router.push("/jobs")
   }
 
   return (

@@ -1,14 +1,13 @@
 import React from "react"
 import clsx from "clsx"
-import { useSession } from "next-auth/react"
 import { ToastContainer } from "react-toastify"
-
-import { UserProvider } from "@/providers/user-context"
+import { UserProvider, useUserContext } from "@/providers/user-context"
 
 import Footer from "./footer"
 import Header from "./header"
-
+// import LoadingOverlay  from 'react-loading-overlay'
 import "react-toastify/dist/ReactToastify.css"
+import LoadingOverlay from "../ui/loadingOverlay"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -16,8 +15,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
-  const { data, status } = useSession()
-  console.log(data, status)
+  const { } = useUserContext()
 
   return (
     <>
@@ -34,8 +32,8 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
           pauseOnHover
           theme="dark"
         />
-        <div></div>
         <div className="absolute h-fit text-text bg-background">
+          <LoadingOverlay />
           <Header />
           <main
             className={clsx("", className, " bg-background min-h-[539px]")}

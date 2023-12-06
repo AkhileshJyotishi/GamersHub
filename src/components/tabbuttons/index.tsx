@@ -3,17 +3,20 @@ import React from "react"
 // import Button from "../common/Button";
 // import { useRouter } from "next/navigation"
 import Button from "../ui/button"
+import clsx from "clsx"
 
 export default function TabButtons({
   tabNames,
   setActiveTab,
+  activeTab
 }: {
   tabNames: Array<string>
   setActiveTab?: React.Dispatch<React.SetStateAction<string>>
+  activeTab:string
 }) {
   return (
     <>
-      <div className="flex flex-row justify-between w-full text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20">
+      <div className="flex flex-row flex-wrap justify-between w-full text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20">
         {tabNames?.map((tabName, index) => {
           return (
             <>
@@ -22,7 +25,7 @@ export default function TabButtons({
                   if (setActiveTab) setActiveTab(tabName)
                 }}
                 // variant={router.pathname.endsWith("/jobs") ? "secondary" : "text"}
-                className="px-[12px] sm:px-[25px] py-[10px]"
+                className={clsx("px-[12px] sm:px-[25px] py-[10px] rounded-xl",activeTab===tabName && "bg-secondary")}
               >
                 {tabName}
               </Button>

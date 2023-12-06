@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios"
 
 import instance, { fileInstance } from "@/lib/axios"
 import { toast } from "react-toastify"
+import { signOut } from "next-auth/react"
 
 export function getLocalRecentSearches(): string[] | null {
   const recentSearchesString = localStorage.getItem("recent-searches")
@@ -59,13 +60,20 @@ export const fetchData = async (
   token: string,
   method: string,
   data?: Allow,
-  customHeaders?: { [key: string]: string }
+  customHeaders?: { [key: string]: string },
+  session?:Allow
 ): Promise<APITypes | null> => {
   try {
+    
     const response = await fetchWithAuthorization(url, token, method, data, customHeaders)
     // console.log("authchecker ", response.data)
 
     const resp = response.data
+    if(resp?.error){
+      if(!session){
+        signOut()
+      }
+    }
     return await resp
   } catch (error: Allow) {
     console.log(error)

@@ -64,4 +64,5 @@ interface Games {
     id: number
   }[]
   userId:number
+  
 }

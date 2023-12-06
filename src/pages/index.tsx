@@ -26,7 +26,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const [verifyModal, setVerifyModal] = useState(false)
 
   useEffect(() => {
-    console.log("thse post are to  be mapped  ", users)
+    // console.log("thse post are to  be mapped  ", users)
+    
     console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
@@ -43,7 +44,9 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       router.replace("/", undefined, { shallow: true })
     }
     if (emessage) {
-      toast.error(message)
+      router.replace("/",undefined,{shallow:true})
+      
+      toast.error(emessage)
     }
   }, [verify, logout, router])
   const [mail, setMail] = useState<string>("")
