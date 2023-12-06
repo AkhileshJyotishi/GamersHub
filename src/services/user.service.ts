@@ -633,6 +633,7 @@ interface userDetailsBody {
   userBio?: string
   userSkills?: string[]
   userSoftwares?: string[]
+  profileImage?: string
 }
 
 /**
@@ -728,7 +729,7 @@ const updateUserDetailsByUserId = async (
   if (!(await prisma.userDetails.findUnique({ where: { userId } }))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Details not found.')
   }
-  const { userSkills, userSoftwares, ...newDetailsBody } = userDetailsBody
+  const { userSkills, userSoftwares, profileImage, ...newDetailsBody } = userDetailsBody
 
   // handle userSkills
   if (userSkills) {
@@ -857,6 +858,14 @@ const updateUserDetailsByUserId = async (
 
     await Promise.all(addPromises)
   }
+  await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      profileImage
+    }
+  })
 
   return await prisma.userDetails.update({
     where: {

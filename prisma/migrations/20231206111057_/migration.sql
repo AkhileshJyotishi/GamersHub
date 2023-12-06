@@ -1,14 +1,8 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `role` on the `User` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `username` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateEnum
 CREATE TYPE "RoleType" AS ENUM ('MOD', 'ADMIN');
+
+-- CreateEnum
+CREATE TYPE "TokenType" AS ENUM ('ACCESS', 'REFRESH', 'RESET_PASSWORD', 'VERIFY_EMAIL');
 
 -- CreateEnum
 CREATE TYPE "ProviderType" AS ENUM ('GOOGLE', 'FACEBOOK');
@@ -31,23 +25,21 @@ CREATE TYPE "JobPaymentType" AS ENUM ('FIXED', 'HOURLY', 'NEGOTIABLE');
 -- CreateEnum
 CREATE TYPE "JobType" AS ENUM ('FREELANCE', 'FULL_TIME', 'COLLAB');
 
--- DropForeignKey
-ALTER TABLE "Token" DROP CONSTRAINT "Token_userId_fkey";
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT,
+    "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "profileImage" TEXT,
+    "bannerImage" TEXT,
+    "matureContent" BOOLEAN NOT NULL DEFAULT false,
 
--- AlterTable
-ALTER TABLE "Token" ALTER COLUMN "blacklisted" SET DEFAULT false;
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "name",
-DROP COLUMN "role",
-ADD COLUMN     "bannerImage" TEXT,
-ADD COLUMN     "matureContent" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "profileImage" TEXT,
-ADD COLUMN     "username" TEXT NOT NULL,
-ALTER COLUMN "password" DROP NOT NULL;
-
--- DropEnum
-DROP TYPE "Role";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "UserDetails" (
@@ -109,6 +101,19 @@ CREATE TABLE "Role" (
     "role" "RoleType",
 
     CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Token" (
+    "id" SERIAL NOT NULL,
+    "token" TEXT NOT NULL,
+    "type" "TokenType" NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "blacklisted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "Token_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -228,7 +233,9 @@ CREATE TABLE "Job" (
     "banner" TEXT,
     "publishDate" TIMESTAMP(3),
     "title" TEXT NOT NULL,
+    "description" TEXT,
     "jobDetails" JSONB,
+    "aboutRecruiter" JSONB,
     "remote" BOOLEAN NOT NULL,
     "country" TEXT,
     "city" TEXT,
@@ -383,6 +390,12 @@ CREATE TABLE "_PostKeywords" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "UserDetails_userId_key" ON "UserDetails"("userId");
 
 -- CreateIndex
@@ -507,9 +520,6 @@ CREATE UNIQUE INDEX "_PostKeywords_AB_unique" ON "_PostKeywords"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_PostKeywords_B_index" ON "_PostKeywords"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
 ALTER TABLE "UserDetails" ADD CONSTRAINT "UserDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
