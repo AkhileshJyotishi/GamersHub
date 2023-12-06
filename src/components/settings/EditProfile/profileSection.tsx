@@ -11,7 +11,14 @@ import { uploadProfileData } from "./editprofileHandler"
 import Image from "next/image"
 
 interface ProfileSectionProps {
-  profileData?: any
+  profileData?: {
+    userBio: string | null | undefined;
+    country: string | null | undefined;
+    city: string | null | undefined;
+    userSkills: IuserSkill[];
+    userSoftwares: IuserSoftware[] | undefined;
+    profileImage: string | undefined;
+}
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
 }

@@ -187,7 +187,8 @@ const Card: React.FC<JobCardProps> = ({
                 <UserImage href={banner} />
                 <UserInfo title={title} location={location} />
               </div>
-              {(session && userData?.id!==userId)  ?
+            
+              {( userData?.id!==userId)  ?
               (
                 <>
                   <div className="flex items-center " onClick={(e) => {e.stopPropagation();savePost(id)}}>

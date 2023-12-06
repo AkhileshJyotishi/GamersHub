@@ -124,7 +124,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
             />
           ))}
         </div>
-
+{/* 
         <Button
           className="
                         bg-user_interface_3 hover:bg--user_interface_2 active:bg--user_interface_2 text-text  
@@ -132,7 +132,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           variant="secondary"
         >
           Load More
-        </Button>
+        </Button> */}
 
         <JobSection />
         <TalentSection Img={Img} RightSVG={RightSVG} />

@@ -17,9 +17,9 @@ declare interface IDetails {
   userSkills: IuserSkill[]
   userSoftwares?: IuserSoftware[]
   user:{
-    profileImage:string;
-    bannerImage:string;
-    matureContent:boolean;
+    profileImage?:string;
+    bannerImage?:string;
+    matureContent?:boolean;
   }
 }
 

@@ -100,7 +100,10 @@ useEffect(() => {
           <span className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/${userId}/profile/albums`)} >{username}</span>
           {/* <span className="block text-xs text-gray-600">{location}</span> */}
         </div>
+        {
+          session && userData?.id ==userId &&  
         <div className="ml-auto" ><DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200" onClick={()=>deletePost(id)}/></div>
+        }
       </div>
       <div className="flex items-center px-2">
         <span className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/games/${id}`)}>{title}</span>

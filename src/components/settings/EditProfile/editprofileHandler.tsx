@@ -258,7 +258,14 @@ export const uploadUserExperience = async (
   return response?.data
 }
 
-export const uploadProfileData = async (profileData: any, token: string) => {
+export const uploadProfileData = async (profileData:  {
+  userBio: string | null | undefined;
+  country: string | null | undefined;
+  city: string | null | undefined;
+  userSkills: IuserSkill[];
+  userSoftwares: IuserSoftware[] | undefined;
+  profileImage: string | undefined;
+} | undefined, token: string) => {
   // const token = useSession().data?.user?.name as string
   const response = await fetchData(`/v1/users/details`, token, "PATCH", profileData)
   if (response?.error) {

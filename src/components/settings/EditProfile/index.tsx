@@ -61,7 +61,7 @@ const EditProfilePage = ({
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
     userSoftwares: profileDetails.userSoftwares,
-    profileImage:profileDetails.user.profileImage,
+    profileImage:profileDetails.user?.profileImage,
   })
   const initialskillstags = profileDetails.userSkills
     ? profileDetails?.userSkills?.map((userskill) => userskill.skill)

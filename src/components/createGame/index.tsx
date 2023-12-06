@@ -35,8 +35,12 @@ interface GameInfo {
 const CreateGame = ({ game }: { game?: BackendGame }) => {
   console.log("latest error", game)
   const path = usePathname()
+  const router=useRouter()
+console.log("[ath",path)
 
-  const isUpdate = path.includes("updateGame")
+  let  isUpdate=false;
+  if(path) isUpdate=path.includes("updateGame")
+
   let initGameInfo
 
   if (isUpdate && game) {
@@ -79,7 +83,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
   const session = useSession()
-  const router=useRouter()
+  // const router=useRouter()
   const {setLoading}=useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const uploadGame = async () => {
@@ -89,7 +93,14 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameInfo.description = JSON.parse(storedContent)
     }
     const formdata=new FormData();
+    const formdata2=new FormData();
+
     formdata.append("file",gameInfo.banner as Blob);
+    gameInfo.gameAssets?.map((game)=>{
+      formdata2.append("files",game as Blob);
+
+    })
+    console.log(formdata2.entries())
     console.log("jobInfo.banner ",gameInfo.banner)
     const isuploaded=await fetchFile("/v1/upload/file",session?.data?.user?.name as string,"POST",formdata);
     if(isuploaded?.error){
@@ -103,6 +114,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     // gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
     const multiisuploaded=await fetchFile("/v1/upload/multiple",session?.data?.user?.name as string,"POST",formdata);
+
     if(multiisuploaded?.error){
       toast.error(multiisuploaded.error)
       setLoading(false)
@@ -110,13 +122,16 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       
     }
     else{
-      gameInfo.gameAssets=multiisuploaded?.data.image.Location;
+      gameInfo.gameAssets=[]
+      gameInfo.gameAssets=multiisuploaded?.data.image.map((loc:Allow)=>{
+gameInfo.gameAssets?.push(loc.Location)
+      });
     }
-    gameInfo.gameAssets = [
-      "https://picsum.photos/id/250/900/900",
-      "https://picsum.photos/id/250/900/900",
-      "https://picsum.photos/id/250/900/900",
-    ]
+    // gameInfo.gameAssets = [
+    //   "https://picsum.photos/id/250/900/900",
+    //   "https://picsum.photos/id/250/900/900",
+    //   "https://picsum.photos/id/250/900/900",
+    // ]
     // gameInfo.developerId = 11
     // delete gameInfo.developerId
     console.log(gameInfo)
