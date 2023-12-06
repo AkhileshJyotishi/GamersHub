@@ -19,25 +19,8 @@ const CreateJob: React.FC = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const { setLoading } = useUserContext()
-  interface JobInfo {
-    jobType: string
-    remote: boolean
-    country?: string
-    city?: string
-    description: string
-    paymentType: string
-    paymentValue: number
 
-    banner: File | null | string
-    expertise: string
-    jobSoftwares: string[]
-    title: string
-    publishDate: string | null
-    jobDetails: object | null
-    aboutRecruiter: object | null
-  }
-
-  const initialJobInfo: JobInfo = {
+  const initialJobInfo: Omit<JobInfo,"userId"> = {
     title: "",
     banner: null,
     publishDate: null,
@@ -56,7 +39,7 @@ const CreateJob: React.FC = () => {
     jobSoftwares: [],
   }
 
-  const [jobInfo, setJobInfo] = useState<JobInfo>(initialJobInfo)
+  const [jobInfo, setJobInfo] = useState<Omit<JobInfo,"userId">>(initialJobInfo)
 
   const uploadJob = async () => {
     // console.log("job uploading")
@@ -112,11 +95,7 @@ const CreateJob: React.FC = () => {
       <div className="flex flex-col w-full gap-4">
         <>
           <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
-          {/* <Editor
-          className={"bg-user_interface_2 w-full rounded-xl "}
-          editable={true}
-          storageKey="noval__content3"          
-        /> */}
+        
           <div className="w-full p-12 bg-user_interface_2 rounded-xl">
             <Filter
               key={"text"}
@@ -128,6 +107,7 @@ const CreateJob: React.FC = () => {
               onChange={(value) =>
                 setJobInfo((prev) => ({ ...prev, description: value as string }))
               }
+              
               // Variant={clsx(
               //   "flex flex-col items-start gap-[10px] text-[14px]",
               //   // hide ? "hidden" : ""

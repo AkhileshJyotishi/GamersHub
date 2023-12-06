@@ -33,18 +33,13 @@ const Filter: React.FC<FilterDetail> = ({
   preview,
   // hidden
 }) => {
-  // const [selectedCheckbox, setSelectedCheckbox] = useState<string>(value as string)
-  // const [setectedselect, setsetectedselect] = useState<string>(value as string)
-  // const [selectedRadio, setSelectedRadio] = useState<boolean>(value as boolean)
-  // const [startDate, setStartDate] = useState<Date>(new Date())
+
   const handleCheckboxChange = (newValue: string) => {
-    // setSelectedCheckbox(newValue)
     if (onChange) {
       onChange(newValue)
     }
   }
   const handleRadioChange = (newValue: boolean) => {
-    // setSelectedRadio(newValue)
     if (onChange) {
       onChange(newValue)
     }
@@ -59,7 +54,7 @@ const Filter: React.FC<FilterDetail> = ({
   const handleTagsChange = (tags: string[]) => {
     if (onTagsChange) {
       onTagsChange(tags)
-      console.log(tags)
+      // console.log(tags)
     }
     // onChange(tags);
   }

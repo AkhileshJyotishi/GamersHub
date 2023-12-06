@@ -7,29 +7,12 @@ import { FilterDetail } from "@/interface/filter"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 
-interface JobInfo {
-  jobType: string
-  description: string
-  remote: boolean
-  country?: string
-  city?: string
 
-  paymentType: string
-  paymentValue: number
-
-  banner: File | null | string
-  expertise: string
-  jobSoftwares: string[]
-  title: string
-  publishDate: string | null
-  jobDetails: object | null
-  aboutRecruiter: object | null
-}
 
 interface LayoutProps {
   children: React.ReactNode
-  jobInfo: JobInfo
-  setJobInfo: React.Dispatch<React.SetStateAction<JobInfo>>
+  jobInfo: Omit<JobInfo,"userId">
+  setJobInfo: React.Dispatch<React.SetStateAction<Omit<JobInfo,"userId">>>
   uploadJob: () => Promise<void>
 }
 

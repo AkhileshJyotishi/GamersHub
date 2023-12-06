@@ -70,7 +70,7 @@ interface BackendJob {
 
 interface JobInfo {
   jobType: string
-
+description:string
   remote: boolean
   country?: string
   city?: string
@@ -85,4 +85,5 @@ interface JobInfo {
   publishDate: string | null
   jobDetails: object | null
   userId: number
+  aboutRecruiter: object | null
 }

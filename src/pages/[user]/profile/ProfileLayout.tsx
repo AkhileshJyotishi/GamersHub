@@ -61,7 +61,8 @@ const ProfileLayout = ({
   useEffect(() => {
     // console.log("para", param)
     // console.log("Mounting new profile")
-
+    if(!session)  router.replace(`/?emessage=Please Authenticate`)
+        // router.push()
     const loaddata = async () => {
       const users = await fetchWithoutAuthorization(
         `/v1/users/customDetails/${router.query.user}`,

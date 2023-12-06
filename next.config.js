@@ -24,6 +24,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "gch-dev-public.s3.eu-central-003.backblazeb2.com",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 }

@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
     return {
       redirect: {
-        destination: `/?error=${jobsDetails.message}`,
+        destination: `/?emessage=${jobsDetails.message}`,
         permanent: false,
       },
     }
