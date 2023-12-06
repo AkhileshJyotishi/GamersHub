@@ -7,7 +7,7 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 const Verify = () => {
   const router = useRouter()
   const { token } = router.query
-  console.log(token)
+  // console.log(token)
   useEffect(() => {
     const loaddata = async () => {
       const data = await fetchWithoutAuthorization(
@@ -15,7 +15,7 @@ const Verify = () => {
         "POST",
         {}
       )
-      console.log(data)
+      // console.log(data)
       if (data?.error) {
         toast.error("Email verification failed")
       } else {

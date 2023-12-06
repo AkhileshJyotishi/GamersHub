@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       },
     }
   }
-  console.log("this  is session", session)
+  // console.log("this  is session", session)
   const { id } = query
   const jobsDetails = await fetchData(`/v1/job/${id}`, session.user?.name as string, "GET")
 

@@ -97,7 +97,7 @@ const JobDetails: React.FC<{ jobData: jobdataprop }> = ({ jobData }) => (
 )
 
 const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
-  console.log("jobdetails from backend", jobData.jobDetails)
+  // console.log("jobdetails from backend", jobData.jobDetails)
   return (
     <div className="flex flex-col gap-5 p-3">
       <div className="text-[25px] font-bold">Job Description</div>

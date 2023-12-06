@@ -28,7 +28,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
 
-    console.log("router ", router.query)
+    // console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
       // signOut();

@@ -53,7 +53,7 @@ const LoginPage = () => {
 
   const onSubmit = async (provider: string) => {
     const newError = validateForm()
-    console.log(newError)
+    // console.log(newError)
     if (Object.values(newError).some((error) => error !== "")) {
       setErrors(newError)
       return
@@ -76,7 +76,7 @@ const LoginPage = () => {
         router.push("/")
       }
     } catch (error: Allow) {
-      console.log("catch in auth login ", error)
+      // console.log("catch in auth login ", error)
       toast.error(error)
     }
   }

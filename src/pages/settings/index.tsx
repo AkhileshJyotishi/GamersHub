@@ -13,9 +13,9 @@ import { fetchData } from "@/utils/functions"
 import SettingsPage from "@/components/settings"
 
 const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
-  console.log("session ", settingsDetails)
+  // console.log("session ", settingsDetails)
   const { data: session } = useSession()
-  console.log(session?.user?.name)
+  // console.log(session?.user?.name)
 
   return (
     <>
@@ -53,10 +53,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     toast.success(settingsDetails?.message)
   }
   // return resp.data;
-  console.log("settings detaisls", settingsDetails)
+  // console.log("settings detaisls", settingsDetails)
 
   settingsDetails = settingsDetails?.data
-  console.log("that's settingsdetails  ", settingsDetails)
+  // console.log("that's settingsdetails  ", settingsDetails)
   return {
     props: {
       settingsDetails,

@@ -8,7 +8,7 @@ import { fetchData } from "@/utils/functions"
 import Particularpage from "./particularpage"
 
 const index = ({ profileData }: { profileData: BackendJob }) => {
-  console.log("prifle data ti is ", profileData)
+  // console.log("prifle data ti is ", profileData)
   return (
     <>
       <Particularpage profileData={profileData} />
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   // return resp.data;
 
   profileData = profileData?.data.job
-  console.log("settings detaisls", profileData)
+  // console.log("settings detaisls", profileData)
   return {
     props: {
       profileData,

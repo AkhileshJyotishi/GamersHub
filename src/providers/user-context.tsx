@@ -66,11 +66,11 @@ const UserProvider = ({ children }: IUserProvider) => {
 
   const containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    console.log("session  ", session.data?.user?.name, session.status)
+    // console.log("session  ", session.data?.user?.name, session.status)
     if (session.data?.user?.name && session.status == "authenticated" && session !== undefined) {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
-        console.log("this is user0  ", data)
+        // console.log("this is user0  ", data)
         setuserData(data?.data?.user)
         // data?.data.user
       }

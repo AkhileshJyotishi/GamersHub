@@ -37,7 +37,7 @@ const Jobs = () => {
     const loadData = async () => {
       // ${router.query.user}
       const data = await fetchWithoutAuthorization(`v1/job/user/${router.query.user}`, "GET")
-      console.log(data?.data.jobs)
+      // console.log(data?.data.jobs)
       if (data?.error) {
         router.push(`/?error=Please authenticate`)
       } else {
@@ -55,7 +55,7 @@ const Jobs = () => {
       {/* sdfsdfsdf */}
       {jobDetails.length > 0 ? (
         jobDetails.map((job) => {
-          console.log("job upload  ", job)
+          // console.log("job upload  ", job)
           const x = FrontendCompatibleObject(job)
           return (
             <>

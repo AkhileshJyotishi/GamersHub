@@ -8,7 +8,7 @@ import { fetchData } from "@/utils/functions"
 import CreateGame from "@/components/createGame"
 
 const index = (game: Allow) => {
-  console.log("object in back", game)
+  // console.log("object in back", game)
   return (
     <>
       <CreateGame game={game.game} />
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       },
     }
   }
-  console.log(games?.data.game.gameAssets)
+  // console.log(games?.data.game.gameAssets)
   const game = games?.data?.game
   // console.log("game in back",game)
   return {

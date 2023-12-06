@@ -104,7 +104,7 @@ const EditProfilePage = ({
   }
 
   const addExperience = () => {
-    console.log("working")
+    // console.log("working")
     setnewexperience((prevExperience) => [
       ...prevExperience,
       {
@@ -141,8 +141,8 @@ const EditProfilePage = ({
     value: Date | string | boolean
   ) => {
     const updatedExperience = [...experience]
-    console.log("updatedExperience ", updatedExperience)
-    console.log("field ", field)
+    // console.log("updatedExperience ", updatedExperience)
+    // console.log("field ", field)
     switch (field) {
       case "company":
         updatedExperience[index][field] = value as string
@@ -174,8 +174,8 @@ const EditProfilePage = ({
     value: Date | string | boolean
   ) => {
     const updatedExperience = [...newExperience]
-    console.log("updatedExperience ", updatedExperience)
-    console.log("field ", field)
+    // console.log("updatedExperience ", updatedExperience)
+    // console.log("field ", field)
     switch (field) {
       case "company":
         updatedExperience[index][field] = value as string
@@ -248,7 +248,7 @@ const EditProfilePage = ({
     value: string | Date
   ) => {
     const updatedEducation = [...newEducation]
-    console.log("updatedEducation ", updatedEducation)
+    // console.log("updatedEducation ", updatedEducation)
 
     switch (field) {
       case "degree":

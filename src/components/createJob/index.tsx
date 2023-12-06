@@ -59,13 +59,13 @@ const CreateJob: React.FC = () => {
   const [jobInfo, setJobInfo] = useState<JobInfo>(initialJobInfo)
 
   const uploadJob = async () => {
-    console.log("job uploading")
+    // console.log("job uploading")
     setLoading(true)
 
     const storedContent = localStorage.getItem("noval__content2")
     const aboutRecuiter = localStorage.getItem("noval__content1")
-    console.log("stored_contnetn ", storedContent)
-    console.log("aboutrecuiter ", aboutRecuiter)
+    // console.log("stored_contnetn ", storedContent)
+    // console.log("aboutrecuiter ", aboutRecuiter)
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
@@ -76,7 +76,7 @@ const CreateJob: React.FC = () => {
     localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
-    console.log("jobInfo.banner ", jobInfo.banner)
+    // console.log("jobInfo.banner ", jobInfo.banner)
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.user?.name as string,
@@ -87,7 +87,7 @@ const CreateJob: React.FC = () => {
       toast.info(isuploaded?.message)
       return
     }
-    console.log(isuploaded?.data)
+    // console.log(isuploaded?.data)
     // return;
     jobInfo.banner = isuploaded?.data.image.Location
     jobInfo.publishDate = new Date().toISOString()

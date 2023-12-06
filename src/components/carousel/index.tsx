@@ -125,7 +125,7 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
       },
     ],
   }
-  console.log("carousel  ", GameAssets)
+  // console.log("carousel  ", GameAssets)
   return (
     <>
       <div className={clsx(carousel["content"])}>

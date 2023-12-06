@@ -26,7 +26,7 @@ export function getLocalRecentSearches(): string[] | null {
 
 export function setLocalRecentSearches(search: string) {
   const recentSearches = getLocalRecentSearches()
-  console.log({ recentSearches })
+  // console.log({ recentSearches })
 
   if (!recentSearches) {
     return
@@ -75,8 +75,8 @@ export const fetchData = async (
     }
     return await resp
   } catch (error: Allow) {
-    console.log(error)
-    console.log("nulliscoming")
+    // console.log(error)
+    // console.log("nulliscoming")
     return {
       error: error,
       message: error?.response?.data?.message,
@@ -104,7 +104,7 @@ export const fetchWithoutAuthorization = async (
     return await resp
   } catch (error: unknown) {
     console.error(error)
-    console.log("Null is coming")
+    // console.log("Null is coming")
     return {
       error: error,
       message: "Request failed",
@@ -138,7 +138,7 @@ export const fetchFile = async (
     return resp
   } catch (error) {
     console.error(error)
-    console.log("Null is coming")
+    // console.log("Null is coming")
     return {
       error: error,
       message: "Request failed",

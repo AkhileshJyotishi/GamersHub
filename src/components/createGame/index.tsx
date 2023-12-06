@@ -33,10 +33,10 @@ interface GameInfo {
 // import { Editor } from "novel";
 
 const CreateGame = ({ game }: { game?: BackendGame }) => {
-  console.log("latest error", game)
+  // console.log("latest error", game)
   const path = usePathname()
   const router = useRouter()
-  console.log("[ath", path)
+  // console.log("[ath", path)
 
   let isUpdate = false
   if (path) isUpdate = path.includes("updateGame")
@@ -99,8 +99,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
     })
-    console.log(formdata2.entries())
-    console.log("jobInfo.banner ", gameInfo.banner)
+    // console.log(formdata2.entries())
+    // console.log("jobInfo.banner ", gameInfo.banner)
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.data?.user?.name as string,
@@ -112,7 +112,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       setLoading(false)
       return
     }
-    console.log(isuploaded?.data)
+    // console.log(isuploaded?.data)
     // return;
     gameInfo.banner = isuploaded?.data.image.Location
     // gameInfo.banner = "https://picsum.photos/id/250/900/900"
@@ -135,7 +135,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       })
     }
   
-    console.log(gameInfo)
+    // console.log(gameInfo)
     if (isUpdate) {
       fetchData(`v1/game/${game?.id}`, session.data?.user?.name as string, "PATCH", gameInfo)
     } else {

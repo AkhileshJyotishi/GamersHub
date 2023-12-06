@@ -20,7 +20,7 @@ const Albums = () => {
     // console.log("jwt  ", document.cookie.length)
     const loadData = async () => {
       const data = await fetchWithoutAuthorization(`/v1/album/user/${router.query.user}`, "GET")
-      console.log("yeh wala data ", data)
+      // console.log("yeh wala data ", data)
       if (!data?.error) {
         setalbumDetails(data?.data?.albums)
       } else {

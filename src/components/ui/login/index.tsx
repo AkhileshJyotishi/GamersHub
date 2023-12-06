@@ -66,7 +66,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     e.preventDefault()
 
     const newError = validateForm()
-    console.log(newError)
+    // console.log(newError)
     if (Object.values(newError).some((error) => error !== "")) {
       setErrors(newError)
       return

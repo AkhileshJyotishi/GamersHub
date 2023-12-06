@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const parsedjobsDetails: BackendJob[] = jobsDetails?.data.jobs
-  console.log(parsedjobsDetails)
+  // console.log(parsedjobsDetails)
   // console.log("this is the job details ", parsedjobsDetails)
 
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {

@@ -59,8 +59,8 @@ const ProfileLayout = ({
   const param = useParams()
 
   useEffect(() => {
-    console.log("para", param)
-    console.log("Mounting new profile")
+    // console.log("para", param)
+    // console.log("Mounting new profile")
 
     const loaddata = async () => {
       const users = await fetchWithoutAuthorization(
@@ -68,7 +68,7 @@ const ProfileLayout = ({
         "GET"
       )
 
-      console.log("User fetched", users)
+      // console.log("User fetched", users)
       if (users?.error) {
         //  toast.success(session.data?.user?.name)
         router.replace(`/?emessage=Please Authenticate`)
@@ -128,7 +128,7 @@ const ProfileLayout = ({
         "POST",
         formdata
       )
-      console.log("is uploaded", isuploaded)
+      // console.log("is uploaded", isuploaded)
       newAlbum.banner = isuploaded?.data?.image?.Location
     } else {
       newAlbum.banner = ""
@@ -148,12 +148,12 @@ const ProfileLayout = ({
     } else {
       toast.success(albumData?.message)
     }
-    console.log(albumData)
+    // console.log(albumData)
   }
   if (loading) {
     return <>loading...</>
   } else {
-    console.log("why this user not coming  ", data)
+    // console.log("why this user not coming  ", data)
     return (
       <div className="flex flex-col gap-5 p-5 lg:flex-row">
         <ProfileCard className="hidden lg:block" currentUser={data} />

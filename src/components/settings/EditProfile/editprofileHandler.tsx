@@ -111,7 +111,7 @@ export const removeUserEducation = async (
     token,
     "DELETE"
   )
-  console.log("delete ", response)
+  // console.log("delete ", response)
   if (response?.error) {
     toast.error(response.message)
   } else {
@@ -129,7 +129,7 @@ export const removefromarray = (
 ) => {
   arraytoupdate((prev) => {
     const newexp = prev.filter((_, i) => i !== index)
-    console.log(newexp)
+    // console.log(newexp)
     return newexp
   })
 }
@@ -147,7 +147,7 @@ export const removeuserExperience = async (
     token,
     "DELETE"
   )
-  console.log("delete experince", response)
+  // console.log("delete experince", response)
   if (response?.error) {
     toast.error(response.message)
   } else {
@@ -242,7 +242,7 @@ export const uploadUserExperience = async (
   }
   // if (hasDataChanged) {
   delete userExperience.id
-  console.log("userexpt ", userExperience)
+  // console.log("userexpt ", userExperience)
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/experience`,
     token,
