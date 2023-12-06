@@ -94,6 +94,8 @@ const CreateJob: React.FC = () => {
 
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
     if (data?.error) {
+      setLoading(false)
+
       toast.error(data?.message)
       return
     }

@@ -219,7 +219,7 @@ const ProfileLayout = ({
           />
           <ProfileAccordion className=" lg:hidden" />
 
-          <div className="bg-user_interface_2 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
+          <div className="backdrop-blur-sm bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
             <Tab />
           </div>
           <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">

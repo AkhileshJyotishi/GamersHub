@@ -56,6 +56,15 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       setmyjobs(sett)
     }
   }
+  const onChange = (id: number) => {
+    // const updatedJobs = jobs.filter(job => );
+    setmyjobs((prev) => {
+      const x = prev?.filter((job) => job.id !== id)
+      if (x) return x
+      else return null
+    })
+  }
+
   useEffect(() => {
     mygames()
   }, [])
@@ -143,7 +152,12 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
                 {myjob &&
                   myjob.map((job, idx) => (
-                    <Card {...job} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
+                    <Card
+                      {...job}
+                      className="w-[100%] max-w-[380px] h-[310px]"
+                      key={idx}
+                      onChange={onChange}
+                    />
                   ))}
               </div>
             ) : (

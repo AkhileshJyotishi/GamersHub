@@ -10,6 +10,7 @@ interface FileInputProps {
 
 import React, { useState } from "react"
 import clsx from "clsx"
+import Image from "next/image"
 
 import Button from "@/components/ui/button"
 
@@ -23,7 +24,7 @@ const FileFilter: React.FC<FileInputProps> = ({
   value,
 }) => {
   const [filePreview, setFilePreview] = useState<string | null>(value || null)
-  const [fileType, setFileType] = useState<string | null>(null)
+  const [, setFileType] = useState<string | null>(null)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     console.log(file.type)
@@ -104,13 +105,12 @@ const FileFilter: React.FC<FileInputProps> = ({
                   <div>drag and drop</div>
                 </div>
               </div>
-              <embed
-                type={fileType ?? "image/*"}
+              <Image
                 src={filePreview}
-                title="File Preview"
-                width="100%"
-                height={"100%"}
-                className="object-cover rounded-xl"
+                alt="File Preview"
+                width="400"
+                height="400"
+                className="object-cover w-full h-full rounded-xl"
                 style={{ zIndex: 16 }}
               />
             </div>

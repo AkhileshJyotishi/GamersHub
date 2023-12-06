@@ -134,13 +134,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         gameInfo.gameAssets?.push(loc.Location)
       })
     }
-    // gameInfo.gameAssets = [
-    //   "https://picsum.photos/id/250/900/900",
-    //   "https://picsum.photos/id/250/900/900",
-    //   "https://picsum.photos/id/250/900/900",
-    // ]
-    // gameInfo.developerId = 11
-    // delete gameInfo.developerId
+  
     console.log(gameInfo)
     if (isUpdate) {
       fetchData(`v1/game/${game?.id}`, session.data?.user?.name as string, "PATCH", gameInfo)

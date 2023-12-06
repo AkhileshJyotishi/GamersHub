@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
@@ -13,9 +13,7 @@ import UploadIcon from "@/components/icons/upload"
 import Button from "@/components/ui/button"
 
 const BannerImage = ({
-  currentUser,
   bannerImage,
-  // authUser,
   setisCreateAlbumOpen,
   className,
 }: {

@@ -2,10 +2,13 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
+import { useUserContext } from "@/providers/user-context"
+
 import Button from "@/components/ui/button"
 interface GamePageHeaderProps {
   logoSrc: string
   title: string
+  userId: number
 
   // location: string;
 }
@@ -26,28 +29,30 @@ const UserInfo = ({ title }: { title: string }) => (
   </div>
 )
 
-const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title }) => {
+const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title, userId }) => {
+  const { userData } = useUserContext()
   return (
     <div>
-      <div className="p-4 font-extrabold">
+      <div className="p-4 font-extrabold ">
         <Button> Back</Button>
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
-        <div className="flex gap-[25px] flex-wrap">
+        <div className="flex gap-[25px] flex-wrap justify-center md:justify-normal ">
           <UserImage href={logoSrc} />
           <UserInfo title={title} />
         </div>
         <div className="flex gap-[25px]"></div>
       </div>
-
-      <div className="flex flex-wrap justify-center mt-3 md:justify-normal gap-x-4">
-        <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
-          Save Game
-        </Button>
-        <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
-          Buy Now
-        </Button>
-      </div>
+      {userData?.id !== userId && (
+        <div className="flex flex-wrap justify-center mt-3 md:justify-normal gap-x-4 gap-y-3">
+          <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
+            Save Game
+          </Button>
+          <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
+            Buy Now
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -16,7 +16,7 @@ const DesktpFilter: React.FC<filterprops & Props> = ({
   return (
     <div
       className={clsx(
-        "w-[23vw] flex justify-center min-w-[280px] sticky top-[61px] h-fit",
+        "w-full md:w-[23vw] flex justify-center min-w-[280px] sticky top-[61px] h-fit",
         className
       )}
     >

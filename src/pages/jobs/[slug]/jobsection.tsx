@@ -82,7 +82,7 @@ const sections: Section[] = [
 ]
 
 const SectionRenderer: React.FC<Section & { data: jobdataprop }> = ({ title, data, render }) => (
-  <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
+  <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap ">
     <h3 className="mb-2 font-medium text-[18px]">{title}</h3>
     <div className="flex flex-wrap w-full gap-2">{render(data)}</div>
   </div>
@@ -102,8 +102,12 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
     <div className="flex flex-col gap-5 p-3">
       <div className="text-[25px] font-bold">Job Description</div>
       <div className="flex flex-col gap-8 md:flex-row">
-        <div className={clsx("w-[23vw] flex justify-center min-w-[280px] sticky top-[61px] h-fit")}>
-          <div className="flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]  md:flex">
+        <div
+          className={clsx(
+            "w-full md:w-[23vw] flex justify-center min-w-[280px] md:sticky top-[61px] h-fit"
+          )}
+        >
+          <div className="flex flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
             <JobDetails jobData={jobData} />
           </div>
         </div>

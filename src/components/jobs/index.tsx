@@ -48,11 +48,23 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         session?.user?.name as string,
         "GET"
       )
+      if (data?.error) {
+        return
+      }
       console.log("myjobposts     ", data)
       const sett = data?.data.jobs.map((job: BackendJob) => FrontendCompatibleObject(job))
       setmyjobs(sett)
     }
   }
+  const onChange = (id: number) => {
+    // const updatedJobs = jobs.filter(job => );
+    setmyjobs((prev) => {
+      const x = prev?.filter((job) => job.id !== id)
+      if (x) return x
+      else return null
+    })
+  }
+
   useEffect(() => {
     myjobs()
   }, [])
@@ -125,13 +137,11 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
               {jobs.map((job, idx) => {
                 const arr = job.savedUsers.map((obj) => obj.id)
                 return arr.filter((id) => {
-                  id === userData?.id ? (
+                  id === userData?.id && (
                     <>
                       (
                       <Card {...job} className="" key={idx} />)
                     </>
-                  ) : (
-                    <></>
                   )
                 })
               })}
@@ -154,7 +164,10 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {myjob && Array.from(myjob).length > 0 ? (
             <div className="md:w-[70%] grid sm:w-full grid-cols-1 gap-6 md:p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3 mx-auto">
-              {myjob && myjob.map((job, idx) => <Card {...job} className="" key={idx} />)}
+              {myjob &&
+                myjob.map((job, idx) => (
+                  <Card {...job} className="" key={idx} onChange={onChange} />
+                ))}
             </div>
           ) : (
             <>

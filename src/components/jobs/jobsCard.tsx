@@ -32,6 +32,7 @@ interface JobCardProps {
     id: number
   }[]
   userId: number
+  onChange?: (id: number) => void
 }
 
 const UserImage = ({ href }: { href: string | null }) => (
@@ -145,6 +146,7 @@ const Card: React.FC<JobCardProps> = ({
   savedUsers,
   banner,
   userId,
+  onChange,
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
@@ -174,6 +176,7 @@ const Card: React.FC<JobCardProps> = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
+      onChange && onChange(id)
       toast.success(data?.message)
       // setSaved(!saved)
     }
@@ -225,32 +228,16 @@ const Card: React.FC<JobCardProps> = ({
                     </svg>
                   </div>
                 </>
-              ) : (
+              )
+              :
+              (
                 <>
-                  <div className="flex items-center justify-center gap-4">
-                    <div
-                      className="flex items-center mx-auto "
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        deletePost(id)
-                      }}
-                    >
-                      <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-110 transition duration-200" />
-                    </div>
-                    <div
-                      className="flex items-center mx-auto "
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        updatePost(id)
-                      }}
-                    >
-                      <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
-                    </div>
-                  </div>
-                </>
-              )}
+                <div className="flex items-center mx-auto " onClick={(e) => {e.preventDefault();e.stopPropagation();deletePost(id)}}>
+                 <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200"/>
+                </div>
+              </>  
+              )
+              }
             </div>
             <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
             <JobDescription desc={desc as string} />

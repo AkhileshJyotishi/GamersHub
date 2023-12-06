@@ -25,6 +25,7 @@ interface CardProps {
   savedUsers: {
     id: number
   }[]
+  onChange?: (id: number) => void
   //   likes: number;
 }
 
@@ -38,6 +39,7 @@ const SocialCard: React.FC<CardProps> = ({
   banner,
   className,
   savedUsers,
+  onChange,
   //   likes,
 }) => {
   const { data: session } = useSession()
@@ -52,22 +54,6 @@ const SocialCard: React.FC<CardProps> = ({
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedUsers])
-  // const likePost = async () => {
-  //   let method
-  //   if (liked) {
-  //     method = "DELETE"
-  //   } else {
-  //     method = "POST"
-  //   }
-
-  //   const data = await fetchData(`/v1/game/like/${id}`, session?.user?.name as string, method)
-  //   if (data?.error) {
-  //     toast.error(data.message)
-  //   } else {
-  //     // toast.success(data?.message)
-  //     setLiked(!liked)
-  //   }
-  // }
 
   const savePost = async () => {
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
@@ -83,6 +69,7 @@ const SocialCard: React.FC<CardProps> = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
+      onChange && onChange(id)
       toast.success(data?.message)
       // setSaved(!saved)
     }
@@ -93,67 +80,40 @@ const SocialCard: React.FC<CardProps> = ({
 
   return (
     <div className={clsx("p-1 bg-user_interface_2 rounded-xl", className)}>
-      <div className="max-w-md bg-white rounded-sm">
-        <div className="flex items-center justify-between gap-4 px-2 pb-2 pt-4">
-          <div className="flex items-center">
-            <Image
-              className="w-6 h-6 rounded-full"
-              src={cover || defaultbannerImage}
-              alt={""}
-              width={100}
-              height={100}
-            />
-            <div className="ml-2 ">
-              <span
-                className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary"
-                onClick={() => router.push(`/${userId}/profile/albums`)}
-              >
-                {username}
-              </span>
-              {/* <span className="block text-xs text-gray-600">{location}</span> */}
-            </div>
-          </div>
-          {session && userData?.id == userId && (
-            <div className="flex items-center gap-4">
-              <div className="ml-auto">
-                <DeleteIcon
-                  className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200"
-                  onClick={() => deletePost(id)}
-                />
-              </div>
-              <div
-                className="flex items-center mx-auto "
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  updatePost(id)
-                }}
-              >
-                <EditIcon className="h-[20px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
-              </div>
-            </div>
-          )}
+    <div className="max-w-md bg-white rounded-sm">
+      <div className="flex items-center px-2 py-2" >
+        <Image
+          className="w-6 h-6 rounded-full"
+          src={cover || defaultbannerImage}
+          alt={""}
+          width={100}
+          height={100}
+        />
+        <div className="ml-2 ">
+          <span className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/${userId}/profile/albums`)} >{username}</span>
+          {/* <span className="block text-xs text-gray-600">{location}</span> */}
         </div>
-        <div className="flex items-center px-2">
-          <span
-            className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary"
-            onClick={() => router.push(`/games/${id}`)}
-          >
-            {title}
-          </span>
-        </div>
-        <div className="h-[200px] rounded-sm p-2">
-          <Image
-            src={banner || defaultbannerImage}
-            alt=""
-            // blurDataURL={defaultbannerImage}
-            width={400}
-            height={100}
-            className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
-          />
-        </div>
-        <div className="flex items-center justify-between px-4 py-1">
-          {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
+        {
+          session && userData?.id ==userId &&  
+        <div className="ml-auto" ><DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200" onClick={()=>deletePost(id)}/></div>
+        }
+      </div>
+      <div className="flex items-center px-2">
+        <span className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/games/${id}`)}>{title}</span>
+      </div>
+      <div className="h-[200px] rounded-sm p-2">
+        
+        <Image
+          src={banner || defaultbannerImage}
+          alt=""
+          // blurDataURL={defaultbannerImage}
+          width={400}
+          height={100}
+          className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
+        />
+      </div>
+      <div className="flex items-center justify-between px-4 py-1">
+        {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
