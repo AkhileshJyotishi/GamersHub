@@ -64,7 +64,7 @@ router.get('/allDetails', auth(), userController.getAllDetails)
 router
   .route('/:userId')
   .get(auth('getUsers'), userController.getUser)
-  .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
+  .patch(auth(), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), userController.deleteUser)
 export default router
 

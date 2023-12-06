@@ -26,9 +26,9 @@ const updateUser = {
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
-      password: Joi.string().custom(password),
-      username: Joi.string()
+      profileImage: Joi.string().allow('').optional(),
+      bannerImage: Joi.string().allow('').optional(),
+      matureContent: Joi.boolean().optional()
     })
     .min(1)
 }

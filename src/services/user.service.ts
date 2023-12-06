@@ -220,17 +220,11 @@ const getUserByEmail = async <Key extends keyof User>(
 const updateUserById = async <Key extends keyof User>(
   userId: number,
   updateBody: Prisma.UserUpdateInput,
-  keys: Key[] = ['id', 'email', 'username'] as Key[]
+  keys: Key[] = ['profileImage', 'bannerImage', 'matureContent'] as Key[]
 ): Promise<Pick<User, Key> | null> => {
   const user = await getUserById(userId, ['id', 'email', 'username'])
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
-  }
-  if (updateBody.email && (await getUserByEmail(updateBody.email as string))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken')
-  }
-  if (updateBody.username && (await getUserByUsername(updateBody.username as string))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Username already taken')
   }
   const updatedUser = await prisma.user.update({
     where: { id: user.id },
@@ -616,6 +610,13 @@ const getUserDetailsByUserId = async (userId: number): Promise<UserDetails | obj
       userSoftwares: {
         select: {
           software: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          bannerImage: true,
+          matureContent: true
         }
       }
     }

@@ -3,7 +3,7 @@ let uploadDisk: any
 try {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, '/')
+      cb(null, '/home/yashagarwal/Desktop')
     },
     filename: function (req, file, cb) {
       cb(null, `${new Date().toISOString()}-${file.originalname}`)
