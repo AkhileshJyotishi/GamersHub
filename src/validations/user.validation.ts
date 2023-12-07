@@ -131,7 +131,8 @@ const createUserDetails = {
     city: Joi.string().allow('').optional(),
     userBio: Joi.string().allow('').optional(),
     userSkills: Joi.array().items(Joi.string()).optional(),
-    userSoftwares: Joi.array().items(Joi.string()).optional()
+    userSoftwares: Joi.array().items(Joi.string()).optional(),
+    profileImage: Joi.string().allow('').optional()
   })
 }
 

@@ -649,11 +649,19 @@ const createUserDetailsByUserId = async (
   if (await prisma.userDetails.findUnique({ where: { userId } })) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Details already exists.')
   }
-  const { userSkills, userSoftwares, ...newDetailsBody } = userDetailsBody
+  const { userSkills, userSoftwares, profileImage, ...newDetailsBody } = userDetailsBody
   const userDetails = await prisma.userDetails.create({
     data: {
       userId,
       ...newDetailsBody
+    }
+  })
+  await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      profileImage
     }
   })
 
