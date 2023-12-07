@@ -93,14 +93,10 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameInfo.description = JSON.parse(storedContent)
     }
     const formdata = new FormData()
-    const formdata2 = new FormData()
 
     formdata.append("file", gameInfo.banner as Blob)
-    gameInfo.gameAssets?.map((game) => {
-      formdata2.append("files", game as Blob)
-    })
-    // console.log(formdata2.entries())
-    // console.log("jobInfo.banner ", gameInfo.banner)
+
+    console.log("jobInfo.banner ", gameInfo.banner)
     if (gameInfo.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -117,30 +113,35 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameInfo.banner = ""
     }
     gameInfo.releaseDate = new Date().toISOString()
+    const formdata2 = new FormData()
 
+    gameInfo.gameAssets?.map((game) => {
+      formdata2.append("files", game as Blob)
+    })
+    let newArray: string[] = []
     if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
       const multiisuploaded = await fetchFile(
         "/v1/upload/multiple",
         session?.data?.user?.name as string,
         "POST",
-        formdata
+        formdata2
       )
-
       if (multiisuploaded?.error) {
         toast.error(multiisuploaded.error)
         setLoading(false)
         return
       } else {
         gameInfo.gameAssets = []
-        gameInfo.gameAssets = multiisuploaded?.data.image.map((loc: Allow) => {
-          gameInfo.gameAssets?.push(loc.Location)
+        console.log(multiisuploaded?.data.image[0])
+        gameInfo.gameAssets = multiisuploaded?.data?.image.map((loc: Allow, index: Allow) => {
+          newArray.push(loc.Location)
         })
       }
     } else {
       gameInfo.gameAssets = []
     }
+    gameInfo.gameAssets = [...newArray]
     let data
-    // console.log(gameInfo)
     if (isUpdate) {
       data = await fetchData(
         `v1/game/${game?.id}`,

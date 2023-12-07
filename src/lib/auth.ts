@@ -94,13 +94,14 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
               isEmailVerified: true,
               profileImage: user?.image,
             })
-            console.log("this is the register user", registerUser)
-            const userId = registerUser?.data?.user?.id
-            await instance.post(`/v1/auth/add-provider/${userId}`, {
+            const userId = registerUser.data?.data?.user?.id
+            await instance.post(`/v1/auth/add-provider`, {
+              userId: userId,
               response: account,
               providerType: account?.provider.toLocaleUpperCase(),
             })
             // console.log(userr)
+            user.name = registerUser.data.data.token.access.token
           }
         } catch (error) {
           console.log("catch error", error)
@@ -110,7 +111,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
       },
       session: ({ session, token }) => {
         // console.log("session", session)
-        // co nsole.log(user)
+        // console.log(user)
         return {
           ...session,
           user: {
