@@ -105,10 +105,10 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       albums={albums}
     >
       {/* Render the filterDetails here */}
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[67vw]">
         <h1 className="text-[22px] mt-4 font-semibold">Content</h1>
         <Editor
-          className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
+          className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}
           editable={true}
           storageKey="noval__content"
         />

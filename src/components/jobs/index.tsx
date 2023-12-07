@@ -51,7 +51,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       if (data?.error) {
         return
       }
-      console.log("myjobposts     ", data)
+      // console.log("myjobposts     ", data)
       const sett = data?.data.jobs.map((job: BackendJob) => FrontendCompatibleObject(job))
       setmyjobs(sett)
     }

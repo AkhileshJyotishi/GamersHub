@@ -25,7 +25,7 @@ type SidebarProps = {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ navigator, setActiveTab, activeTab, className }) => {
-  console.log(navigator?.tabs["DeleteAccount"]?.params?.className)
+  // console.log(navigator?.tabs["DeleteAccount"]?.params?.className)
   const people = Object.keys(navigator?.tabs).map((val) => val)
   return (
     <>

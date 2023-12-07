@@ -51,7 +51,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         session?.user?.name as string,
         "GET"
       )
-      console.log("myjobposts     ", data)
+      // console.log("myjobposts     ", data)
       const sett = data?.data.games.map((game: BackendGame) => convertToGamesInterface(game))
       setmyjobs(sett)
     }

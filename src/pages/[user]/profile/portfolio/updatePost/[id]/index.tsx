@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     }
   }
   albums = albums?.data.albums
-  console.log("posts data", post?.data)
+  // console.log("posts data", post?.data)
   post = post?.data.post
   // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 

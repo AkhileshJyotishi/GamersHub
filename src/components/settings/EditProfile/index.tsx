@@ -20,8 +20,8 @@ const EditProfilePage = ({
   allSoftwares,
 }: {
   profileDetails: IDetails
-  allSkills: IuserSkill[]
-  allSoftwares: IuserSoftware[]
+  allSkills: string[]
+  allSoftwares: string[]
 }) => {
   const [activeTab, setactiveTab] = useState<string>("Profile")
   const country = Country.getAllCountries()
@@ -42,7 +42,7 @@ const EditProfilePage = ({
   })
   let initcity
   let initialcitylist = [{ label: "", value: "" }]
-  if (profileDetails.country) {
+  if (profileDetails?.country) {
     initcity = City.getCitiesOfCountry(codemapping[profileDetails.country])
     if (initcity)
       initialcitylist = initcity.map((city1) => {
@@ -60,23 +60,39 @@ const EditProfilePage = ({
     country: profileDetails?.country,
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
-    userSoftwares: profileDetails.userSoftwares,
-    profileImage: profileDetails.user?.profileImage,
+    userSoftwares: profileDetails?.userSoftwares,
+    profileImage: profileDetails?.user?.profileImage,
   })
-  const initialskillstags = profileDetails.userSkills
+  let isProfileDataFilled = Object.values(profileData).some(
+    (value) => value !== null && value !== undefined && value !== ''
+  );
+  if (profileData.profileImage !== "" || profileData.profileImage !== undefined || profileData.profileImage !== null) {
+    if (profileData.userBio || profileData.country || profileData.city || (profileData.userSkills && profileData.userSkills.length > 0) || (profileData.userSoftwares && profileData.userSoftwares?.length)) {
+      isProfileDataFilled = true;
+
+    }
+    else {
+
+      isProfileDataFilled = false;
+    }
+  }
+
+  // console.log("isProfileDataFilled  ", isProfileDataFilled)
+
+  const initialskillstags = profileDetails?.userSkills
     ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
     : []
   const initialsoftwaretags =
-    profileDetails.userSoftwares && profileDetails?.userSoftwares.length > 0
-      ? profileDetails?.userSoftwares?.map((usersofware) => usersofware.software as string)
+    profileDetails?.userSoftwares && profileDetails?.userSoftwares.length > 0
+      ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
       : []
 
   // console.log("initialskillstags ", initialskillstags)
   const [experience, setExperience] = useState<IuserExperience[]>(
-    profileDetails.userExperience || []
+    profileDetails?.userExperience || []
   )
 
-  const [education, setEducation] = useState<IuserEducation[]>(profileDetails.userEducation || [])
+  const [education, setEducation] = useState<IuserEducation[]>(profileDetails?.userEducation || [])
 
   const [, setSelectedTags] = useState<string[]>([])
   const handleCityOptions = (isoCode: string) => {
@@ -275,17 +291,19 @@ const EditProfilePage = ({
     setSelectedTags(tags)
   }
 
-  const predefinedTagsAsSelectOptions = allSkills.map((tag) => ({
+  const predefinedTagsAsSelectOptions = allSkills?.map((tag) => ({
     label: tag,
     value: tag,
   }))
   // console.log(predefinedTagsAsSelectOptions)
 
   const [, setSelectedSoftwareTags] = useState<string[]>([])
-  const predefinedSoftwareTagsAsSelectOptions = allSoftwares.map((tag) => ({
+  const predefinedSoftwareTagsAsSelectOptions = allSoftwares?.map((tag) => ({
     label: tag,
     value: tag,
   }))
+  console.log("allsoftware", allSoftwares)
+  console.log("allsoftware", allSkills)
   // console.log(predefinedSoftwareTagsAsSelectOptions)
 
   const handleSoftwareTagsChange = (tags: string[]) => {
@@ -597,7 +615,7 @@ const EditProfilePage = ({
       </div>
       <div className="flex p-3 gap-y-6 w-full md:w-[80%] lg:w-[60%] mx-auto flex-wrap justify-evenly mt-4">
         {activeTab == "Profile" && (
-          <ProfileSection profileArray={profileArray} profileData={profileData} />
+          <ProfileSection profileArray={profileArray} profileData={profileData} isProfileDataFilled={isProfileDataFilled} />
         )}
         {activeTab == "Experience" && (
           <>
@@ -621,9 +639,8 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${
-                        field.inputType == "date" ? "sm:w-[50%]" : ""
-                      }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                     >
                       <Filter
                         key={index}
@@ -699,9 +716,8 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${
-                        field.inputType == "date" ? "sm:w-[50%]" : ""
-                      }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                     >
                       <Filter
                         key={index}

@@ -2,7 +2,7 @@
 console.log("object")
 import { toast } from "react-toastify"
 
-import { fetchData } from "@/utils/functions"
+import { fetchData, fetchFile } from "@/utils/functions"
 
 export const uploadUserEducation = async (
   userEducation: IuserEducation,
@@ -261,18 +261,36 @@ export const uploadUserExperience = async (
 export const uploadProfileData = async (
   profileData:
     | {
-        userBio: string | null | undefined
-        country: string | null | undefined
-        city: string | null | undefined
-        userSkills: IuserSkill[]
-        userSoftwares: IuserSoftware[] | undefined
-        profileImage: string | undefined
-      }
+      userBio: string | null | undefined
+      country: string | null | undefined
+      city: string | null | undefined
+      userSkills: IuserSkill[]
+      userSoftwares: IuserSoftware[] | undefined
+      profileImage: string | undefined | File
+    }
     | undefined,
-  token: string
+  token: string,
+  method:string
 ) => {
+  const formdata = new FormData()
+  // console.log(newAlbum)
+  // return
+  if (profileData?.profileImage) {
+    formdata.append("file", profileData?.profileImage as File)
+    const isuploaded = await fetchFile(
+      "/v1/upload/file",
+      token,
+      "POST",
+      formdata
+    )
+    // console.log("is uploaded", isuploaded)
+    profileData.profileImage = isuploaded?.data?.image?.Location
+  } else {
+    // newAlbum.banner = ""
+    return;
+  }
   // const token = useSession().data?.user?.name as string
-  const response = await fetchData(`/v1/users/details`, token, "PATCH", profileData)
+  const response = await fetchData(`/v1/users/details`, token, method, profileData)
   if (response?.error) {
     toast.error(response?.message)
   } else {

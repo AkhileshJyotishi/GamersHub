@@ -32,6 +32,8 @@ const Filter: React.FC<FilterDetail> = ({
   initialtags,
   preview,
   errorMessage,
+  dimensionsImage
+
   // hidden
 }) => {
   const handleCheckboxChange = (newValue: string) => {
@@ -63,7 +65,7 @@ const Filter: React.FC<FilterDetail> = ({
       onChange(files)
     }
   }
-
+  // console.log("selectOptions  ", selectOptions)
   return (
     <div className={clsx(Variant, "")}>
       <label className="mb-2 font-medium" htmlFor={title}>
@@ -128,7 +130,7 @@ const Filter: React.FC<FilterDetail> = ({
             options={selectOptions}
             errorMessage={errorMessage}
 
-            // hidden={hidden}
+          // hidden={hidden}
           />
         </>
       )}
@@ -149,6 +151,7 @@ const Filter: React.FC<FilterDetail> = ({
       )}
       {inputType === "tags" && (
         // Include the TagsInput component with the onTagsChange prop
+
         <TagsInput
           onTagsChange={handleTagsChange}
           id={title}
@@ -171,6 +174,10 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             errorMessage={errorMessage}
           />
+          {dimensionsImage && dimensionsImage?.width !== null && dimensionsImage?.height !== null &&
+            <>
+              dimensions:{dimensionsImage?.width}x{dimensionsImage?.height}
+            </>}
         </>
       )}
     </div>

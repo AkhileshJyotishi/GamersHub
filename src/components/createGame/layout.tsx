@@ -66,11 +66,11 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           // Your validation logic for banner (File type)
           // Check file size
           // value.
-          console.log("banner working")
+          // console.log("banner working")
           const maxSizeInBytes = 1024 * 1024 // 1MB
-          console.log(value.size, maxSizeInBytes)
+          // console.log(value.size, maxSizeInBytes)
           if (value.size > maxSizeInBytes) {
-            console.log("errors")
+            // console.log("errors")
             setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
             return // Stop further processing
           } else {
@@ -85,8 +85,8 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           img.onload = () => {
             const maxWidth = 800
             const maxHeight = 600
-            console.log(img.width, maxWidth)
-            console.log(img.height, maxHeight)
+            // console.log(img.width, maxWidth)
+            // console.log(img.height, maxHeight)
 
             if (img.width > maxWidth || img.height > maxHeight) {
               setErrors((prev) => ({

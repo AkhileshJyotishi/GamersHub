@@ -25,8 +25,8 @@ declare interface IDetails {
 
 declare interface IsettingsDetails {
   details: IDetails
-  skill: IuserSkill[]
-  software: IuserSoftware[]
+  skill: string[]
+  software: string[]
   socials: Isocials
 }
 
@@ -52,5 +52,5 @@ declare interface IuserSkill {
 }
 
 declare interface IuserSoftware {
-  software?: string
+  software: string
 }

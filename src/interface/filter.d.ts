@@ -1,15 +1,15 @@
 import { GamesFilterProps } from "./games"
 
-// interface Props {
-//   jwt?: string
-//   auth_user?: any
-//   seo?: any
-//   jobs?: any[]
-//   jobsMeta?: any
-//   defaultAndFilter?: any
-//   defaultPageSize?: number
-//   className: string
-// }
+interface Props {
+  jwt?: string
+  auth_user?: any
+  seo?: any
+  jobs?: any[]
+  jobsMeta?: any
+  defaultAndFilter?: any
+  defaultPageSize?: number
+  className: string
+}
 
 // auth_user,
 
@@ -55,6 +55,12 @@ interface FilterDetail<SO = { label: string; value: string | boolean | number }>
   hidden?: boolean
   preview?: boolean
   errorMessage?: string | null
+  // this should be optimised and generalised later  , i have passed dimension from file creatportfolio just for sake of easeness
+  dimensionsImage?:{
+    height: number | null;
+    width: number | null;
+}
+
 }
 type Errors<T> = {
   [K in keyof T]: string | null

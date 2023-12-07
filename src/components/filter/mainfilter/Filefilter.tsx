@@ -32,7 +32,7 @@ const FileFilter: React.FC<FileInputProps> = ({
   const imageRef = useRef<HTMLImageElement | null>(null)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
-    console.log(file.type)
+    // console.log(file.type)
     onChange(file)
     setFilePreview(URL.createObjectURL(file))
     setFileType(file.type)
@@ -55,10 +55,13 @@ const FileFilter: React.FC<FileInputProps> = ({
         onDrop={(e) => {
           e.preventDefault()
           // handleFileChange(e)
-          onChange(e.dataTransfer.files[0])
-          setFileType(e.dataTransfer.files[0].type)
+          if (e.dataTransfer.files[0] !== undefined) {
 
-          setFilePreview(URL.createObjectURL(e.dataTransfer.files[0]))
+            onChange(e.dataTransfer.files[0])
+            setFileType(e.dataTransfer.files[0].type)
+
+            setFilePreview(URL.createObjectURL(e.dataTransfer.files[0]))
+          }
         }}
         className={clsx(
           "  shadow-sm  w-full  flex flex-col  gap-4 relative",
@@ -151,7 +154,7 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="relative object-cover w-full h-full mx-auto backdrop-blur-md"
                 height={500}
                 width={500}
-                // style={{ zIndex: 9999 }}
+              // style={{ zIndex: 9999 }}
               />
               <Button
                 className="absolute top-0 right-0 p-2 bg-red-600"
@@ -162,11 +165,7 @@ const FileFilter: React.FC<FileInputProps> = ({
             </div>
           </div>
         )}
-        {imageRef.current && (
-          <>
-            dimensions :{imageRef.current?.height}x{imageRef.current?.width}
-          </>
-        )}
+
 
         {errorMessage ? (
           <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>

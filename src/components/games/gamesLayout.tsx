@@ -81,14 +81,15 @@ const Layout: React.FC<gamesLayoutProps> = ({
       value: gamesFilters.genre,
       onChange: (value) => setGamesFilter({ ...gamesFilters, genre: value as string }),
       selectOptions: [
-        ...genresSuggestions.map((s) => ({
-          label: s,
-          value: s,
-        })),
         {
           label: "Select genre",
           value: "",
         },
+        ...genresSuggestions.map((s) => ({
+          label: s,
+          value: s,
+        })),
+        
       ],
     },
     {

@@ -15,17 +15,19 @@ interface ProfileSectionProps {
     country: string | null | undefined
     city: string | null | undefined
     userSkills: IuserSkill[]
-    userSoftwares: IuserSoftware[] | undefined
+    userSoftwares: IuserSoftware[] |undefined
     profileImage: string | undefined
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
+  isProfileDataFilled :boolean
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
   profileData,
   // onFieldChange,
   profileArray,
+  isProfileDataFilled 
 }) => {
   const { data: session } = useSession()
   return (
@@ -68,7 +70,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
           className={
             "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
           }
-          onClick={() => uploadProfileData(profileData, session?.user?.name as string)}
+          onClick={() => {
+            let method="POST";
+            if(isProfileDataFilled){
+             method="PATCH" 
+            }
+            uploadProfileData(profileData, session?.user?.name as string,method)}}
         >
           upload
         </Button>

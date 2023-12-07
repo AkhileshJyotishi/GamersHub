@@ -23,7 +23,7 @@ const BannerImage = ({
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
-  const { userData } = useUserContext()
+  const { userData,setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
   // useEffect(()=>{
   //   if(img!==undefined){
@@ -51,7 +51,7 @@ const BannerImage = ({
     const data = await fetchData(
       `/v1/users/${userData?.id}`,
       session?.user?.name as string,
-      "POST",
+      "PATCH",
       {
         bannerImage: isuploaded?.data.image.Location,
       }
@@ -59,6 +59,8 @@ const BannerImage = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
+      // @ts-ignore
+      setuserData((prev)=>({...prev,bannerImage:isuploaded?.data.image.Location}))
       toast.success(data?.message)
       // setSaved(!saved)
     }

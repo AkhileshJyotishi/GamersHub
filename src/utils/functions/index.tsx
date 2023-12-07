@@ -154,3 +154,51 @@ export const fetchFile = async (
     }
   }
 }
+
+
+export const isValidURL = (str: string): boolean => {
+  if (/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// export const remoteUrlToBase64 = async (url: string): Promise<string> => {
+//   try {
+//     const response = await fetch(url);
+//     const blob = await response.blob();
+//     return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         if (typeof reader.result === 'string') {
+//           resolve(reader.result);
+//         } else {
+//           reject(new Error('Failed to convert image to Base64.'));
+//         }
+//       };
+//       reader.readAsDataURL(blob);
+//     });
+//   } catch (error) {
+//     // throw new Error('Failed to fetch the remote URL.');
+//     toast.error('Failed to fetch the remote URL.');
+//   }
+// };
+
+export const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str)
+   export  const shimmer = (w: number, h: number) => `
+    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="g">
+          <stop stop-color="#333" offset="20%" />
+          <stop stop-color="#222" offset="50%" />
+          <stop stop-color="#333" offset="70%" />
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="#333" />
+      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+    </svg>`
+    
