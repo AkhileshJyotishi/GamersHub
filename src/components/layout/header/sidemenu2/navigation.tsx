@@ -7,6 +7,7 @@ import { MenuItem } from "./menuitem"
 import { MenuToggle } from "./menutoggle"
 
 import styles from "./style.module.css"
+import { useSession } from "next-auth/react"
 const variants = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },
@@ -17,6 +18,7 @@ const variants = {
 }
 
 export const Navigation = () => {
+  const session = useSession()
   const { toggleOpen, isOpen, userData } = useUserContext()
   const navmenu = [
     {
@@ -39,16 +41,18 @@ export const Navigation = () => {
       title: "profile",
       path: `/${userData?.id}/profile/albums`,
     },
+  ]
+  const authOptions = [
     {
       title: "Login",
-      path: "/",
+      path: "/auth/login",
     },
     {
       title: "Sign Up",
-      path: "/",
+      path: "/auth/signup",
     },
   ]
-
+  React.useEffect(() => {}, [session])
   return (
     <>
       <div>{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
@@ -57,6 +61,8 @@ export const Navigation = () => {
         {navmenu.map((data, index) => (
           <MenuItem data={data} key={index} />
         ))}
+        {!session.data?.user?.name &&
+          authOptions.map((data, index) => <MenuItem data={data} key={index} />)}
       </motion.ul>
     </>
   )

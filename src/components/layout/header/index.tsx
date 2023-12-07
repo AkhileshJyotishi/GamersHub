@@ -69,7 +69,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
   return (
     <>
       <div
-        className="relative flex-row items-center hidden gap-4 md:flex xl:gap-10 w-fit "
+        className="relative flex flex-row max-[320px]:hidden items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit "
         onClick={() => {
           setShowProfileSettings(!showProfileSettings)
         }}
@@ -179,7 +179,7 @@ export default function Navbar() {
               <LoggedInUserButtons userSession={session} userData={userData} />
             ) : (
               <AuthButtons
-                className="hidden md:flex"
+                className="hidden min-[1280px]:flex"
                 setIsLoginModalOpen={setIsLoginModalOpen}
                 setIsRegisterModalOpen={setIsRegisterModalOpen}
               />
