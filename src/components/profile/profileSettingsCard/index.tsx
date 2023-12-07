@@ -2,6 +2,7 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Session } from "next-auth"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
@@ -13,7 +14,7 @@ import SaveIcon from "@/components/icons/save"
 import Button from "@/components/ui/button"
 
 interface Props {
-  authUser: any
+  authUser?: Session | null
   className?: string
   onSignOut?: React.MouseEventHandler<HTMLDivElement>
   userData: Iuser | null

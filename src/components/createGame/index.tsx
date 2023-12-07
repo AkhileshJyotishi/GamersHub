@@ -99,8 +99,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
     })
-    // console.log(formdata2.entries())
-    // console.log("jobInfo.banner ", gameInfo.banner)
+    console.log(formdata2.entries())
+    console.log("jobInfo.banner ", gameInfo.banner)
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.data?.user?.name as string,
@@ -115,7 +115,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     // console.log(isuploaded?.data)
     // return;
     gameInfo.banner = isuploaded?.data.image.Location
-    // gameInfo.banner = "https://picsum.photos/id/250/900/900"
+    gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
     const multiisuploaded = await fetchFile(
       "/v1/upload/multiple",
@@ -134,7 +134,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         gameInfo.gameAssets?.push(loc.Location)
       })
     }
-  
+
     // console.log(gameInfo)
     if (isUpdate) {
       fetchData(`v1/game/${game?.id}`, session.data?.user?.name as string, "PATCH", gameInfo)

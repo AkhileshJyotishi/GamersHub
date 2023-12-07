@@ -61,8 +61,8 @@ const ProfileLayout = ({
   useEffect(() => {
     // console.log("para", param)
     // console.log("Mounting new profile")
-    if(!session)  router.replace(`/?emessage=Please Authenticate`)
-        // router.push()
+    if (!session) router.replace(`/?emessage=Please Authenticate`)
+    // router.push()
     const loaddata = async () => {
       const users = await fetchWithoutAuthorization(
         `/v1/users/customDetails/${router.query.user}`,
@@ -147,6 +147,7 @@ const ProfileLayout = ({
     if (albumData?.error) {
       toast.error(albumData.message)
     } else {
+      router.push("/")
       toast.success(albumData?.message)
     }
     // console.log(albumData)

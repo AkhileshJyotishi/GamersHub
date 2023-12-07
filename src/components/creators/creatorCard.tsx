@@ -2,9 +2,6 @@
 import Image from "next/image"
 import { useRouter } from "next/router"
 
-// import ProfileImage from "../common/ProfileImage";
-// import { SecondaryTag } from "../common/Tags";
-// import ArrowDownIcon from "../Icons/arrow-down";
 import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import MapPinIcon from "@/components/icons/mappinicon"

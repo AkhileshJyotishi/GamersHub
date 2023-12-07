@@ -39,7 +39,7 @@ const Jobs = () => {
       const data = await fetchWithoutAuthorization(`v1/job/user/${router.query.user}`, "GET")
       // console.log(data?.data.jobs)
       if (data?.error) {
-        router.push(`/?error=Please authenticate`)
+        router.push(`/?emessage=Please authenticate`)
       } else {
         setjobDetails(data?.data?.jobs)
       }

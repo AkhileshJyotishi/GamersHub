@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 
 import logo from "@/assets/image/logo-with-text.png"
@@ -21,7 +22,7 @@ import RegisterModal from "@/components/ui/register"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
 interface Props {
-  userSession?: any
+  userSession?: Session | null
   userData: Iuser | null
 }
 

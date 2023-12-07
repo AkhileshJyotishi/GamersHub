@@ -7,7 +7,7 @@ const ProfileImage = ({
   className,
   onClick,
 }: {
-  user?: any
+  // user?: any
   className?: string
   onClick?: React.MouseEventHandler<HTMLImageElement>
 }) => {

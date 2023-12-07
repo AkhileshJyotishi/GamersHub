@@ -112,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     // toast.error(jobsDetails.message)
     return {
       redirect: {
-        destination: `/?error=${gameDetails.message}`,
+        destination: `/?emessage=${gameDetails.message}`,
         permanent: false,
       },
     }

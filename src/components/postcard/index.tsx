@@ -26,7 +26,7 @@ interface Props {
   album_slug: string
   slug: string
   className?: string
-  authUser?: any
+  // authUser?: any
   isSavedPost?: boolean
 }
 
@@ -40,8 +40,6 @@ export default function PostCard({
   album_slug,
   slug,
   className,
-  // authUser,
-  // id,
   isSavedPost: _isSavedPost,
 }: Props) {
   //   let coverImage = cover?.url ? MediaHostURL + cover?.url : null;

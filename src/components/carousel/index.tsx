@@ -132,7 +132,7 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
         <div className={clsx(carousel["container"])}>
           <Slider
             {...settings}
-            ref={(slider:Allow) => setSlider1(slider)}
+            ref={(slider: Allow) => setSlider1(slider)}
             // style={{}}
             className="whah md:h-[700px] h-[300px]"
           >

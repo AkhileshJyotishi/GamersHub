@@ -14,6 +14,7 @@ import animation from "./multifile.module.css"
 import thumbnail from "@/components/carousel/thumbnail.module.css"
 interface MultipleFileInputProps {
   onFileChange: (files: File[]) => void
+  errorMessage?: string | null
 }
 
 const itemVariants = {
@@ -21,7 +22,7 @@ const itemVariants = {
   visible: { opacity: 1 },
 }
 
-const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) => {
+const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, errorMessage }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   // const [fullscreenImage, setFullscreenImage] = useState<File | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<number | null>(null)
@@ -74,11 +75,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
 
   return (
     <div>
-      {/* <label
-                htmlFor="asset-preview"
-                className="cursor-pointer w-fit"
-            > <Button className="p-2 pointer-events-none bg-secondary rounded-xl"> Select display images</Button>
-            </label> */}
       <input
         type="file"
         multiple
@@ -87,6 +83,12 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
         id={"asset-preview"}
       />
       <div className="flex flex-wrap gap-2 mt-2">
+        {errorMessage ? (
+          <span className=" p-1 text-accent_red  font-[10px] mx-auto ">{errorMessage}</span>
+        ) : (
+          <></>
+        )}
+
         <motion.div
           key="add-new-files"
           variants={itemVariants}
@@ -102,8 +104,8 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
           {selectedFiles.length > 0 ? (
             <>
               <div
-                className="p-5 text-[14] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dashed border-[0.1px] border-gray-500 rounded-xl space-x-2 group"
-                style={{ zIndex: 16 }}
+                className="p-5 text-[14px] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dashed border-[0.1px] border-gray-500 rounded-xl space-x-2 group"
+                // style={{ zIndex: 16 }}
               >
                 <label
                   htmlFor="asset-preview"
@@ -114,7 +116,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
                     <PlusIcon className="w-16 h-16 transition duration-200 group-hover:scale-150 group-hover:stroke-secondary" />
                   </Button>
                 </label>
-                <div></div>
               </div>
             </>
           ) : (
@@ -141,8 +142,11 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
               variants={itemVariants}
               initial="hidden"
               animate="visible"
-              className={clsx("p-2 relative border-[0.1px]  border-gray-500 rounded-xl group")}
-              style={{ animation: `fadeIn 0.5s ${idx * 0.1}s forwards` }}
+              className={clsx(
+                "p-2 relative border-[0.1px]   rounded-xl group",
+                errorMessage ? "border-accent_red" : "border-gray-500"
+              )}
+              // style={{ animation: `fadeIn 0.5s ${idx * 0.1}s forwards` }}
             >
               {/* <div className='absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background '></div> */}
 
@@ -160,6 +164,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange }) =
           ))}
         </motion.div>
       </div>
+
       {fullscreenImage != null && (
         <div
           className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center w-screen h-screen p-4 bg-black bg-opacity-20 backdrop-blur-lg "

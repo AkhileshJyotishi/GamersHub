@@ -161,13 +161,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     // toast.error(jobsDetails.message)
     return {
       redirect: {
-        destination: `/?error=${users.message}`,
+        destination: `/?emessage=${users.message}`,
         permanent: false,
       },
     }
   }
   users = users?.data.posts
-  console.log("home page ", users)
+  // console.log("home page ", users)
   // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 
   return {

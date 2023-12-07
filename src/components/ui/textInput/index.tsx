@@ -1,4 +1,5 @@
 import React from "react"
+import clsx from "clsx"
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -8,7 +9,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string
   element?: "input" | "textarea"
   id?: string
-  errorMessage?: string
+  errorMessage?: string | null
 }
 
 const TextInput: React.FC<Props> = ({
@@ -38,10 +39,14 @@ const TextInput: React.FC<Props> = ({
           type={type}
           name={name}
           id={id}
-          className={` w-full  border-[0.01px] border-[#505054] shadow-sm px-[12px] py-[9px] flex flex-row items-center focus:outline-none  ${className}`}
+          className={clsx(
+            ` w-full  border-[0.01px] border-[#505054] shadow-sm px-[12px] py-[9px] flex flex-row items-center focus:outline-none  focus-within:border-secondary ${className}`,
+            errorMessage ? "border-accent_red focus:border-accent_red focus:shadow-accent_red" : ""
+          )}
           onKeyPress={onKeyPress}
           onBlur={onBlur}
           autoComplete="off"
+          spellCheck={false}
           pattern={pattern}
           onInvalid={onInvalid}
         />
@@ -59,7 +64,7 @@ const TextInput: React.FC<Props> = ({
         ></textarea>
       )}
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[14px]">{errorMessage}</span>
+        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
       ) : (
         <></>
       )}

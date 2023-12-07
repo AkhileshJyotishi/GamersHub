@@ -64,6 +64,11 @@ export const fetchData = async (
   session?: Allow
 ): Promise<APITypes | null> => {
   try {
+    // if( navigator && !navigator.onLine)
+    // {
+    //   throw new Error("No Network Connection")
+
+    // }
     const response = await fetchWithAuthorization(url, token, method, data, customHeaders)
     // console.log("authchecker ", response.data)
 
@@ -75,8 +80,11 @@ export const fetchData = async (
     }
     return await resp
   } catch (error: Allow) {
-    // console.log(error)
+    console.log(error)
     // console.log("nulliscoming")
+    // if(error.message.contains(" request timed out")){
+
+    // }
     return {
       error: error,
       message: error?.response?.data?.message,

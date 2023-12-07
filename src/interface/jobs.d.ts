@@ -70,7 +70,7 @@ interface BackendJob {
 
 interface JobInfo {
   jobType: string
-description:string
+  description: string
   remote: boolean
   country?: string
   city?: string

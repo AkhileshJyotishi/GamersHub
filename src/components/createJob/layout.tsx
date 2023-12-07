@@ -2,17 +2,15 @@ import React, { useState } from "react"
 import clsx from "clsx"
 import { City, Country } from "country-state-city"
 
-import { FilterDetail } from "@/interface/filter"
+import { Errors, FilterDetail } from "@/interface/filter"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 
-
-
 interface LayoutProps {
   children: React.ReactNode
-  jobInfo: Omit<JobInfo,"userId">
-  setJobInfo: React.Dispatch<React.SetStateAction<Omit<JobInfo,"userId">>>
+  jobInfo: Omit<JobInfo, "userId">
+  setJobInfo: React.Dispatch<React.SetStateAction<Omit<JobInfo, "userId">>>
   uploadJob: () => Promise<void>
 }
 
@@ -56,14 +54,151 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     setCity(cityList!)
     return cityList!
   }
+  const handleInputChange = <K extends keyof JobInfo>(field: K, value: JobInfo[K]) => {
+    // Validation logic based on the field
+    switch (field) {
+      case "title":
+        if (typeof value === "string") {
+          if (value === "") {
+            setErrors((prev) => ({ ...prev, title: "*required" }))
+          } else if (value.length > 11) {
+            setErrors((prev) => ({ ...prev, title: "*title too long" }))
+          } else {
+            setErrors((prev) => ({ ...prev, title: null }))
+          }
+          setJobInfo((prevState) => ({ ...prevState, title: value as string }))
+        }
+        break
+
+      case "jobType":
+        if (typeof value === "string") {
+          if (value.length === 0) {
+            setErrors((prev) => ({ ...prev, jobType: "*required" }))
+          } else {
+            setErrors((prev) => ({ ...prev, jobType: "" }))
+          }
+          setJobInfo((prevState) => ({ ...prevState, jobType: value as string }))
+        }
+        break
+
+      case "remote":
+        setJobInfo({
+          ...jobInfo,
+          remote: value as boolean,
+        })
+        break
+
+      case "country":
+        if (typeof value === "string") {
+          handleCityOptions(codemapping[value as string])
+          setJobInfo({
+            ...jobInfo,
+            country: value as string,
+          })
+        }
+        break
+
+      case "city":
+        if (typeof value === "string") {
+          setJobInfo({
+            ...jobInfo,
+            city: value as string,
+          })
+        }
+        break
+
+      case "paymentType":
+        if (typeof value === "string") {
+          if (value.length === 0) {
+            setErrors((prev) => ({ ...prev, paymentType: "*required" }))
+          } else {
+            setErrors((prev) => ({ ...prev, paymentType: "" }))
+          }
+          setJobInfo({
+            ...jobInfo,
+            paymentType: value as string,
+          })
+        }
+        break
+
+      case "paymentValue":
+        const val = typeof value === "number" ? value : Number(value)
+        if (val < 0) {
+          setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
+        } else {
+          setErrors((prev) => ({ ...prev, paymentValue: "" }))
+        }
+        setJobInfo((prevState) => ({
+          ...prevState,
+          paymentValue: val as number,
+        }))
+        break
+
+      case "expertise":
+        if (typeof value === "string") {
+          if (value.length === 0) {
+            setErrors((prev) => ({ ...prev, expertise: "*required" }))
+          } else {
+            setErrors((prev) => ({ ...prev, expertise: "" }))
+          }
+          setJobInfo((prevState) => ({ ...prevState, expertise: value as string }))
+        }
+        break
+
+      case "jobSoftwares":
+        if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
+          if (value.length == 0) {
+            setErrors((prev) => ({ ...prev, jobSoftwares: "*required" }))
+          } else if (value.length >= 11) {
+            setErrors((prev) => ({ ...prev, jobSoftwares: "*too many chosen" }))
+          } else {
+            setErrors((prev) => ({ ...prev, jobSoftwares: "" }))
+          }
+
+          setJobInfo((prevState) => ({ ...prevState, jobSoftwares: value as string[] }))
+        }
+        break
+
+      default:
+        break
+    }
+  }
+
+  const [errors, setErrors] = useState<Errors<Partial<JobInfo>>>({
+    title: "",
+    jobType: "",
+    remote: "",
+    country: "",
+    city: "",
+    paymentType: "",
+    paymentValue: "",
+    banner: "",
+    expertise: "",
+    aboutRecruiter: "",
+    description: "",
+    jobDetails: "",
+    jobSoftwares: "",
+    publishDate: "",
+    // userId:""
+  })
 
   const initialDetailsArray: FilterDetail[] = [
+    {
+      title: "title",
+      inputType: "text",
+      placeholder: "title...",
+      value: jobInfo.title,
+      onChange: (value) => handleInputChange("title", value as string),
+      className: "bg-transparent rounded-md",
+      errorMessage: errors.title,
+    },
     {
       title: "Job Type",
       inputType: "select",
       placeholder: "Select Job Type",
       value: jobInfo.jobType,
-      onChange: (value) => setJobInfo((prevState) => ({ ...prevState, jobType: value as string })),
+      onChange: (value) => handleInputChange("jobType", value as string),
+
       selectOptions: [
         {
           label: "Freelance",
@@ -83,24 +218,20 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         },
       ],
       className: "bg-transparent rounded-md",
-    },
-    {
-      title: "title",
-      inputType: "text",
-      placeholder: "title...",
-      value: jobInfo.title,
-      onChange: (value) => setJobInfo((prevState) => ({ ...prevState, title: value as string })),
-      className: "bg-transparent rounded-md",
+      errorMessage: errors.jobType,
+
+      // errorMessage:"errors.title"
     },
     {
       title: "Job Location *",
       inputType: "radio",
       value: jobInfo.remote,
-      onChange: (value) =>
-        setJobInfo({
-          ...jobInfo,
-          remote: value as boolean,
-        }),
+      onChange: (value) => handleInputChange("remote", value as boolean),
+      // (value) =>
+      //   setJobInfo({
+      //     ...jobInfo,
+      //     remote: value as boolean,
+      //   }),
       selectOptions: [
         {
           label: "Remote",
@@ -111,47 +242,58 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           value: false,
         },
       ],
+      errorMessage: errors.remote,
     },
     {
       title: "Country",
       inputType: "select",
-      onChange: (value) => {
-        handleCityOptions(codemapping[value as string])
+      onChange: (value) => handleInputChange("country", value as string),
+      //  (value) => {
+      //   handleCityOptions(codemapping[value as string])
 
-        setJobInfo({
-          ...jobInfo,
-          country: value as string,
-        })
-      },
-      selectOptions: countryList,
+      //   setJobInfo({
+      //     ...jobInfo,
+      //     country: value as string,
+      //   })
+      // },
+      selectOptions: [{ label: "--Select a Country--", value: "" }, ...countryList],
       value: jobInfo.country || "",
       hidden: jobInfo.remote,
+      errorMessage: errors.country,
     },
+
     {
       title: "City",
       inputType: "select",
       value: jobInfo.city as string,
 
-      onChange: (value) => {
-        setJobInfo({
-          ...jobInfo,
-          city: value as string,
-        })
-      },
+      onChange: (value) => handleInputChange("city", value as string),
+      //  (value) => {
+      //   setJobInfo({
+      //     ...jobInfo,
+      //     city: value as string,
+      //   })
+      // },
       selectOptions: [{ label: "--Select a City--", value: "" }, ...city],
       hidden: jobInfo.remote,
+      errorMessage: errors.city,
     },
     {
       title: "Expected payment",
       inputType: "select",
 
-      onChange: (value) =>
-        setJobInfo({
-          ...jobInfo,
-          paymentType: value as string,
-          // payment: { ...jobInfo.payment, type: value as string },
-        }),
+      onChange: (value) => handleInputChange("paymentType", value as string),
+      //  (value) =>
+      //   setJobInfo({
+      //     ...jobInfo,
+      //     paymentType: value as string,
+      //     // payment: { ...jobInfo.payment, type: value as string },
+      //   }),
       selectOptions: [
+        {
+          label: "Payment type",
+          value: "",
+        },
         {
           label: "Fixed price",
           value: "FIXED",
@@ -164,27 +306,26 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           label: "Negotiable",
           value: "NEGOTIABLE",
         },
-        {
-          label: "Payment type",
-          value: "",
-        },
       ],
       value: jobInfo.paymentType,
+      errorMessage: errors.paymentType,
     },
     {
       title: "Payment Amount",
       inputType: "number",
       // type:""
       value: Number(jobInfo.paymentValue),
-      onChange: (value) => {
-        const val = Number(value)
+      onChange: (value) => handleInputChange("paymentValue", value as number),
+      //  (value) => {
+      //   const val = Number(value)
 
-        setJobInfo((prevState) => ({
-          ...prevState,
-          paymentValue: val as number,
-        }))
-      },
+      //   setJobInfo((prevState) => ({
+      //     ...prevState,
+      //     paymentValue: val as number,
+      //   }))
+      // },
       className: "bg-transparent rounded-md",
+      errorMessage: errors.paymentValue,
     },
     {
       inputType: "file",
@@ -194,6 +335,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       value: null,
       onChange: (value) => setJobInfo((prevState) => ({ ...prevState, banner: value as File })),
       className: "",
+      // errorMessage:errors.country
     },
     // {
     //   title: "Roles Needed*",
@@ -207,11 +349,11 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "Level of Expertise",
       inputType: "select",
       value: jobInfo.expertise || "",
-      onChange: (value) =>
-        setJobInfo((prevState) => ({ ...prevState, expertise: value as string })),
+      onChange: (value) => handleInputChange("expertise", value as string),
+      // setJobInfo((prevState) => ({ ...prevState, expertise: value as string })),
       selectOptions: [
         {
-          label: "Expertise",
+          label: "Select Expertise",
           value: "",
         },
         {
@@ -227,14 +369,18 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           value: "EXPERT",
         },
       ],
+      errorMessage: errors.expertise,
     },
+
     {
       title: "Software expertise needed *",
       inputType: "tags",
-      onTagsChange: (tags) => {
-        setJobInfo((prevState) => ({ ...prevState, jobSoftwares: tags }))
-      },
+      onTagsChange: (value) => handleInputChange("jobSoftwares", value as string[]),
+      // (tags) => {
+      //   setJobInfo((prevState) => ({ ...prevState, jobSoftwares: tags }))
+      // },
       placeholder: "softwares",
+      errorMessage: errors.jobSoftwares,
     },
   ]
 
@@ -277,6 +423,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                       "flex flex-col items-start gap-[10px] text-[14px]",
                       hide ? "hidden" : ""
                     )}
+                    errorMessage={filter.errorMessage}
                     // hidden={filter.hidden}
                   />
                 )

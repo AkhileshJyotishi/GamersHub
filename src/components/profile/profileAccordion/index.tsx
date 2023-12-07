@@ -1,9 +1,9 @@
-import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import sample from "@/assets/image/user-banner.png"
+import { useUserContext } from "@/providers/user-context"
 
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -18,18 +18,18 @@ import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
 
 interface Props {
-  currentUser?: any
-  authUser?: any
+  // currentUser?: any
+  // authUser?: any
   className?: string
   isFollowing?: boolean
 }
 export default function ProfileAccordion({
-  currentUser: _currentUser,
+  // currentUser: _currentUser,
   // authUser: _authUser,
   className, // isFollowing: _isFollowing,
 }: Props) {
   const router = useRouter()
-
+  const { userData } = useUserContext()
   const formatLargeNumber = (number: number): string => {
     if (number >= 1e9) {
       return (number / 1e9).toFixed(1) + "b"
@@ -41,9 +41,9 @@ export default function ProfileAccordion({
       return number.toString()
     }
   }
-  const [currentUser] = useState(_currentUser)
+  // const [currentUser] = useState(_currentUser)
 
-  const memberSince = new Date(currentUser?.createdAt).toLocaleDateString("en-US", {
+  const memberSince = new Date(userData?.createdAt as Date).toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
   })

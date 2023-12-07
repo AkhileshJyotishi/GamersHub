@@ -6,14 +6,16 @@ interface FileInputProps {
   className?: string
   preview?: boolean
   value?: string | null
+  errorMessage?: string | null
 }
 
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 
+import CloseIcon from "@/components/icons/closeIcon"
+import FullscreenIcon from "@/components/icons/fullScreenIcon"
 import Button from "@/components/ui/button"
-
 const FileFilter: React.FC<FileInputProps> = ({
   // id,
   accept,
@@ -22,9 +24,12 @@ const FileFilter: React.FC<FileInputProps> = ({
   className,
   // preview,
   value,
+  errorMessage,
 }) => {
   const [filePreview, setFilePreview] = useState<string | null>(value || null)
   const [, setFileType] = useState<string | null>(null)
+  const [fullscreenImage, setFullscreenImage] = useState<number | null>(null)
+  const imageRef = useRef<HTMLImageElement | null>(null)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     console.log(file.type)
@@ -32,6 +37,14 @@ const FileFilter: React.FC<FileInputProps> = ({
     setFilePreview(URL.createObjectURL(file))
     setFileType(file.type)
     // Create an object URL to preview the selected file
+  }
+
+  const handleFullscreen = () => {
+    setFullscreenImage(0)
+  }
+
+  const handleCloseFullscreen = () => {
+    setFullscreenImage(null)
   }
 
   return (
@@ -99,7 +112,7 @@ const FileFilter: React.FC<FileInputProps> = ({
                   <label htmlFor="asset-upload" className="cursor-pointer w-fit">
                     {" "}
                     <Button className="p-2 pointer-events-none bg-secondary rounded-xl">
-                      Anotherone
+                      Update
                     </Button>
                   </label>
                   <div>drag and drop</div>
@@ -112,9 +125,53 @@ const FileFilter: React.FC<FileInputProps> = ({
                 height="400"
                 className="object-cover w-full h-full rounded-xl"
                 style={{ zIndex: 16 }}
+                ref={imageRef}
               />
+              <div className="absolute top-0 right-0 flex p-1 space-x-2">
+                <Button onClick={handleFullscreen}>
+                  <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
+                </Button>
+              </div>
             </div>
           </>
+        )}
+
+        {fullscreenImage != null && (
+          <div
+            className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center w-screen h-screen p-4 bg-black bg-opacity-20 backdrop-blur-lg"
+            style={{ zIndex: 9999 }}
+          >
+            <div
+              className="relative w-[80%] h-[80%] transition-all duration-1000 ease-in-out flex"
+              style={{ zIndex: 9999 }}
+            >
+              <Image
+                src={imageRef.current!}
+                alt="Fullscreen Preview"
+                className="relative object-cover w-full h-full mx-auto backdrop-blur-md"
+                height={500}
+                width={500}
+                // style={{ zIndex: 9999 }}
+              />
+              <Button
+                className="absolute top-0 right-0 p-2 bg-red-600"
+                onClick={handleCloseFullscreen}
+              >
+                <CloseIcon className="fill-light " />
+              </Button>
+            </div>
+          </div>
+        )}
+        {imageRef.current && (
+          <>
+            dimensions :{imageRef.current?.height}x{imageRef.current?.width}
+          </>
+        )}
+
+        {errorMessage ? (
+          <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        ) : (
+          <></>
         )}
       </div>
     </>

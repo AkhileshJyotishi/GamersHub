@@ -17,9 +17,7 @@ const BannerImage = ({
   setisCreateAlbumOpen,
   className,
 }: {
-  authUser?: any
   bannerImage: string | undefined
-  currentUser?: any
   className?: string
   setisCreateAlbumOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {

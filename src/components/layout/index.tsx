@@ -2,7 +2,7 @@ import React from "react"
 import clsx from "clsx"
 import { ToastContainer } from "react-toastify"
 
-import { UserProvider, useUserContext } from "@/providers/user-context"
+import { UserProvider } from "@/providers/user-context"
 
 import LoadingOverlay from "../ui/loadingOverlay"
 
@@ -18,8 +18,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
-  const {} = useUserContext()
-
   return (
     <>
       <UserProvider>

@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 
-import { FilterDetail } from "@/interface/filter"
+import { Errors, FilterDetail } from "@/interface/filter"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
@@ -32,14 +32,155 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, uploadGame }) => {
+  const [errors, setErrors] = useState<Errors<Partial<GameInfo>>>({
+    banner: "",
+    description: "",
+    developerName: "",
+    developerType: "",
+    distributionPlatforms: "",
+    gameAssets: "",
+    gameMode: "",
+    genre: "",
+    platforms: "",
+    releaseDate: "",
+    tags: "",
+    title: "",
+    // userId:""
+  })
+  const handleInputChange = <K extends keyof GameInfo>(field: K, value: GameInfo[K]) => {
+    switch (field) {
+      case "developerName":
+      case "title":
+        if (typeof value === "string") {
+          if (value === "") {
+            setErrors((prev) => ({ ...prev, [field]: "*required" }))
+          } else if (value.length > 11) {
+            setErrors((prev) => ({ ...prev, [field]: "*field too long" }))
+          } else {
+            setErrors((prev) => ({ ...prev, [field]: null }))
+          }
+        }
+        break
+      case "banner":
+        if (value instanceof File) {
+          // Your validation logic for banner (File type)
+          // Check file size
+          // value.
+          console.log("banner working")
+          const maxSizeInBytes = 1024 * 1024 // 1MB
+          console.log(value.size, maxSizeInBytes)
+          if (value.size > maxSizeInBytes) {
+            console.log("errors")
+            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
+            return // Stop further processing
+          } else {
+            setErrors((prev) => ({ ...prev, banner: "" }))
+          }
+
+          // Create an image element to check dimensions
+          const img = new Image()
+          img.src = URL.createObjectURL(value)
+
+          // Check image dimensions
+          img.onload = () => {
+            const maxWidth = 800
+            const maxHeight = 600
+            console.log(img.width, maxWidth)
+            console.log(img.height, maxHeight)
+
+            if (img.width > maxWidth || img.height > maxHeight) {
+              setErrors((prev) => ({
+                ...prev,
+                banner: "Image dimensions must be 800x600 or smaller",
+              }))
+            } else {
+              setErrors((prev) => ({ ...prev, banner: "" }))
+              // Proceed with setting the banner if all checks pass
+              setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
+            }
+          }
+
+          // Handle image loading error
+          img.onerror = () => {
+            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
+          }
+        }
+        break
+
+      case "platforms":
+      case "genre":
+      case "distributionPlatforms":
+      case "tags":
+        if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
+          if (value.length == 0) {
+            setErrors((prev) => ({ ...prev, [field]: "*required" }))
+          } else if (value.length >= 11) {
+            setErrors((prev) => ({ ...prev, [field]: "*too many chosen" }))
+          } else {
+            setErrors((prev) => ({ ...prev, [field]: null }))
+          }
+        }
+        break
+
+      case "gameMode":
+        if (typeof value === "string") {
+          const chk = ["singlePlayer", "multiPlayer"].includes(value)
+          if (chk) {
+            setErrors((prev) => ({ ...prev, [field]: null }))
+          } else {
+            setErrors((prev) => ({ ...prev, [field]: "*required" }))
+          }
+        }
+        break
+
+      case "developerType":
+        if (typeof value === "string") {
+          const chk = ["indie", "studio", "collaboration"].includes(value)
+          if (chk) {
+            setErrors((prev) => ({ ...prev, [field]: "" }))
+          } else {
+            setErrors((prev) => ({ ...prev, [field]: "*required" }))
+          }
+        }
+        break
+
+      case "releaseDate":
+        if (typeof value === "string") {
+          const currentDate = new Date()
+          const check = new Date(value)
+          if (check < currentDate) {
+            setErrors((prev) => ({ ...prev, releaseDate: "Release date cannot be in the past" }))
+          }
+        }
+        break
+      case "gameAssets":
+        if (Array.isArray(value) && value.every((item) => item instanceof File)) {
+          if (value.length >= 10) {
+            setErrors((prev) => ({ ...prev, gameAssets: "*length must be less than 10" }))
+          } else {
+            setErrors((prev) => ({ ...prev, gameAssets: "" }))
+          }
+          setGameInfo((prevState) => ({ ...prevState, [field]: value as File[] }))
+        }
+        break
+
+      default:
+        break
+    }
+    if (field !== "gameAssets")
+      setGameInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
+  }
+
   const initialDetailsArray: FilterDetail[] = [
     {
       title: "Game Name",
       inputType: "text",
       placeholder: "what's your game called",
       value: gameInfo?.title || "",
-      onChange: (value) => setGameInfo((prevState) => ({ ...prevState, title: value as string })),
+      onChange: (value) => handleInputChange("title", value as string),
+      // setGameInfo((prevState) => ({ ...prevState, title: value as string })),
       className: "bg-transparent rounded-md",
+      errorMessage: errors.title,
     },
     {
       inputType: "file",
@@ -47,21 +188,28 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       accept: "image/*",
       multiple: false,
       value: null,
-      onChange: (value) => setGameInfo((prevState) => ({ ...prevState, banner: value as File })),
+      onChange: (value) => handleInputChange("banner", value as File),
+      // setGameInfo((prevState) => ({ ...prevState, banner: value as File })),
       className: "",
+      errorMessage: errors.banner,
+      // errorMessage:errors.title
     },
     {
       title: "Supported Platforms",
       inputType: "tags",
       placeholder: "platform",
-      onTagsChange: (tags) => setGameInfo((prevState) => ({ ...prevState, platforms: tags })),
+      onTagsChange: (tags) => handleInputChange("platforms", tags),
+      errorMessage: errors.platforms,
+
+      //  setGameInfo((prevState) => ({ ...prevState, platforms: tags })),
     },
 
     {
       title: "Genre",
       inputType: "tags",
       placeholder: "genres...",
-      onTagsChange: (tags) => setGameInfo((prevState) => ({ ...prevState, genre: tags })),
+      onTagsChange: (tags) => handleInputChange("genre", tags),
+      errorMessage: errors.genre,
     },
     {
       title: "Mode",
@@ -81,11 +229,8 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
         },
       ],
       value: gameInfo.gameMode,
-      onChange: (value) =>
-        setGameInfo((prevState) => ({
-          ...prevState,
-          gameMode: value as string,
-        })),
+      onChange: (value) => handleInputChange("gameMode", value as string),
+      errorMessage: errors.gameMode,
     },
 
     {
@@ -93,12 +238,13 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       inputType: "text",
       placeholder: "developer name",
       value: gameInfo.developerName,
-      onChange: (value) =>
-        setGameInfo((prevState) => ({
-          ...prevState,
-          developerName: value as string,
-        })),
+      onChange: (value) => handleInputChange("developerName", value as string),
+      // setGameInfo((prevState) => ({
+      //   ...prevState,
+      //   developerName: value as string,
+      // })),
       className: "bg-transparent rounded-md",
+      errorMessage: errors.developerName,
     },
     {
       title: "Developer Type",
@@ -122,28 +268,36 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
         },
       ],
       value: gameInfo.developerType,
-      onChange: (value) =>
-        setGameInfo((prevState) => ({
-          ...prevState,
-          developerType: value as string,
-        })),
+      onChange: (value) => handleInputChange("developerType", value as string),
+      errorMessage: errors.developerType,
+
+      // setGameInfo((prevState) => ({
+      //   ...prevState,
+      //   developerType: value as string,
+      // })),
     },
     {
       title: "Distribution platforms",
       inputType: "tags",
       placeholder: "distribution platforms...",
       // value: gameInfo.distributionPlatforms,
-      onTagsChange: (value) =>
-        setGameInfo((prevState) => ({
-          ...prevState,
-          distributionPlatforms: value,
-        })),
+      onTagsChange: (value) => handleInputChange("distributionPlatforms", value),
+      errorMessage: errors.distributionPlatforms,
+
+      // (value) =>
+      //   setGameInfo((prevState) => ({
+      //     ...prevState,
+      //     distributionPlatforms: value,
+      //   })),
     },
     {
       title: "Tags",
       inputType: "tags",
       placeholder: "Action, Shooting",
-      onTagsChange: (tags) => setGameInfo((prevState) => ({ ...prevState, tags: tags })),
+      onTagsChange: (tags) => handleInputChange("tags", tags),
+      errorMessage: errors.tags,
+
+      //  (tags) => setGameInfo((prevState) => ({ ...prevState, tags: tags })),
     },
     // {
     //     title: "Publisher name",
@@ -162,11 +316,14 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       inputType: "date",
       value: gameInfo.releaseDate,
       className: "bg-transparent rounded-md w-[50%]",
-      onChange: (value) =>
-        setGameInfo((prevState) => ({
-          ...prevState,
-          releaseDate: value as string,
-        })),
+      onChange: (value) => handleInputChange("releaseDate", value as string),
+      errorMessage: errors.releaseDate,
+
+      // (value) =>
+      //   setGameInfo((prevState) => ({
+      //     ...prevState,
+      //     releaseDate: value as string,
+      //   })),
     },
   ]
   // const shadeVariant =
@@ -203,6 +360,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
                   onTagsChange={filter.onTagsChange}
                   className={filter.className}
                   Variant="flex flex-col items-start gap-[10px] text-[14px] "
+                  errorMessage={filter.errorMessage}
                 />
               ))}
 
@@ -212,13 +370,11 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
         </div>
         <div className="flex flex-col w-full gap-4 p-4">
           <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
-            {
-              <MultipleFileInput
-                onFileChange={(files) =>
-                  setGameInfo((prevState) => ({ ...prevState, gameAssets: files }))
-                }
-              />
-            }
+            <MultipleFileInput
+              onFileChange={(value) => handleInputChange("gameAssets", value)}
+              errorMessage={errors.gameAssets}
+            />
+            {/* {errors.gameAssets}   */}
           </div>
           {children}
         </div>

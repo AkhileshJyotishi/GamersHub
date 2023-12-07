@@ -25,8 +25,8 @@ export default function CheckBox({ checked: _checked, onChange }: Props) {
       }`}
     >
       <Image
-        width={1060}
-        height={1060}
+        width={140}
+        height={140}
         alt={""}
         className={`w-4 ${!checked ? "hidden" : "block "}`}
         src={tickwhiteIcon}

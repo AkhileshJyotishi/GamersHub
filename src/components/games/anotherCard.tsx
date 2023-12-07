@@ -11,7 +11,7 @@ import { fetchData } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 
-import EditIcon from "../icons/editIcon"
+// import EditIcon from "../icons/editIcon"
 
 interface CardProps {
   id: number
@@ -46,7 +46,7 @@ const SocialCard: React.FC<CardProps> = ({
   const { userData } = useUserContext()
   // const isSaved
 
-  const [liked, setLiked] = useState<boolean>(false)
+  // const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
   const router = useRouter()
   useEffect(() => {
@@ -74,46 +74,59 @@ const SocialCard: React.FC<CardProps> = ({
       // setSaved(!saved)
     }
   }
-  const updatePost = async (id: number) => {
-    router.push(`/${userId}/profile/portfolio/updateGame/${id}`)
-  }
+  // const updatePost = async (id: number) => {
+  //   router.push(`/${userId}/profile/portfolio/updateGame/${id}`)
+  // }
 
   return (
     <div className={clsx("p-1 bg-user_interface_2 rounded-xl", className)}>
-    <div className="max-w-md bg-white rounded-sm">
-      <div className="flex items-center px-2 py-2" >
-        <Image
-          className="w-6 h-6 rounded-full"
-          src={cover || defaultbannerImage}
-          alt={""}
-          width={100}
-          height={100}
-        />
-        <div className="ml-2 ">
-          <span className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/${userId}/profile/albums`)} >{username}</span>
-          {/* <span className="block text-xs text-gray-600">{location}</span> */}
+      <div className="max-w-md bg-white rounded-sm">
+        <div className="flex items-center px-2 py-2">
+          <Image
+            className="w-6 h-6 rounded-full"
+            src={cover || defaultbannerImage}
+            alt={""}
+            width={100}
+            height={100}
+          />
+          <div className="ml-2 ">
+            <span
+              className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary"
+              onClick={() => router.push(`/${userId}/profile/albums`)}
+            >
+              {username}
+            </span>
+            {/* <span className="block text-xs text-gray-600">{location}</span> */}
+          </div>
+          {session && userData?.id == userId && (
+            <div className="ml-auto">
+              <DeleteIcon
+                className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200"
+                onClick={() => deletePost(id)}
+              />
+            </div>
+          )}
         </div>
-        {
-          session && userData?.id ==userId &&  
-        <div className="ml-auto" ><DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200" onClick={()=>deletePost(id)}/></div>
-        }
-      </div>
-      <div className="flex items-center px-2">
-        <span className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary" onClick={()=>router.push(`/games/${id}`)}>{title}</span>
-      </div>
-      <div className="h-[200px] rounded-sm p-2">
-        
-        <Image
-          src={banner || defaultbannerImage}
-          alt=""
-          // blurDataURL={defaultbannerImage}
-          width={400}
-          height={100}
-          className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
-        />
-      </div>
-      <div className="flex items-center justify-between px-4 py-1">
-        {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
+        <div className="flex items-center px-2">
+          <span
+            className="block text-[16px] font-bold antialiased leading-tight  transition duration-200 cursor-pointer hover:text-secondary"
+            onClick={() => router.push(`/games/${id}`)}
+          >
+            {title}
+          </span>
+        </div>
+        <div className="h-[200px] rounded-sm p-2">
+          <Image
+            src={banner || defaultbannerImage}
+            alt=""
+            // blurDataURL={defaultbannerImage}
+            width={400}
+            height={100}
+            className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
+          />
+        </div>
+        <div className="flex items-center justify-between px-4 py-1">
+          {/* <div className="flex cursor-pointer" onClick={() => likePost()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"

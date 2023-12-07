@@ -31,9 +31,9 @@ const Filter: React.FC<FilterDetail> = ({
   multiple,
   initialtags,
   preview,
+  errorMessage,
   // hidden
 }) => {
-
   const handleCheckboxChange = (newValue: string) => {
     if (onChange) {
       onChange(newValue)
@@ -79,6 +79,7 @@ const Filter: React.FC<FilterDetail> = ({
             name="text"
             placeholder={placeholder}
             id={title}
+            errorMessage={errorMessage}
           />
         </>
       )}
@@ -92,6 +93,7 @@ const Filter: React.FC<FilterDetail> = ({
             name="number"
             placeholder={placeholder}
             id={title}
+            errorMessage={errorMessage}
           />
         </>
       )}
@@ -102,7 +104,9 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             onChange={handleCheckboxChange}
             options={selectOptions}
+            errorMessage={errorMessage}
           />
+          {/* {errorMessage} */}
         </>
       )}
       {inputType === "radio" && (
@@ -111,6 +115,7 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={handleRadioChange}
             options={selectOptions}
             value={value as boolean}
+            errorMessage={errorMessage}
           />
         </>
       )}
@@ -121,23 +126,26 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={handleSelectChange}
             value={value as string}
             options={selectOptions}
+            errorMessage={errorMessage}
+
             // hidden={hidden}
           />
         </>
       )}
       {inputType === "date" && (
-        // <input
-        //     type="date"
-        //     className={className}
-        //     value={value as string}
-        //     onChange={(e) => handleDateChange(new Date(e.target.value))}
-        // />
-        <DatePicker
-          name="date"
-          onChange={(date) => onChange!(date as Date)}
-          value={value as Date}
-          id={title}
-        />
+        <>
+          <DatePicker
+            name="date"
+            onChange={(date) => onChange!(date as Date)}
+            value={value as Date}
+            id={title}
+          />
+          {errorMessage ? (
+            <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+          ) : (
+            <></>
+          )}
+        </>
       )}
       {inputType === "tags" && (
         // Include the TagsInput component with the onTagsChange prop
@@ -146,11 +154,11 @@ const Filter: React.FC<FilterDetail> = ({
           id={title}
           predefinedTags={selectOptions?.map((option) => option.value as string) || []}
           initialtags={initialtags}
+          errorMessage={errorMessage}
         />
       )}
       {inputType === "file" && (
         <>
-          {/* gfxg */}
           <FileFilter
             id={title}
             accept={accept || ""}
@@ -161,6 +169,7 @@ const Filter: React.FC<FilterDetail> = ({
             className={className}
             preview={preview}
             value={value as string}
+            errorMessage={errorMessage}
           />
         </>
       )}

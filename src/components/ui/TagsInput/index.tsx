@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import clsx from "clsx"
 
 import CloseIcon from "@/components/icons/closeIcon"
 
@@ -11,6 +12,7 @@ interface TagsInputProps {
   id?: string
   className?: string
   initialtags?: string[]
+  errorMessage?: string | null
 }
 
 const TagsInput: React.FC<TagsInputProps> = ({
@@ -19,6 +21,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
   id,
   // className,
   initialtags,
+  errorMessage,
 }) => {
   const [tags, setTags] = useState<string[]>(initialtags ?? [])
   const [inputValue, setInputValue] = useState<string>("")
@@ -73,7 +76,10 @@ const TagsInput: React.FC<TagsInputProps> = ({
         type="text"
         placeholder="Enter tags"
         name="tags"
-        className="bg-transparent rounded-md"
+        className={clsx(
+          "bg-transparent rounded-md",
+          errorMessage && "border-accent_red focus:border-accent_red focus:shadow-accent_red"
+        )}
         value={inputValue}
         onChange={handleInput}
         onBlur={handleBlur}
@@ -113,6 +119,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
               </div>
             </span>
           ))}
+
         {/* another tag variant but looks bulky */}
         {/* {tags.map((tag, index) => (
                     <>
@@ -128,6 +135,11 @@ const TagsInput: React.FC<TagsInputProps> = ({
                     </>
                 ))} */}
       </div>
+      {errorMessage ? (
+        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }

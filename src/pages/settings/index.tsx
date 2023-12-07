@@ -3,7 +3,6 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 // import Error from "next/error"
 // import { Session } from "next-auth"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 // import { NODE_BACKEND_URL } from '@/config/env'
@@ -14,7 +13,6 @@ import SettingsPage from "@/components/settings"
 
 const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
   // console.log("session ", settingsDetails)
-  const { data: session } = useSession()
   // console.log(session?.user?.name)
 
   return (

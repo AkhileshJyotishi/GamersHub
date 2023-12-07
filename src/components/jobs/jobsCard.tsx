@@ -14,8 +14,6 @@ import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
 
-import EditIcon from "../icons/editIcon"
-
 interface JobCardProps {
   id: number
   title: string
@@ -182,9 +180,9 @@ const Card: React.FC<JobCardProps> = ({
     }
   }
 
-  const updatePost = async (id: number) => {
-    router.push(`/${userId}/profile/portfolio/updateJob/${id}`)
-  }
+  // const updatePost = async (id: number) => {
+  //   router.push(`/${userId}/profile/portfolio/updateJob/${id}`)
+  // }
 
   return (
     <>
@@ -228,16 +226,20 @@ const Card: React.FC<JobCardProps> = ({
                     </svg>
                   </div>
                 </>
-              )
-              :
-              (
+              ) : (
                 <>
-                <div className="flex items-center mx-auto " onClick={(e) => {e.preventDefault();e.stopPropagation();deletePost(id)}}>
-                 <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200"/>
-                </div>
-              </>  
-              )
-              }
+                  <div
+                    className="flex items-center mx-auto "
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      deletePost(id)
+                    }}
+                  >
+                    <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200" />
+                  </div>
+                </>
+              )}
             </div>
             <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
             <JobDescription desc={desc as string} />

@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     // toast.error(jobsDetails.message)
     return {
       redirect: {
-        destination: `/?error=${albums.message}`,
+        destination: `/?emessage=${albums.message}`,
         permanent: false,
       },
     }
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     // toast.error(jobsDetails.message)
     return {
       redirect: {
-        destination: `/?error=${post?.message}`,
+        destination: `/?emessage=${post?.message}`,
         permanent: false,
       },
     }
