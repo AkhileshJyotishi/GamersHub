@@ -58,15 +58,22 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
-    const isuploaded = await fetchFile(
-      "/v1/upload/file",
-      session?.user?.name as string,
-      "POST",
-      formdata
-    )
-    console.log("is uploaded", isuploaded)
-    filtersState.banner = isuploaded?.data.image.Location
-    // "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
+    if (filtersState.banner) {
+      const isuploaded = await fetchFile(
+        "/v1/upload/file",
+        session?.user?.name as string,
+        "POST",
+        formdata
+      )
+      if (isuploaded?.error) {
+        // toast.info(isuploaded?.message)
+        setLoading(false)
+        return
+      }
+      filtersState.banner = isuploaded?.data.image.Location
+    } else {
+      filtersState.banner = ""
+    }
     let method
     let res
     if (isUpdate) {
@@ -79,7 +86,6 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       )
     } else {
       method = "POST"
-
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
     if (res?.error) toast.error(res.message)

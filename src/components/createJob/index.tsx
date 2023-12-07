@@ -59,21 +59,25 @@ const CreateJob: React.FC = () => {
     localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
-    // console.log("jobInfo.banner ", jobInfo.banner)
-    const isuploaded = await fetchFile(
-      "/v1/upload/file",
-      session?.user?.name as string,
-      "POST",
-      formdata
-    )
-    if (isuploaded?.error) {
-      toast.info(isuploaded?.message)
-      setLoading(false)
-      return
+    if (jobInfo.banner) {
+      const isuploaded = await fetchFile(
+        "/v1/upload/file",
+        session?.user?.name as string,
+        "POST",
+        formdata
+      )
+      if (isuploaded?.error) {
+        // toast.info(isuploaded?.message)
+        setLoading(false)
+        return
+      }
+      // console.log(isuploaded?.data)
+      // return;
+      jobInfo.banner = isuploaded?.data.image.Location
+    } else {
+      jobInfo.banner = ""
     }
-    // console.log(isuploaded?.data)
-    // return;
-    jobInfo.banner = isuploaded?.data.image.Location
+    // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()
 
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)

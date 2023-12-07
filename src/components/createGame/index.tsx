@@ -99,48 +99,64 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
     })
-    console.log(formdata2.entries())
-    console.log("jobInfo.banner ", gameInfo.banner)
-    const isuploaded = await fetchFile(
-      "/v1/upload/file",
-      session?.data?.user?.name as string,
-      "POST",
-      formdata
-    )
-    if (isuploaded?.error) {
-      // toast.info(isuploaded?.message)
-      setLoading(false)
-      return
+    // console.log(formdata2.entries())
+    // console.log("jobInfo.banner ", gameInfo.banner)
+    if (gameInfo.banner) {
+      const isuploaded = await fetchFile(
+        "/v1/upload/file",
+        session?.data?.user?.name as string,
+        "POST",
+        formdata
+      )
+      if (isuploaded?.error) {
+        setLoading(false)
+        return
+      }
+      gameInfo.banner = isuploaded?.data.image.Location
+    } else {
+      gameInfo.banner = ""
     }
-    // console.log(isuploaded?.data)
-    // return;
-    gameInfo.banner = isuploaded?.data.image.Location
-    gameInfo.banner = "https://picsum.photos/id/250/900/900"
     gameInfo.releaseDate = new Date().toISOString()
-    const multiisuploaded = await fetchFile(
-      "/v1/upload/multiple",
-      session?.data?.user?.name as string,
-      "POST",
-      formdata
-    )
 
-    if (multiisuploaded?.error) {
-      toast.error(multiisuploaded.error)
-      setLoading(false)
-      return
+    if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
+      const multiisuploaded = await fetchFile(
+        "/v1/upload/multiple",
+        session?.data?.user?.name as string,
+        "POST",
+        formdata
+      )
+
+      if (multiisuploaded?.error) {
+        toast.error(multiisuploaded.error)
+        setLoading(false)
+        return
+      } else {
+        gameInfo.gameAssets = []
+        gameInfo.gameAssets = multiisuploaded?.data.image.map((loc: Allow) => {
+          gameInfo.gameAssets?.push(loc.Location)
+        })
+      }
     } else {
       gameInfo.gameAssets = []
-      gameInfo.gameAssets = multiisuploaded?.data.image.map((loc: Allow) => {
-        gameInfo.gameAssets?.push(loc.Location)
-      })
     }
-
+    let data
     // console.log(gameInfo)
     if (isUpdate) {
-      fetchData(`v1/game/${game?.id}`, session.data?.user?.name as string, "PATCH", gameInfo)
+      data = await fetchData(
+        `v1/game/${game?.id}`,
+        session.data?.user?.name as string,
+        "PATCH",
+        gameInfo
+      )
     } else {
-      fetchData("v1/game/user", session.data?.user?.name as string, "POST", gameInfo)
+      data = await fetchData("v1/game/user", session.data?.user?.name as string, "POST", gameInfo)
     }
+    if (data?.error) {
+      setLoading(false)
+      toast.error(data?.message)
+      return
+    }
+    toast.success(data?.message)
     setLoading(false)
     router.push("/games")
   }

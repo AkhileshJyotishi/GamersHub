@@ -6,8 +6,6 @@ import { FilterDetail } from "@/interface/filter"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 
-// Add more properties if needed
-
 interface FiltersState {
   title: string
   // postInfo: PostInfo;
