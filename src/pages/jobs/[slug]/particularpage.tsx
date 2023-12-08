@@ -6,6 +6,11 @@ import Jobsection from "./jobsection"
 
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
+  if (!profileData) {
+    // Handle the case when profileData is undefined
+    return <div>Loading...</div> // or any other handling mechanism
+  }
+
   const { title, city, banner, country, user, userId, ...profileDataJobSection } = profileData
   // console.log("is this rendering  ", profileData)
   return (

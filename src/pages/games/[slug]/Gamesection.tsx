@@ -62,14 +62,15 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "platforms",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data?.platforms?.map((platform, index) => (
-            <span
-              key={index}
-              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-            >
-              {platform?.name}
-            </span>
-          ))}
+          {data?.platforms?.length > 0 &&
+            data?.platforms?.map((platform, index) => (
+              <span
+                key={index}
+                className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+              >
+                {platform?.name}
+              </span>
+            ))}
         </div>
       ),
     },
@@ -78,14 +79,15 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "tags",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-            >
-              {tag?.keyword}
-            </span>
-          ))}
+          {data?.tags?.length > 0 &&
+            data?.tags?.map((tag, index) => (
+              <span
+                key={index}
+                className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+              >
+                {tag?.keyword}
+              </span>
+            ))}
         </div>
       ),
     },
@@ -94,14 +96,15 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "genre",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data?.genre?.map((genre, index) => (
-            <span
-              key={index}
-              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-            >
-              {genre?.name}
-            </span>
-          ))}
+          {data?.genre?.length > 0 &&
+            data?.genre?.map((genre, index) => (
+              <span
+                key={index}
+                className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+              >
+                {genre?.name}
+              </span>
+            ))}
         </div>
       ),
     },
@@ -110,14 +113,15 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "distributionPlatforms",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data?.distributionPlatforms?.map((distributionPlatform, index) => (
-            <span
-              key={index}
-              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-            >
-              {distributionPlatform?.name}
-            </span>
-          ))}
+          {data?.distributionPlatforms?.length > 0 &&
+            data?.distributionPlatforms?.map((distributionPlatform, index) => (
+              <span
+                key={index}
+                className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+              >
+                {distributionPlatform?.name}
+              </span>
+            ))}
         </div>
       ),
     },
@@ -126,9 +130,10 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
 
   const GameDetails: React.FC<{ GameData: Gamedataprop }> = ({ GameData }) => (
     <>
-      {gameSections?.map((section, index) => (
-        <SectionRenderer key={index} {...section} data={GameData} />
-      ))}
+      {gameSections?.length > 0 &&
+        gameSections?.map((section, index) => (
+          <SectionRenderer key={index} {...section} data={GameData} />
+        ))}
     </>
   )
 
