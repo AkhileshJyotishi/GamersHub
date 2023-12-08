@@ -7,25 +7,6 @@ import { FilterDetail } from "@/interface/filter"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 
-interface JobInfo {
-  jobType: string
-
-  remote: boolean
-  country?: string
-  city?: string
-
-  paymentType: string
-  paymentValue: number
-
-  // rolesNeeded: string[];
-  banner: File | null | string
-  expertise: string
-  jobSoftwares: string[]
-  title: string
-  publishDate: string | null
-  jobDetails: object | null
-  userId: number
-}
 
 interface LayoutProps {
   children: React.ReactNode

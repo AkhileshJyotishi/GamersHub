@@ -59,6 +59,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       publishDate,
       jobDetails,
       userId,
+      aboutRecruiter,
+      description
     } = backendJob
 
     // jobSoftwares=
@@ -76,14 +78,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       publishDate: publishDate || null, // Adjust based on your needs
       jobDetails: jobDetails || null, // Adjust based on your needs
       userId: userId,
+      aboutRecruiter,
+      description
     }
   }
 
   // Example usage:
   const job: JobInfo = convertBackendJobToJobInfo(parsedjobDetails)
-
-  job.banner =
-    "https://cdnb.artstation.com/p/recruitment_companies/headers/000/003/159/thumb/ArtStation_Header.jpg"
 
   return {
     props: {
