@@ -6,7 +6,13 @@ import auth from '../../middlewares/auth'
 
 const router = express.Router()
 
+router.get('/', auth(), authController.getUser)
 router.post('/register', validate(authValidation.register), authController.register)
+router.post(
+  '/register-provider',
+  validate(authValidation.registerProvider),
+  authController.registerProvider
+)
 router.post('/login', validate(authValidation.login), authController.login)
 router.post('/logout', validate(authValidation.logout), authController.logout)
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens)
@@ -16,8 +22,13 @@ router.post(
   authController.forgotPassword
 )
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword)
-router.post('/send-verification-email', auth(), authController.sendVerificationEmail)
+router.post(
+  '/send-verification-email',
+  validate(authValidation.verificationEmail),
+  authController.sendVerificationEmail
+)
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail)
+router.post('/add-provider', validate(authValidation.addProvider), authController.addProvider)
 
 export default router
 
@@ -74,6 +85,60 @@ export default router
  *                   $ref: '#/components/schemas/AuthTokens'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
+ */
+/**
+ * @swagger
+ * /register-provider:
+ *   post:
+ *     summary: Register a user through 3rd party providers
+ *     tags: [Provider-auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: must be unique
+ *               isEmailVerified:
+ *                 type: boolean
+ *               image:
+ *                 type: string
+ *             example:
+ *               name: fake name
+ *               email: fake@example.com
+ *               isEmailVerified: true
+ *               image : https://picsum.photos/200/300
+ *     responses:
+ *       "201":
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
  */
 
 /**
@@ -292,4 +357,50 @@ export default router
  *             example:
  *               code: 401
  *               message: verify email failed
+ */
+
+/**
+ * @swagger
+ * /add-provider:
+ *   post:
+ *     summary: Add 3rd party Auth-provider response for user
+ *     tags:
+ *       - Provider-auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: integer
+ *               response:
+ *                 type: object
+ *               providerType:
+ *                 type: string
+ *                 enum: [GOOGLE, FACEBOOK]
+ *             required:
+ *               - userId
+ *               - response
+ *           example:
+ *             userId: 123
+ *             response:
+ *               provider: google
+ *               type: oauth
+ *               providerAccountId: '1166823803618'
+ *               access_token: ya29.a0AfB_byDltU92Kr7waCgYKAeQSARASFQGOcNnC2wpnkixN1AYERMaCwZpSMQ0170
+ *               expires_at: 1698015253
+ *             providerType: GOOGLE
+ *     responses:
+ *       201:
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
  */

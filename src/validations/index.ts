@@ -1,2 +1,7 @@
 export { default as authValidation } from './auth.validation'
 export { default as userValidation } from './user.validation'
+export { default as jobValidation } from './job.validation'
+export { default as gameValidation } from './game.validation'
+export { default as albumValidation } from './album.validation'
+export { default as postValidation } from './post.validation'
+export { default as adminValidation } from './admin.validation'

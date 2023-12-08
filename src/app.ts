@@ -38,7 +38,11 @@ app.use(xss())
 app.use(compression())
 
 // enable cors
-app.use(cors())
+app.use(
+  cors({
+    origin: '*'
+  })
+)
 app.options('*', cors())
 
 // jwt authentication

@@ -12,11 +12,60 @@ router
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers)
 
 router
-  .route('/:userId')
-  .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser)
+  .route('/socials')
+  .get(auth(), userController.getSocials)
+  .post(auth(), validate(userValidation.createSocials), userController.createSocials)
+  .delete(auth(), userController.deleteSocials)
+  .patch(auth(), validate(userValidation.updateSocials), userController.updateSocials)
 
+router
+  .route('/education')
+  .get(auth(), userController.getEducation)
+  .post(auth(), validate(userValidation.createEducation), userController.createEducation)
+
+router
+  .route('/education/:id')
+  .patch(auth(), validate(userValidation.updateEducation), userController.updateEducation)
+  .delete(auth(), validate(userValidation.deleteEducation), userController.deleteEducation)
+
+router
+  .route('/experience')
+  .get(auth(), userController.getExperience)
+  .post(auth(), validate(userValidation.createExperience), userController.createExperience)
+
+router
+  .route('/experience/:id')
+  .patch(auth(), validate(userValidation.updateExperience), userController.updateExperience)
+  .delete(auth(), validate(userValidation.deleteExperience), userController.deleteExperience)
+
+router
+  .route('/details')
+  .get(auth(), userController.getUserDetails)
+  .post(auth(), validate(userValidation.createUserDetails), userController.createUserDetails)
+  .delete(auth(), userController.deleteUserDetails)
+  .patch(auth(), validate(userValidation.updateUserDetails), userController.updateUserDetails)
+
+router.get(
+  '/customDetails/:id',
+  validate(userValidation.getCustomDetails),
+  userController.getCustomDetails
+)
+
+router.get('/creators', auth(), userController.getAllCreatorsExceptUser)
+router.get('/creators/all', userController.getAllCreators)
+router.get('/keyword', auth(), userController.getKeywords)
+router.get('/skill', auth(), userController.getSkills)
+router.get('/software', auth(), userController.getSoftwares)
+router.get('/genre', auth(), userController.getGenre)
+router.get('/platform', auth(), userController.getPlatforms)
+
+router.get('/allDetails', auth(), userController.getAllDetails)
+
+router
+  .route('/:userId')
+  .get(auth('getUsers'), userController.getUser)
+  .patch(auth(), validate(userValidation.updateUser), userController.updateUser)
+  .delete(auth('manageUsers'), userController.deleteUser)
 export default router
 
 /**
@@ -60,12 +109,12 @@ export default router
  *                 description: At least one number and one letter
  *               role:
  *                  type: string
- *                  enum: [user, admin]
+ *                  enum: [USER, ADMIN]
  *             example:
  *               name: fake name
  *               email: fake@example.com
  *               password: password1
- *               role: user
+ *               role: USER
  *     responses:
  *       "201":
  *         description: Created
