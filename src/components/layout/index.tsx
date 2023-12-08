@@ -4,8 +4,13 @@ import { ToastContainer } from "react-toastify"
 
 import { UserProvider } from "@/providers/user-context"
 
+import LoadingOverlay from "../ui/loadingOverlay"
+
 import Footer from "./footer"
 import Header from "./header"
+
+// import LoadingOverlay  from 'react-loading-overlay'
+import "react-toastify/dist/ReactToastify.css"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,18 +24,26 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
         <ToastContainer
           position="top-center"
           autoClose={5000}
-          hideProgressBar={false}
+          hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss={false}
           draggable={false}
           pauseOnHover
-          theme="light"
+          theme="dark"
         />
-        <Header />
-        <main className={clsx("", className)}>{children}</main>
-        <Footer />
+        <div className="absolute h-fit text-text bg-background">
+          <LoadingOverlay />
+          <Header />
+          <main
+            className={clsx("", className, " bg-background min-h-[539px]")}
+            style={{ zIndex: 16 }}
+          >
+            {children}
+          </main>
+          <Footer />
+        </div>
       </UserProvider>
     </>
   )

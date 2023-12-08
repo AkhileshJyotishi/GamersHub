@@ -11,6 +11,9 @@
 html,
 body {
   overflow-x: hidden;
+  letter-spacing: 0.015em;
+  font-family: sans-serif;
+  scroll-behavior: smooth;
 }
 
 /* Scrollbar */
@@ -32,8 +35,7 @@ body {
   background-color: #fff;
 }
 
-@layer base {
-}
+@layer base {}
 
 @layer components {
   .center {
@@ -57,5 +59,77 @@ body {
   }
 }
 
-@layer utilities {
+.react-calendar__month-view,
+.react-calendar__tile:disabled,
+.react-calendar__viewContainer,
+.react-calendar__navigation button:disabled,
+.calendar--open,
+.react-calendar {
+  background-color: #161a1f !important;
+}
+
+.slick-dots li button::before {
+  color: gray !important;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #101014 !important;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: #101014 !important;
+}
+
+.react-calendar__tile--hasActive {
+  background-color: #101014 !important;
+}
+
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon,
+.react-date-picker__button:enabled:focus .react-date-picker__button__icon {
+  stroke: #9af6c1b3 !important;
+}
+
+.react-date-picker__button .react-date-picker__button__icon,
+.react-date-picker__button__icon {
+  stroke: #292f34 !important;
+}
+
+.react-calendar__navigation button:enabled:focus {
+  background-color: #101014 !important;
+}
+
+.react-date-picker {
+  display: block !important;
+}
+
+.react-date-picker__wrapper,
+.react-calendar__navigation {
+  flex-wrap: wrap;
+}
+
+.novel-bg-stone-100 {
+  background-color: #4bc17cf4 !important;
+}
+
+.novel-font-medium {
+  color: white;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {}
+
+@layer utilities {}
+
+._loading_overlay_content {
+  top: 45%;
+  left: 35%;
+  position: fixed;
+}
+
+.ProseMirror {
+  /* z-index: 0; */
+  position: static !important;
 }
