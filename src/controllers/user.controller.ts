@@ -210,7 +210,7 @@ const getKeywords = catchAsync(async (req, res) => {
       keyword: true
     }
   })
-  const Keyword = keywords.map((k) => k.keyword)
+  const Keyword = keywords.map((k: Allow) => k.keyword)
   sendResponse(res, httpStatus.OK, null, { Keyword }, 'Keywords fetched Successfully')
 })
 const getSkills = catchAsync(async (req, res) => {
@@ -219,7 +219,7 @@ const getSkills = catchAsync(async (req, res) => {
       skill: true
     }
   })
-  const skill = Skills.map((k) => k.skill)
+  const skill = Skills.map((k: Allow) => k.skill)
   sendResponse(res, httpStatus.OK, null, { skill }, 'Skills fetched Successfully')
 })
 const getSoftwares = catchAsync(async (req, res) => {
@@ -228,7 +228,7 @@ const getSoftwares = catchAsync(async (req, res) => {
       software: true
     }
   })
-  const software = Softwares.map((k) => k.software)
+  const software = Softwares.map((k: Allow) => k.software)
   sendResponse(res, httpStatus.OK, null, { software }, 'Softwares fetched Successfully')
 })
 const getGenre = catchAsync(async (req, res) => {
@@ -237,7 +237,7 @@ const getGenre = catchAsync(async (req, res) => {
       name: true
     }
   })
-  const genre = Genres.map((k) => k.name)
+  const genre = Genres.map((k: Allow) => k.name)
   sendResponse(res, httpStatus.OK, null, { genre }, 'Genres fetched Successfully')
 })
 
@@ -247,7 +247,7 @@ const getPlatforms = catchAsync(async (req, res) => {
       name: true
     }
   })
-  const platform = Platforms.map((k) => k.name)
+  const platform = Platforms.map((k: Allow) => k.name)
   sendResponse(res, httpStatus.OK, null, { platform }, 'Platforms fetched Successfully')
 })
 
@@ -259,13 +259,13 @@ const getAllDetails = catchAsync(async (req, res) => {
       software: true
     }
   })
-  const software = Softwares.map((k) => k.software)
+  const software = Softwares.map((k: Allow) => k.software)
   const Skills = await prisma.skill.findMany({
     select: {
       skill: true
     }
   })
-  const skill = Skills.map((k) => k.skill)
+  const skill = Skills.map((k: Allow) => k.skill)
   const userDetails = await userService.getUserDetailsByUserId(userId)
   sendResponse(
     res,

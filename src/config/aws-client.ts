@@ -3,7 +3,7 @@ import config from '../config/config'
 import ApiError from '../utils/api-error'
 import httpStatus from 'http-status'
 
-let s3: any
+let s3: Allow
 try {
   s3 = new AWS.S3({
     region: config.backblaze.region,

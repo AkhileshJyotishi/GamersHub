@@ -1,5 +1,5 @@
 import multer from 'multer'
-let uploadDisk: any
+let uploadDisk: Allow
 try {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {

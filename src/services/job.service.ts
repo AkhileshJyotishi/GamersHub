@@ -241,10 +241,10 @@ const updateJobById = async (userId: number, id: number, updateJobBody: jobBody)
     let itemsToAdd = jobSoftwares
 
     if (existingjobSoftware) {
-      const jobSoftware = existingjobSoftware.jobSoftwares.map((k) => k.software)
-      const itemsToRemove = jobSoftware.filter((item) => !jobSoftwares.includes(item))
+      const jobSoftware = existingjobSoftware.jobSoftwares.map((k: Allow) => k.software)
+      const itemsToRemove = jobSoftware.filter((item: Allow) => !jobSoftwares.includes(item))
       itemsToAdd = jobSoftwares.filter((item) => !jobSoftware.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.software.update({
           where: {
             software: key

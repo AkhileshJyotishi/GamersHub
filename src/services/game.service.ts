@@ -422,10 +422,10 @@ const updateGameById = async (
     let itemsToAdd = platforms
 
     if (existingGamePlatforms) {
-      const gamePlatforms = existingGamePlatforms.platforms.map((k) => k.name)
-      const itemsToRemove = gamePlatforms.filter((item) => !platforms.includes(item))
+      const gamePlatforms = existingGamePlatforms.platforms.map((k: Allow) => k.name)
+      const itemsToRemove = gamePlatforms.filter((item: Allow) => !platforms.includes(item))
       itemsToAdd = platforms.filter((item) => !gamePlatforms.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.platform.update({
           where: {
             name: key
@@ -486,10 +486,10 @@ const updateGameById = async (
     let itemsToAdd = tags
 
     if (existingGameTags) {
-      const gameTags = existingGameTags.tags.map((k) => k.keyword)
-      const itemsToRemove = gameTags.filter((item) => !tags.includes(item))
+      const gameTags = existingGameTags.tags.map((k: Allow) => k.keyword)
+      const itemsToRemove = gameTags.filter((item: Allow) => !tags.includes(item))
       itemsToAdd = tags.filter((item) => !gameTags.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.keyword.update({
           where: {
             keyword: key
@@ -550,10 +550,10 @@ const updateGameById = async (
     let itemsToAdd = genre
 
     if (existingGameGenre) {
-      const gameTags = existingGameGenre.genre.map((k) => k.name)
-      const itemsToRemove = gameTags.filter((item) => !genre.includes(item))
+      const gameTags = existingGameGenre.genre.map((k: Allow) => k.name)
+      const itemsToRemove = gameTags.filter((item: Allow) => !genre.includes(item))
       itemsToAdd = genre.filter((item) => !gameTags.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.genre.update({
           where: {
             name: key
@@ -615,13 +615,13 @@ const updateGameById = async (
 
     if (existingGameDistributionPlatforms) {
       const gameDistributionPlatforms = existingGameDistributionPlatforms.distributionPlatforms.map(
-        (k) => k.name
+        (k: Allow) => k.name
       )
       const itemsToRemove = gameDistributionPlatforms.filter(
-        (item) => !distributionPlatforms.includes(item)
+        (item: Allow) => !distributionPlatforms.includes(item)
       )
       itemsToAdd = distributionPlatforms.filter((item) => !gameDistributionPlatforms.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.platform.update({
           where: {
             name: key

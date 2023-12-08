@@ -3,8 +3,8 @@ import { Response } from 'express'
 export const sendResponse = (
   res: Response,
   statusCode: number = 200,
-  error: any | null = null,
-  data: any | null = null,
+  error: Allow | null = null,
+  data: Allow | null = null,
   message: string = ''
 ): void => {
   const response = {

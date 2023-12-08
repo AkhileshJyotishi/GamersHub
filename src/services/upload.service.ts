@@ -9,7 +9,7 @@ import httpStatus from 'http-status'
  * @param {ObjectId} file
  * @returns {Promise<object>}
  */
-const uploadFile = async (file: any): Promise<object> => {
+const uploadFile = async (file: Allow): Promise<object> => {
   try {
     const params = {
       Bucket: config.backblaze.bucket,
@@ -30,10 +30,10 @@ const uploadFile = async (file: any): Promise<object> => {
  * @param {ObjectId} files
  * @returns {Promise<object[]>}
  */
-const uploadFiles = async (files: any): Promise<any> => {
+const uploadFiles = async (files: Allow): Promise<Allow> => {
   try {
     const uploadResults = await Promise.all(
-      files.map((file: any) => {
+      files.map((file: Allow) => {
         // AWS S3 Upload Parameters
         const params = {
           Bucket: config.backblaze.bucket,
@@ -43,7 +43,7 @@ const uploadFiles = async (files: any): Promise<any> => {
 
         return new Promise((resolve, reject) => {
           // Upload each file to Backblaze B2 Cloud Storage
-          s3.upload(params, (err: any, data: any) => {
+          s3.upload(params, (err: Allow, data: Allow) => {
             if (err) {
               reject(err)
             } else {

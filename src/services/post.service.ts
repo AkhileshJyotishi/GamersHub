@@ -404,10 +404,10 @@ const updatePostById = async (
     let itemsToAdd = postKeywords
 
     if (existingPostKeywords) {
-      const postKeyword = existingPostKeywords.postKeywords.map((k) => k.keyword)
-      const itemsToRemove = postKeyword.filter((item) => !postKeywords.includes(item))
+      const postKeyword = existingPostKeywords.postKeywords.map((k: Allow) => k.keyword)
+      const itemsToRemove = postKeyword.filter((item: Allow) => !postKeywords.includes(item))
       itemsToAdd = postKeywords.filter((item) => !postKeyword.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.keyword.update({
           where: {
             keyword: key
@@ -468,10 +468,10 @@ const updatePostById = async (
     let itemsToAdd = postSkills
 
     if (existingPostskills) {
-      const postskill = existingPostskills.postSkills.map((k) => k.skill)
-      const itemsToRemove = postskill.filter((item) => !postSkills.includes(item))
+      const postskill = existingPostskills.postSkills.map((k: Allow) => k.skill)
+      const itemsToRemove = postskill.filter((item: Allow) => !postSkills.includes(item))
       itemsToAdd = postSkills.filter((item) => !postskill.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.skill.update({
           where: {
             skill: key

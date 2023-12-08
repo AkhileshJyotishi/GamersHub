@@ -148,10 +148,10 @@ const updateAlbumById = async (
     let itemsToAdd = keywords
 
     if (albumKeywords) {
-      const albumKeyword = albumKeywords.keyword.map((k) => k.keyword)
-      const itemsToRemove = albumKeyword.filter((item) => !keywords.includes(item))
+      const albumKeyword = albumKeywords.keyword.map((k: Allow) => k.keyword)
+      const itemsToRemove = albumKeyword.filter((item: Allow) => !keywords.includes(item))
       itemsToAdd = keywords.filter((item) => !albumKeyword.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.keyword.update({
           where: {
             keyword: key

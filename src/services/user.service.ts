@@ -756,10 +756,10 @@ const updateUserDetailsByUserId = async (
     let itemsToAdd = userSkills
 
     if (existingUserDetailskills) {
-      const userDetailSkill = existingUserDetailskills.userSkills.map((k) => k.skill)
-      const itemsToRemove = userDetailSkill.filter((item) => !userSkills.includes(item))
+      const userDetailSkill = existingUserDetailskills.userSkills.map((k: Allow) => k.skill)
+      const itemsToRemove = userDetailSkill.filter((item: Allow) => !userSkills.includes(item))
       itemsToAdd = userSkills.filter((item) => !userDetailSkill.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.skill.update({
           where: {
             skill: key
@@ -820,10 +820,14 @@ const updateUserDetailsByUserId = async (
     let itemsToAdd = userSoftwares
 
     if (existingUserDetailsSoftware) {
-      const userDetailSoftware = existingUserDetailsSoftware.userSoftwares.map((k) => k.software)
-      const itemsToRemove = userDetailSoftware.filter((item) => !userSoftwares.includes(item))
+      const userDetailSoftware = existingUserDetailsSoftware.userSoftwares.map(
+        (k: Allow) => k.software
+      )
+      const itemsToRemove = userDetailSoftware.filter(
+        (item: Allow) => !userSoftwares.includes(item)
+      )
       itemsToAdd = userSoftwares.filter((item) => !userDetailSoftware.includes(item))
-      const removePromises = itemsToRemove.map((key) => {
+      const removePromises = itemsToRemove.map((key: Allow) => {
         return prisma.software.update({
           where: {
             software: key

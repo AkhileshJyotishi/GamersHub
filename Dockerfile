@@ -11,5 +11,11 @@ USER node
 RUN yarn install --pure-lockfile
 
 COPY --chown=node:node . .
-
+ 
 EXPOSE 3000
+
+RUN yarn prisma migrate deploy
+
+RUN yarn prisma generate
+
+CMD yarn start
