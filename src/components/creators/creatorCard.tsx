@@ -3,10 +3,10 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { shimmer, toBase64 } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
 import { SecondaryTag } from "@/components/ui/badges"
-import { shimmer, toBase64 } from "@/utils/functions"
 
 const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profileImage }) => {
   //   let userProfile = creator?.profile_image?.url;
@@ -22,7 +22,6 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           className="w-full h-[140px] rounded-t-[10px]   absolute"
           src={bannerImage || defaultbannerImage}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-
         />
         <Image
           width={100}
@@ -33,7 +32,6 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           src={profileImage || defaultbannerImage}
           alt={" "}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-
         />
       </div>
 
@@ -76,8 +74,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           <div className="flex flex-wrap gap-[10px] ">
             {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
               <>
-                {userDetails?.userSkills?.map((skill: any, idx) => (
-                  <SecondaryTag name={skill?.skill} key={idx} />
+                {userDetails?.userSkills?.map((skill, idx) => (
+                  <SecondaryTag name={skill?.skill ?? ""} key={idx} />
                 ))}
               </>
             ) : (
@@ -92,7 +90,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         <div className="flex flex-wrap gap-[10px] ">
           {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
             <>
-              {userDetails?.userSoftwares?.map((software: any, idx) => (
+              {userDetails?.userSoftwares?.map((software: Allow, idx) => (
                 <SecondaryTag name={software?.software} key={idx} />
               ))}
             </>

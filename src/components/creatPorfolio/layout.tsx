@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
-import { toast } from "react-toastify"
 
 interface FiltersState {
   title: string
@@ -37,21 +37,19 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   let albumsselectoptions = [{ label: "select an album", value: "" }]
   const [dimensions, setdimensions] = useState<{
-    height: number | null;
-    width: number | null;
-  }
-  >({
+    height: number | null
+    width: number | null
+  }>({
     height: null,
-    width: null
-  });
+    width: null,
+  })
   const [errors, setErrors] = useState<Errors<Partial<FiltersState>>>({
     albumId: "",
     banner: "",
     content: null,
     matureContent: null,
     postKeywords: null,
-    title: ""
-
+    title: "",
   })
   const handleInputChange = <K extends keyof FiltersState>(field: K, value: FiltersState[K]) => {
     // console.log("scgha")
@@ -66,7 +64,6 @@ const Layout: React.FC<LayoutProps> = ({
             setErrors((prev) => ({ ...prev, [field]: null }))
           }
           setFiltersState((prevState) => ({ ...prevState, [field]: value as string }))
-
         }
         break
       case "banner":
@@ -103,20 +100,20 @@ const Layout: React.FC<LayoutProps> = ({
                 ...prev,
                 banner: `Image dimensions must be ${maxWidth}x${maxHeight} or smaller`,
               }))
-            }
-            else if (img.width < minWidth || img.height < minHeight) {
+            } else if (img.width < minWidth || img.height < minHeight) {
               // console.log(img.width, minWidth)
               // console.log(img.height, minHeight)
-              setErrors((prev) => ({ ...prev, banner: `Image dimensions must be ${minWidth}x${minHeight} or larger` }))
-
-            }
-            else {
+              setErrors((prev) => ({
+                ...prev,
+                banner: `Image dimensions must be ${minWidth}x${minHeight} or larger`,
+              }))
+            } else {
               setErrors((prev) => ({ ...prev, banner: null }))
               // Proceed with setting the banner if all checks pass
             }
             setdimensions({
               height: img.height,
-              width: img.width
+              width: img.width,
             })
             setFiltersState((prevState) => ({ ...prevState, [field]: value as File }))
           }
@@ -126,10 +123,9 @@ const Layout: React.FC<LayoutProps> = ({
             setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
           }
           setFiltersState((prevState) => ({ ...prevState, [field]: value as File }))
-
         }
-        break;
-        
+        break
+
       case "postKeywords":
         // console.log("executing")
         if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
@@ -141,9 +137,8 @@ const Layout: React.FC<LayoutProps> = ({
             setErrors((prev) => ({ ...prev, [field]: null }))
           }
           setFiltersState((prevState) => ({ ...prevState, [field]: value as string[] }))
-
         }
-        break;
+        break
 
       case "albumId":
         // console.log(value)
@@ -151,29 +146,23 @@ const Layout: React.FC<LayoutProps> = ({
           // const chk = ["singlePlayer", "multiPlayer"].includes(value)
           if (value === 0) {
             setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          }
-          else {
+          } else {
             setErrors((prev) => ({ ...prev, [field]: null }))
           }
 
           setFiltersState((prevState) => ({ ...prevState, [field]: value as number }))
-
         }
 
-        break;
+        break
 
       case "matureContent":
         if (typeof value === "boolean") {
           // console.log(value);
           setFiltersState((prevState) => ({ ...prevState, [field]: value as boolean }))
-
         }
 
-        break;
+        break
     }
-
-
-
   }
 
   const alb = albums.map((album: Allow) => ({ label: album.title, value: album.id }))
@@ -191,16 +180,19 @@ const Layout: React.FC<LayoutProps> = ({
       //   title: value as string,
       // })),
       className: "mt-2 bg-transparent rounded-md",
-      errorMessage: errors.title
+      errorMessage: errors.title,
     },
 
     {
       inputType: "tags",
       title: "Keyword Tags",
-      onTagsChange: (value) => { handleInputChange("postKeywords", value); console.log("keywords  ", value) },
+      onTagsChange: (value) => {
+        handleInputChange("postKeywords", value)
+        console.log("keywords  ", value)
+      },
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
-      errorMessage: errors.postKeywords
+      errorMessage: errors.postKeywords,
     },
     {
       inputType: "select",
@@ -209,9 +201,9 @@ const Layout: React.FC<LayoutProps> = ({
       value: filtersState.albumId,
       onChange: (value) => handleInputChange("albumId", Number(value) as number),
       // setFiltersState((prevState) => ({ ...prevState, albumId: value as number })),
-      className: "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
-      errorMessage: errors.albumId
-
+      className:
+        "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
+      errorMessage: errors.albumId,
     },
 
     {
@@ -224,9 +216,7 @@ const Layout: React.FC<LayoutProps> = ({
       value: filtersState.matureContent,
       onChange: (value) => handleInputChange("matureContent", value as boolean),
       // setFiltersState((prevState) => ({ ...prevState, matureContent: value as boolean })),
-      errorMessage: errors.matureContent
-
-
+      errorMessage: errors.matureContent,
     },
 
     {
@@ -239,7 +229,7 @@ const Layout: React.FC<LayoutProps> = ({
       // setFiltersState((prevState) => ({ ...prevState, banner: value as File })), // Handle file input changes
       className:
         "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
-      errorMessage: errors.banner
+      errorMessage: errors.banner,
     },
   ]
 
@@ -257,15 +247,13 @@ const Layout: React.FC<LayoutProps> = ({
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
                 // disabled={}
                 onClick={() => {
-                  const hasErrors = Object.values(errors).some((error) => error !== null);
+                  const hasErrors = Object.values(errors).some((error) => error !== null)
 
                   if (hasErrors) {
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
-                    return;
-                  }
-                  else {
-
+                    return
+                  } else {
                     uploadPost()
                   }
                 }}

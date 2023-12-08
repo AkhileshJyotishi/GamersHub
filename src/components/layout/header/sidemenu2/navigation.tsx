@@ -1,5 +1,6 @@
 import * as React from "react"
 import { motion } from "framer-motion"
+import { useSession } from "next-auth/react"
 
 import { useUserContext } from "@/providers/user-context"
 
@@ -7,7 +8,6 @@ import { MenuItem } from "./menuitem"
 import { MenuToggle } from "./menutoggle"
 
 import styles from "./style.module.css"
-import { useSession } from "next-auth/react"
 const variants = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },

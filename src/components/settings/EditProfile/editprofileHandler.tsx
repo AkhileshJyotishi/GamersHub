@@ -261,33 +261,28 @@ export const uploadUserExperience = async (
 export const uploadProfileData = async (
   profileData:
     | {
-      userBio: string | null | undefined
-      country: string | null | undefined
-      city: string | null | undefined
-      userSkills: IuserSkill[]
-      userSoftwares: IuserSoftware[] | undefined
-      profileImage: string | undefined | File
-    }
+        userBio: string | null | undefined
+        country: string | null | undefined
+        city: string | null | undefined
+        userSkills: IuserSkill[]
+        userSoftwares: IuserSoftware[] | undefined
+        profileImage: string | undefined | File
+      }
     | undefined,
   token: string,
-  method:string
+  method: string
 ) => {
   const formdata = new FormData()
   // console.log(newAlbum)
   // return
   if (profileData?.profileImage) {
     formdata.append("file", profileData?.profileImage as File)
-    const isuploaded = await fetchFile(
-      "/v1/upload/file",
-      token,
-      "POST",
-      formdata
-    )
+    const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
     // console.log("is uploaded", isuploaded)
     profileData.profileImage = isuploaded?.data?.image?.Location
   } else {
     // newAlbum.banner = ""
-    return;
+    return
   }
   // const token = useSession().data?.user?.name as string
   const response = await fetchData(`/v1/users/details`, token, method, profileData)

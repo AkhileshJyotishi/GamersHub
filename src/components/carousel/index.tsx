@@ -5,12 +5,12 @@ import Image from "next/image"
 // @ts-ignore
 import Slider from "react-slick"
 
+import { shimmer, toBase64 } from "@/utils/functions"
+
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import carousel from "@/components/carousel/carousel.module.css"
 import thumbnail from "@/components/carousel/thumbnail.module.css"
-import { toBase64, shimmer } from "@/utils/functions"
-
 
 type SlickSlider = LegacyRef<Slider> & {
   innerSlider: {
@@ -65,7 +65,6 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
             className="whah md:h-[700px] h-[300px]"
           >
             {GameAssets.map((item, idx) => {
-
               return (
                 <div key={idx} className="">
                   <div className="">
@@ -78,14 +77,13 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
                       // placeholder="blur"
                       priority
                       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-                    // blurDataURL=""
-                    // bl
+                      // blurDataURL=""
+                      // bl
                     />
                   </div>
                 </div>
               )
-            }
-            )}
+            })}
           </Slider>
           <div className={clsx(thumbnail["thumb-wrapper"], "")}>
             {GameAssets.map((item, idx) => (

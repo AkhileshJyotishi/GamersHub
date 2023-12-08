@@ -23,7 +23,7 @@ const BannerImage = ({
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
-  const { userData,setuserData } = useUserContext()
+  const { userData, setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
   // useEffect(()=>{
   //   if(img!==undefined){
@@ -59,8 +59,9 @@ const BannerImage = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      setuserData((prev)=>({...prev,bannerImage:isuploaded?.data.image.Location}))
+      setuserData((prev) => ({ ...prev, bannerImage: isuploaded?.data.image.Location }))
       toast.success(data?.message)
       // setSaved(!saved)
     }

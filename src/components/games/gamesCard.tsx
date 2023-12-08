@@ -76,8 +76,7 @@ const Card: React.FC<GamesCardProps> = ({
             className={clsx(
               "object-cover h-[inherit] w-[inherit] group-hover:scale-105 transition duration-200 "
             )}
-          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-
+            placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />
         </div>
         <div className="w-full h-[inherit] absolute top-0 bg-[#000] opacity-0 hover:opacity-70  transition duration-200">

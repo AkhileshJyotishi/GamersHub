@@ -32,7 +32,7 @@ const Filter: React.FC<FilterDetail> = ({
   initialtags,
   preview,
   errorMessage,
-  dimensionsImage
+  dimensionsImage,
 
   // hidden
 }) => {
@@ -130,7 +130,7 @@ const Filter: React.FC<FilterDetail> = ({
             options={selectOptions}
             errorMessage={errorMessage}
 
-          // hidden={hidden}
+            // hidden={hidden}
           />
         </>
       )}
@@ -174,10 +174,13 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             errorMessage={errorMessage}
           />
-          {dimensionsImage && dimensionsImage?.width !== null && dimensionsImage?.height !== null &&
-            <>
-              dimensions:{dimensionsImage?.width}x{dimensionsImage?.height}
-            </>}
+          {dimensionsImage &&
+            dimensionsImage?.width !== null &&
+            dimensionsImage?.height !== null && (
+              <>
+                dimensions:{dimensionsImage?.width}x{dimensionsImage?.height}
+              </>
+            )}
         </>
       )}
     </div>

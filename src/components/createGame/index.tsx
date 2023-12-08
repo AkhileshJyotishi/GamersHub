@@ -103,7 +103,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
     })
-    let newArray: string[] = []
+    const newArray: string[] = []
     if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
       const multiisuploaded = await fetchFile(
         "/v1/upload/multiple",
@@ -118,7 +118,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       } else {
         gameInfo.gameAssets = []
         // console.log(multiisuploaded?.data.image[0])
-        gameInfo.gameAssets = multiisuploaded?.data?.image.map((loc: Allow, index: Allow) => {
+        gameInfo.gameAssets = multiisuploaded?.data?.image.map((loc: Allow) => {
           newArray.push(loc.Location)
         })
       }

@@ -13,10 +13,11 @@ import React, { useRef, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
 
+import { shimmer, toBase64 } from "@/utils/functions"
+
 import CloseIcon from "@/components/icons/closeIcon"
 import FullscreenIcon from "@/components/icons/fullScreenIcon"
 import Button from "@/components/ui/button"
-import { shimmer, toBase64 } from "@/utils/functions"
 const FileFilter: React.FC<FileInputProps> = ({
   // id,
   accept,
@@ -57,7 +58,6 @@ const FileFilter: React.FC<FileInputProps> = ({
           e.preventDefault()
           // handleFileChange(e)
           if (e.dataTransfer.files[0] !== undefined) {
-
             onChange(e.dataTransfer.files[0])
             setFileType(e.dataTransfer.files[0].type)
 
@@ -130,8 +130,7 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="object-cover w-full h-full rounded-xl"
                 style={{ zIndex: 16 }}
                 ref={imageRef}
-          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-                
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               />
               <div className="absolute top-0 right-0 flex p-1 space-x-2">
                 <Button onClick={handleFullscreen}>
@@ -157,9 +156,9 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="relative object-cover w-full h-full mx-auto backdrop-blur-md"
                 height={500}
                 width={500}
-          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
 
-              // style={{ zIndex: 9999 }}
+                // style={{ zIndex: 9999 }}
               />
               <Button
                 className="absolute top-0 right-0 p-2 bg-red-600"
@@ -170,7 +169,6 @@ const FileFilter: React.FC<FileInputProps> = ({
             </div>
           </div>
         )}
-
 
         {errorMessage ? (
           <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>

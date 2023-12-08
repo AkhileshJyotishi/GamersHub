@@ -4,7 +4,7 @@ import Filter from "@/components/filter/mainfilter/filter"
 
 interface SoftwareSectionProps {
   selectedTags?: string[]
-  predefinedTagsAsSelectOptions?: any[]
+  predefinedTagsAsSelectOptions?: Allow[]
   onTagsChange: (tags: string[]) => void
 }
 

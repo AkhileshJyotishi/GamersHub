@@ -7,7 +7,6 @@ import { FilterDetail } from "@/interface/filter"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 
-
 interface LayoutProps {
   children: React.ReactNode
   jobInfo: JobInfo

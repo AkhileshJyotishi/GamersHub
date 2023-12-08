@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       jobDetails,
       userId,
       aboutRecruiter,
-      description
+      description,
     } = backendJob
 
     // jobSoftwares=
@@ -79,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       jobDetails: jobDetails || null, // Adjust based on your needs
       userId: userId,
       aboutRecruiter,
-      description
+      description,
     }
   }
 

@@ -6,13 +6,13 @@ import { Session } from "next-auth"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
+import { shimmer, toBase64 } from "@/utils/functions"
 
 import GearIcon from "@/components/icons/gear"
 import HelpIcon from "@/components/icons/gear"
 import LogOutIcon from "@/components/icons/logout"
 import SaveIcon from "@/components/icons/save"
 import Button from "@/components/ui/button"
-import { shimmer, toBase64 } from "@/utils/functions"
 
 interface Props {
   authUser?: Session | null
@@ -43,11 +43,11 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           height={100}
           alt={""}
           className="w-[92px] h-[92px] rounded-full absolute bottom-[-50%] object-cover border-solid border-[2px] border-[#D9D9D9]"
-          src={userData?.profileImage ??""}
+          src={userData?.profileImage ?? ""}
           // placeholder="blur"
           priority
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-        // blurDataURL=""
+          // blurDataURL=""
         />
       </div>
       {/* IMAGE  END*/}

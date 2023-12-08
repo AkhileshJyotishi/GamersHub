@@ -1,4 +1,4 @@
-import styles from './view-source.module.css'
+import styles from "./view-source.module.css"
 
 type ViewSourceProps = {
   pathname: string

@@ -35,7 +35,7 @@ interface BackendJob {
   banner: string | null
   publishDate: string | null
   title: string
-  description: string |null
+  description: string | null
   jobDetails: object | null
   aboutRecruiter: object | null
   // backgroundImage;
@@ -70,7 +70,7 @@ interface BackendJob {
 
 interface JobInfo {
   jobType: string
-  description: string|null
+  description: string | null
   remote: boolean
   country?: string
   city?: string

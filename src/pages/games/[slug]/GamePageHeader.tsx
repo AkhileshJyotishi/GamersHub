@@ -1,11 +1,10 @@
 import React from "react"
 import Image from "next/image"
-import Link from "next/link"
+import { useRouter } from "next/router"
 
 import { useUserContext } from "@/providers/user-context"
 
 import Button from "@/components/ui/button"
-import { useRouter } from "next/router"
 interface GamePageHeaderProps {
   logoSrc: string
   title: string
@@ -24,19 +23,24 @@ const UserImage = ({ href }: { href: string }) => (
 
 const UserInfo = ({ title }: { title: string }) => (
   <div className="flex flex-col items-start justify-center gap-1">
-    <div  className="font-bold text-[36px]">
-      {title}
-    </div>
+    <div className="font-bold text-[36px]">{title}</div>
   </div>
 )
 
 const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title, userId }) => {
   const { userData } = useUserContext()
-  const router=useRouter()
+  const router = useRouter()
   return (
     <div>
       <div className="p-4 font-extrabold ">
-        <Button onClick={()=>{router.back()}}> Back</Button>
+        <Button
+          onClick={() => {
+            router.back()
+          }}
+        >
+          {" "}
+          Back
+        </Button>
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
         <div className="flex gap-[25px] flex-wrap justify-center md:justify-normal ">

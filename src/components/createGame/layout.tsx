@@ -2,12 +2,11 @@ import React, { useState } from "react"
 import clsx from "clsx"
 
 import { Errors, FilterDetail } from "@/interface/filter"
+import { GameInfo } from "@/interface/games"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 import MultipleFileInput from "../ui/multifileInput"
-import { GameInfo } from "@/interface/games"
-
 
 interface LayoutProps {
   children: React.ReactNode
@@ -33,13 +32,12 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
     // userId:""
   })
   const [dimensions, setdimensions] = useState<{
-    height: number | null;
-    width: number | null;
-  }
-  >({
+    height: number | null
+    width: number | null
+  }>({
     height: null,
-    width: null
-  });
+    width: null,
+  })
   const handleInputChange = <K extends keyof GameInfo>(field: K, value: GameInfo[K]) => {
     switch (field) {
       case "developerName":
@@ -54,66 +52,65 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           }
         }
         break
-        case "banner":
-          if (value instanceof File) {
-            // Your validation logic for banner (File type)
-            // Check file size
-            // value.
-            // console.log("banner working")
-            const maxSizeInBytes = 1024 * 1024 // 1MB
-            // console.log(value.size, maxSizeInBytes)
-            if (value.size > maxSizeInBytes) {
-              // console.log("errors")
-              setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
-              return // Stop further processing
+      case "banner":
+        if (value instanceof File) {
+          // Your validation logic for banner (File type)
+          // Check file size
+          // value.
+          // console.log("banner working")
+          const maxSizeInBytes = 1024 * 1024 // 1MB
+          // console.log(value.size, maxSizeInBytes)
+          if (value.size > maxSizeInBytes) {
+            // console.log("errors")
+            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
+            return // Stop further processing
+          } else {
+            setErrors((prev) => ({ ...prev, banner: null }))
+          }
+
+          // Create an image element to check dimensions
+          const img = new Image()
+          img.src = URL.createObjectURL(value)
+
+          // Check image dimensions
+          img.onload = () => {
+            const maxWidth = 1920
+            const maxHeight = 1080
+            const minWidth = 640
+            const minHeight = 320
+
+            if (img.width > maxWidth || img.height > maxHeight) {
+              // console.log(img.width, maxWidth)
+              // console.log(img.height, maxHeight)
+              setErrors((prev) => ({
+                ...prev,
+                banner: `Image dimensions must be ${maxWidth}x${maxHeight} or smaller`,
+              }))
+            } else if (img.width < minWidth || img.height < minHeight) {
+              // console.log(img.width, minWidth)
+              // console.log(img.height, minHeight)
+              setErrors((prev) => ({
+                ...prev,
+                banner: `Image dimensions must be ${minWidth}x${minHeight} or larger`,
+              }))
             } else {
               setErrors((prev) => ({ ...prev, banner: null }))
+              // Proceed with setting the banner if all checks pass
             }
-  
-            // Create an image element to check dimensions
-            const img = new Image()
-            img.src = URL.createObjectURL(value)
-  
-            // Check image dimensions
-            img.onload = () => {
-              const maxWidth = 1920
-              const maxHeight = 1080
-              const minWidth = 640
-              const minHeight = 320
-  
-              if (img.width > maxWidth || img.height > maxHeight) {
-                // console.log(img.width, maxWidth)
-                // console.log(img.height, maxHeight)
-                setErrors((prev) => ({
-                  ...prev,
-                  banner: `Image dimensions must be ${maxWidth}x${maxHeight} or smaller`,
-                }))
-              }
-              else if (img.width < minWidth || img.height < minHeight) {
-                // console.log(img.width, minWidth)
-                // console.log(img.height, minHeight)
-                setErrors((prev) => ({ ...prev, banner: `Image dimensions must be ${minWidth}x${minHeight} or larger` }))
-  
-              }
-              else {
-                setErrors((prev) => ({ ...prev, banner: null }))
-                // Proceed with setting the banner if all checks pass
-              }
-              setdimensions({
-                height: img.height,
-                width: img.width
-              })
-              setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
-            }
-  
-            // Handle image loading error
-            img.onerror = () => {
-              setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
-            }
+            setdimensions({
+              height: img.height,
+              width: img.width,
+            })
             setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
-  
           }
-          break;
+
+          // Handle image loading error
+          img.onerror = () => {
+            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
+          }
+          setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
+        }
+        break
       case "platforms":
       case "genre":
       case "distributionPlatforms":

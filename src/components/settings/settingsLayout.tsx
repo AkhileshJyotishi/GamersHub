@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 import EditProfilePage from "./EditProfile/index"
 import DeleteAccount from "./DeleteAccount"
@@ -6,8 +8,6 @@ import Error from "./Error"
 import Password from "./Password"
 import Sidebar from "./sidebar"
 import Socials from "./SocialProfile"
-import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 type SidebarNavigator = {
   tabs: { [key: string]: Tab }
   initialRouteName: string
@@ -71,8 +71,8 @@ interface SettingsLayoutProps {
 }
 const SettingsLayout: React.FC<SettingsLayoutProps> = ({ settingsDetails }) => {
   // console.log("session ", socialsprops)settingsDetails.
-const router=useRouter()
-const {data:session}=useSession()
+  const router = useRouter()
+  const { data: session } = useSession()
   const pageComponents: PageMap = {
     EditProfile: (
       <EditProfilePage
@@ -88,12 +88,11 @@ const {data:session}=useSession()
   const [activeTab, setActiveTab] = useState<string>(sidebarNavigator?.initialRouteName)
 
   const ActivePage = pageComponents[activeTab]
-useEffect(()=>{
-  if(!session){
-    
-    router.replace("/?emessage=Please Authenticate")
-  }
-},[])
+  useEffect(() => {
+    if (!session) {
+      router.replace("/?emessage=Please Authenticate")
+    }
+  }, [])
   return (
     <div className="flex w-[80%] mx-auto gap-[30px] p-[20px] relative flex-col md:flex-row">
       <Sidebar

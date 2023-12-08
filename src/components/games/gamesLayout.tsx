@@ -89,7 +89,6 @@ const Layout: React.FC<gamesLayoutProps> = ({
           label: s,
           value: s,
         })),
-        
       ],
     },
     {

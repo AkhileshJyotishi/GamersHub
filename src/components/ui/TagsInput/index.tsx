@@ -30,24 +30,21 @@ const TagsInput: React.FC<TagsInputProps> = ({
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputText = e.target.value
     setInputValue(inputText)
-    let matchedTags: string[] = [];
-    console.log("predefinedTags ",predefinedTags)
+    let matchedTags: string[] = []
+    console.log("predefinedTags ", predefinedTags)
     if (predefinedTags.length > 0) {
-
       matchedTags = predefinedTags.filter((tag) =>
         tag.toLowerCase().includes(inputText.toLowerCase().trim())
       )
-
     }
 
     setSuggestions(matchedTags)
-
   }
 
   const addTag = (tagText?: string) => {
     if (tagText) {
       onTagsChange([...tags, tagText])
-      console.log(tags);
+      console.log(tags)
       setTags((tags) => [...tags, tagText])
       setInputValue("")
       setSuggestions([])
