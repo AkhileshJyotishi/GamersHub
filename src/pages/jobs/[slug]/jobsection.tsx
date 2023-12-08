@@ -22,7 +22,7 @@ const sections: Section[] = [
     dataKey: "jobType",
     render: (data) => (
       <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {data.jobType}
+        {data?.jobType}
       </span>
     ),
   },
@@ -31,10 +31,10 @@ const sections: Section[] = [
     dataKey: "payment",
     render: (data) => (
       <div className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {data.paymentType !== "negotiable" ? (
+        {data?.paymentType !== "negotiable" ? (
           <>
-            <span className="text-[12px]">${data.paymentValue}</span>
-            <span className="font-normal text-[12px]">{data.paymentType}</span>
+            <span className="text-[12px]">${data?.paymentValue}</span>
+            <span className="font-normal text-[12px]">{data?.paymentType}</span>
           </>
         ) : (
           <span className="font-normal text-[12px]">Negotiable</span>
@@ -47,7 +47,7 @@ const sections: Section[] = [
     dataKey: "expertise",
     render: (data) => (
       <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {data.expertise}
+        {data?.expertise}
       </span>
     ),
   },
@@ -124,7 +124,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
           disableLocalStorage
         /> */}
               <div className="w-full p-12 bg-user_interface_2 rounded-xl">
-                {jobData.description}
+                {jobData?.description}
               </div>
             </>
             <>
@@ -133,7 +133,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
                 className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
                 editable={false}
                 storageKey="noval__content2"
-                defaultValue={jobData.jobDetails || {}}
+                defaultValue={jobData?.jobDetails || {}}
                 disableLocalStorage
               />
             </>
@@ -144,7 +144,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
                 className={"bg-user_interface_2 w-full rounded-xl "}
                 editable={false}
                 storageKey="noval__content1"
-                defaultValue={jobData.aboutRecruiter || {}}
+                defaultValue={jobData?.aboutRecruiter || {}}
                 disableLocalStorage
               />
             </>

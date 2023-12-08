@@ -25,11 +25,11 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
       </div>
       <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3 z-20 w-full">
         <JobPageHeader
-          title={title}
+          title={title ?? ""}
           key={"1"}
           location={city + " " + country}
-          logoSrc={user.profileImage || banner}
-          jobId={profileData.id}
+          logoSrc={user?.profileImage || banner}
+          jobId={profileData?.id}
           userId={userId}
         />
         <Jobsection jobData={profileDataJobSection} />

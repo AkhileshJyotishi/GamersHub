@@ -35,7 +35,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "gameMode",
       render: (data) => (
         <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-          {data.gameMode}
+          {data?.gameMode}
         </span>
       ),
     },
@@ -44,7 +44,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "releaseDate",
       render: (data) => (
         <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-          {new Date(data.releaseDate).toDateString()}
+          {new Date(data?.releaseDate).toDateString()}
         </span>
       ),
     },
@@ -53,7 +53,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "developer",
       render: (data) => (
         <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-          {data.developer.developerName}
+          {data?.developer?.developerName}
         </span>
       ),
     },
@@ -62,12 +62,12 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "platforms",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data.platforms.map((platform, index) => (
+          {data?.platforms?.map((platform, index) => (
             <span
               key={index}
               className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
             >
-              {platform.name}
+              {platform?.name}
             </span>
           ))}
         </div>
@@ -83,7 +83,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
               key={index}
               className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
             >
-              {tag.keyword}
+              {tag?.keyword}
             </span>
           ))}
         </div>
@@ -94,12 +94,12 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "genre",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data.genre.map((genre, index) => (
+          {data?.genre?.map((genre, index) => (
             <span
               key={index}
               className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
             >
-              {genre.name}
+              {genre?.name}
             </span>
           ))}
         </div>
@@ -110,12 +110,12 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       dataKey: "distributionPlatforms",
       render: (data) => (
         <div className="flex flex-wrap gap-2">
-          {data.distributionPlatforms.map((distributionPlatform, index) => (
+          {data?.distributionPlatforms?.map((distributionPlatform, index) => (
             <span
               key={index}
               className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
             >
-              {distributionPlatform.name}
+              {distributionPlatform?.name}
             </span>
           ))}
         </div>
@@ -126,7 +126,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
 
   const GameDetails: React.FC<{ GameData: Gamedataprop }> = ({ GameData }) => (
     <>
-      {gameSections.map((section, index) => (
+      {gameSections?.map((section, index) => (
         <SectionRenderer key={index} {...section} data={GameData} />
       ))}
     </>
@@ -146,7 +146,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
           </div>
         </div>
         <div className={clsx(" carousel-body w-[60vw]", carousel["carousel-body"])}>
-          <Carousel GameAssets={GameData.gameAssets} />
+          <Carousel GameAssets={GameData?.gameAssets} />
         </div>
       </div>
       <div className="w-full">

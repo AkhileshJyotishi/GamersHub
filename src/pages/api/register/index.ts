@@ -34,7 +34,7 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
       error: null,
       message: ress.data.data.message,
     })
-  } catch (error: unknown) {
+  } catch (error: Allow) {
     res.status(500).json({
       data: null,
       status: "error",
