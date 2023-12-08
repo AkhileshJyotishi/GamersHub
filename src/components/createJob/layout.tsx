@@ -134,8 +134,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
             ...prevState,
             paymentValue: val as number,
           }))
-          break
         }
+        break
 
       case "expertise":
         if (typeof value === "string") {
