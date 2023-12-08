@@ -6,6 +6,7 @@ import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import MapPinIcon from "@/components/icons/mappinicon"
 import { SecondaryTag } from "@/components/ui/badges"
+import { shimmer, toBase64 } from "@/utils/functions"
 
 const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profileImage }) => {
   //   let userProfile = creator?.profile_image?.url;
@@ -20,6 +21,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           alt="banner"
           className="w-full h-[140px] rounded-t-[10px]   absolute"
           src={bannerImage || defaultbannerImage}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
         />
         <Image
           width={100}
@@ -29,6 +32,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           }
           src={profileImage || defaultbannerImage}
           alt={" "}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
         />
       </div>
 

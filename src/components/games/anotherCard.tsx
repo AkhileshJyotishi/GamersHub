@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 
@@ -88,6 +88,8 @@ const SocialCard: React.FC<CardProps> = ({
             alt={""}
             width={100}
             height={100}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
           />
           <div className="ml-2 ">
             <span
@@ -123,6 +125,8 @@ const SocialCard: React.FC<CardProps> = ({
             width={400}
             height={100}
             className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
           />
         </div>
         <div className="flex items-center justify-between px-4 py-1">

@@ -65,3 +65,19 @@ interface Games {
   }[]
   userId: number
 }
+interface GameInfo {
+  title: string
+  description: object | null
+  banner: File | null | string
+  platforms: string[]
+  genre: string[]
+  gameMode: string
+  developerName: string
+  developerType: string
+  // developerId?: number | null
+  distributionPlatforms: string[]
+  tags: string[] | null
+  // publisherName: string;
+  releaseDate: string
+  gameAssets: File[] | null | string[]
+}

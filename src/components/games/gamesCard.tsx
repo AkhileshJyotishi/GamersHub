@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 
 import { Games } from "@/interface/games"
 // import { token } from "@/pages/settings"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 interface GamesCardProps extends Games {
   // location: string;
@@ -76,6 +76,8 @@ const Card: React.FC<GamesCardProps> = ({
             className={clsx(
               "object-cover h-[inherit] w-[inherit] group-hover:scale-105 transition duration-200 "
             )}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
           />
         </div>
         <div className="w-full h-[inherit] absolute top-0 bg-[#000] opacity-0 hover:opacity-70  transition duration-200">

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useUserContext } from "@/providers/user-context"
 
 import Button from "@/components/ui/button"
+import { useRouter } from "next/router"
 interface GamePageHeaderProps {
   logoSrc: string
   title: string
@@ -14,27 +15,28 @@ interface GamePageHeaderProps {
 }
 
 const UserImage = ({ href }: { href: string }) => (
-  <Link href={"#"} className="my-auto">
+  <div className="my-auto">
     <div className="flex items-center">
       <Image width={400} height={400} alt={""} className="w-20 h-20 rounded-full" src={href} />
     </div>
-  </Link>
+  </div>
 )
 
 const UserInfo = ({ title }: { title: string }) => (
   <div className="flex flex-col items-start justify-center gap-1">
-    <Link href={"#"} className="font-bold text-[36px]">
+    <div  className="font-bold text-[36px]">
       {title}
-    </Link>
+    </div>
   </div>
 )
 
 const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title, userId }) => {
   const { userData } = useUserContext()
+  const router=useRouter()
   return (
     <div>
       <div className="p-4 font-extrabold ">
-        <Button> Back</Button>
+        <Button onClick={()=>{router.back()}}> Back</Button>
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
         <div className="flex gap-[25px] flex-wrap justify-center md:justify-normal ">

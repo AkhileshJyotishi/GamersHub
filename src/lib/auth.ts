@@ -21,7 +21,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
     },
     session: {
       strategy: "jwt",
-      maxAge: 30 * 60 * 60 * 60,
+      maxAge: 60 * 60 * 24 * 30,
     },
     secret: "agsua",
     providers: [
@@ -51,7 +51,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
             res.setHeader(
               "Set-Cookie",
               `token=${response.data.tokens.access.token}; HttpOnly;Secure;Expires=${new Date(
-                Date.now() + 30 * 60 * 60 * 60
+                Date.now() + 30 * 24 * 60 * 60 * 1000
               )}`
             )
             // console.log("token ", response.data.tokens.access.token)

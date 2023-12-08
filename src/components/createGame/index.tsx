@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { BackendGame } from "@/interface/games"
+import { BackendGame, GameInfo } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
@@ -14,22 +14,7 @@ import Layout from "@/components/createGame/layout"
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
 })
-interface GameInfo {
-  title: string
-  description: object | null
-  banner: File | null | string
-  platforms: string[]
-  genre: string[]
-  gameMode: string
-  developerName: string
-  developerType: string
-  // developerId?: number | null
-  distributionPlatforms: string[]
-  tags: string[] | null
-  // publisherName: string;
-  releaseDate: string
-  gameAssets: File[] | null | string[]
-}
+
 // import { Editor } from "novel";
 
 const CreateGame = ({ game }: { game?: BackendGame }) => {
@@ -132,7 +117,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         return
       } else {
         gameInfo.gameAssets = []
-        console.log(multiisuploaded?.data.image[0])
+        // console.log(multiisuploaded?.data.image[0])
         gameInfo.gameAssets = multiisuploaded?.data?.image.map((loc: Allow, index: Allow) => {
           newArray.push(loc.Location)
         })

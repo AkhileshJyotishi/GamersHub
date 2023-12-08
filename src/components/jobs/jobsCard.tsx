@@ -9,6 +9,7 @@ import { toast } from "react-toastify"
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
@@ -41,7 +42,8 @@ const UserImage = ({ href }: { href: string | null }) => (
         height={100}
         alt={""}
         className="w-10 h-10 border-[0.1px] rounded-full "
-        src={href || ""}
+        src={href|| defaultbannerImage}
+        
       />
     </div>
   </Link>
@@ -194,7 +196,7 @@ const Card: React.FC<JobCardProps> = ({
         // href={href}
         onClick={() => router.push(href)}
       >
-        <div className="">
+        <div className="" >
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
               <div className="flex gap-[25px] flex-wrap justify-center">

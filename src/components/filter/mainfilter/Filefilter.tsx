@@ -16,6 +16,7 @@ import Image from "next/image"
 import CloseIcon from "@/components/icons/closeIcon"
 import FullscreenIcon from "@/components/icons/fullScreenIcon"
 import Button from "@/components/ui/button"
+import { shimmer, toBase64 } from "@/utils/functions"
 const FileFilter: React.FC<FileInputProps> = ({
   // id,
   accept,
@@ -129,6 +130,8 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="object-cover w-full h-full rounded-xl"
                 style={{ zIndex: 16 }}
                 ref={imageRef}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                
               />
               <div className="absolute top-0 right-0 flex p-1 space-x-2">
                 <Button onClick={handleFullscreen}>
@@ -154,6 +157,8 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="relative object-cover w-full h-full mx-auto backdrop-blur-md"
                 height={500}
                 width={500}
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
               // style={{ zIndex: 9999 }}
               />
               <Button

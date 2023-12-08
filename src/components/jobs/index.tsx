@@ -163,7 +163,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="md:w-[70%] grid sm:w-full grid-cols-1 gap-6 md:p-4 justify-items-center md:grid-cols-2 2xl:grid-cols-3 mx-auto">
+            <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
               {myjob &&
                 myjob.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />

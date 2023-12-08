@@ -93,7 +93,7 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
         {/* profileData?.user?.profileImage ||  */}
         <GamePageHeader
           title={title}
-          logoSrc={"https://picsum.photos/id/250/900/900"}
+          logoSrc={parsedgamesDetails.banner}
           userId={parsedgamesDetails.userId}
         />
         <Gamesection GameData={parsedgamesDetails} />
