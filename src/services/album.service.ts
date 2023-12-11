@@ -67,7 +67,7 @@ const createUserAlbum = async (userId: number, albumBody: albumBody): Promise<Al
   })
   // handle keywords
   if (keywords && keywords.length > 0) {
-    const upsertPromises = keywords.map((key) => {
+    const upsertPromises = keywords?.map((key) => {
       return prisma.keyword.upsert({
         where: {
           keyword: key
@@ -148,10 +148,10 @@ const updateAlbumById = async (
     let itemsToAdd = keywords
 
     if (albumKeywords) {
-      const albumKeyword = albumKeywords.keyword.map((k: Allow) => k.keyword)
+      const albumKeyword = albumKeywords.keyword?.map((k: Allow) => k.keyword)
       const itemsToRemove = albumKeyword.filter((item: Allow) => !keywords.includes(item))
       itemsToAdd = keywords.filter((item) => !albumKeyword.includes(item))
-      const removePromises = itemsToRemove.map((key: Allow) => {
+      const removePromises = itemsToRemove?.map((key: Allow) => {
         return prisma.keyword.update({
           where: {
             keyword: key
@@ -169,7 +169,7 @@ const updateAlbumById = async (
       await Promise.all(removePromises)
     }
 
-    const addPromises = itemsToAdd.map((key) => {
+    const addPromises = itemsToAdd?.map((key) => {
       return prisma.keyword.upsert({
         where: {
           keyword: key

@@ -667,7 +667,7 @@ const createUserDetailsByUserId = async (
 
   // handle user skills
   if (userSkills && userSkills.length > 0) {
-    const skillPromises = userSkills.map((skill) => {
+    const skillPromises = userSkills?.map((skill) => {
       return prisma.skill.upsert({
         where: {
           skill: skill
@@ -695,7 +695,7 @@ const createUserDetailsByUserId = async (
 
   // handle user softwares
   if (userSoftwares && userSoftwares.length > 0) {
-    const softwarePromises = userSoftwares.map((key) => {
+    const softwarePromises = userSoftwares?.map((key) => {
       return prisma.software.upsert({
         where: {
           software: key
@@ -756,10 +756,10 @@ const updateUserDetailsByUserId = async (
     let itemsToAdd = userSkills
 
     if (existingUserDetailskills) {
-      const userDetailSkill = existingUserDetailskills.userSkills.map((k: Allow) => k.skill)
+      const userDetailSkill = existingUserDetailskills.userSkills?.map((k: Allow) => k.skill)
       const itemsToRemove = userDetailSkill.filter((item: Allow) => !userSkills.includes(item))
       itemsToAdd = userSkills.filter((item) => !userDetailSkill.includes(item))
-      const removePromises = itemsToRemove.map((key: Allow) => {
+      const removePromises = itemsToRemove?.map((key: Allow) => {
         return prisma.skill.update({
           where: {
             skill: key
@@ -777,7 +777,7 @@ const updateUserDetailsByUserId = async (
       await Promise.all(removePromises)
     }
 
-    const addPromises = itemsToAdd.map((key) => {
+    const addPromises = itemsToAdd?.map((key) => {
       return prisma.skill.upsert({
         where: {
           skill: key
@@ -820,14 +820,14 @@ const updateUserDetailsByUserId = async (
     let itemsToAdd = userSoftwares
 
     if (existingUserDetailsSoftware) {
-      const userDetailSoftware = existingUserDetailsSoftware.userSoftwares.map(
+      const userDetailSoftware = existingUserDetailsSoftware.userSoftwares?.map(
         (k: Allow) => k.software
       )
       const itemsToRemove = userDetailSoftware.filter(
         (item: Allow) => !userSoftwares.includes(item)
       )
       itemsToAdd = userSoftwares.filter((item) => !userDetailSoftware.includes(item))
-      const removePromises = itemsToRemove.map((key: Allow) => {
+      const removePromises = itemsToRemove?.map((key: Allow) => {
         return prisma.software.update({
           where: {
             software: key
@@ -845,7 +845,7 @@ const updateUserDetailsByUserId = async (
       await Promise.all(removePromises)
     }
 
-    const addPromises = itemsToAdd.map((key) => {
+    const addPromises = itemsToAdd?.map((key) => {
       return prisma.software.upsert({
         where: {
           software: key

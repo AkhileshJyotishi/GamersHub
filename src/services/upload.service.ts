@@ -33,7 +33,7 @@ const uploadFile = async (file: Allow): Promise<object> => {
 const uploadFiles = async (files: Allow): Promise<Allow> => {
   try {
     const uploadResults = await Promise.all(
-      files.map((file: Allow) => {
+      files?.map((file: Allow) => {
         // AWS S3 Upload Parameters
         const params = {
           Bucket: config.backblaze.bucket,

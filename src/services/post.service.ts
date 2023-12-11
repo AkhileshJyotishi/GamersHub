@@ -112,7 +112,7 @@ const createUserPost = async (userId: number, postBody: postBody): Promise<Post>
 
   //   handle keywords
   if (postKeywords && postKeywords.length > 0) {
-    const keywordPromises = postKeywords.map((key) => {
+    const keywordPromises = postKeywords?.map((key) => {
       return prisma.keyword.upsert({
         where: {
           keyword: key
@@ -140,7 +140,7 @@ const createUserPost = async (userId: number, postBody: postBody): Promise<Post>
 
   //   handle skills
   if (postSkills && postSkills.length > 0) {
-    const skillPromises = postSkills.map((skill) => {
+    const skillPromises = postSkills?.map((skill) => {
       return prisma.skill.upsert({
         where: {
           skill: skill
@@ -404,10 +404,10 @@ const updatePostById = async (
     let itemsToAdd = postKeywords
 
     if (existingPostKeywords) {
-      const postKeyword = existingPostKeywords.postKeywords.map((k: Allow) => k.keyword)
+      const postKeyword = existingPostKeywords.postKeywords?.map((k: Allow) => k.keyword)
       const itemsToRemove = postKeyword.filter((item: Allow) => !postKeywords.includes(item))
       itemsToAdd = postKeywords.filter((item) => !postKeyword.includes(item))
-      const removePromises = itemsToRemove.map((key: Allow) => {
+      const removePromises = itemsToRemove?.map((key: Allow) => {
         return prisma.keyword.update({
           where: {
             keyword: key
@@ -425,7 +425,7 @@ const updatePostById = async (
       await Promise.all(removePromises)
     }
 
-    const addPromises = itemsToAdd.map((key) => {
+    const addPromises = itemsToAdd?.map((key) => {
       return prisma.keyword.upsert({
         where: {
           keyword: key
@@ -468,10 +468,10 @@ const updatePostById = async (
     let itemsToAdd = postSkills
 
     if (existingPostskills) {
-      const postskill = existingPostskills.postSkills.map((k: Allow) => k.skill)
+      const postskill = existingPostskills.postSkills?.map((k: Allow) => k.skill)
       const itemsToRemove = postskill.filter((item: Allow) => !postSkills.includes(item))
       itemsToAdd = postSkills.filter((item) => !postskill.includes(item))
-      const removePromises = itemsToRemove.map((key: Allow) => {
+      const removePromises = itemsToRemove?.map((key: Allow) => {
         return prisma.skill.update({
           where: {
             skill: key
@@ -489,7 +489,7 @@ const updatePostById = async (
       await Promise.all(removePromises)
     }
 
-    const addPromises = itemsToAdd.map((key) => {
+    const addPromises = itemsToAdd?.map((key) => {
       return prisma.skill.upsert({
         where: {
           skill: key
