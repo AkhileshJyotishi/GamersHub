@@ -64,7 +64,7 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
             // style={{}}
             className="whah md:h-[700px] h-[300px]"
           >
-            {GameAssets.map((item, idx) => {
+            {GameAssets?.map((item, idx) => {
               return (
                 <div key={idx} className="">
                   <div className="">
@@ -86,7 +86,7 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
             })}
           </Slider>
           <div className={clsx(thumbnail["thumb-wrapper"], "")}>
-            {GameAssets.map((item, idx) => (
+            {GameAssets?.map((item, idx) => (
               <div
                 key={idx}
                 className={clsx(currentSlide === idx ? "active" : "", "p-2 w-[200px]")}

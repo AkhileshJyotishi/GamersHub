@@ -18,7 +18,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, description, tags, c
         <p className="text-base text-gray-700">{description}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
-        {tags.map((tag, index) => (
+        {tags?.map((tag, index) => (
           <span
             key={index}
             className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full"

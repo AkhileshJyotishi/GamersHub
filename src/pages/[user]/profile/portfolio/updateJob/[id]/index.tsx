@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       paymentValue,
       banner,
       expertise,
-      jobSoftwares: jobSoftwares.map((software) => software.software),
+      jobSoftwares: jobSoftwares?.map((software) => software.software),
       title,
       publishDate: publishDate || null, // Adjust based on your needs
       jobDetails: jobDetails || null, // Adjust based on your needs

@@ -165,7 +165,7 @@ const Layout: React.FC<LayoutProps> = ({
     }
   }
 
-  const alb = albums.map((album: Allow) => ({ label: album.title, value: album.id }))
+  const alb = albums?.map((album: Allow) => ({ label: album.title, value: album.id }))
   albumsselectoptions = albumsselectoptions.concat(alb)
   const filterDetails: FilterDetail[] = [
     {

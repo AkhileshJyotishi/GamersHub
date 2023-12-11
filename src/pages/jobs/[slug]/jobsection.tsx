@@ -56,7 +56,7 @@ const sections: Section[] = [
     dataKey: "jobSoftwares",
     render: (data) => (
       <div className="flex flex-wrap gap-2">
-        {data?.jobSoftwares.map((software, index) => (
+        {data?.jobSoftwares?.map((software, index) => (
           <span
             key={index}
             className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
@@ -90,9 +90,7 @@ const SectionRenderer: React.FC<Section & { data: jobdataprop }> = ({ title, dat
 
 const JobDetails: React.FC<{ jobData: jobdataprop }> = ({ jobData }) => (
   <>
-    {sections.map((section, index) => (
-      <SectionRenderer key={index} {...section} data={jobData} />
-    ))}
+    {sections?.map((section, index) => <SectionRenderer key={index} {...section} data={jobData} />)}
   </>
 )
 

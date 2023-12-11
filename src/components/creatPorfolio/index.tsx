@@ -35,7 +35,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
   if (isUpdate) {
     initState = {
       title: post?.title ?? "",
-      postKeywords: post?.postKeywords.map((key) => key.keyword) ?? [],
+      postKeywords: post?.postKeywords?.map((key) => key.keyword) ?? [],
       albumId: post?.albumId,
       matureContent: post?.matureContent,
       banner: post?.banner ?? "",

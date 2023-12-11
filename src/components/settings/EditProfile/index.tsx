@@ -27,14 +27,14 @@ const EditProfilePage = ({
   const country = Country.getAllCountries()
   const { data: session } = useSession()
 
-  const countryList = country.map((country) => {
+  const countryList = country?.map((country) => {
     return {
       label: country?.name,
       value: country?.name,
     }
   })
   const codemapping: { [key: string]: string } = {}
-  country.forEach((ctry) => {
+  country?.forEach((ctry) => {
     const name = ctry.name
     const code = ctry.isoCode
 
@@ -45,7 +45,7 @@ const EditProfilePage = ({
   if (profileDetails?.country) {
     initcity = City.getCitiesOfCountry(codemapping[profileDetails.country])
     if (initcity)
-      initialcitylist = initcity.map((city1) => {
+      initialcitylist = initcity?.map((city1) => {
         return {
           label: city1?.name,
           value: city1?.name,
@@ -372,7 +372,7 @@ const EditProfilePage = ({
   type exptypes = Array<{ id?: number; detail: FilterDetail[] }>
 
   // FilterDetail[] | number
-  const ExperienceArray: exptypes = experience.map((exp, index) => ({
+  const ExperienceArray: exptypes = experience?.map((exp, index) => ({
     id: exp.id,
     detail: [
       {
@@ -431,7 +431,7 @@ const EditProfilePage = ({
       },
     ],
   }))
-  const newExperienceArray: Array<FilterDetail[]> = newExperience.map((exp, index) => [
+  const newExperienceArray: Array<FilterDetail[]> = newExperience?.map((exp, index) => [
     {
       title: `Company Name ${experience.length + index + 1}`,
       inputType: "text",
@@ -490,7 +490,7 @@ const EditProfilePage = ({
 
   type edutypes = Array<{ id?: number; detail: FilterDetail[] }>
 
-  const EducationArray: edutypes = education.map((edu, index) => ({
+  const EducationArray: edutypes = education?.map((edu, index) => ({
     id: edu.id,
     detail: [
       {
@@ -546,7 +546,7 @@ const EditProfilePage = ({
     },
   ])
 
-  const newEducationArray: Array<FilterDetail[]> = newEducation.map((edu, index) => [
+  const newEducationArray: Array<FilterDetail[]> = newEducation?.map((edu, index) => [
     {
       title: `Institution Name ${index + 1}`,
       inputType: "text",
@@ -590,7 +590,7 @@ const EditProfilePage = ({
   const tabs = ["Profile", "Experience", "Education"]
 
   const Tab = () => {
-    return tabs.map((tab) => {
+    return tabs?.map((tab) => {
       return (
         <>
           <div
@@ -644,9 +644,9 @@ const EditProfilePage = ({
                 initialExperience={profileDetails.userExperience}
               />
             )}
-            {newExperienceArray.map((filterdetailarray, idx) => (
+            {newExperienceArray?.map((filterdetailarray, idx) => (
               <>
-                {filterdetailarray.map((field, index) => (
+                {filterdetailarray?.map((field, index) => (
                   <>
                     <div
                       key={index}
@@ -722,9 +722,9 @@ const EditProfilePage = ({
                 />
               </>
             )}
-            {newEducationArray.map((filterdetailarray, idx) => (
+            {newEducationArray?.map((filterdetailarray, idx) => (
               <>
-                {filterdetailarray.map((field, index) => (
+                {filterdetailarray?.map((field, index) => (
                   <>
                     <div
                       key={index}

@@ -107,7 +107,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
         <OverlayContent />
 
         <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
-          {users.map((data, index) => (
+          {users?.map((data, index) => (
             <Card
               key={index}
               username={data.user.username}

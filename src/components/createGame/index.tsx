@@ -40,8 +40,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       developerName: game?.developer?.developerName,
       developerType: game?.developer?.developerType,
       // developerId: null,
-      distributionPlatforms: game?.distributionPlatforms.map((dist) => dist.name),
-      tags: game?.tags.map((tag) => tag.keyword), //tags
+      distributionPlatforms: game?.distributionPlatforms?.map((dist) => dist.name),
+      tags: game?.tags?.map((tag) => tag.keyword), //tags
       // publisherName: "",
       releaseDate: game?.releaseDate,
       gameAssets: game?.gameAssets,
@@ -118,7 +118,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       } else {
         gameInfo.gameAssets = []
         // console.log(multiisuploaded?.data.image[0])
-        gameInfo.gameAssets = multiisuploaded?.data?.image.map((loc: Allow) => {
+        gameInfo.gameAssets = multiisuploaded?.data?.image?.map((loc: Allow) => {
           newArray.push(loc.Location)
         })
       }

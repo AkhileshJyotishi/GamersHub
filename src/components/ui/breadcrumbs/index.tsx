@@ -14,7 +14,7 @@ interface Props {
 export default function BreadCrumb({ labels, className }: Props) {
   return (
     <div className={"flex flex-row items-center gap-x-4 " + className}>
-      {labels.map((label, i) => {
+      {labels?.map((label, i) => {
         return (
           <>
             {i != 0 &&

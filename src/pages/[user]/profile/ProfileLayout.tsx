@@ -85,7 +85,7 @@ const ProfileLayout = ({
   const tabs = ["posts", "albums", "jobs"]
 
   const Tab = () => {
-    return tabs.map((tab) => {
+    return tabs?.map((tab) => {
       return (
         <>
           <Link

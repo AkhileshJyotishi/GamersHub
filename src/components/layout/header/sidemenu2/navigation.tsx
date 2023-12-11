@@ -58,11 +58,9 @@ export const Navigation = () => {
       <div>{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
 
       <motion.ul variants={variants} className={styles.ul}>
-        {navmenu.map((data, index) => (
-          <MenuItem data={data} key={index} />
-        ))}
+        {navmenu?.map((data, index) => <MenuItem data={data} key={index} />)}
         {!session.data?.user?.name &&
-          authOptions.map((data, index) => <MenuItem data={data} key={index} />)}
+          authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
       </motion.ul>
     </>
   )

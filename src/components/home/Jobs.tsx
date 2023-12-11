@@ -46,7 +46,7 @@ const JobSection: React.FC = () => (
       Our <span className="text-secondary">Job Openings</span>
     </h4>
     <div className="flex flex-wrap justify-center gap-5 mt-10 text-center">
-      {jobCards.map((jobCard, index) => (
+      {jobCards?.map((jobCard, index) => (
         <JobCard
           key={index}
           icon={jobCard.icon}

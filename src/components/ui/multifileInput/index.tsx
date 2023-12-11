@@ -135,7 +135,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
               </div>
             </>
           )}
-          {selectedFiles.map((item, idx) => (
+          {selectedFiles?.map((item, idx) => (
             <motion.div
               // key={idx}
               key={idx}

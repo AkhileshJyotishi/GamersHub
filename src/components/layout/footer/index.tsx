@@ -126,26 +126,20 @@ const Footer: React.FC = () => {
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis.
                 </p>
                 <div className="flex items-center">
-                  {socialLinks.map((link) => (
-                    <SocialLink key={link.label} {...link} />
-                  ))}
+                  {socialLinks?.map((link) => <SocialLink key={link.label} {...link} />)}
                 </div>
               </div>
             </div>
 
             {/* Map over sections and render links */}
-            {sections.map((section) => (
+            {sections?.map((section) => (
               <div
                 key={section.title}
                 className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12"
               >
                 <div className="mb-12 lg:mb-16">
                   <h2 className="mb-10 text-xl font-bold text-black ">{section.title}</h2>
-                  <ul>
-                    {section.links.map((link) => (
-                      <FooterLink key={link.text} {...link} />
-                    ))}
-                  </ul>
+                  <ul>{section?.links?.map((link) => <FooterLink key={link.text} {...link} />)}</ul>
                 </div>
               </div>
             ))}

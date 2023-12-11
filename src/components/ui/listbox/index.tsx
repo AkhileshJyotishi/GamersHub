@@ -45,7 +45,7 @@ export default function Example({ people }: { people: string[] }) {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="flex flex-col w-full gap-2 p-4 py-3 mt-1 overflow-auto text-base rounded-md shadow-lg max-h-60 focus:outline-none sm:text-sm bg-user_interface_2">
-                {people.map((person, personIdx) => (
+                {people?.map((person, personIdx) => (
                   <Listbox.Option
                     key={personIdx}
                     className={({ active }) =>

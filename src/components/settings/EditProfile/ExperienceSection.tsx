@@ -36,9 +36,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const { data: session } = useSession()
   return (
     <>
-      {ExperienceArray.map((filterdetailarray, idx) => (
+      {ExperienceArray?.map((filterdetailarray, idx) => (
         <>
-          {filterdetailarray.detail.map((field, index) => (
+          {filterdetailarray?.detail?.map((field, index) => (
             <>
               <div
                 key={index}

@@ -26,11 +26,11 @@ type SidebarProps = {
 
 const Sidebar: React.FC<SidebarProps> = ({ navigator, setActiveTab, activeTab, className }) => {
   // console.log(navigator?.tabs["DeleteAccount"]?.params?.className)
-  const people = Object.keys(navigator?.tabs).map((val) => val)
+  const people = Object.keys(navigator?.tabs ?? {})?.map((val) => val)
   return (
     <>
       <div className={clsx(" rounded-xl p-4 hidden md:flex w-full gap-2  ", className)}>
-        {Object.keys(navigator?.tabs).map((tab, index) => (
+        {Object.keys(navigator?.tabs ?? {})?.map((tab, index) => (
           <div
             key={index}
             onClick={() => setActiveTab(tab)}

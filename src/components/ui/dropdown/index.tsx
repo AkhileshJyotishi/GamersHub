@@ -35,7 +35,7 @@ const menuItems = [
 
 export default function Example() {
   const renderMenuItems = () => {
-    return menuItems.map((item, index) => (
+    return menuItems?.map((item, index) => (
       <Menu.Item key={index}>
         {({ active }) => (
           <MenuItem active={active} icon={item.icon}>

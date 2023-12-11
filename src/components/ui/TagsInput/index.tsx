@@ -95,7 +95,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
           className="absolute flex flex-col gap-2 p-4 mt-12 rounded-lg shadow-md bg-background "
           style={{ zIndex: 18 }}
         >
-          {suggestions.map((tag, index) => (
+          {suggestions?.map((tag, index) => (
             <div
               key={index}
               className="p-2 cursor-pointer hover:bg-user_interface_2"
@@ -110,7 +110,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
 
       <div className="flex flex-wrap gap-2 mt-2 ">
         {tags &&
-          tags.map((chip, index) => (
+          tags?.map((chip, index) => (
             <span key={index} className="flex items-center ">
               <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary">
                 {/* Add your Chip SVG or Icon here */}

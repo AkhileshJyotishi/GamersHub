@@ -39,7 +39,7 @@ const Albums = () => {
   return (
     <>
       {memoizedAlbumDetails.length > 0 ? (
-        memoizedAlbumDetails.map((album) => (
+        memoizedAlbumDetails?.map((album) => (
           <>
             <HoizontalCard
               title={album.title}

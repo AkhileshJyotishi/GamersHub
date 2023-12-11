@@ -37,9 +37,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   const { data: session } = useSession()
   return (
     <>
-      {EducationArray.map((filterdetailarray, idx) => (
+      {EducationArray?.map((filterdetailarray, idx) => (
         <>
-          {filterdetailarray.detail.map((field, index) => (
+          {filterdetailarray?.detail.map((field, index) => (
             <>
               <div
                 key={index}

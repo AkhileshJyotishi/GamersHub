@@ -118,7 +118,7 @@ const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) 
         </span>
       </div>
       {chips &&
-        chips.map((chip, index) => (
+        chips?.map((chip, index) => (
           <span key={index} className="flex items-center cursor-pointer ">
             <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2">
               {/* Add your Chip SVG or Icon here */}

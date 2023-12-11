@@ -34,7 +34,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
 
     return gamesInterface
   }
-  const games2 = gameDetails.map((game) => {
+  const games2 = gameDetails?.map((game) => {
     return convertToGamesInterface(game)
   })
   // convertToGamesInterface(parsedgamesDetails)
@@ -52,7 +52,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         "GET"
       )
       // console.log("myjobposts     ", data)
-      const sett = data?.data.games.map((game: BackendGame) => convertToGamesInterface(game))
+      const sett = data?.data?.games?.map((game: BackendGame) => convertToGamesInterface(game))
       setmyjobs(sett)
     }
   }
@@ -96,7 +96,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
           {games.length > 0 ? (
             <>
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {games.map((game, idx) => (
+                {games?.map((game, idx) => (
                   <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
                 ))}
               </div>
@@ -127,8 +127,8 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
           {savedGame ? (
             <>
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {games.map((game, idx) => {
-                  const arr = game.savedUsers.map((obj) => obj.id)
+                {games?.map((game, idx) => {
+                  const arr = game?.savedUsers?.map((obj) => obj.id)
                   return arr.filter((id) => {
                     id === userData?.id && (
                       <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
@@ -158,7 +158,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
               // <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
                 {myjob &&
-                  myjob.map((job, idx) => (
+                  myjob?.map((job, idx) => (
                     <Card
                       {...job}
                       className="w-[100%] max-w-[380px] h-[310px]"

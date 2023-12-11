@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
 
-  const jobs: Job[] = parsedjobsDetails.map((job) => FrontendCompatibleObject(job))
+  const jobs: Job[] = parsedjobsDetails?.map((job) => FrontendCompatibleObject(job))
 
   return {
     props: {

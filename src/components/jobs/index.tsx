@@ -52,7 +52,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         return
       }
       // console.log("myjobposts     ", data)
-      const sett = data?.data.jobs.map((job: BackendJob) => FrontendCompatibleObject(job))
+      const sett = data?.data?.jobs?.map((job: BackendJob) => FrontendCompatibleObject(job))
       setmyjobs(sett)
     }
   }
@@ -110,9 +110,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
           {jobs.length > 0 ? (
             <>
               <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
-                {jobs.map((job, idx) => (
-                  <Card {...job} className="" key={idx} />
-                ))}
+                {jobs?.map((job, idx) => <Card {...job} className="" key={idx} />)}
               </div>
             </>
           ) : (
@@ -134,8 +132,8 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {savedPost ? (
             <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
-              {jobs.map((job, idx) => {
-                const arr = job.savedUsers.map((obj) => obj.id)
+              {jobs?.map((job, idx) => {
+                const arr = job?.savedUsers?.map((obj) => obj.id)
                 return arr.filter((id) => {
                   id === userData?.id && (
                     <>
@@ -165,7 +163,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
           {myjob && Array.from(myjob).length > 0 ? (
             <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
               {myjob &&
-                myjob.map((job, idx) => (
+                myjob?.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />
                 ))}
             </div>

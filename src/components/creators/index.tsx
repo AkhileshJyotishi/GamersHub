@@ -14,9 +14,7 @@ const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
     <Layout creators={creators} setCreators={setCreators}>
       {creators.length > 0 ? (
         <div className="grid w-full grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
-          {creators.map((sampleCreator, idx) => (
-            <Card {...sampleCreator} key={idx} />
-          ))}
+          {creators?.map((sampleCreator, idx) => <Card {...sampleCreator} key={idx} />)}
         </div>
       ) : (
         <>

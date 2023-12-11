@@ -122,7 +122,7 @@ const Layout: React.FC<LayoutProps> = ({
   useEffect(() => {
     const country = Country.getAllCountries()
 
-    const countryList = country.map((country) => {
+    const countryList = country?.map((country) => {
       return {
         label: country?.name,
         value: country?.name,

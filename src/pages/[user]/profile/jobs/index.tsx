@@ -54,7 +54,7 @@ const Jobs = () => {
     <>
       {/* sdfsdfsdf */}
       {jobDetails.length > 0 ? (
-        jobDetails.map((job) => {
+        jobDetails?.map((job) => {
           // console.log("job upload  ", job)
           const x = FrontendCompatibleObject(job)
           return (

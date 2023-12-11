@@ -33,7 +33,7 @@ const Albums = () => {
     <>
       {/* sdfsdfsdf */}
       {postsDetails.length > 0 ? (
-        postsDetails.map((post) => (
+        postsDetails?.map((post) => (
           <>
             <Card
               id={post.id}
@@ -44,7 +44,7 @@ const Albums = () => {
               matureContent={post.matureContent}
               title={post.title}
               savedPost={post.savedUsers}
-              likedPost={post.postLikes.map((like) => like.likedUsers)}
+              likedPost={post.postLikes?.map((like) => like.likedUsers)}
               userId={post.userId}
               // location={data.location}
               // views={data.views}

@@ -17,7 +17,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJob }) => {
   const country = Country.getAllCountries()
 
-  const countryList = country.map((country) => {
+  const countryList = country?.map((country) => {
     return {
       label: country?.name,
       value: country?.name,
@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
   if (jobInfo.country) {
     initcity = City.getCitiesOfCountry(codemapping[jobInfo.country])
     if (initcity)
-      initialcitylist = initcity.map((city1) => {
+      initialcitylist = initcity?.map((city1) => {
         return {
           label: city1?.name,
           value: city1?.name,
