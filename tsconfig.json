@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2017",
     "outDir": "./build",
     "module": "commonjs",
     "types": ["node"],
@@ -10,5 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "strictNullChecks": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
