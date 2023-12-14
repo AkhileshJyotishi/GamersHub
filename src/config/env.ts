@@ -14,6 +14,6 @@
 // export const FACEBOOK_CLIENT_ID = getEnvironmentVariable("FACEBOOK_CLIENT_ID")
 // export const FACEBOOK_CLIENT_SECRET = getEnvironmentVariable("FACEBOOK_CLIENT_SECRET")
 // export const NODE_BACKEND_URL = getEnvironmentVariable("NEXT_PUBLIC_NODE_BACKEND_URL")
-// // export const MEDIA_HOST_URL = getEnvironmentVariable("NEXT_PUBLIC_MEDIA_HOST_URL_PREFIX")
+// export const MEDIA_HOST_URL = getEnvironmentVariable("NEXT_PUBLIC_MEDIA_HOST_URL_PREFIX")
 
 // /* Appwrite */

@@ -98,6 +98,9 @@ const LoginPage = () => {
           <Button
             type="button"
             className="inline-flex items-center whitespace-nowrap mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 p-[2px] min-h-[40px] rounded-xl"
+            onClick={() => {
+              signIn("facebook", { callbackUrl: "/" })
+            }}
           >
             <FacebookIcon className="" />
             Sign up with Facebook
