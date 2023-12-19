@@ -3,7 +3,8 @@ import config from '../config/config'
 import fs from 'fs'
 import ApiError from '../utils/api-error'
 import httpStatus from 'http-status'
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 /**
  * Upload a file
  * @param {ObjectId} file

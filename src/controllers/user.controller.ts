@@ -5,7 +5,8 @@ import catchAsync from '../utils/catch-async'
 import { userService } from '../services'
 import { sendResponse } from '../utils/response'
 import prisma from '../client'
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 const createUser = catchAsync(async (req, res) => {
   const { email, password, username, role } = req.body
   const user = await userService.createUser(email, password, username, role)

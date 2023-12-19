@@ -1,5 +1,6 @@
 import { Response } from 'express'
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 export const sendResponse = (
   res: Response,
   statusCode: number = 200,

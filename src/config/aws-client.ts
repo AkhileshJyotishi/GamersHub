@@ -2,7 +2,8 @@ import AWS from 'aws-sdk'
 import config from '../config/config'
 import ApiError from '../utils/api-error'
 import httpStatus from 'http-status'
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 let s3: Allow
 try {
   s3 = new AWS.S3({

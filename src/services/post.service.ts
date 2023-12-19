@@ -8,7 +8,8 @@ import { Post } from '@prisma/client'
  * @param {ObjectId} userId
  * @returns {Promise<Post[]>}
  */
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 const getUserPosts = async (userId: number): Promise<Post[] | []> => {
   const user = await prisma.user.findUnique({
     where: {
