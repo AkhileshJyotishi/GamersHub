@@ -1,10 +1,11 @@
 import s3 from '../config/aws-client'
 import config from '../config/config'
-import fs from 'fs'
 import ApiError from '../utils/api-error'
 import httpStatus from 'http-status'
+import fs from 'fs'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
+
 /**
  * Upload a file
  * @param {ObjectId} file
@@ -14,14 +15,13 @@ const uploadFile = async (file: Allow): Promise<object> => {
   try {
     const params = {
       Bucket: config.backblaze.bucket,
-      Key: `uploads/${Date.now()}_${file.originalname}`,
+      Key: `uploads/${Date.now()}_${file.name}`,
       Body: fs.createReadStream(file.path)
     }
 
     const data = await s3.upload(params).promise()
     return data
   } catch (error) {
-    console.log(error)
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'File uploading failed')
   }
 }
@@ -38,7 +38,7 @@ const uploadFiles = async (files: Allow): Promise<Allow> => {
         // AWS S3 Upload Parameters
         const params = {
           Bucket: config.backblaze.bucket,
-          Key: `uploads/${Date.now()}_${file.originalname}`,
+          Key: `uploads/${Date.now()}_${file.name}`,
           Body: fs.createReadStream(file.path)
         }
 
@@ -57,7 +57,6 @@ const uploadFiles = async (files: Allow): Promise<Allow> => {
 
     return uploadResults
   } catch (error) {
-    console.log(error)
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'File uploading failed')
   }
 }
