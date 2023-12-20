@@ -63,8 +63,8 @@ export default {
       }
     },
     from: {
-      name : envVars.EMAIL_FROM as string,
-      address : envVars.SMTP_USERNAME
+      name: envVars.EMAIL_FROM,
+      address: envVars.SMTP_USERNAME
     }
   },
   frontend: {
