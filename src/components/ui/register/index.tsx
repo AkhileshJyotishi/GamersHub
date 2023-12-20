@@ -39,7 +39,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
           </Button>
         </div>
 
-        <Image height={20} alt={"not available"} src={logo} className="mx-auto cursor-pointer " />
+        <Image height={25}  alt={""} src={logo} className="mx-auto cursor-pointer " />
         <div className="grid grid-cols-1 gap-6 mx-auto mt-7">
           <Button
             type="button"
@@ -49,7 +49,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
             }}
           >
             <GoogleIcon className="" />
-            Sign in with Google
+            Sign up with Google
           </Button>
           <Button
             type="button"

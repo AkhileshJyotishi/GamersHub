@@ -84,10 +84,17 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
         const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
         if (statusCode == 511 && emessage.includes("verified")) {
-          toast.error("Email not verified")
+          // toast.error("Email not verified")
+          // setVerifyMail(formValues.email)
+          // setVerifyModal(true)
           setIsLoginModalOpen(false)
-          setVerifyMail(formValues.email)
-          setVerifyModal(true)
+          router.replace(
+            `/?verify=true&data=${formValues.email}&emessage=Email Not Verified`,
+            "/",
+            {
+              shallow: true,
+            }
+          )
         } else {
           toast.error(await JSON.parse(res?.error)?.message)
         }
@@ -153,7 +160,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
               }}
             >
               <FacebookIcon className="" />
-              Sign up with Facebook
+              Sign in with Facebook
             </Button>
           </div>
           <div className="flex flex-row items-center justify-between w-full gap-4 mt-5">

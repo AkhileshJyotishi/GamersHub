@@ -167,7 +167,7 @@ export default function Navbar() {
             <NavbarLink label="Jobs" href="/jobs" />
             <NavbarLink label="Creators" href="/creator" />
             <NavbarLink label="Games" href="/games" />
-            <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />
+            {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
 
             {userSession && <NavbarLink label="Assets" href="/help" />}
           </div>

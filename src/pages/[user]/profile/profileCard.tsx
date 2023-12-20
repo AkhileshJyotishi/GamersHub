@@ -84,21 +84,16 @@ export default function ProfileCard({
             alt={""}
           />
           <p className="text-2xl font-semibold text-center break-all ">
-            {currentUser?.username || "name"}
+            {currentUser?.username || "User"}
           </p>
           {/* <h3 className="break-all text-dull">{currentUser?.occupation}</h3> */}
-          {currentUser?.userDetails?.country && currentUser?.userDetails?.city ? (
+          {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
             <span className="flex flex-row items-center gap-2 break-all">
               <MapPinIcon className="h-5 xmin-w-5" />
               <p>
                 {currentUser?.userDetails.city}
                 {"  , "} {currentUser?.userDetails.country}
               </p>
-            </span>
-          ) : (
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
-              llucknow india
             </span>
           )}
         </div>

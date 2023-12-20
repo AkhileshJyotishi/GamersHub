@@ -79,10 +79,10 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           <div className="flex justify-center w-full h-[25px] relative">
             <Image
               src={logo}
-              width={200}
+              // width={200}
               height={25}
               alt="Game Creators Hub"
-              className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5 mx-auto"
+              className="xl:absolute left-5 mx-auto"
             />
           </div>
           <Filter

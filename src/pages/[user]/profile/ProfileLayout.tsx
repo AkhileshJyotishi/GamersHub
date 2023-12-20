@@ -14,19 +14,10 @@ import CloseIcon from "@/components/icons/closeIcon"
 import BannerImage from "@/components/profile/bannerImage"
 import ProfileAccordion from "@/components/profile/profileAccordion"
 import Button from "@/components/ui/button"
-// import TabSelector from './tabnavigation'
-// import Card from '@/components/ui/card/card2'
 import Modal from "@/components/ui/modal"
 
 import ProfileCard from "./profileCard"
 
-// const data = {
-//   username: "Alice Smith",
-//   userProfilePhoto: "https://picsum.photos/200/301",
-//   coverPhoto: "https://picsum.photos/id/250/900/900",
-//   location: "Los Angeles, USA",
-//   views: "2,345",
-// }
 interface User {
   id: number
   createdAt: string
@@ -51,30 +42,26 @@ const ProfileLayout = ({
   id: number
 }) => {
   const session = useSession()
+  const router = useRouter()
   const { userData } = useUserContext()
 
-  const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<User | null>(null)
   const param = useParams()
 
   useEffect(() => {
-    // console.log("para", param)
-    // console.log("Mounting new profile")
     if (!session) router.replace(`/?emessage=Please Authenticate`)
-    // router.push()
     const loaddata = async () => {
-      const users = await fetchWithoutAuthorization(
-        `/v1/users/customDetails/${router.query.user}`,
-        "GET"
-      )
-
-      // console.log("User fetched", users)
-      if (users?.error) {
-        //  toast.success(session.data?.user?.name)
-        router.replace(`/?emessage=Please Authenticate`)
-      } else {
-        setData(users?.data?.user)
+      if (router.query.user) {
+        const users = await fetchWithoutAuthorization(
+          `/v1/users/customDetails/${router.query.user}`,
+          "GET"
+        )
+        if (users?.error) {
+          router.replace(`/?emessage=Please Authenticate`)
+        } else {
+          setData(users?.data?.user)
+        }
       }
     }
 
@@ -220,7 +207,7 @@ const ProfileLayout = ({
             setisCreateAlbumOpen={setisCreateAlbumOpen}
             bannerImage={userData?.bannerImage || ""}
           />
-          <ProfileAccordion className=" lg:hidden" />
+          <ProfileAccordion className=" lg:hidden" currentUser={data} />
 
           <div className="backdrop-blur-sm bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
             <Tab />

@@ -110,7 +110,7 @@ const LoginPage = () => {
             }}
           >
             <GoogleIcon className="" />
-            Sign up with Google
+            Sign in with Google
           </Button>
 
           <Button
@@ -121,7 +121,7 @@ const LoginPage = () => {
             }}
           >
             <FacebookIcon className="" />
-            Sign up with Facebook
+            Sign in with Facebook
           </Button>
         </div>
         <div className="flex flex-row items-center justify-between w-full gap-4 mt-5">

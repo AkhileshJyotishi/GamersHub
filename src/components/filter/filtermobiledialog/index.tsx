@@ -61,7 +61,7 @@ const FilterMobileDialog: React.FC<FilterMobileDialogProps> = ({
                 }}
                 className="p-2 bg-secondary rounded-xl"
               >
-                Back
+                Close
               </Button>
               <Button
                 onClick={() => {
