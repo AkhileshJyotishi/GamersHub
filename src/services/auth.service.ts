@@ -171,7 +171,7 @@ const isUserValid = async (userId: number): Promise<void> => {
     }
   })
   if (!verifiedUser) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified')
+    throw new ApiError(httpStatus.NETWORK_AUTHENTICATION_REQUIRED, 'Email not verified')
   }
   const validUserToken = await prisma.token.findFirst({
     where: {
