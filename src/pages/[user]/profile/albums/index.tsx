@@ -45,7 +45,7 @@ const Albums = () => {
               title={album.title}
               className=""
               description={"fdlsjlfd"}
-              imageSrc={album.banner}
+              imageSrc={album.banner || ""}
               key={album.id}
               tags={album.keyword}
             />
@@ -57,7 +57,7 @@ const Albums = () => {
             <>
               <div className="flex flex-col items-center w-full gap-20">
                 <h3 className="text-3xl font-bold">No albums yet.</h3>
-                <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
               </div>
             </>
           }

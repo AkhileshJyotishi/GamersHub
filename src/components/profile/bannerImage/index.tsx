@@ -113,7 +113,7 @@ const BannerImage = ({
                     <>
                       {img ? (
                         <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
+                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-8 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
                             <Button
                               variant="primary"
                               className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
@@ -154,7 +154,7 @@ const BannerImage = ({
                         </>
                       ) : (
                         <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
+                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:-translate-y-8 group-hover:opacity-100">
                             <Button
                               variant="primary"
                               className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "

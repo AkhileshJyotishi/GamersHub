@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"

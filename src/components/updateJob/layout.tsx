@@ -185,7 +185,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     },
     {
       inputType: "file",
-      title: "Game Cover",
+      title: "Job Cover",
       accept: "image/*",
       multiple: false,
       value: jobInfo.banner as string,

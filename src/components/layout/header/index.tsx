@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
 
@@ -92,7 +92,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
           <MailIcon className="" fill="#fff" />
         </Button>
 
-        <div className="group w-[20px] h-[20px]">
+        <div className="group w-[20px] h-[20px] lg:block hidden">
           <ProfileBannerImage />
           <ProfileSettingsCard
             onSignOut={() => signOut()}

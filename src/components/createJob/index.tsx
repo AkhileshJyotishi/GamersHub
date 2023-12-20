@@ -127,6 +127,7 @@ const CreateJob: React.FC = () => {
             className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
             editable={true}
             storageKey="noval__content2"
+            defaultValue={{}}
           />
         </>
 
@@ -136,6 +137,8 @@ const CreateJob: React.FC = () => {
             className={"bg-user_interface_2 w-full rounded-xl "}
             editable={true}
             storageKey="noval__content1"
+            defaultValue={{}}
+
           />
         </>
       </div>

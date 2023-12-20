@@ -156,6 +156,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
           storageKey="noval__content4"
+          defaultValue={{}}
         />
       </>
     </Layout>

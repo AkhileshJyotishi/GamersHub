@@ -350,7 +350,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
                 Upload Game
               </Button>
             </div>
-            <div className=" relative h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex ">
+            <div className=" relative h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[20px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex ">
               {/* <div className={clsx("h-7 ")}></div> */}
               {initialDetailsArray?.map((filter, index) => (
                 <Filter

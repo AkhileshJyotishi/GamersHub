@@ -122,9 +122,11 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         break
 
       case "paymentValue":
-        if (typeof value == "number") {
-          const val = typeof value === "number" ? value : Number(value)
+        console.log("why ist it2 ", value)
 
+        // if (typeof value == "number") {
+          const val = typeof value === "number" ? value : Number(value)
+          console.log("why ist it ", value)
           if (val < 0) {
             setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
           } else {
@@ -134,7 +136,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
             ...prevState,
             paymentValue: val as number,
           }))
-        }
+        // }
         break
 
       case "expertise":
@@ -187,7 +189,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
 
   const initialDetailsArray: FilterDetail[] = [
     {
-      title: "title",
+      title: "Title",
       inputType: "text",
       placeholder: "title...",
       value: jobInfo.title,
@@ -318,7 +320,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       inputType: "number",
       // type:""
       value: Number(jobInfo.paymentValue),
-      onChange: (value) => handleInputChange("paymentValue", value as number),
+      onChange: (value) => {handleInputChange("paymentValue", value as number)},
       //  (value) => {
       //   const val = Number(value)
 
@@ -332,7 +334,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     },
     {
       inputType: "file",
-      title: "Game Cover",
+      title: "Job Cover",
       accept: "image/*",
       multiple: false,
       value: null,
@@ -407,9 +409,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
             <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
-                ;(filter.title == "City" || filter.title == "Country") &&
-                  jobInfo.remote &&
-                  (hide = true)
+                  ; (filter.title == "City" || filter.title == "Country") &&
+                    jobInfo.remote &&
+                    (hide = true)
 
                 return (
                   <Filter
@@ -427,7 +429,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                       hide ? "hidden" : ""
                     )}
                     errorMessage={filter.errorMessage}
-                    // hidden={filter.hidden}
+                  // hidden={filter.hidden}
                   />
                 )
               })}

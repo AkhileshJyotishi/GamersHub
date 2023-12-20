@@ -26,7 +26,7 @@ const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
                   width={2060}
                   height={2060}
                   alt={""}
-                  className="w-[400px]"
+                  className="w-[200px]"
                   src={image}
                   placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                 />

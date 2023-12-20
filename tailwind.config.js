@@ -2,7 +2,7 @@
 
 const colors = {
   // secondary: "#9AF6C180",\
-  secondary: "#9AF6C1B3",
+  secondary: "#00B87D",
   secondary_2: "#00B87D",
   background: "#101014",
   user_interface_1: "#06070D",

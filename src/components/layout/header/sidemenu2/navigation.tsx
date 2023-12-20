@@ -55,7 +55,7 @@ export const Navigation = () => {
   React.useEffect(() => {}, [session])
   return (
     <>
-      <div>{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
+      <div className="flex justify-end">{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
 
       <motion.ul variants={variants} className={styles.ul}>
         {navmenu?.map((data, index) => <MenuItem data={data} key={index} />)}

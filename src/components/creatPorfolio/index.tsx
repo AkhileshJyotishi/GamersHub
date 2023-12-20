@@ -111,6 +111,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
           className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}
           editable={true}
           storageKey="noval__content"
+          defaultValue={{}}
         />
       </div>
     </Layout>

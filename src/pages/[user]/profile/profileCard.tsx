@@ -69,7 +69,7 @@ export default function ProfileCard({
     <>
       <div
         className={
-          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[900px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] " +
+          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[676px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] " +
           className
         }
       >

@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 import showPassword from "@/assets/svg/view-white.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
@@ -122,8 +122,8 @@ export default function SignUpPage() {
       <>
         <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-3  flex-col items-start mt-12 lg:w-[40rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto my-10 rounded-xl">
           {/* <p>Step  1 of 2</p> */}
-          <div className="flex flex-col w-full p-[20px]">
-            <h3 className="flex flex-row self-end gap-2 mb-2 tracking-normal text-shaded">
+          <div className="flex flex-col w-full p-[20px] ">
+            <h3 className="flex flex-row flex-wrap self-end gap-2 mb-2 tracking-normal text-shaded">
               Already have an account?
               <Link className="text-secondary" href="/auth/login">
                 Sign in
@@ -171,7 +171,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -209,7 +209,7 @@ export default function SignUpPage() {
 
             <Button
               type="submit"
-              variant="primary"
+              // variant="primary"
               className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
             >
               Create account
@@ -225,7 +225,7 @@ export default function SignUpPage() {
                   }}
                 >
                   <GoogleIcon className="" />
-                  Sign up with Google
+                  Google
                 </Button>
 
                 <Button
@@ -236,7 +236,7 @@ export default function SignUpPage() {
                   }}
                 >
                   <FacebookIcon className="" />
-                  Sign up with Facebook
+                  Facebook
                 </Button>
               </div>
             </div>

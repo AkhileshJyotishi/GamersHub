@@ -170,7 +170,7 @@ const ProfileLayout = ({
             <Filter
               key={"album"}
               inputType={"text"}
-              title={"album name"}
+              title={"Album name"}
               placeholder={""}
               value={newAlbum.title}
               onChange={(value) =>
@@ -184,7 +184,7 @@ const ProfileLayout = ({
             <Filter
               key={"album"}
               inputType={"tags"}
-              title={"album keywords"}
+              title={"Album keywords"}
               placeholder={""}
               onTagsChange={(tags) =>
                 setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
@@ -196,7 +196,7 @@ const ProfileLayout = ({
             <Filter
               key={"album"}
               inputType={"file"}
-              title={"album Cover"}
+              title={"Album Cover"}
               accept="image/*"
               multiple={false}
               value={newAlbum.title}
@@ -205,6 +205,7 @@ const ProfileLayout = ({
               }
               // className={"bg-transparent rounded-md"}
               Variant="flex flex-col items-start gap-[10px] text-[14px] "
+              fullScreen={false}
             />
             <Button
               onClick={() => handlecreateAlbum()}

@@ -33,6 +33,7 @@ const Filter: React.FC<FilterDetail> = ({
   preview,
   errorMessage,
   dimensionsImage,
+  fullScreen
 
   // hidden
 }) => {
@@ -173,6 +174,7 @@ const Filter: React.FC<FilterDetail> = ({
             preview={preview}
             value={value as string}
             errorMessage={errorMessage}
+            fullScreen={fullScreen}
           />
           {dimensionsImage &&
             dimensionsImage?.width !== null &&

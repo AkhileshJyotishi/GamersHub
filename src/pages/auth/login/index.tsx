@@ -27,6 +27,12 @@ const LoginPage = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setFormValues({ ...formValues, [name]: value })
+    const newError = validateForm()
+    // console.log(newError)
+    if (Object.values(newError).some((error) => error !== "")) {
+      setErrors(newError)
+      return
+    }
   }
   const validateForm = () => {
     const newErrors = { ...errors }
@@ -93,7 +99,7 @@ const LoginPage = () => {
     }
   }
   return (
-    <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-5  flex-col items-start mt-12 lg:w-[27rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto mb-6 rounded-xl">
+    <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-5  flex-col items-start mt-12 lg:w-[29rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto mb-6 rounded-xl">
       <div className="w-full">
         <div className="flex flex-col justify-around w-full gap-4 mt-3 overflow-hidden md:flex-row">
           <Button
@@ -151,16 +157,16 @@ const LoginPage = () => {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
             </div>
           </label>
         </div>
         <Button
-          className="px-[12px] py-[6px] border-[0.01px] border-[#505054]  flex items-center mt-8 rounded-xl"
+          className="px-[12px] py-[6px] border-[0.01px] border-secondary  flex items-center mt-8 rounded-xl"
           onClick={() => onSubmit("credentials")}
         >
-          <SigninIcon className="" />
+          <SigninIcon className="fill-secondary" />
           Sign in
         </Button>
         <div className="flex justify-between">

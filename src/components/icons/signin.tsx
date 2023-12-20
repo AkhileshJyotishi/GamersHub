@@ -8,7 +8,7 @@ function Icon({ className }: IconProps) {
   const style = `
     .cls-1 {
       fill: none;
-      stroke: #9AF6C1B3;
+      stroke: #00B87D;
       stroke-linecap: round;
       strokeLinejoin: round;
       stroke-width: 4px;
