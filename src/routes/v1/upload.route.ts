@@ -1,11 +1,11 @@
 import express from 'express'
-import uploadDisk from '../../middlewares/multer'
 import { uploadController } from '../../controllers'
 import auth from '../../middlewares/auth'
+import formidable from 'express-formidable'
 
 const router = express.Router()
 
-router.post('/file', auth(), uploadDisk.single('file'), uploadController.uploadFile)
-router.post('/multiple', auth(), uploadDisk.array('files', 10), uploadController.uploadFiles)
+router.post('/file', auth(), formidable(), uploadController.uploadFile)
+router.post('/multiple', auth(), formidable({ multiples: true }), uploadController.uploadFiles)
 
 export default router

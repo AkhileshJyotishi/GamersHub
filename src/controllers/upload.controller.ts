@@ -2,30 +2,26 @@ import httpStatus from 'http-status'
 import catchAsync from '../utils/catch-async'
 import { uploadService } from '../services'
 import { sendResponse } from '../utils/response'
-import fs from 'fs'
-import { promisify } from 'util'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 
-const unlinkAsync = promisify(fs.unlink)
 const uploadFile = catchAsync(async (req, res) => {
-  const file = req.file
+  const { file } = req.files as Allow
   if (!file) {
     sendResponse(res, httpStatus.BAD_REQUEST, { code: 400 }, null, 'No file uploaded')
   } else {
     const response = await uploadService.uploadFile(file)
-    await unlinkAsync(req?.file?.path as string)
     sendResponse(res, httpStatus.OK, null, { image: response }, 'Image successfully uploaded')
   }
 })
 
 const uploadFiles = catchAsync(async (req, res) => {
-  const files = req.files
+  const { files } = req.files as Allow
   if (!files || files.length === 0) {
     sendResponse(res, httpStatus.BAD_REQUEST, { code: 400 }, null, 'No file uploaded')
   } else {
     const response = await uploadService.uploadFiles(files)
-    // files.forEach(async (file)=>{
-    //   await unlinkAsync(req?.file?.path as string)
-    // })
+
     sendResponse(res, httpStatus.OK, null, { image: response }, 'Image successfully uploaded')
   }
 })
