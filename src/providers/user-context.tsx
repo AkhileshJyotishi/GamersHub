@@ -8,6 +8,10 @@ interface IUserContext {
   // handleLogin: (email: string, password: string) => Promise<{ success: boolean; message: string }>
   isLoginModalOpen: boolean
   setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  verifyModal: boolean
+  setVerifyModal: React.Dispatch<React.SetStateAction<boolean>>
+  verifyMail: string
+  setVerifyMail: React.Dispatch<React.SetStateAction<string>>
   isRegisterModalOpen: boolean
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   openLoginModal: () => void
@@ -52,6 +56,8 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [userData, setuserData] = useState<Iuser | null>(null)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
+  const [verifyMail, setVerifyMail] = useState<string>("")
+  const [verifyModal, setVerifyModal] = useState(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
   const [tap, setTap] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -105,6 +111,10 @@ const UserProvider = ({ children }: IUserProvider) => {
         setuserData,
         loading,
         setLoading,
+        verifyMail,
+        setVerifyMail,
+        verifyModal,
+        setVerifyModal
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -70,8 +70,20 @@ const LoginPage = () => {
       const res = await signIn(provider, credentials)
       setFormValues({ email: "", password: "" })
       if (res?.error) {
-        // console.log(res?.error?.message)
-        toast.error(await JSON.parse(res?.error)?.message)
+        const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
+        const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
+        if (statusCode == 511 && emessage.includes("verified")) {
+          router.replace(
+            `/?verify=true&data=${formValues.email}&emessage=Email Not Verified`,
+            "/",
+            {
+              shallow: true,
+            }
+          )
+        } else {
+          toast.error(await JSON.parse(res?.error)?.message)
+        }
+        return
       } else {
         router.push("/")
       }

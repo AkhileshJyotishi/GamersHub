@@ -54,13 +54,13 @@ export default function SignUpPage() {
           email: formValues.email,
         })
         if (ress?.error) {
-          router.replace(`/?verify=true&message=Registration successfull`, undefined, {
+          router.replace(`/?verify=true&data=${formValues.email}&message=Registration successfull`, "/", {
             shallow: true,
           })
           return
         }
         setFormValues({ username: "", email: "", password: "" })
-        router.replace("/?message=Verification mail sent", undefined, { shallow: true })
+        router.replace("/?message=Verification mail sent", "/", { shallow: true })
       }
       // try {
       //   const res = await fetch("/v1//register", {

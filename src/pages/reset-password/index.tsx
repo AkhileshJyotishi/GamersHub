@@ -10,6 +10,7 @@ import TextInput from "@/components/ui/textInput"
 const ResetPassword = () => {
   const [formValues, setFormValues] = useState({
     password: "",
+    cpassword:""
   })
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -20,6 +21,12 @@ const ResetPassword = () => {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault()
+    if(formValues.password!=formValues.cpassword){
+      setErrors(
+        "Passwords do not match"
+      )
+      return
+    }
     if (
       formValues.password.length < 8 ||
       !/[A-Z]/.test(formValues.password) ||
@@ -63,6 +70,20 @@ const ResetPassword = () => {
                 className="mt-2 tracking-wider bg-transparent rounded-md"
                 value={formValues.password}
                 name="password"
+                placeholder="****"
+              />
+            </label>
+          </div>
+          <div className="mt-2">
+            <label>
+              <div className="text-[14px]">Confirm Password</div>
+              <TextInput
+                type="password"
+                onChange={handleChange}
+                // className="bg-[#101014] mt-2"
+                className="mt-2 tracking-wider bg-transparent rounded-md"
+                value={formValues.cpassword}
+                name="cpassword"
                 placeholder="****"
               />
             </label>

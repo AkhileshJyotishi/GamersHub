@@ -18,13 +18,13 @@ import CloseIcon from "@/components/icons/closeIcon"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
+import { useUserContext } from "@/providers/user-context"
 
 const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
-  const { logout, verify, message, emessage } = router.query
-  const [verifyModal, setVerifyModal] = useState(false)
-
+  const { logout, verify, message, emessage, data } = router.query
+  const { verifyMail, verifyModal, setVerifyMail, setVerifyModal } = useUserContext()
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
 
@@ -48,15 +48,19 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
       toast.error(emessage)
     }
+    if (data) {
+      setVerifyMail((data as string) ?? "")
+    }
   }, [verify, logout, router])
-  const [mail, setMail] = useState<string>("")
 
   const verifyEmail = async () => {
     const res = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
-      email: mail,
+      email: verifyMail,
     })
+    setVerifyMail("")
+    setVerifyModal(false)
     if (res?.error) {
-      toast.error(res.message)
+      toast.error((res.error?.response?.data?.message || "Request failed") ?? res?.message)
       return
     }
     toast.success(res?.message)
@@ -86,8 +90,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
             inputType={"text"}
             title={"Verify your Email"}
             placeholder={""}
-            value={mail}
-            onChange={(value) => setMail(value as string)}
+            value={verifyMail}
+            onChange={(value) => setVerifyMail(value as string)}
             className={"bg-transparent rounded-md"}
             Variant="flex flex-col items-start gap-[10px] text-[14px] "
           />
