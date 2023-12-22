@@ -18,13 +18,13 @@ const uploadFile = async (file: Allow, type: string, userId: number): Promise<ob
     const user = await userService.getUserById(userId)
     let key
     if (type == 'jobs') {
-      key = `uploads/jobs/${user?.username}/${Date.now()}_${file.name}`
+      key = `uploads/${user?.username}/jobs/${Date.now()}_${file.name}`
     } else if (type == 'portfolio') {
-      key = `uploads/portfolio/${user?.username}/${Date.now()}_${file.name}`
+      key = `uploads/${user?.username}/portfolio/${Date.now()}_${file.name}`
     } else if (type === 'games') {
-      key = `uploads/games/${user?.username}/${Date.now()}_${file.name}`
+      key = `uploads/${user?.username}/games/${Date.now()}_${file.name}`
     } else {
-      key = `uploads/user/${user?.username}/${Date.now()}_${file.name}`
+      key = `uploads/${user?.username}/profile/${Date.now()}_${file.name}`
     }
     const params = {
       Bucket: config.backblaze.bucket,
@@ -54,13 +54,13 @@ const uploadFiles = async (files: Allow, type: string, userId: number): Promise<
         // AWS S3 Upload Parameters
         let key
         if (type == 'jobs') {
-          key = `uploads/jobs/${user?.username}/${Date.now()}_${file.name}`
+          key = `uploads/${user?.username}/jobs/${Date.now()}_${file.name}`
         } else if (type == 'portfolio') {
-          key = `uploads/portfolio/${user?.username}/${Date.now()}_${file.name}`
+          key = `uploads/${user?.username}/portfolio/${Date.now()}_${file.name}`
         } else if (type === 'games') {
-          key = `uploads/games/${user?.username}/${Date.now()}_${file.name}`
+          key = `uploads/${user?.username}/games/${Date.now()}_${file.name}`
         } else {
-          key = `uploads/user/${user?.username}/${Date.now()}_${file.name}`
+          key = `uploads/${user?.username}/profile/${Date.now()}_${file.name}`
         }
         const params = {
           Bucket: config.backblaze.bucket,
