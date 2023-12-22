@@ -54,6 +54,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
+    formdata.append("type", "jobs")
     if (jobInfo.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",

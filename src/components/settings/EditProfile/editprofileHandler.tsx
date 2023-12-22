@@ -277,6 +277,7 @@ export const uploadProfileData = async (
   // return
   if (profileData?.profileImage) {
     formdata.append("file", profileData?.profileImage as File)
+    formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
     // console.log("is uploaded", isuploaded)
     profileData.profileImage = isuploaded?.data?.image?.Location

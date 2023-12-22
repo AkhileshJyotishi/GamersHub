@@ -13,6 +13,7 @@ import FacebookIcon from "@/components/icons/facebook"
 import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import TextInput from "@/components/ui/textInput"
+import { InfoTag } from "@/components/ui/Info"
 interface FormErrors {
   username: string
   email: string
@@ -54,9 +55,13 @@ export default function SignUpPage() {
           email: formValues.email,
         })
         if (ress?.error) {
-          router.replace(`/?verify=true&data=${formValues.email}&message=Registration successfull`, "/", {
-            shallow: true,
-          })
+          router.replace(
+            `/?verify=true&data=${formValues.email}&message=Registration successfull`,
+            "/",
+            {
+              shallow: true,
+            }
+          )
           return
         }
         setFormValues({ username: "", email: "", password: "" })
@@ -171,7 +176,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -182,6 +187,7 @@ export default function SignUpPage() {
                 className="absolute right-[1rem] w-4 cursor-pointer"
               />
             </div>
+            <InfoTag />
 
             {/* <div className="my-2 mt-6">*Confirm Password</div>
             <div className="relative flex flex-row items-center">
@@ -216,10 +222,10 @@ export default function SignUpPage() {
             </Button>
             <div className="text-shaded">
               or signup with
-              <div className="flex justify-around gap-[16px] mt-3">
+              <div className="flex justify-around sm:flex-row gap-1 min-[400px]:gap-[16px] mt-3">
                 <Button
                   type="button"
-                  className="inline-flex items-center px-5 mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
+                  className="inline-flex items-center px-3 mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
                   onClick={() => {
                     signIn("google", { callbackUrl: "/" })
                   }}
@@ -230,7 +236,7 @@ export default function SignUpPage() {
 
                 <Button
                   type="button"
-                  className="inline-flex items-center px-5 mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
+                  className="inline-flex py-2 items-center px-3 mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
                   onClick={() => {
                     signIn("facebook", { callbackUrl: "/" })
                   }}

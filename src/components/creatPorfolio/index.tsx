@@ -58,6 +58,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
+    formdata.append("type", "portfolio")
+
     if (filtersState.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",

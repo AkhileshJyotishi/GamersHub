@@ -80,6 +80,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     const formdata = new FormData()
 
     formdata.append("file", gameInfo.banner as Blob)
+    formdata.append("type", "games")
 
     console.log("jobInfo.banner ", gameInfo.banner)
     if (gameInfo.banner) {
@@ -102,6 +103,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
+      formdata2.append("type", "games")
     })
     const newArray: string[] = []
     if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {

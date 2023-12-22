@@ -37,6 +37,7 @@ const BannerImage = ({
   const uploadBanner = async () => {
     const formdata = new FormData()
     formdata.append("file", img as Blob)
+    formdata.append("type", "user")
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.user?.name as string,

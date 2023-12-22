@@ -250,6 +250,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
               ;(filter.title == "City" || filter.title == "Country") &&
                 jobInfo.remote &&
                 (hide = true)
+              ;(filter.title == "Payment Amount") &&
+                jobInfo.paymentType=="NEGOTIABLE" &&
+                (hide = true)
 
               return (
                 <Filter

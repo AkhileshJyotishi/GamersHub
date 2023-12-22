@@ -110,6 +110,7 @@ const ProfileLayout = ({
     // return
     if (newAlbum.banner) {
       formdata.append("file", newAlbum.banner as string)
+      formdata.append("type", "portfolio")
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
