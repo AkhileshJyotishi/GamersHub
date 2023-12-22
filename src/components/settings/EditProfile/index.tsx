@@ -54,20 +54,30 @@ const EditProfilePage = ({
   }
 
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
+  // console.log(profileDetails)
   const initProfile = {
     userBio: profileDetails?.userBio,
     country: profileDetails?.country,
     city: profileDetails?.city,
-    userSkills: profileDetails?.userSkills,
-    userSoftwares: profileDetails?.userSoftwares,
+    // userSkills: profileDetails?.userSkills,
+    userSkills: profileDetails?.userSkills
+      ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
+      : undefined,
+    userSoftwares:
+      profileDetails?.userSoftwares && profileDetails?.userSoftwares.length > 0
+        ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
+        : undefined,
     profileImage: profileDetails?.user?.profileImage,
   }
   const [profileData, setprofileData] = useState(initProfile)
+  // console.log(initProfile)
+
   const isProfileDataFilled = Object.values(initProfile).some((value) => {
-    console.log("value  ", value)
-    return value !== null && value !== undefined && value !== ""
+    // console.log("value  ", value)
+    return value !== null && value !== undefined && value !== "" && value
   })
-  const filled = isProfileDataFilled
+  const [filled, setFilled] = useState(isProfileDataFilled)
+  // const filled = isProfileDataFilled
 
   // console.log("isProfileDataFilled  ", isProfileDataFilled)
 
@@ -609,6 +619,7 @@ const EditProfilePage = ({
             profileArray={profileArray}
             profileData={profileData}
             isProfileDataFilled={filled}
+            setProfileFilled={setFilled}
           />
         )}
         {activeTab == "Experience" && (
@@ -760,7 +771,7 @@ const EditProfilePage = ({
                   }
                   onClick={() => addEducation()}
                 >
-                  add education
+                  Add education
                 </Button>
               </>
             )}

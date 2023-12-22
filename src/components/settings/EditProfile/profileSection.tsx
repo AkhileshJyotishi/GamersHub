@@ -14,13 +14,14 @@ interface ProfileSectionProps {
     userBio: string | null | undefined
     country: string | null | undefined
     city: string | null | undefined
-    userSkills: IuserSkill[]
-    userSoftwares: IuserSoftware[] | undefined
+    userSkills: IuserSkill[] | string[] | undefined
+    userSoftwares: IuserSoftware[] | undefined | string[]
     profileImage: string | undefined
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
   isProfileDataFilled: boolean
+  setProfileFilled: Allow
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
@@ -28,8 +29,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   // onFieldChange,
   profileArray,
   isProfileDataFilled,
+  setProfileFilled,
 }) => {
   const { data: session } = useSession()
+  // console.log(profileArray)
   return (
     <>
       {profileArray?.map((filter, index) => (
@@ -50,6 +53,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               className={` ${filter.className || ""}`}
               Variant={"flex-col  w-full flex "}
               initialtags={filter.initialtags}
+              onTagsChange={filter.onTagsChange}
             />
           </div>
         </>
@@ -64,7 +68,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             if (isProfileDataFilled) {
               method = "PATCH"
             }
-            uploadProfileData(profileData, session?.user?.name as string, method)
+            uploadProfileData(profileData, session?.user?.name as string, method, setProfileFilled)
           }}
         >
           {isProfileDataFilled ? "Update" : "Upload"}

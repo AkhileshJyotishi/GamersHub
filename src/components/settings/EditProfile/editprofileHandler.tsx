@@ -272,13 +272,14 @@ export const uploadProfileData = async (
         userBio: string | null | undefined
         country: string | null | undefined
         city: string | null | undefined
-        userSkills: IuserSkill[]
-        userSoftwares: IuserSoftware[] | undefined
+        userSkills: IuserSkill[] | string[] | undefined
+        userSoftwares: IuserSoftware[] | undefined | string[]
         profileImage: string | undefined | File
       }
     | undefined,
   token: string,
-  method: string
+  method: string,
+  setProfileFilled: Allow
 ) => {
   const formdata = new FormData()
   // console.log(newAlbum)
@@ -292,15 +293,18 @@ export const uploadProfileData = async (
     // console.log("is uploaded", isuploaded)
     if (isuploaded?.error) toast.error(isuploaded?.message)
     profileData.profileImage = isuploaded?.data?.image?.Location
-  } else {
-    // newAlbum.banner = ""
-    return
   }
+  //  else {
+  //   // newAlbum.banner = ""
+  //   return
+  // }
+  // console.log(profileData)
   // const token = useSession().data?.user?.name as string
   const response = await fetchData(`/v1/users/details`, token, method, profileData)
   if (response?.error) {
     toast.error(response?.message)
   } else {
     toast.success(response?.message)
+    setProfileFilled(true)
   }
 }

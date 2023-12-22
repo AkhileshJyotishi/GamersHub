@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
   users = users?.data.creators
   // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
-
+  console.log(users)
   return {
     props: {
       users,
