@@ -3,19 +3,32 @@ import config from '../config/config'
 import ApiError from '../utils/api-error'
 import httpStatus from 'http-status'
 import fs from 'fs'
+import userService from './user.service'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 
 /**
  * Upload a file
- * @param {ObjectId} file
+ * @param {File} file
+ * @param {string} type
  * @returns {Promise<object>}
  */
-const uploadFile = async (file: Allow): Promise<object> => {
+const uploadFile = async (file: Allow, type: string, userId: number): Promise<object> => {
   try {
+    const user = await userService.getUserById(userId)
+    let key
+    if (type == 'jobs') {
+      key = `uploads/jobs/${user?.username}/${Date.now()}_${file.name}`
+    } else if (type == 'portfolio') {
+      key = `uploads/portfolio/${user?.username}/${Date.now()}_${file.name}`
+    } else if (type === 'games') {
+      key = `uploads/games/${user?.username}/${Date.now()}_${file.name}`
+    } else {
+      key = `uploads/user/${user?.username}/${Date.now()}_${file.name}`
+    }
     const params = {
       Bucket: config.backblaze.bucket,
-      Key: `uploads/${Date.now()}_${file.name}`,
+      Key: key,
       Body: fs.createReadStream(file.path)
     }
 
@@ -29,16 +42,29 @@ const uploadFile = async (file: Allow): Promise<object> => {
 /**
  * Upload multiple files
  * @param {ObjectId} files
+ * @param {string} type
  * @returns {Promise<object[]>}
  */
-const uploadFiles = async (files: Allow): Promise<Allow> => {
+const uploadFiles = async (files: Allow, type: string, userId: number): Promise<Allow> => {
   try {
+    const user = await userService.getUserById(userId)
+
     const uploadResults = await Promise.all(
       files?.map((file: Allow) => {
         // AWS S3 Upload Parameters
+        let key
+        if (type == 'jobs') {
+          key = `uploads/jobs/${user?.username}/${Date.now()}_${file.name}`
+        } else if (type == 'portfolio') {
+          key = `uploads/portfolio/${user?.username}/${Date.now()}_${file.name}`
+        } else if (type === 'games') {
+          key = `uploads/games/${user?.username}/${Date.now()}_${file.name}`
+        } else {
+          key = `uploads/user/${user?.username}/${Date.now()}_${file.name}`
+        }
         const params = {
           Bucket: config.backblaze.bucket,
-          Key: `uploads/${Date.now()}_${file.name}`,
+          Key: key,
           Body: fs.createReadStream(file.path)
         }
 
