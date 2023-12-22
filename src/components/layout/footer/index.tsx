@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
   return (
     <>
       <footer
-        className="relative z-10 pt-16 wow fadeInUp bg-primary bg-opacity-5 md:pt-20 lg:pt-24"
+        className="pt-16  wow fadeInUp bg-primary bg-opacity-5 md:pt-20 lg:pt-24"
         data-wow-delay=".1s"
       >
         <div className="container mx-auto">

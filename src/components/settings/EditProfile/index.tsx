@@ -54,35 +54,22 @@ const EditProfilePage = ({
   }
 
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
-
-  const [profileData, setprofileData] = useState({
+  const initProfile = {
     userBio: profileDetails?.userBio,
     country: profileDetails?.country,
     city: profileDetails?.city,
     userSkills: profileDetails?.userSkills,
     userSoftwares: profileDetails?.userSoftwares,
     profileImage: profileDetails?.user?.profileImage,
-  })
-  let isProfileDataFilled = Object.values(profileData).some(
-    (value) => value !== null && value !== undefined && value !== ""
-  )
-  if (
-    profileData.profileImage !== "" ||
-    profileData.profileImage !== undefined ||
-    profileData.profileImage !== null
-  ) {
-    if (
-      profileData.userBio ||
-      profileData.country ||
-      profileData.city ||
-      (profileData.userSkills && profileData.userSkills.length > 0) ||
-      (profileData.userSoftwares && profileData.userSoftwares?.length)
-    ) {
-      isProfileDataFilled = true
-    } else {
-      isProfileDataFilled = false
-    }
   }
+  const [profileData, setprofileData] = useState(initProfile)
+  let isProfileDataFilled = Object.values(initProfile).some(
+    (value) => {
+      console.log("value  ", value)
+      return (value !== null && value !== undefined && value !== "")
+    }
+  )
+  const filled = isProfileDataFilled
 
   // console.log("isProfileDataFilled  ", isProfileDataFilled)
 
@@ -625,7 +612,7 @@ const EditProfilePage = ({
           <ProfileSection
             profileArray={profileArray}
             profileData={profileData}
-            isProfileDataFilled={isProfileDataFilled}
+            isProfileDataFilled={filled}
           />
         )}
         {activeTab == "Experience" && (
@@ -650,9 +637,8 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${
-                        field.inputType == "date" ? "sm:w-[50%]" : ""
-                      }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                     >
                       <Filter
                         key={index}
@@ -728,9 +714,8 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${
-                        field.inputType == "date" ? "sm:w-[50%]" : ""
-                      }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                     >
                       <Filter
                         key={index}

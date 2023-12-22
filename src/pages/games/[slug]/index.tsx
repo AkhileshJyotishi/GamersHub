@@ -89,7 +89,7 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
-      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3 z-20 w-full ">
+      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full " style={{zIndex:19}}>
         {/* profileData?.user?.profileImage ||  */}
         <GamePageHeader
           title={title}

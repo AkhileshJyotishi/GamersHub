@@ -59,7 +59,7 @@ export const Example = () => {
           custom={height | 100}
           ref={containerRef}
           className={clsx(styles.nav, styles["mobile-nav"])}
-          style={{ zIndex: 18 }}
+          style={{ zIndex: 20 }}
         >
           <motion.div className={styles.background} variants={sidebar} />
           <Navigation />

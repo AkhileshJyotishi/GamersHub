@@ -63,7 +63,7 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
 )
 
 const JobDescription = ({ desc }: { desc: string }) => (
-  <div className="w-full min-h-[100px] overflow-hidden mt-2 p-3">
+  <div className="max-w-[280px] min-h-[100px] overflow-hidden mt-2 p-3">
     <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}</p>
   </div>
 )
@@ -189,7 +189,7 @@ const Card: React.FC<JobCardProps> = ({
     <>
       <div
         className={clsx(
-          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between  rounded-xl  hover:border-[0.1px] w-full max-h-[650px]",
+          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between  rounded-xl  hover:border-[0.1px] w-full h-fit",
           className
         )}
         // href={href}

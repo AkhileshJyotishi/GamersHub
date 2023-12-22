@@ -32,12 +32,14 @@ export const uploadUserEducation = async (
   }
   // if (hasDataChanged) {
   delete userEducation.id
+  toast.info("Uploading Education Info...")
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/education`,
     token,
     "POST",
     userEducation
   )
+  toast.dismiss()
   if (response?.error) {
     toast.error(response?.message)
   } else {
@@ -84,6 +86,8 @@ export const updateUserEducation = async (
 
   // Send a request to update the education details
   delete educationToUpdate.id
+  toast.info("Updating Education Info...")
+
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/education/${userId}`,
     token,
@@ -199,6 +203,8 @@ export const updateUserExperience = async (
 
   // Send a request to update the experience details
   delete experienceToUpdate.id
+  toast.info("Updating Your Experiences...")
+
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/experience/${userId}`,
     token,
@@ -243,6 +249,8 @@ export const uploadUserExperience = async (
   // if (hasDataChanged) {
   delete userExperience.id
   // console.log("userexpt ", userExperience)
+  toast.info("Uploading Your Experiences...")
+
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/experience`,
     token,
@@ -261,13 +269,13 @@ export const uploadUserExperience = async (
 export const uploadProfileData = async (
   profileData:
     | {
-        userBio: string | null | undefined
-        country: string | null | undefined
-        city: string | null | undefined
-        userSkills: IuserSkill[]
-        userSoftwares: IuserSoftware[] | undefined
-        profileImage: string | undefined | File
-      }
+      userBio: string | null | undefined
+      country: string | null | undefined
+      city: string | null | undefined
+      userSkills: IuserSkill[]
+      userSoftwares: IuserSoftware[] | undefined
+      profileImage: string | undefined | File
+    }
     | undefined,
   token: string,
   method: string
@@ -275,11 +283,14 @@ export const uploadProfileData = async (
   const formdata = new FormData()
   // console.log(newAlbum)
   // return
+  toast.info("Uploading Your Profile...")
+
   if (profileData?.profileImage) {
     formdata.append("file", profileData?.profileImage as File)
     formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
     // console.log("is uploaded", isuploaded)
+    if (isuploaded?.error) toast.error(isuploaded?.message)
     profileData.profileImage = isuploaded?.data?.image?.Location
   } else {
     // newAlbum.banner = ""

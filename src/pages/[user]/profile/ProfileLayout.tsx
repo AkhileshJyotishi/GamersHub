@@ -108,6 +108,7 @@ const ProfileLayout = ({
     const formdata = new FormData()
     // console.log(newAlbum)
     // return
+    toast.info("Creating Album...")
     if (newAlbum.banner) {
       formdata.append("file", newAlbum.banner as string)
       formdata.append("type", "portfolio")
@@ -122,6 +123,8 @@ const ProfileLayout = ({
     } else {
       newAlbum.banner = ""
     }
+    toast.dismiss()
+    toast.info("Uploading...")
     const albumData = await fetchData(
       "/v1/album/user",
       session.data?.user?.name as string,

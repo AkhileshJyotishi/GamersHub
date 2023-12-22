@@ -97,7 +97,7 @@ export default function ProfileAccordion({
           {/* About section end */}
 
           {/* Action Button */}
-          <div className="flex flex-col items-center gap-4 p-3 mt-6 w-full text-text">
+          <div className="flex flex-col items-center w-full gap-4 p-3 mt-6 text-text">
             {currentUser?.id === authUser?.id ? (
               <>
                 <Button
@@ -160,14 +160,14 @@ export default function ProfileAccordion({
               </>
             )}
           </div>
-
-          {/* Follow section*/}
-          <div className="flex flex-row flex-wrap justify-around w-[90%] flex-end text-dull gap-4">
-            <div className="flex flex-row py-1 text-center break-words gap-2">
-              <span>Followers:</span>
-              <span>{currentUser?._count.followers_users} </span>
+          <div className="flex justify-around w-[90%]  flex-end text-dull gap-1">
+            <div className="flex flex-row py-1 text-center break-words">
+              <div>
+                {/* {formatLargeNumber(1)} <br /> */}
+                followers
+              </div>
             </div>
-            <div className="flex flex-row py-1 text-center break-words gap-2">
+            <div className="flex flex-row gap-2 py-1 text-center break-words">
               <span>Following:</span>
               <span>{currentUser?._count.following_users} </span>
             </div>

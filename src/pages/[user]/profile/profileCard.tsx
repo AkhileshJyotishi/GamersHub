@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 import { useUserContext } from "@/providers/user-context"
+import defaultbannerImage from "@/assets/image/user-profile.svg"
 
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -69,7 +70,7 @@ export default function ProfileCard({
     <>
       <div
         className={
-          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[676px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] " +
+          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[676px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] overflow-y-scroll " +
           className
         }
       >
@@ -79,7 +80,7 @@ export default function ProfileCard({
             width={300}
             height={300}
             loading="lazy"
-            src={currentUser?.profileImage || "https://picsum.photos/id/250/900/900"}
+            src={currentUser?.profileImage || defaultbannerImage}
             className="w-[150px] h-[150px] rounded-full border-2 border-light"
             alt={""}
           />

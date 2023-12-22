@@ -139,14 +139,14 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
 
   return (
     <div className="flex flex-col gap-5 p-3">
-      <div className="text-[25px] font-bold">Job Description</div>
+      <div className="text-[25px] font-bold flex-wrap">Job Description</div>
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
+            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[200px] md:sticky top-[61px] h-fit flex-col"
           )}
         >
-          <div className="flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]  flex ">
+          <div className="flex-col min-w-[200px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]  flex ">
             <GameDetails GameData={GameData} />
           </div>
         </div>
@@ -156,7 +156,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       </div>
       <div className="w-full">
         <Editor
-          className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
+          className={"bg-user_interface_2 w-full rounded-xl "}
           editable={false}
           storageKey="noval__content"
         />

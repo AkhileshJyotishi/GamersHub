@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultProfileImage from "@/assets/image/user-profile.svg"
 import { shimmer, toBase64 } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
@@ -29,7 +30,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           className={
             "w-[60px] h-[60px] md:w-[60px] md:h-[60px] object-cover rounded-full  border-[2px] absolute top-[80%]"
           }
-          src={profileImage || defaultbannerImage}
+          src={profileImage || defaultProfileImage}
           alt={" "}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />

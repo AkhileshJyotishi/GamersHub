@@ -25,12 +25,7 @@ const BannerImage = ({
   const { data: session } = useSession()
   const { userData, setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
-  // useEffect(()=>{
-  //   if(img!==undefined){
-  //   console.log("banner image is serting")
 
-  // }
-  // },[img])
 
   const [bannerImageLink, setBannerImageLink] = useState<string | undefined>(bannerImage)
   // const ref=useRef()
@@ -38,6 +33,7 @@ const BannerImage = ({
     const formdata = new FormData()
     formdata.append("file", img as Blob)
     formdata.append("type", "user")
+    toast.info("Uploading new Banner...")
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.user?.name as string,
@@ -78,7 +74,7 @@ const BannerImage = ({
           alt=""
           width={1500}
           height={800}
-          loading="lazy"
+          loading="eager"
           className="absolute w-full h-[18vh] object-cover "
           src={bannerImageLink || defaultbannerImage}
         />

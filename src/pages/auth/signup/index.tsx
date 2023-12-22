@@ -45,12 +45,16 @@ export default function SignUpPage() {
         setErrors(newErrors)
         return
       }
+      toast.info("Signing Up...")
       const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
         ...formValues,
       })
       if (res?.error) {
+        toast.dismiss()
         toast.error(res.error?.response?.data?.message || res.message)
       } else {
+        toast.dismiss()
+      toast.info("Sending Mail...")
         const ress = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
           email: formValues.email,
         })

@@ -78,7 +78,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             uploadProfileData(profileData, session?.user?.name as string, method)
           }}
         >
-          upload
+          {isProfileDataFilled ? "Update":"Upload"}
+          
         </Button>
       </div>
     </>

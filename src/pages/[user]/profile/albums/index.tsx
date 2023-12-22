@@ -31,11 +31,11 @@ const Albums = () => {
     }
     loadData()
   }, [router])
-  const memoizedAlbumDetails = useMemo(() => albumDetails, [albumDetails])
+  // const memoizedAlbumDetails = useMemo(() => albumDetails, [albumDetails])
   return (
     <>
-      {memoizedAlbumDetails.length > 0 ? (
-        memoizedAlbumDetails?.map((album) => (
+      {albumDetails.length > 0 ? (
+        albumDetails?.map((album) => (
           <>
             <HoizontalCard
               title={album.title}
