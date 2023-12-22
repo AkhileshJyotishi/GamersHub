@@ -117,7 +117,6 @@ const resetPassword = async (resetPasswordToken: string, newPassword: string): P
  */
 const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
   try {
-    console.log(verifyEmailToken)
     const verifyEmailTokenData = await tokenService.verifyToken(
       verifyEmailToken,
       TokenType.VERIFY_EMAIL
@@ -171,7 +170,7 @@ const isUserValid = async (userId: number): Promise<void> => {
     }
   })
   if (!verifiedUser) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified')
+    throw new ApiError(httpStatus.NETWORK_AUTHENTICATION_REQUIRED, 'Email not verified')
   }
   const validUserToken = await prisma.token.findFirst({
     where: {

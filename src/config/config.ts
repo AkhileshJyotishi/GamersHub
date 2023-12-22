@@ -62,7 +62,10 @@ export default {
         pass: envVars.SMTP_PASSWORD
       }
     },
-    from: envVars.EMAIL_FROM
+    from: {
+      name: envVars.EMAIL_FROM,
+      address: envVars.SMTP_USERNAME
+    }
   },
   frontend: {
     url: envVars.FRONTEND_BASE_URL

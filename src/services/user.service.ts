@@ -11,6 +11,8 @@ import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
 import { encryptPassword } from '../utils/encryption'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 
 /**
  * Create a user

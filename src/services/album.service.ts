@@ -2,7 +2,8 @@ import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
 import { Album } from '@prisma/client'
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type Allow<T = any> = T | null
 /**
  * Get All Albums of a user
  * @param {ObjectId} userId
