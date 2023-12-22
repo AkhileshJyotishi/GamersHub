@@ -244,15 +244,14 @@ const Layout: React.FC<LayoutProps> = ({
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
-                // disabled={}
                 onClick={() => {
                   const hasErrors = Object.values(errors).some((error) => error !== null)
-                  console.log("uploading...")
                   if (hasErrors) {
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return
                   } else {
+                    // console.log("first")
                     uploadPost()
                   }
                 }}

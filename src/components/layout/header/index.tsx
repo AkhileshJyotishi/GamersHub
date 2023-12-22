@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 
-import logo from "@/assets/image/logo-with-text.svg"
+// import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
-import { shimmer, toBase64 } from "@/utils/functions"
 
+// import { shimmer, toBase64 } from "@/utils/functions"
 import MailIcon from "@/components/icons/mail"
 // import ProfileImage from "@/components/profile/profileImage"
 import ProfileBannerImage from "@/components/profile/profileImage"
@@ -176,7 +176,8 @@ export default function Navbar() {
               }}
               className="flex items-center w-full h-full xl:justify-center"
             >
-              <Image
+              logo here
+              {/* <Image
                 src={logo}
                 width={200}
                 height={25}
@@ -184,7 +185,7 @@ export default function Navbar() {
                 className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
                 priority
                 placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              />
+              /> */}
             </Button>
           </div>
 
