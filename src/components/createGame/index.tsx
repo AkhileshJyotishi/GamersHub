@@ -13,6 +13,9 @@ import Layout from "@/components/createGame/layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
 })
 
 // import { Editor } from "novel";
@@ -80,6 +83,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     const formdata = new FormData()
 
     formdata.append("file", gameInfo.banner as Blob)
+    formdata.append("type", "games")
 
     console.log("jobInfo.banner ", gameInfo.banner)
     if (gameInfo.banner) {
@@ -102,6 +106,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
+      formdata2.append("type", "games")
     })
     const newArray: string[] = []
     if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
@@ -156,6 +161,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
           storageKey="noval__content4"
+          defaultValue={{}}
         />
       </>
     </Layout>

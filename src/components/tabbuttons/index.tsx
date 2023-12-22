@@ -16,7 +16,7 @@ export default function TabButtons({
 }) {
   return (
     <>
-      <div className="flex flex-row flex-wrap justify-between w-full text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20">
+      <div className="flex flex-row flex-wrap justify-between w-full p-2 text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20">
         {tabNames?.map((tabName, index) => {
           return (
             <>

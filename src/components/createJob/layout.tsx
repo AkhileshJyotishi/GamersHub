@@ -122,9 +122,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         break
 
       case "paymentValue":
-        if (typeof value == "number") {
+        {
           const val = typeof value === "number" ? value : Number(value)
-
           if (val < 0) {
             setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
           } else {
@@ -187,7 +186,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
 
   const initialDetailsArray: FilterDetail[] = [
     {
-      title: "title",
+      title: "Title",
       inputType: "text",
       placeholder: "title...",
       value: jobInfo.title,
@@ -318,7 +317,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       inputType: "number",
       // type:""
       value: Number(jobInfo.paymentValue),
-      onChange: (value) => handleInputChange("paymentValue", value as number),
+      onChange: (value) => {
+        handleInputChange("paymentValue", value as number)
+      },
       //  (value) => {
       //   const val = Number(value)
 
@@ -332,7 +333,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     },
     {
       inputType: "file",
-      title: "Game Cover",
+      title: "Job Cover",
       accept: "image/*",
       multiple: false,
       value: null,
@@ -409,6 +410,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 let hide = false
                 ;(filter.title == "City" || filter.title == "Country") &&
                   jobInfo.remote &&
+                  (hide = true)
+                filter.title == "Payment Amount" &&
+                  jobInfo.paymentType == "NEGOTIABLE" &&
                   (hide = true)
 
                 return (

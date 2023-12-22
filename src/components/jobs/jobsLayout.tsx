@@ -167,7 +167,7 @@ const Layout: React.FC<LayoutProps> = ({
           onClick={() => {
             setPopup(!popup)
           }}
-          className="flex gap-2 px-3 border-2 border-green-900 text-secondary rounded-3xl md:hidden"
+          className="flex gap-2 px-3 m-auto border-2 border-green-900 text-secondary rounded-3xl md:hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

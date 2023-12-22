@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -80,27 +80,41 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       }
       const res = await signIn("credentials", credentials)
       setFormValues({ email: "", password: "" })
-      // console.log("yash", res)
       if (res?.error) {
-        toast.error(JSON.parse(res?.error)?.message)
+        const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
+        const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
+        if (statusCode == 511 && emessage.includes("verified")) {
+          // toast.error("Email not verified")
+          // setVerifyMail(formValues.email)
+          // setVerifyModal(true)
+          setIsLoginModalOpen(false)
+          router.replace(
+            `/?verify=true&data=${formValues.email}&emessage=Email Not Verified`,
+            "/",
+            {
+              shallow: true,
+            }
+          )
+        } else {
+          toast.error(await JSON.parse(res?.error)?.message)
+        }
+        return
       } else {
         setIsLoginModalOpen(false)
         router.push("/")
       }
     } catch (error: Allow) {
       toast.error(error)
-
-      console.log(error)
     }
   }
 
   const userContext = useUserContext()
 
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault()
-    userContext.setIsLoginModalOpen(false)
-    router.push("/?verify=true")
-  }
+  // const handleVerify = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   userContext.setIsLoginModalOpen(false)
+  //   router.push("/?verify=true")
+  // }
   const handleForgot = async (e: React.FormEvent) => {
     e.preventDefault()
     userContext.setIsLoginModalOpen(false)
@@ -144,7 +158,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
               }}
             >
               <FacebookIcon className="" />
-              Sign up with Facebook
+              Sign in with Facebook
             </Button>
           </div>
           <div className="flex flex-row items-center justify-between w-full gap-4 mt-5">
@@ -202,7 +216,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             <SigninIcon className="" />
             Sign in
           </Button>
-          <div className=" text-secondary text-[14px] pt-4 cursor-pointer">
+          {/* <div className=" text-secondary text-[14px] pt-4 cursor-pointer">
             <div
               onClick={(e) => {
                 handleVerify(e)
@@ -210,7 +224,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             >
               Verify Email
             </div>
-          </div>
+          </div> */}
           {/* <div className='flex justify-between'>
                         <div className='py-4 text-secondary text-[14px]'>
                             <Link href={"hash"}>

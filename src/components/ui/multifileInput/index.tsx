@@ -120,10 +120,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
             </>
           ) : (
             <>
-              <div
-                className="p-5 text-[14] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dashed border-[0.1px]  border-gray-500 rounded-xl space-x-2"
-                style={{ zIndex: 16 }}
-              >
+              <div className="p-5 text-[14] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dashed border-[0.1px]  border-gray-500 rounded-xl space-x-2">
                 <label htmlFor="asset-preview" className="cursor-pointer w-fit">
                   {" "}
                   <Button className="p-2 pointer-events-none bg-secondary rounded-xl">

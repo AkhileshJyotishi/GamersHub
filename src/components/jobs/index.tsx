@@ -119,7 +119,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
                 <>
                   <div className="flex flex-col items-center w-full gap-20">
                     <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
                   </div>
                 </>
               }
@@ -150,7 +150,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
                 <>
                   <div className="flex flex-col items-center w-full gap-20">
                     <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
                   </div>
                 </>
               }
@@ -161,7 +161,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
+            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
               {myjob &&
                 myjob?.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />
@@ -173,7 +173,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
                 <>
                   <div className="flex flex-col items-center w-full gap-20">
                     <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
                   </div>
                 </>
               }

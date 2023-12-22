@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Head from "next/head"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
@@ -35,6 +36,9 @@ const Forgotpassword = () => {
   }
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub | Forgot</title>
+      </Head>
       <div className="w-full ">
         <h1 className="text-center text-[45px] font-[600]">Forgot your password?</h1>
       </div>

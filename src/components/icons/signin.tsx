@@ -8,7 +8,7 @@ function Icon({ className }: IconProps) {
   const style = `
     .cls-1 {
       fill: none;
-      stroke: #9AF6C1B3;
+      stroke: #00B87D;
       stroke-linecap: round;
       strokeLinejoin: round;
       stroke-width: 4px;
@@ -27,7 +27,6 @@ function Icon({ className }: IconProps) {
       <defs>
         <style>{style}</style>
       </defs>
-      <title>Asset 55</title>
       <g data-name="Layer 2">
         <g>
           <polyline className="cls-1" points="2 48.97 2 2 70.53 2 70.5 95.82 2 95.82 2 76.85" />

@@ -1,53 +1,68 @@
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
-import sample from "@/assets/image/user-banner.png"
+import sample from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
+import { shimmer, toBase64 } from "@/utils/functions"
 
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
 import GitHubIcon from "@/components/icons/github"
 import GlobeIcon from "@/components/icons/globe"
 import LinkedInIcon from "@/components/icons/linkedin"
-// import MailIcon from "@/components/icons/mail"
+import MailIcon from "@/components/icons/mail"
 import MapPinIcon from "@/components/icons/mappinicon"
+import PlusIcon from "@/components/icons/plus"
 // import PlusIcon from "@/components/icons/plus"
 import TwitterIcon from "@/components/icons/twitter"
 import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
-
+interface User {
+  id: number
+  createdAt: string
+  username: string
+  userDetails: {
+    country: string
+    city: string
+  }
+  _count: {
+    followers_users: number
+    following_users: number
+  }
+  add_on_web: Isocials
+  profileImage: string
+  socials: Isocials
+}
 interface Props {
-  // currentUser?: any
-  // authUser?: any
+  currentUser: User | null
+  authUser?: Allow
   className?: string
   isFollowing?: boolean
 }
 export default function ProfileAccordion({
-  // currentUser: _currentUser,
+  currentUser: _currentUser,
   // authUser: _authUser,
-  className, // isFollowing: _isFollowing,
+  className,
+  isFollowing: _isFollowing,
 }: Props) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const router = useRouter()
   const { userData } = useUserContext()
-  const formatLargeNumber = (number: number): string => {
-    if (number >= 1e9) {
-      return (number / 1e9).toFixed(1) + "b"
-    } else if (number >= 1e6) {
-      return (number / 1e6).toFixed(1) + "m"
-    } else if (number >= 1e3) {
-      return (number / 1e3).toFixed(1) + "k"
-    } else {
-      return number.toString()
-    }
-  }
+  const [authUser] = useState(userData)
+  const [isFollowing] = useState(_isFollowing)
+
   // const [currentUser] = useState(_currentUser)
 
-  const memberSince = new Date(userData?.createdAt as Date).toLocaleDateString("en-US", {
+  const memberSince = new Date(currentUser?.createdAt as string).toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
   })
 
+  useEffect(() => {
+    if (_currentUser) setCurrentUser(_currentUser)
+  }, [_currentUser])
   const ProfileAccordion = () => {
     return (
       <>
@@ -62,119 +77,195 @@ export default function ProfileAccordion({
               <Image
                 width={100}
                 height={100}
-                loading="lazy"
-                src={sample}
+                loading="eager"
+                src={currentUser?.profileImage || sample}
                 className="w-[100px] h-[100px] rounded-full"
                 alt={""}
+                priority
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               />
             </div>
-            <h1 className="text-xl font-bold">ahilesh</h1>
-            <span className="text-[14px] text-dull "> artist</span>
+            <div className="flex justify-center text-xl font-bold text-center">
+              <span>{currentUser?.username}</span>
+            </div>
+            {/* <span className="text-[14px] text-dull "> artist</span> */}
           </div>
-          {
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
+          {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
+            <span className="flex flex-row flex-wrap items-center gap-2 text-center">
+              <MapPinIcon className="h-5 mx-auto min-w-5" />
               <p>
-                {/* {AllCountries[currentUser?.country]} */}
-                llucknow india
+                {currentUser?.userDetails.city}
+                {"  , "} {currentUser?.userDetails.country}
               </p>
             </span>
-          }
-          {/* <div className=" text-[14px] text-dull w-[90%] p-3 ml-2">
-                        location
-                    </div> */}
-          <div className="flex justify-center w-[90%] py-2">
-            <Button
-              onClick={() => router.push("/settings/#softwares")}
-              variant="primary"
-              className="flex justify-center p-2 bg-secondary rounded-xl"
-            >
-              <span className="flex flex-row items-center gap-2">
-                <EditIcon className="w-5 h-5 text-user_interface_7" />
-                <p className="text-text whitespace-nowrap">Edit profile</p>
-              </span>
-            </Button>
+          )}
+          {/* About section end */}
+
+          {/* Action Button */}
+          <div className="flex flex-col items-center w-full gap-4 p-3 mt-6 text-text">
+            {currentUser?.id === authUser?.id ? (
+              <>
+                <Button
+                  onClick={() => router.push("/settings")}
+                  variant="primary"
+                  className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                >
+                  <span className="flex flex-row items-center gap-2">
+                    <EditIcon className="w-5 h-5 text-user_interface_7" />
+                    <p className="text-text whitespace-nowrap">Edit profile</p>
+                  </span>
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                >
+                  <span className="flex flex-row items-center gap-2">
+                    {/* <ViewIcon className="w-4 h-4 text-user_interface_7" /> */}
+                    <p className="whitespace-nowrap">View resume</p>
+                  </span>
+                </Button>
+              </>
+            ) : (
+              <>
+                {!isFollowing && (
+                  <Button
+                    variant="primary"
+                    className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                  >
+                    <span className="flex flex-row items-center gap-2">
+                      <PlusIcon className="w-[28px] text-user_interface_7 h-[28px] m-[-0.7rem]" />
+                      <p className="text-text whitespace-nowrap">Follow</p>
+                    </span>
+                  </Button>
+                )}
+
+                {isFollowing && (
+                  <Button
+                    //   onClick={unFollow}
+                    variant="primary"
+                    className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                  >
+                    <span className="flex flex-row items-center gap-2">
+                      <PlusIcon className="w-[28px] rotate-[45deg] text-user_interface_7 h-[28px] m-[-0.7rem]" />
+                      <p className="text-user_interface_7">UnFollow</p>
+                    </span>
+                  </Button>
+                )}
+                <Button
+                  // onClick={onMessageClick}
+                  variant="primary"
+                  className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                >
+                  <span className="flex flex-row items-center gap-2">
+                    <MailIcon className="w-[18px] h-[18px]" fill="#fff" />
+                    <p className="">Message</p>
+                  </span>
+                </Button>
+              </>
+            )}
           </div>
-          <div className="flex justify-around w-[90%]  flex-end text-dull gap-1">
+          <div className="flex justify-around w-[90%]  flex-end text-dull gap-1 flex-wrap gap-y-2">
             <div className="flex flex-row py-1 text-center break-words">
               <div>
-                {formatLargeNumber(1)} <br />
-                followers
+                {/* {formatLargeNumber(1)} <br /> */}
+                <span>Following:</span>
+                {currentUser?._count?.followers_users}
               </div>
             </div>
-            <div className="py-1 text-center">
-              {formatLargeNumber(20000000000)}
-              <br />
-              followers
+            <div className="flex flex-row gap-2 py-1 text-center break-words">
+              <span>Following:</span>
+              <span>{currentUser?._count?.following_users} </span>
             </div>
           </div>
-          {
+          {/* ==== On the web ==== */}
+          {currentUser?.socials && (
             <div className="flex flex-col w-full mt-10">
               <div className="flex flex-wrap justify-center mt-5 gap-7">
-                {
-                  <Link title="Facebook" target="_blank" href={"currentUser?.add_on_web?.facebook"}>
-                    <FaceBookIcon className="w-6 h-6" />
-                  </Link>
-                }
+                <h3 className="mx-auto mb-4 font-semibold">ON THE WEB</h3>
+                <div className="flex flex-wrap justify-center gap-8 mt-5">
+                  {currentUser?.socials?.facebook && (
+                    <Link
+                      title="Facebook"
+                      target="_blank"
+                      href={currentUser?.socials?.facebook || ""}
+                    >
+                      <FaceBookIcon className="w-6 h-6" />
+                    </Link>
+                  )}
 
-                {
-                  <Link
-                    title="Linked In"
-                    target="_blank"
-                    href={"currentUser?.add_on_web?.linkedin"}
-                  >
-                    <LinkedInIcon className="w-6 h-6" />
-                  </Link>
-                }
+                  {currentUser?.socials?.linkedin && (
+                    <Link
+                      title="Linked In"
+                      target="_blank"
+                      href={currentUser?.socials?.linkedin || ""}
+                    >
+                      <LinkedInIcon className="w-6 h-6" />
+                    </Link>
+                  )}
 
-                {
-                  <Link title="Twitter" target="_blank" href={"currentUser?.add_on_web?.twitter"}>
-                    <TwitterIcon className="w-6 h-6" />
-                  </Link>
-                }
-                {
-                  <Link
-                    title="Artstation"
-                    target="_blank"
-                    href={"currentUser?.add_on_web?.artstation"}
-                  >
-                    <Image
-                      src="/assets/icons/artstation.svg"
-                      alt=""
-                      width={50}
-                      height={50}
-                      className="w-10 h-10 mt-[-0.5rem] "
-                    />
-                  </Link>
-                }
+                  {currentUser?.socials?.twitter && (
+                    <Link
+                      title="Twitter"
+                      target="_blank"
+                      href={currentUser?.socials?.twitter || ""}
+                    >
+                      <TwitterIcon className="w-6 h-6" />
+                    </Link>
+                  )}
 
-                {
-                  <Link title="Github" target="_blank" href={"currentUser?.add_on_web?.github"}>
-                    <GitHubIcon className="w-6 h-6" />
-                  </Link>
-                }
-                {
-                  <Link title="YouTube" target="_blank" href={"currentUser?.add_on_web?.youtube"}>
-                    <YoutubeIcon className="w-6 h-6" />
-                  </Link>
-                }
-                {
-                  <Link
-                    title="Personal Website"
-                    target="_blank"
-                    href={"currentUser?.add_on_web?.personal_website"}
-                  >
-                    <GlobeIcon className="w-6 h-6 text-secondary_2" />
-                  </Link>
-                }
+                  {currentUser?.socials?.artstation && (
+                    <Link
+                      title="Artstation"
+                      target="_blank"
+                      href={"currentUser?.add_on_web?.artstation"}
+                    >
+                      <Image
+                        src="/assets/icons/artstation.svg"
+                        alt=""
+                        width={50}
+                        height={50}
+                        className="w-10 h-10 mt-[-0.5rem] "
+                      />
+                    </Link>
+                  )}
+
+                  {currentUser?.socials?.github && (
+                    <Link title="Github" target="_blank" href={currentUser?.socials?.github || ""}>
+                      <GitHubIcon className="w-6 h-6" />
+                    </Link>
+                  )}
+                  {currentUser?.socials?.youtube && (
+                    <Link
+                      title="YouTube"
+                      target="_blank"
+                      href={currentUser?.socials?.youtube || ""}
+                    >
+                      <YoutubeIcon className="w-6 h-6" />
+                    </Link>
+                  )}
+                  {currentUser?.socials?.portfolio && (
+                    <Link
+                      title="Personal Website"
+                      target="_blank"
+                      href={currentUser?.socials?.portfolio || ""}
+                    >
+                      <GlobeIcon className="w-6 h-6 text-secondary_2" />
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-          }
+          )}
 
+          {/* Report section*/}
           <div className="flex flex-col items-center text-center w-full mt-[50px] text-text_dull gap-2">
-            <h5>MEMBER SINCE {memberSince.replace(" ", ",")}</h5>
+            <h6>MEMBER SINCE {memberSince}</h6>
             <span className="flex flex-row gap-2">
-              <Link href={"#"}>Report</Link>|<Link href={"#"}>Block</Link>
+              <Link href={"#"} className="text-red-500">
+                Report
+              </Link>
+              {"   "}
             </span>
           </div>
         </div>

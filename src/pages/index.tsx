@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
+import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import Filter from "@/components/filter/mainfilter/filter"
@@ -22,9 +24,8 @@ import Modal from "@/components/ui/modal"
 const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
-  const { logout, verify, message, emessage } = router.query
-  const [verifyModal, setVerifyModal] = useState(false)
-
+  const { logout, verify, message, emessage, data } = router.query
+  const { verifyMail, verifyModal, setVerifyMail, setVerifyModal } = useUserContext()
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
 
@@ -48,15 +49,19 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
       toast.error(emessage)
     }
+    if (data) {
+      setVerifyMail((data as string) ?? "")
+    }
   }, [verify, logout, router])
-  const [mail, setMail] = useState<string>("")
 
   const verifyEmail = async () => {
     const res = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
-      email: mail,
+      email: verifyMail,
     })
+    setVerifyMail("")
+    setVerifyModal(false)
     if (res?.error) {
-      toast.error(res.message)
+      toast.error((res.error?.response?.data?.message || "Request failed") ?? res?.message)
       return
     }
     toast.success(res?.message)
@@ -64,6 +69,9 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Home</title>
+      </Head>
       <Modal isOpen={verifyModal} onClose={() => setVerifyModal(false)} className="">
         <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
           <div
@@ -75,10 +83,10 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           <div className="flex justify-center w-full h-[25px] relative">
             <Image
               src={logo}
-              width={200}
+              // width={200}
               height={25}
               alt="Game Creators Hub"
-              className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5 mx-auto"
+              className="mx-auto xl:absolute left-5"
             />
           </div>
           <Filter
@@ -86,8 +94,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
             inputType={"text"}
             title={"Verify your Email"}
             placeholder={""}
-            value={mail}
-            onChange={(value) => setMail(value as string)}
+            value={verifyMail}
+            onChange={(value) => setVerifyMail(value as string)}
             className={"bg-transparent rounded-md"}
             Variant="flex flex-col items-start gap-[10px] text-[14px] "
           />

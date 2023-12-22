@@ -1,6 +1,7 @@
 import React from "react"
 // import axios from "axios"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 // import Error from "next/error"
 // import { Session } from "next-auth"
 import { toast } from "react-toastify"
@@ -17,6 +18,9 @@ const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
 
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub | Settings</title>
+      </Head>
       <SettingsPage settingsDetails={settingsDetails} />
     </>
   )

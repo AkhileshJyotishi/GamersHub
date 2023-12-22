@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import { toast } from "react-toastify"
 
 import { getSession } from "@/lib/auth"
@@ -11,6 +12,9 @@ const index = ({ profileData }: { profileData: BackendJob }) => {
   // console.log("prifle data ti is ", profileData)
   return (
     <>
+      <Head>
+        <title>Jobs | {profileData.title || ""}</title>
+      </Head>
       <Particularpage profileData={profileData} />
     </>
   )

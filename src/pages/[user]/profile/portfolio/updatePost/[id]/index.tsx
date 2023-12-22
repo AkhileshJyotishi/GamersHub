@@ -21,7 +21,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   let albums
   let post
   // query;
-  console.log("user query  ", query)
   if (session) {
     albums = await fetchWithoutAuthorization(`/v1/album/user/${query.user}`, "GET")
     post = await fetchWithoutAuthorization(`/v1/post/${query.id}`, "GET")

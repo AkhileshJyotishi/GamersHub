@@ -12,6 +12,9 @@ import Layout from "@/components/creatPorfolio/layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
 })
 
 // import { Editor } from "novel";
@@ -58,6 +61,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
+    formdata.append("type", "portfolio")
+
     if (filtersState.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -85,6 +90,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         filtersState
       )
     } else {
+      console.log("creating post ")
       method = "POST"
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
@@ -111,6 +117,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
           className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}
           editable={true}
           storageKey="noval__content"
+          defaultValue={{}}
         />
       </div>
     </Layout>

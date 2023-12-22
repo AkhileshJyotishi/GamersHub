@@ -7,6 +7,7 @@ interface FileInputProps {
   preview?: boolean
   value?: string | null
   errorMessage?: string | null
+  fullScreen?: boolean
 }
 
 import React, { useRef, useState } from "react"
@@ -27,6 +28,7 @@ const FileFilter: React.FC<FileInputProps> = ({
   // preview,
   value,
   errorMessage,
+  fullScreen = true,
 }) => {
   const [filePreview, setFilePreview] = useState<string | null>(value || null)
   const [, setFileType] = useState<string | null>(null)
@@ -132,11 +134,13 @@ const FileFilter: React.FC<FileInputProps> = ({
                 ref={imageRef}
                 placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               />
-              <div className="absolute top-0 right-0 flex p-1 space-x-2">
-                <Button onClick={handleFullscreen}>
-                  <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
-                </Button>
-              </div>
+              {fullScreen && (
+                <div className="absolute top-0 right-0 flex p-1 space-x-2">
+                  <Button onClick={handleFullscreen}>
+                    <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
+                  </Button>
+                </div>
+              )}
             </div>
           </>
         )}

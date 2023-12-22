@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 import { fetchFile } from "@/utils/functions"
 
 import UploadIcon from "@/components/icons/upload"
@@ -25,25 +25,19 @@ const BannerImage = ({
   const { data: session } = useSession()
   const { userData, setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
-  // useEffect(()=>{
-  //   if(img!==undefined){
-  //   console.log("banner image is serting")
-
-  // }
-  // },[img])
 
   const [bannerImageLink, setBannerImageLink] = useState<string | undefined>(bannerImage)
-  // const ref=useRef()
   const uploadBanner = async () => {
     const formdata = new FormData()
     formdata.append("file", img as Blob)
+    formdata.append("type", "user")
+    toast.info("Uploading new Banner...")
     const isuploaded = await fetchFile(
       "/v1/upload/file",
       session?.user?.name as string,
       "POST",
       formdata
     )
-    // if(isuploaded?.error) toast.error(isuploaded.message)
     if (isuploaded?.error) {
       toast.error(isuploaded.error)
       return
@@ -63,12 +57,7 @@ const BannerImage = ({
       // @ts-ignore
       setuserData((prev) => ({ ...prev, bannerImage: isuploaded?.data.image.Location }))
       toast.success(data?.message)
-      // setSaved(!saved)
     }
-
-    // v1/users/${userid}
-    // console.log("is uploaded", isuploaded);
-    // newAlbum.banner = isuploaded?.data.image.Location;
   }
   return (
     <div className={"group relative w-full h-[15vh]" + className}>
@@ -77,9 +66,11 @@ const BannerImage = ({
           alt=""
           width={1500}
           height={800}
-          loading="lazy"
+          loading="eager"
           className="absolute w-full h-[18vh] object-cover "
           src={bannerImageLink || defaultbannerImage}
+          priority
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
         <div className="absolute top-0 w-full h-full bg-top bg-no-repeat rounded-xl">
           <div
@@ -113,7 +104,7 @@ const BannerImage = ({
                     <>
                       {img ? (
                         <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
+                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-8 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
                             <Button
                               variant="primary"
                               className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
@@ -154,7 +145,7 @@ const BannerImage = ({
                         </>
                       ) : (
                         <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
+                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:-translate-y-8 group-hover:opacity-100">
                             <Button
                               variant="primary"
                               className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "

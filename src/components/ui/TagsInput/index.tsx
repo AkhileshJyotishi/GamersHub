@@ -31,7 +31,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
     const inputText = e.target.value
     setInputValue(inputText)
     let matchedTags: string[] = []
-    console.log("predefinedTags ", predefinedTags)
     if (predefinedTags.length > 0) {
       matchedTags = predefinedTags.filter((tag) =>
         tag.toLowerCase().includes(inputText.toLowerCase().trim())
@@ -44,7 +43,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
   const addTag = (tagText?: string) => {
     if (tagText) {
       onTagsChange([...tags, tagText])
-      console.log(tags)
       setTags((tags) => [...tags, tagText])
       setInputValue("")
       setSuggestions([])

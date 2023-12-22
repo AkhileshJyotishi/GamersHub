@@ -115,13 +115,14 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     // delete addOnWeb.userId;
 
     if (hasDataChanged) {
+      toast.info("Uploading Profiles... ")
       const changeSocials = await fetchData(
         `/v1/users/socials`,
         session?.user?.name as string,
         "PATCH",
         addOnWeb
       )
-
+      toast.dismiss()
       if (changeSocials?.error) {
         toast.error(changeSocials.message)
       } else {

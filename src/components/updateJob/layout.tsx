@@ -185,7 +185,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     },
     {
       inputType: "file",
-      title: "Game Cover",
+      title: "Job Cover",
       accept: "image/*",
       multiple: false,
       value: jobInfo.banner as string,
@@ -249,6 +249,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
               let hide = false
               ;(filter.title == "City" || filter.title == "Country") &&
                 jobInfo.remote &&
+                (hide = true)
+              filter.title == "Payment Amount" &&
+                jobInfo.paymentType == "NEGOTIABLE" &&
                 (hide = true)
 
               return (

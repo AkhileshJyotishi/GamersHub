@@ -13,6 +13,9 @@ import Layout from "./layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
 })
 
 const CreateJob: React.FC = () => {
@@ -59,6 +62,7 @@ const CreateJob: React.FC = () => {
     localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
+    formdata.append("type", "jobs")
     if (jobInfo.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -124,18 +128,20 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
             editable={true}
             storageKey="noval__content2"
+            defaultValue={{}}
           />
         </>
 
         <>
           <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl "}
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
             editable={true}
             storageKey="noval__content1"
+            defaultValue={{}}
           />
         </>
       </div>

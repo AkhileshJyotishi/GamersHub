@@ -64,7 +64,7 @@ const TextInput: React.FC<Props> = ({
         ></textarea>
       )}
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        <span className="p-1 text-accent_red text-[12px]">{errorMessage}</span>
       ) : (
         <></>
       )}

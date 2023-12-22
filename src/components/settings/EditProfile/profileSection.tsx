@@ -14,13 +14,14 @@ interface ProfileSectionProps {
     userBio: string | null | undefined
     country: string | null | undefined
     city: string | null | undefined
-    userSkills: IuserSkill[]
-    userSoftwares: IuserSoftware[] | undefined
+    userSkills: IuserSkill[] | string[] | undefined
+    userSoftwares: IuserSoftware[] | undefined | string[]
     profileImage: string | undefined
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
   isProfileDataFilled: boolean
+  setProfileFilled: Allow
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
@@ -28,21 +29,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   // onFieldChange,
   profileArray,
   isProfileDataFilled,
+  setProfileFilled,
 }) => {
   const { data: session } = useSession()
+  // console.log(profileArray)
   return (
     <>
-      {/* <h1 className="bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center">
-        Profile
-      </h1> */}
-      {/* <Image
-            width={300}
-            height={300}
-            loading="lazy"
-            src={currentUser?.profileImage || "https://picsum.photos/id/250/900/900"}
-            className="w-[150px] h-[150px] rounded-full border-2 border-light"
-            alt={""}
-          /> */}
       {profileArray?.map((filter, index) => (
         <>
           <div
@@ -61,6 +53,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               className={` ${filter.className || ""}`}
               Variant={"flex-col  w-full flex "}
               initialtags={filter.initialtags}
+              onTagsChange={filter.onTagsChange}
             />
           </div>
         </>
@@ -75,10 +68,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             if (isProfileDataFilled) {
               method = "PATCH"
             }
-            uploadProfileData(profileData, session?.user?.name as string, method)
+            uploadProfileData(profileData, session?.user?.name as string, method, setProfileFilled)
           }}
         >
-          upload
+          {isProfileDataFilled ? "Update" : "Upload"}
         </Button>
       </div>
     </>

@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
+import defaultbannerImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
 import EditIcon from "@/components/icons/editIcon"
@@ -69,7 +70,7 @@ export default function ProfileCard({
     <>
       <div
         className={
-          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[900px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] " +
+          "bg-user_interface_2 flex flex-col items-center px-[18px]  lg:w-[22vw] md:w-[23vw] md:min-h-[676px] py-8 w-full rounded-xl h-[85vh] sticky top-[80px] overflow-y-scroll " +
           className
         }
       >
@@ -78,27 +79,22 @@ export default function ProfileCard({
           <Image
             width={300}
             height={300}
-            loading="lazy"
-            src={currentUser?.profileImage || "https://picsum.photos/id/250/900/900"}
+            loading="eager"
+            src={currentUser?.profileImage || defaultbannerImage}
             className="w-[150px] h-[150px] rounded-full border-2 border-light"
             alt={""}
           />
-          <p className="text-2xl font-semibold text-center break-all ">
-            {currentUser?.username || "name"}
+          <p className="text-2xl font-semibold text-center break-words ">
+            {currentUser?.username || "User"}
           </p>
           {/* <h3 className="break-all text-dull">{currentUser?.occupation}</h3> */}
-          {currentUser?.userDetails?.country && currentUser?.userDetails?.city ? (
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
-              <p>
+          {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
+            <span className="flex flex-row flex-wrap items-center justify-center gap-2 break-words">
+              <MapPinIcon className="h-5 min-w-5" />
+              <p className="text-center">
                 {currentUser?.userDetails.city}
                 {"  , "} {currentUser?.userDetails.country}
               </p>
-            </span>
-          ) : (
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
-              llucknow india
             </span>
           )}
         </div>

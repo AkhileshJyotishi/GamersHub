@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultProfileImage from "@/assets/image/user-profile.svg"
 import { shimmer, toBase64 } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
@@ -29,7 +30,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           className={
             "w-[60px] h-[60px] md:w-[60px] md:h-[60px] object-cover rounded-full  border-[2px] absolute top-[80%]"
           }
-          src={profileImage || defaultbannerImage}
+          src={profileImage || defaultProfileImage}
           alt={" "}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
@@ -58,7 +59,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
       {
         <div className="flex flex-col items-start gap-3 p-3 min-h-[100px]">
           <h3 className="text-[18px] font-semibold ">Bio</h3>
-          {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
+          {userDetails?.userBio ? (
             <>
               <p className=" line-clamp-3">{userDetails?.userBio}</p>
             </>
@@ -72,7 +73,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         <div className="flex flex-col items-start gap-3 p-3">
           <h3 className="text-[18px] font-semibold ">Skills</h3>
           <div className="flex flex-wrap gap-[10px] ">
-            {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
+            {userDetails?.userSkills?.length && userDetails?.userSkills?.length > 0 ? (
               <>
                 {userDetails?.userSkills?.map((skill, idx) => (
                   <SecondaryTag name={skill?.skill ?? ""} key={idx} />

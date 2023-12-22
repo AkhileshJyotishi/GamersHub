@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { getSession } from "@/lib/auth"
 import { fetchWithoutAuthorization } from "@/utils/functions"
@@ -9,6 +10,9 @@ import CreatePortfolio from "@/components/creatPorfolio"
 const index = ({ albums }: { albums: Allow }) => {
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub | CreatePost</title>
+      </Head>
       <CreatePortfolio albums={albums} />
     </>
   )

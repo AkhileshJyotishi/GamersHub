@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { BackendGame } from "@/interface/games"
 import { getSession } from "@/lib/auth"
@@ -10,6 +11,9 @@ import GamesPage from "@/components/games"
 const Games = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame[] }) => {
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Games</title>
+      </Head>
       <GamesPage gameDetails={parsedgamesDetails} />
     </>
   )

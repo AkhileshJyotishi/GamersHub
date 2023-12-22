@@ -56,7 +56,7 @@ export const MenuToggle: React.FC<MenuToggleProps> = () => {
     // </Button>
 
     <Button
-      className="relative flex flex-col gap-1 mt-1 cursor-pointer "
+      className="relative flex flex-col gap-1 p-4 mt-1 cursor-pointer"
       onClick={() => {
         setTap(!tap)
         toggleOpen()

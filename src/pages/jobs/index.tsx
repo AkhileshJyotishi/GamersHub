@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
@@ -10,6 +11,9 @@ import JobsPage from "@/components/jobs"
 const Jobs = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Jobs</title>
+      </Head>
       <JobsPage jobs={jobs} />
     </>
   )

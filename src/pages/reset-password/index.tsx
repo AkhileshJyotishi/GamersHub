@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -10,6 +11,7 @@ import TextInput from "@/components/ui/textInput"
 const ResetPassword = () => {
   const [formValues, setFormValues] = useState({
     password: "",
+    cpassword: "",
   })
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -20,6 +22,10 @@ const ResetPassword = () => {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (formValues.password != formValues.cpassword) {
+      setErrors("Passwords do not match")
+      return
+    }
     if (
       formValues.password.length < 8 ||
       !/[A-Z]/.test(formValues.password) ||
@@ -48,6 +54,9 @@ const ResetPassword = () => {
 
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub | Reset</title>
+      </Head>
       <div className="w-full ">
         <h1 className="text-center text-[45px] font-[600]">Reset password</h1>
       </div>
@@ -63,6 +72,20 @@ const ResetPassword = () => {
                 className="mt-2 tracking-wider bg-transparent rounded-md"
                 value={formValues.password}
                 name="password"
+                placeholder="****"
+              />
+            </label>
+          </div>
+          <div className="mt-2">
+            <label>
+              <div className="text-[14px]">Confirm Password</div>
+              <TextInput
+                type="password"
+                onChange={handleChange}
+                // className="bg-[#101014] mt-2"
+                className="mt-2 tracking-wider bg-transparent rounded-md"
+                value={formValues.cpassword}
+                name="cpassword"
                 placeholder="****"
               />
             </label>

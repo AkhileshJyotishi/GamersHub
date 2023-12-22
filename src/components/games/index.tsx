@@ -111,7 +111,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
                       width={2060}
                       height={2060}
                       alt={""}
-                      className="w-[400px]"
+                      className="w-[200px]"
                       src={image}
                       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                     />
@@ -143,7 +143,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
                 <>
                   <div className="flex flex-col items-center w-full gap-20">
                     <h3 className="text-3xl font-bold">No Games yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[400px]" src={image} />
+                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
                   </div>
                 </>
               }
@@ -177,7 +177,7 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
                         width={2060}
                         height={2060}
                         alt={""}
-                        className="w-[400px]"
+                        className="w-[200px]"
                         src={image}
                       />
                     </div>

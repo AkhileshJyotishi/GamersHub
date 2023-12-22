@@ -1,17 +1,19 @@
 import { useState } from "react"
+import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 import showPassword from "@/assets/svg/view-white.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import FacebookIcon from "@/components/icons/facebook"
 import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
+import { InfoTag } from "@/components/ui/Info"
 import TextInput from "@/components/ui/textInput"
 interface FormErrors {
   username: string
@@ -44,23 +46,31 @@ export default function SignUpPage() {
         setErrors(newErrors)
         return
       }
+      toast.info("Signing Up...")
       const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
         ...formValues,
       })
       if (res?.error) {
+        toast.dismiss()
         toast.error(res.error?.response?.data?.message || res.message)
       } else {
+        toast.dismiss()
+        toast.info("Sending Mail...")
         const ress = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
           email: formValues.email,
         })
         if (ress?.error) {
-          router.replace(`/?verify=true&message=Registration successfull`, undefined, {
-            shallow: true,
-          })
+          router.replace(
+            `/?verify=true&data=${formValues.email}&message=Registration successfull`,
+            "/",
+            {
+              shallow: true,
+            }
+          )
           return
         }
         setFormValues({ username: "", email: "", password: "" })
-        router.replace("/?message=Verification mail sent", undefined, { shallow: true })
+        router.replace("/?message=Verification mail sent", "/", { shallow: true })
       }
       // try {
       //   const res = await fetch("/v1//register", {
@@ -120,10 +130,13 @@ export default function SignUpPage() {
 
     return (
       <>
+        <Head>
+          <title>GameCreatorsHub | SignUp</title>
+        </Head>
         <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-3  flex-col items-start mt-12 lg:w-[40rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto my-10 rounded-xl">
           {/* <p>Step  1 of 2</p> */}
-          <div className="flex flex-col w-full p-[20px]">
-            <h3 className="flex flex-row self-end gap-2 mb-2 tracking-normal text-shaded">
+          <div className="flex flex-col w-full p-[20px] ">
+            <h3 className="flex flex-row flex-wrap self-end gap-2 mb-2 tracking-normal text-shaded">
               Already have an account?
               <Link className="text-secondary" href="/auth/login">
                 Sign in
@@ -182,6 +195,7 @@ export default function SignUpPage() {
                 className="absolute right-[1rem] w-4 cursor-pointer"
               />
             </div>
+            <InfoTag />
 
             {/* <div className="my-2 mt-6">*Confirm Password</div>
             <div className="relative flex flex-row items-center">
@@ -209,34 +223,34 @@ export default function SignUpPage() {
 
             <Button
               type="submit"
-              variant="primary"
+              // variant="primary"
               className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
             >
               Create account
             </Button>
             <div className="text-shaded">
               or signup with
-              <div className="flex justify-around gap-[16px] mt-3">
+              <div className="flex justify-around sm:flex-row gap-1 min-[400px]:gap-[16px] mt-3">
                 <Button
                   type="button"
-                  className="inline-flex items-center px-5 mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
+                  className="inline-flex items-center px-3 mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
                   onClick={() => {
                     signIn("google", { callbackUrl: "/" })
                   }}
                 >
                   <GoogleIcon className="" />
-                  Sign up with Google
+                  Google
                 </Button>
 
                 <Button
                   type="button"
-                  className="inline-flex items-center px-5 mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
+                  className="inline-flex py-2 items-center px-3 mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 rounded-xl"
                   onClick={() => {
                     signIn("facebook", { callbackUrl: "/" })
                   }}
                 >
                   <FacebookIcon className="" />
-                  Sign up with Facebook
+                  Facebook
                 </Button>
               </div>
             </div>

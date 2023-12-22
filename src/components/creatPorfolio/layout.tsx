@@ -188,7 +188,6 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Keyword Tags",
       onTagsChange: (value) => {
         handleInputChange("postKeywords", value)
-        console.log("keywords  ", value)
       },
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
@@ -245,15 +244,14 @@ const Layout: React.FC<LayoutProps> = ({
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
-                // disabled={}
                 onClick={() => {
                   const hasErrors = Object.values(errors).some((error) => error !== null)
-
                   if (hasErrors) {
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return
                   } else {
+                    // console.log("first")
                     uploadPost()
                   }
                 }}
@@ -262,7 +260,7 @@ const Layout: React.FC<LayoutProps> = ({
               </Button>
             </div>
 
-            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex">
               {filterDetails?.map((filter, index) => (
                 <Filter
                   key={index}

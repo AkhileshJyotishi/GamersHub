@@ -1,14 +1,15 @@
 import React from "react"
 import clsx from "clsx"
 
+import spinner from "@/assets/svg/spinner.svg"
+
 import JobPageHeader from "./jobPageHeader"
 import Jobsection from "./jobsection"
-
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
   if (!profileData) {
     // Handle the case when profileData is undefined
-    return <div>Loading...</div> // or any other handling mechanism
+    return <div>{spinner}</div> // or any other handling mechanism
   }
 
   const { title, city, banner, country, user, userId, ...profileDataJobSection } = profileData
@@ -16,12 +17,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
   return (
     <>
       <div
-        className={clsx(
-          "absolute w-full ",
-          ` bg-cover  bg-no-repeat bg-top`,
-          "h-[490px]",
-          banner && banner
-        )}
+        className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}
         style={{ backgroundImage: `url(${banner})` }}
       >
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>

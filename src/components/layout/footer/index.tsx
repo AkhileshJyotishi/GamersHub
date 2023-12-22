@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import logo from "@/assets/image/logo-with-text.png"
+import logo from "@/assets/image/logo-with-text.svg"
 
 interface SocialLinkProps {
   href: string
@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
   return (
     <>
       <footer
-        className="relative z-10 pt-16 wow fadeInUp bg-primary bg-opacity-5 md:pt-20 lg:pt-24"
+        className="pt-16  wow fadeInUp bg-primary bg-opacity-5 md:pt-20 lg:pt-24"
         data-wow-delay=".1s"
       >
         <div className="container mx-auto">
@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
         <div className="py-8 bg-primary/10">
           <div className="container mx-auto">
             <p className="text-base text-center text-body-color ">
-              COPYRIGHT © 2023 InsuraHub. All Rights Reserved
+              COPYRIGHT © 2023 GAMECREATORSHUB. All Rights Reserved
             </p>
           </div>
         </div>

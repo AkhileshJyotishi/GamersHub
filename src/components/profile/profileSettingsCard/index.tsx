@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 import { shimmer, toBase64 } from "@/utils/functions"
 
@@ -43,7 +44,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
           height={100}
           alt={""}
           className="w-[92px] h-[92px] rounded-full absolute bottom-[-50%] object-cover border-solid border-[2px] border-[#D9D9D9]"
-          src={userData?.profileImage ?? ""}
+          src={userData?.profileImage ?? defaultUserImage}
           // placeholder="blur"
           priority
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
@@ -60,7 +61,7 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
         </div>
         <Button
           onClick={() => router.replace(`/${newuserData?.id}/profile/albums`)}
-          className="text-center rounded-xl  text-user_interface_3 py-[15px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
+          className="text-center rounded-xl  text-text py-[15px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
         >
           View Profile
         </Button>

@@ -54,35 +54,30 @@ const EditProfilePage = ({
   }
 
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
-
-  const [profileData, setprofileData] = useState({
+  // console.log(profileDetails)
+  const initProfile = {
     userBio: profileDetails?.userBio,
     country: profileDetails?.country,
     city: profileDetails?.city,
-    userSkills: profileDetails?.userSkills,
-    userSoftwares: profileDetails?.userSoftwares,
+    // userSkills: profileDetails?.userSkills,
+    userSkills: profileDetails?.userSkills
+      ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
+      : undefined,
+    userSoftwares:
+      profileDetails?.userSoftwares && profileDetails?.userSoftwares.length > 0
+        ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
+        : undefined,
     profileImage: profileDetails?.user?.profileImage,
-  })
-  let isProfileDataFilled = Object.values(profileData).some(
-    (value) => value !== null && value !== undefined && value !== ""
-  )
-  if (
-    profileData.profileImage !== "" ||
-    profileData.profileImage !== undefined ||
-    profileData.profileImage !== null
-  ) {
-    if (
-      profileData.userBio ||
-      profileData.country ||
-      profileData.city ||
-      (profileData.userSkills && profileData.userSkills.length > 0) ||
-      (profileData.userSoftwares && profileData.userSoftwares?.length)
-    ) {
-      isProfileDataFilled = true
-    } else {
-      isProfileDataFilled = false
-    }
   }
+  const [profileData, setprofileData] = useState(initProfile)
+  // console.log(initProfile)
+
+  const isProfileDataFilled = Object.values(initProfile).some((value) => {
+    // console.log("value  ", value)
+    return value !== null && value !== undefined && value !== "" && value
+  })
+  const [filled, setFilled] = useState(isProfileDataFilled)
+  // const filled = isProfileDataFilled
 
   // console.log("isProfileDataFilled  ", isProfileDataFilled)
 
@@ -309,8 +304,6 @@ const EditProfilePage = ({
     label: tag,
     value: tag,
   }))
-  console.log("allsoftware", allSoftwares)
-  console.log("allsoftware", allSkills)
   // console.log(predefinedSoftwareTagsAsSelectOptions)
 
   const handleSoftwareTagsChange = (tags: string[]) => {
@@ -625,7 +618,8 @@ const EditProfilePage = ({
           <ProfileSection
             profileArray={profileArray}
             profileData={profileData}
-            isProfileDataFilled={isProfileDataFilled}
+            isProfileDataFilled={filled}
+            setProfileFilled={setFilled}
           />
         )}
         {activeTab == "Experience" && (
@@ -777,7 +771,7 @@ const EditProfilePage = ({
                   }
                   onClick={() => addEducation()}
                 >
-                  add education
+                  Add education
                 </Button>
               </>
             )}

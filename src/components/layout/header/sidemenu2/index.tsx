@@ -16,8 +16,7 @@ const sidebar = {
     clipPath: `circle(${height * 2 + 200}px at 97vw 3vh)`,
     transition: {
       type: "spring",
-      stiffness: 20,
-      restDelta: 2,
+      stiffness: 7,
     },
   }),
   closed: {
@@ -60,7 +59,7 @@ export const Example = () => {
           custom={height | 100}
           ref={containerRef}
           className={clsx(styles.nav, styles["mobile-nav"])}
-          style={{ zIndex: 18 }}
+          style={{ zIndex: 20 }}
         >
           <motion.div className={styles.background} variants={sidebar} />
           <Navigation />
