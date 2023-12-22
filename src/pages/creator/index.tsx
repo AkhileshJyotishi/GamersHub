@@ -5,10 +5,14 @@ import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreatorsPage from "@/components/creators"
+import Head from "next/head"
 
 const Creators = ({ users }: { users: Creator[] }) => {
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Creators</title>
+      </Head>
       <CreatorsPage creatorsData={users} />
     </>
   )

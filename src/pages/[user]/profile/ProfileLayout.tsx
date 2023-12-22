@@ -17,6 +17,7 @@ import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
 import ProfileCard from "./profileCard"
+import Head from "next/head"
 
 interface User {
   id: number
@@ -144,83 +145,93 @@ const ProfileLayout = ({
     // console.log(albumData)
   }
   if (loading) {
-    return <>loading...</>
+    return <>
+      <Head>
+        <title>Profile | {data?.username}</title>
+      </Head>
+      loading...
+    </>
   } else {
     // console.log("why this user not coming  ", data)
     return (
-      <div className="flex flex-col gap-5 p-5 lg:flex-row">
-        <ProfileCard className="hidden lg:block" currentUser={data} />
-        <Modal isOpen={isCreateAlbumOpen} onClose={() => setisCreateAlbumOpen(false)} className="">
-          <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
-            <div
-              className="relative flex w-full bg-transparent rounded-md h-[19px]"
-              onClick={() => setisCreateAlbumOpen(false)}
-            >
-              <CloseIcon className="absolute right-0 cursor-pointer fill-light hover:fill-secondary flex-end" />
+      <>
+        <Head>
+          <title>Profile | {data?.username}</title>
+        </Head>
+        <div className="flex flex-col gap-5 p-5 lg:flex-row">
+          <ProfileCard className="hidden lg:block" currentUser={data} />
+          <Modal isOpen={isCreateAlbumOpen} onClose={() => setisCreateAlbumOpen(false)} className="">
+            <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
+              <div
+                className="relative flex w-full bg-transparent rounded-md h-[19px]"
+                onClick={() => setisCreateAlbumOpen(false)}
+              >
+                <CloseIcon className="absolute right-0 cursor-pointer fill-light hover:fill-secondary flex-end" />
+              </div>
+              <Filter
+                key={"album"}
+                inputType={"text"}
+                title={"Album name"}
+                placeholder={""}
+                value={newAlbum.title}
+                onChange={(value) =>
+                  setnewAlbum((prevState) => ({ ...prevState, title: value as string }))
+                }
+                // selectOptions={filter.selectOptions}
+                // onTagsChange={filter.onTagsChange}
+                className={"bg-transparent rounded-md"}
+                Variant="flex flex-col items-start gap-[10px] text-[14px] "
+              />
+              <Filter
+                key={"album"}
+                inputType={"tags"}
+                title={"Album keywords"}
+                placeholder={""}
+                onTagsChange={(tags) =>
+                  setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
+                }
+                className={"bg-transparent rounded-md"}
+                Variant="flex flex-col items-start gap-[10px] text-[14px] "
+              />
+
+              <Filter
+                key={"album"}
+                inputType={"file"}
+                title={"Album Cover"}
+                accept="image/*"
+                multiple={false}
+                value={newAlbum.title}
+                onChange={(value) =>
+                  setnewAlbum((prevState) => ({ ...prevState, banner: value as File }))
+                }
+                // className={"bg-transparent rounded-md"}
+                Variant="flex flex-col items-start gap-[10px] text-[14px] "
+                fullScreen={false}
+              />
+              <Button
+                onClick={() => handlecreateAlbum()}
+                className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
+              >
+                Create Album
+              </Button>
             </div>
-            <Filter
-              key={"album"}
-              inputType={"text"}
-              title={"Album name"}
-              placeholder={""}
-              value={newAlbum.title}
-              onChange={(value) =>
-                setnewAlbum((prevState) => ({ ...prevState, title: value as string }))
-              }
-              // selectOptions={filter.selectOptions}
-              // onTagsChange={filter.onTagsChange}
-              className={"bg-transparent rounded-md"}
-              Variant="flex flex-col items-start gap-[10px] text-[14px] "
+          </Modal>
+          <div className="w-full">
+            <BannerImage
+              setisCreateAlbumOpen={setisCreateAlbumOpen}
+              bannerImage={userData?.bannerImage || ""}
             />
-            <Filter
-              key={"album"}
-              inputType={"tags"}
-              title={"Album keywords"}
-              placeholder={""}
-              onTagsChange={(tags) =>
-                setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
-              }
-              className={"bg-transparent rounded-md"}
-              Variant="flex flex-col items-start gap-[10px] text-[14px] "
-            />
+            <ProfileAccordion className=" lg:hidden" currentUser={data} />
 
-            <Filter
-              key={"album"}
-              inputType={"file"}
-              title={"Album Cover"}
-              accept="image/*"
-              multiple={false}
-              value={newAlbum.title}
-              onChange={(value) =>
-                setnewAlbum((prevState) => ({ ...prevState, banner: value as File }))
-              }
-              // className={"bg-transparent rounded-md"}
-              Variant="flex flex-col items-start gap-[10px] text-[14px] "
-              fullScreen={false}
-            />
-            <Button
-              onClick={() => handlecreateAlbum()}
-              className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
-            >
-              Create Album
-            </Button>
-          </div>
-        </Modal>
-        <div className="w-full">
-          <BannerImage
-            setisCreateAlbumOpen={setisCreateAlbumOpen}
-            bannerImage={userData?.bannerImage || ""}
-          />
-          <ProfileAccordion className=" lg:hidden" currentUser={data} />
-
-          <div className="backdrop-blur-sm bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
-            <Tab />
-          </div>
-          <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
-            {children}
+            <div className="backdrop-blur-sm bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
+              <Tab />
+            </div>
+            <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
+              {children}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

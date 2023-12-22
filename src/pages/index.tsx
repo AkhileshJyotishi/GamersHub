@@ -9,7 +9,7 @@ import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
-
+import Head from 'next/head'
 import Filter from "@/components/filter/mainfilter/filter"
 import TalentSection from "@/components/home/banner"
 import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
@@ -68,6 +68,10 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
   return (
     <>
+
+      <Head>
+        <title>GameCreatorsHub |Home</title>
+      </Head>
       <Modal isOpen={verifyModal} onClose={() => setVerifyModal(false)} className="">
         <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
           <div
@@ -82,7 +86,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
               // width={200}
               height={25}
               alt="Game Creators Hub"
-              className="xl:absolute left-5 mx-auto"
+              className="mx-auto xl:absolute left-5"
             />
           </div>
           <Filter

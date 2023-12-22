@@ -125,7 +125,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
             editable={true}
             storageKey="noval__content2"
             defaultValue={{}}
@@ -135,7 +135,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl "}
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
             editable={true}
             storageKey="noval__content1"
             defaultValue={{}}

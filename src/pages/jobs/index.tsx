@@ -5,11 +5,16 @@ import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import JobsPage from "@/components/jobs"
+import Head from "next/head"
 
 // type jobsDetails=
 const Jobs = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
+
+      <Head>
+        <title>GameCreatorsHub |Jobs</title>
+      </Head>
       <JobsPage jobs={jobs} />
     </>
   )

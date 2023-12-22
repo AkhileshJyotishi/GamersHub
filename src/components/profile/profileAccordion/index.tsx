@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
-import sample from "@/assets/image/user-banner.png"
+import sample from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
 import EditIcon from "@/components/icons/editIcon"
@@ -77,17 +77,17 @@ export default function ProfileAccordion({
                 width={100}
                 height={100}
                 loading="lazy"
-                src={currentUser?.profileImage || "https://picsum.photos/id/250/900/900"}
+                src={currentUser?.profileImage || sample}
                 className="w-[100px] h-[100px] rounded-full"
                 alt={""}
               />
             </div>
-            <h1 className="text-xl font-bold">{currentUser?.username || "User"}</h1>
+            <div className="flex justify-center text-xl font-bold text-center"><span>{currentUser?.username}</span></div>
             {/* <span className="text-[14px] text-dull "> artist</span> */}
           </div>
           {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
+            <span className="flex flex-row flex-wrap items-center gap-2 text-center">
+              <MapPinIcon className="h-5 mx-auto min-w-5" />
               <p>
                 {currentUser?.userDetails.city}
                 {"  , "} {currentUser?.userDetails.country}
@@ -160,16 +160,17 @@ export default function ProfileAccordion({
               </>
             )}
           </div>
-          <div className="flex justify-around w-[90%]  flex-end text-dull gap-1">
+          <div className="flex justify-around w-[90%]  flex-end text-dull gap-1 flex-wrap gap-y-2">
             <div className="flex flex-row py-1 text-center break-words">
               <div>
                 {/* {formatLargeNumber(1)} <br /> */}
-                followers
+                <span>Following:</span>
+                {currentUser?._count?.followers_users}
               </div>
             </div>
             <div className="flex flex-row gap-2 py-1 text-center break-words">
               <span>Following:</span>
-              <span>{currentUser?._count.following_users} </span>
+              <span>{currentUser?._count?.following_users} </span>
             </div>
           </div>
           {/* ==== On the web ==== */}

@@ -6,11 +6,15 @@ import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
 import Particularpage from "./particularpage"
+import Head from "next/head"
 
 const index = ({ profileData }: { profileData: BackendJob }) => {
   // console.log("prifle data ti is ", profileData)
   return (
     <>
+      <Head>
+        <title>Jobs | {profileData.title || ""}</title>
+      </Head>
       <Particularpage profileData={profileData} />
     </>
   )

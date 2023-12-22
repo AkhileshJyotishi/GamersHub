@@ -6,10 +6,14 @@ import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamesPage from "@/components/games"
+import Head from "next/head"
 
 const Games = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame[] }) => {
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Games</title>
+      </Head>
       <GamesPage gameDetails={parsedgamesDetails} />
     </>
   )
