@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
+import SkeletonLoader from "@/components/SkeletonLoader"
 import HoizontalCard from "@/components/ui/Horizontalcard"
 
 import ProfilePageLayout from "../ProfileLayout"
@@ -15,6 +16,7 @@ const Albums = () => {
   const router = useRouter()
   const [albumDetails, setalbumDetails] = useState<IAlbumBackend[]>([])
   const { data: session } = useSession()
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     if (!session) {
@@ -23,6 +25,7 @@ const Albums = () => {
     }
     const loadData = async () => {
       const data = await fetchWithoutAuthorization(`/v1/album/user/${router.query.user}`, "GET")
+      setLoading(false)
       if (!data?.error) {
         setalbumDetails(data?.data?.albums)
       } else {
@@ -31,36 +34,45 @@ const Albums = () => {
     }
     loadData()
   }, [router])
-  // const memoizedAlbumDetails = useMemo(() => albumDetails, [albumDetails])
-  return (
-    <>
-      {albumDetails.length > 0 ? (
-        albumDetails?.map((album) => (
-          <>
-            <HoizontalCard
-              title={album.title}
-              className=""
-              description={"fdlsjlfd"}
-              imageSrc={album.banner || ""}
-              key={album.id}
-              tags={album.keyword}
-            />
-          </>
-        ))
-      ) : (
-        <>
-          {
+  if (loading) {
+    return (
+      <>
+        <SkeletonLoader />
+        <SkeletonLoader />
+        <SkeletonLoader />
+      </>
+    )
+  } else {
+    return (
+      <>
+        {albumDetails.length > 0 ? (
+          albumDetails?.map((album) => (
             <>
-              <div className="flex flex-col items-center w-full gap-20">
-                <h3 className="text-3xl font-bold">No albums yet.</h3>
-                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-              </div>
+              <HoizontalCard
+                title={album.title}
+                className=""
+                description={"fdlsjlfd"}
+                imageSrc={album.banner || ""}
+                key={album.id}
+                tags={album.keyword}
+              />
             </>
-          }
-        </>
-      )}
-    </>
-  )
+          ))
+        ) : (
+          <>
+            {
+              <>
+                <div className="flex flex-col items-center w-full gap-20">
+                  <h3 className="text-3xl font-bold">No albums yet.</h3>
+                  <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+                </div>
+              </>
+            }
+          </>
+        )}
+      </>
+    )
+  }
 }
 
 Albums.getLayout = ProfilePageLayout

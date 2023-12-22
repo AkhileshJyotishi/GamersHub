@@ -247,7 +247,7 @@ const Layout: React.FC<LayoutProps> = ({
                 // disabled={}
                 onClick={() => {
                   const hasErrors = Object.values(errors).some((error) => error !== null)
-
+                  console.log("uploading...")
                   if (hasErrors) {
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")

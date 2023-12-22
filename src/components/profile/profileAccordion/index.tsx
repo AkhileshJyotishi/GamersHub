@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 
 import sample from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
+import { shimmer, toBase64 } from "@/utils/functions"
 
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -76,10 +77,12 @@ export default function ProfileAccordion({
               <Image
                 width={100}
                 height={100}
-                loading="lazy"
+                loading="eager"
                 src={currentUser?.profileImage || sample}
                 className="w-[100px] h-[100px] rounded-full"
                 alt={""}
+                priority
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               />
             </div>
             <div className="flex justify-center text-xl font-bold text-center">

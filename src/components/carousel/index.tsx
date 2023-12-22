@@ -74,11 +74,8 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
                       height={500}
                       width={500}
                       className={clsx(carousel["img"], "md:h-[700px] h-[300px]")}
-                      // placeholder="blur"
                       priority
                       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-                      // blurDataURL=""
-                      // bl
                     />
                   </div>
                 </div>

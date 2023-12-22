@@ -20,6 +20,9 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
   // GameData.GameAssets
   const Editor = dynamic(() => import("@/components/NovalEditor"), {
     ssr: false,
+    loading: () => {
+      return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+    },
   })
   // console.log("gamesection ",GameData)
 

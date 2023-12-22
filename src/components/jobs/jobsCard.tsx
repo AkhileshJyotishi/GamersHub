@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
@@ -43,6 +43,8 @@ const UserImage = ({ href }: { href: string | null }) => (
         alt={""}
         className="w-10 h-10 border-[0.1px] rounded-full "
         src={href || defaultbannerImage}
+        priority
+        placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
       />
     </div>
   </Link>

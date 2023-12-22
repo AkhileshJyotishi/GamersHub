@@ -12,6 +12,7 @@ import { fetchData, fetchFile, fetchWithoutAuthorization } from "@/utils/functio
 
 import Filter from "@/components/filter/mainfilter/filter"
 import CloseIcon from "@/components/icons/closeIcon"
+import Loading from "@/components/Loading"
 import BannerImage from "@/components/profile/bannerImage"
 import ProfileAccordion from "@/components/profile/profileAccordion"
 import Button from "@/components/ui/button"
@@ -150,7 +151,7 @@ const ProfileLayout = ({
         <Head>
           <title>Profile | {data?.username}</title>
         </Head>
-        loading...
+        <Loading className="h-[80vh]" />
       </>
     )
   } else {

@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 import { fetchFile } from "@/utils/functions"
 
 import UploadIcon from "@/components/icons/upload"
@@ -69,6 +69,8 @@ const BannerImage = ({
           loading="eager"
           className="absolute w-full h-[18vh] object-cover "
           src={bannerImageLink || defaultbannerImage}
+          priority
+          placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
         <div className="absolute top-0 w-full h-full bg-top bg-no-repeat rounded-xl">
           <div

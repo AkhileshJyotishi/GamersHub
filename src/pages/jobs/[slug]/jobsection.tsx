@@ -5,6 +5,9 @@ import dynamic from "next/dynamic"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
 })
 
 type OmittedProperties = "about" | "country" | "city" | "title" | "user" | "banner" | "userId"

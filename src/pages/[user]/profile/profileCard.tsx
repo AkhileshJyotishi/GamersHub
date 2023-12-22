@@ -79,7 +79,7 @@ export default function ProfileCard({
           <Image
             width={300}
             height={300}
-            loading="lazy"
+            loading="eager"
             src={currentUser?.profileImage || defaultbannerImage}
             className="w-[150px] h-[150px] rounded-full border-2 border-light"
             alt={""}

@@ -12,6 +12,9 @@ import Layout from "@/components/creatPorfolio/layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
 })
 
 // import { Editor } from "novel";
@@ -87,6 +90,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         filtersState
       )
     } else {
+      console.log("creating post ")
       method = "POST"
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
