@@ -188,7 +188,6 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Keyword Tags",
       onTagsChange: (value) => {
         handleInputChange("postKeywords", value)
-        console.log("keywords  ", value)
       },
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",

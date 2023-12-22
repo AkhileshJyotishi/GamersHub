@@ -55,7 +55,7 @@ const UserInfo = ({ title, location }: { title: string; location: string }) => (
     </Link>
     {location.trim().length > 1 && (
       <span className="flex flex-row items-center gap-2">
-        <MapPinIcon height="19" className="w-4 h-[inherit] text-user_interface_6" />
+        <MapPinIcon height="19" className=" h-[inherit] text-user_interface_6" />
         <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
       </span>
     )}
@@ -206,7 +206,7 @@ const Card: React.FC<JobCardProps> = ({
               {userData?.id !== userId ? (
                 <>
                   <div
-                    className="flex items-center "
+                    className="flex items-center mx-auto"
                     onClick={(e) => {
                       e.stopPropagation()
                       savePost(id)

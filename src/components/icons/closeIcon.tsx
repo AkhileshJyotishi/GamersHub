@@ -16,7 +16,7 @@ function Icon({ className }: IconProps) {
       y="0px"
       viewBox="0 0 100 125"
       xmlSpace="preserve"
-      className={className}
+      className={"stroke-slate-50 fill-slate-50 " + className}
       // fill="#fff"
     >
       {/* <style type="text/css">{`.st0{fill:#fff}`}</style> */}

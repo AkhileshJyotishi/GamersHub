@@ -60,7 +60,7 @@ interface FilterDetail<SO = { label: string; value: string | boolean | number }>
     height: number | null
     width: number | null
   }
-  fullScreen?:boolean
+  fullScreen?: boolean
 }
 type Errors<T> = {
   [K in keyof T]: string | null

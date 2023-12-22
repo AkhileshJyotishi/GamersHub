@@ -26,9 +26,7 @@ const BannerImage = ({
   const { userData, setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
 
-
   const [bannerImageLink, setBannerImageLink] = useState<string | undefined>(bannerImage)
-  // const ref=useRef()
   const uploadBanner = async () => {
     const formdata = new FormData()
     formdata.append("file", img as Blob)
@@ -40,7 +38,6 @@ const BannerImage = ({
       "POST",
       formdata
     )
-    // if(isuploaded?.error) toast.error(isuploaded.message)
     if (isuploaded?.error) {
       toast.error(isuploaded.error)
       return
@@ -60,12 +57,7 @@ const BannerImage = ({
       // @ts-ignore
       setuserData((prev) => ({ ...prev, bannerImage: isuploaded?.data.image.Location }))
       toast.success(data?.message)
-      // setSaved(!saved)
     }
-
-    // v1/users/${userid}
-    // console.log("is uploaded", isuploaded);
-    // newAlbum.banner = isuploaded?.data.image.Location;
   }
   return (
     <div className={"group relative w-full h-[15vh]" + className}>

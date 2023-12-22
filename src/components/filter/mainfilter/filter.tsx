@@ -33,7 +33,7 @@ const Filter: React.FC<FilterDetail> = ({
   preview,
   errorMessage,
   dimensionsImage,
-  fullScreen
+  fullScreen,
 
   // hidden
 }) => {

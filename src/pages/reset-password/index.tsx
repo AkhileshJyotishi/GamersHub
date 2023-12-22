@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -10,7 +11,7 @@ import TextInput from "@/components/ui/textInput"
 const ResetPassword = () => {
   const [formValues, setFormValues] = useState({
     password: "",
-    cpassword:""
+    cpassword: "",
   })
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -21,10 +22,8 @@ const ResetPassword = () => {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault()
-    if(formValues.password!=formValues.cpassword){
-      setErrors(
-        "Passwords do not match"
-      )
+    if (formValues.password != formValues.cpassword) {
+      setErrors("Passwords do not match")
       return
     }
     if (
@@ -55,6 +54,9 @@ const ResetPassword = () => {
 
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub | Reset</title>
+      </Head>
       <div className="w-full ">
         <h1 className="text-center text-[45px] font-[600]">Reset password</h1>
       </div>

@@ -122,21 +122,18 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         break
 
       case "paymentValue":
-        console.log("why ist it2 ", value)
-
-        // if (typeof value == "number") {
-        const val = typeof value === "number" ? value : Number(value)
-        console.log("why ist it ", value)
-        if (val < 0) {
-          setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
-        } else {
-          setErrors((prev) => ({ ...prev, paymentValue: "" }))
+        {
+          const val = typeof value === "number" ? value : Number(value)
+          if (val < 0) {
+            setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
+          } else {
+            setErrors((prev) => ({ ...prev, paymentValue: "" }))
+          }
+          setJobInfo((prevState) => ({
+            ...prevState,
+            paymentValue: val as number,
+          }))
         }
-        setJobInfo((prevState) => ({
-          ...prevState,
-          paymentValue: val as number,
-        }))
-        // }
         break
 
       case "expertise":

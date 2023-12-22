@@ -104,7 +104,6 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
             user.name = registerUser.data.data.token.access.token
           }
         } catch (error) {
-          console.log("catch error", error)
           return false
         }
         return true

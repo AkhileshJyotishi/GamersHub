@@ -1,11 +1,11 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreatorsPage from "@/components/creators"
-import Head from "next/head"
 
 const Creators = ({ users }: { users: Creator[] }) => {
   return (

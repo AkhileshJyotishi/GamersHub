@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -12,8 +13,8 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 import FacebookIcon from "@/components/icons/facebook"
 import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
-import TextInput from "@/components/ui/textInput"
 import { InfoTag } from "@/components/ui/Info"
+import TextInput from "@/components/ui/textInput"
 interface FormErrors {
   username: string
   email: string
@@ -54,7 +55,7 @@ export default function SignUpPage() {
         toast.error(res.error?.response?.data?.message || res.message)
       } else {
         toast.dismiss()
-      toast.info("Sending Mail...")
+        toast.info("Sending Mail...")
         const ress = await fetchWithoutAuthorization("/v1/auth/send-verification-email", "POST", {
           email: formValues.email,
         })
@@ -129,6 +130,9 @@ export default function SignUpPage() {
 
     return (
       <>
+        <Head>
+          <title>GameCreatorsHub | SignUp</title>
+        </Head>
         <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-3  flex-col items-start mt-12 lg:w-[40rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto my-10 rounded-xl">
           {/* <p>Step  1 of 2</p> */}
           <div className="flex flex-col w-full p-[20px] ">

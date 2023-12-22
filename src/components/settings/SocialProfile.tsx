@@ -122,7 +122,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
         "PATCH",
         addOnWeb
       )
-toast.dismiss()
+      toast.dismiss()
       if (changeSocials?.error) {
         toast.error(changeSocials.message)
       } else {

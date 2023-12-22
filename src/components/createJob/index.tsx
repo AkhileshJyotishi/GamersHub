@@ -59,7 +59,7 @@ const CreateJob: React.FC = () => {
     localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
-    formdata.append("type","jobs")
+    formdata.append("type", "jobs")
     if (jobInfo.banner) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -139,7 +139,6 @@ const CreateJob: React.FC = () => {
             editable={true}
             storageKey="noval__content1"
             defaultValue={{}}
-
           />
         </>
       </div>

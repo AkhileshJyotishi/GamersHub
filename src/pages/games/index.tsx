@@ -1,12 +1,12 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { BackendGame } from "@/interface/games"
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamesPage from "@/components/games"
-import Head from "next/head"
 
 const Games = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame[] }) => {
   return (

@@ -4,8 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
-import { useUserContext } from "@/providers/user-context"
 import defaultbannerImage from "@/assets/image/user-profile.svg"
+import { useUserContext } from "@/providers/user-context"
 
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -84,14 +84,14 @@ export default function ProfileCard({
             className="w-[150px] h-[150px] rounded-full border-2 border-light"
             alt={""}
           />
-          <p className="text-2xl font-semibold text-center break-all ">
+          <p className="text-2xl font-semibold text-center break-words ">
             {currentUser?.username || "User"}
           </p>
           {/* <h3 className="break-all text-dull">{currentUser?.occupation}</h3> */}
           {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
-            <span className="flex flex-row items-center gap-2 break-all">
-              <MapPinIcon className="h-5 xmin-w-5" />
-              <p>
+            <span className="flex flex-row flex-wrap items-center justify-center gap-2 break-words">
+              <MapPinIcon className="h-5 min-w-5" />
+              <p className="text-center">
                 {currentUser?.userDetails.city}
                 {"  , "} {currentUser?.userDetails.country}
               </p>

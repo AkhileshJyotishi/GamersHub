@@ -39,7 +39,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
           </Button>
         </div>
 
-        <Image height={25}  alt={""} src={logo} className="mx-auto cursor-pointer " />
+        <Image height={25} alt={""} src={logo} className="mx-auto cursor-pointer " />
         <div className="grid grid-cols-1 gap-6 mx-auto mt-7">
           <Button
             type="button"

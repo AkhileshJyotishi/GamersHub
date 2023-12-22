@@ -269,13 +269,13 @@ export const uploadUserExperience = async (
 export const uploadProfileData = async (
   profileData:
     | {
-      userBio: string | null | undefined
-      country: string | null | undefined
-      city: string | null | undefined
-      userSkills: IuserSkill[]
-      userSoftwares: IuserSoftware[] | undefined
-      profileImage: string | undefined | File
-    }
+        userBio: string | null | undefined
+        country: string | null | undefined
+        city: string | null | undefined
+        userSkills: IuserSkill[]
+        userSoftwares: IuserSoftware[] | undefined
+        profileImage: string | undefined | File
+      }
     | undefined,
   token: string,
   method: string

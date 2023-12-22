@@ -63,12 +63,10 @@ const EditProfilePage = ({
     profileImage: profileDetails?.user?.profileImage,
   }
   const [profileData, setprofileData] = useState(initProfile)
-  let isProfileDataFilled = Object.values(initProfile).some(
-    (value) => {
-      console.log("value  ", value)
-      return (value !== null && value !== undefined && value !== "")
-    }
-  )
+  const isProfileDataFilled = Object.values(initProfile).some((value) => {
+    console.log("value  ", value)
+    return value !== null && value !== undefined && value !== ""
+  })
   const filled = isProfileDataFilled
 
   // console.log("isProfileDataFilled  ", isProfileDataFilled)
@@ -296,8 +294,6 @@ const EditProfilePage = ({
     label: tag,
     value: tag,
   }))
-  console.log("allsoftware", allSoftwares)
-  console.log("allsoftware", allSkills)
   // console.log(predefinedSoftwareTagsAsSelectOptions)
 
   const handleSoftwareTagsChange = (tags: string[]) => {
@@ -637,8 +633,9 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                        }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
                     >
                       <Filter
                         key={index}
@@ -714,8 +711,9 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                        }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
                     >
                       <Filter
                         key={index}

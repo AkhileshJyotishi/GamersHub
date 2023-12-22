@@ -22,7 +22,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     email: "",
     password: "",
   })
-  const { setVerifyModal, setVerifyMail, setIsLoginModalOpen } = useUserContext()
+  const { setIsLoginModalOpen } = useUserContext()
 
   interface FormType {
     email: string
@@ -105,8 +105,6 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       }
     } catch (error: Allow) {
       toast.error(error)
-
-      console.log(error)
     }
   }
 

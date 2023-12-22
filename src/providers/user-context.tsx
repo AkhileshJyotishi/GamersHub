@@ -114,7 +114,7 @@ const UserProvider = ({ children }: IUserProvider) => {
         verifyMail,
         setVerifyMail,
         verifyModal,
-        setVerifyModal
+        setVerifyModal,
       }}
     >
       {children}

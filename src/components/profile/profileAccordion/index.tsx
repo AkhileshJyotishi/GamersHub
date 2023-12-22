@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -12,12 +13,11 @@ import GlobeIcon from "@/components/icons/globe"
 import LinkedInIcon from "@/components/icons/linkedin"
 import MailIcon from "@/components/icons/mail"
 import MapPinIcon from "@/components/icons/mappinicon"
+import PlusIcon from "@/components/icons/plus"
 // import PlusIcon from "@/components/icons/plus"
 import TwitterIcon from "@/components/icons/twitter"
 import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
-import { useEffect, useState } from "react"
-import PlusIcon from "@/components/icons/plus"
 interface User {
   id: number
   createdAt: string
@@ -82,7 +82,9 @@ export default function ProfileAccordion({
                 alt={""}
               />
             </div>
-            <div className="flex justify-center text-xl font-bold text-center"><span>{currentUser?.username}</span></div>
+            <div className="flex justify-center text-xl font-bold text-center">
+              <span>{currentUser?.username}</span>
+            </div>
             {/* <span className="text-[14px] text-dull "> artist</span> */}
           </div>
           {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (

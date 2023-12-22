@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
+import Head from "next/head"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/router"
@@ -17,7 +18,6 @@ import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
 import ProfileCard from "./profileCard"
-import Head from "next/head"
 
 interface User {
   id: number
@@ -145,12 +145,14 @@ const ProfileLayout = ({
     // console.log(albumData)
   }
   if (loading) {
-    return <>
-      <Head>
-        <title>Profile | {data?.username}</title>
-      </Head>
-      loading...
-    </>
+    return (
+      <>
+        <Head>
+          <title>Profile | {data?.username}</title>
+        </Head>
+        loading...
+      </>
+    )
   } else {
     // console.log("why this user not coming  ", data)
     return (
@@ -160,7 +162,11 @@ const ProfileLayout = ({
         </Head>
         <div className="flex flex-col gap-5 p-5 lg:flex-row">
           <ProfileCard className="hidden lg:block" currentUser={data} />
-          <Modal isOpen={isCreateAlbumOpen} onClose={() => setisCreateAlbumOpen(false)} className="">
+          <Modal
+            isOpen={isCreateAlbumOpen}
+            onClose={() => setisCreateAlbumOpen(false)}
+            className=""
+          >
             <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
               <div
                 className="relative flex w-full bg-transparent rounded-md h-[19px]"

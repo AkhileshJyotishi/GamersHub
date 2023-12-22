@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
@@ -8,8 +9,9 @@ import logo from "@/assets/image/logo-with-text.svg"
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
+import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
-import Head from 'next/head'
+
 import Filter from "@/components/filter/mainfilter/filter"
 import TalentSection from "@/components/home/banner"
 import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
@@ -18,7 +20,6 @@ import CloseIcon from "@/components/icons/closeIcon"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
-import { useUserContext } from "@/providers/user-context"
 
 const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
@@ -68,7 +69,6 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
 
   return (
     <>
-
       <Head>
         <title>GameCreatorsHub |Home</title>
       </Head>

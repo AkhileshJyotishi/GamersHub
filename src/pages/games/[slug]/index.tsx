@@ -2,15 +2,13 @@
 import React from "react"
 import clsx from "clsx"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 
 import { BackendGame } from "@/interface/games"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamePageHeader from "./GamePageHeader"
 import Gamesection from "./Gamesection"
-import Head from "next/head"
-
-
 
 const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame }) => {
   // user,
@@ -35,7 +33,10 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
-      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full " style={{ zIndex: 19 }}>
+      <div
+        className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full "
+        style={{ zIndex: 19 }}
+      >
         {/* profileData?.user?.profileImage ||  */}
         <GamePageHeader
           title={title}
