@@ -1,15 +1,14 @@
 import React from "react"
 import clsx from "clsx"
 
-import spinner from "@/assets/svg/spinner.svg"
-
+// import spinner from "@/assets/svg/spinner.svg"
 import JobPageHeader from "./jobPageHeader"
 import Jobsection from "./jobsection"
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
   if (!profileData) {
     // Handle the case when profileData is undefined
-    return <div>{spinner}</div> // or any other handling mechanism
+    return <div>Loading...</div> // or any other handling mechanism
   }
 
   const { title, city, banner, country, user, userId, ...profileDataJobSection } = profileData
