@@ -65,7 +65,7 @@ const login = catchAsync(async (req, res) => {
 })
 
 const logout = catchAsync(async (req, res) => {
-  await authService.logout(req.body.refreshToken)
+  await authService.logout(req.body.accessToken)
   sendResponse(res, httpStatus.OK, null, null, 'User logged out successfully')
 })
 

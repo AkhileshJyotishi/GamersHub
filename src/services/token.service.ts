@@ -85,7 +85,7 @@ const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
 const generateAuthTokens = async (user: { id: number }): Promise<AuthTokensResponse> => {
   await deleteAuthTokens(user)
 
-  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minute')
+  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'days')
   const accessToken = generateToken(user.id, accessTokenExpires, TokenType.ACCESS)
   await saveToken(accessToken, user.id, accessTokenExpires, TokenType.ACCESS)
 

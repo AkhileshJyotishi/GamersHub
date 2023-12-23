@@ -274,9 +274,50 @@ const getAlbumById = async (id: number): Promise<Album> => {
     },
     include: {
       posts: {
-        select: {
-          title: true,
-          id: true
+        include: {
+          Album: {
+            select: {
+              id: true,
+              title: true
+            }
+          },
+          postKeywords: {
+            select: {
+              keyword: true
+            }
+          },
+          comments: {
+            select: {
+              comment: true,
+              userId: true,
+              id: true
+            }
+          },
+          postLikes: {
+            select: {
+              likedUsers: {
+                select: {
+                  id: true
+                }
+              }
+            }
+          },
+          postSkills: {
+            select: {
+              skill: true
+            }
+          },
+          savedUsers: {
+            select: {
+              id: true
+            }
+          },
+          user: {
+            select: {
+              profileImage: true,
+              username: true
+            }
+          }
         }
       },
       keyword: {
