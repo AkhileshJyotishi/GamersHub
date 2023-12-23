@@ -21,7 +21,8 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
     },
     session: {
       strategy: "jwt",
-      maxAge: 60 * 60 * 24 * 30,
+      updateAge: 0,
+      maxAge: 30 * 24 * 60 * 60,
     },
     secret: "agsua",
     providers: [
@@ -48,12 +49,12 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
             let response = await instance.post(`/v1/auth/login`, payload)
             response = response.data
 
-            res.setHeader(
-              "Set-Cookie",
-              `token=${response.data.tokens.access.token}; HttpOnly;Secure;Expires=${new Date(
-                Date.now() + 30 * 24 * 60 * 60 * 1000
-              )}`
-            )
+            // res.setHeader(
+            //   "Set-Cookie",
+            //   `tokennnnn=${response.data.tokens.access.token}; HttpOnly;Secure;Expires=${new Date(
+            //     Date.now() + 60 * 1000
+            //   )}`
+            // )
             // console.log("token ", response.data.tokens.access.token)
 
             if (!res) return null
@@ -100,8 +101,15 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
               response: account,
               providerType: account?.provider.toLocaleUpperCase(),
             })
+
             // console.log(userr)
             user.name = registerUser.data.data.token.access.token
+            // res.setHeader(
+            //   "Set-Cookie",
+            //   `token=${
+            //     registerUser.data.data.token.access.token
+            //   }; HttpOnly;Secure;Expires=${new Date(Date.now() + 60 * 1000)}`
+            // )
           }
         } catch (error) {
           return false
@@ -109,6 +117,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
         return true
       },
       session: ({ session, token }) => {
+        // session.expires = String(Math.floor(Date.now() / 1000) + 60)
         // console.log("session", session)
         // console.log(user)
         return {

@@ -92,12 +92,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
 
   return (
     <>
-      <div
-        className="relative flex flex-row max-[320px]:hidden items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit "
-        onClick={() => {
-          setShowProfileSettings(!showProfileSettings)
-        }}
-      >
+      <div className="relative flex flex-row  items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit ">
         <div className="relative w-fit">
           <Image
             className="w-[18px] cursor-pointer mt-[5px]"
@@ -109,18 +104,22 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
         </div>
         <Button
           className="block w-[18px] h-[18px]"
-          onClick={() => {
-            router.push("/inbox")
-          }}
+          // onClick={() => {
+          //   router.push("/inbox")
+          // }}
         >
           <MailIcon className="" fill="#fff" />
         </Button>
 
-        <div className="group w-[20px] h-[20px] lg:block hidden">
-          <ProfileBannerImage />
+        <div className="group w-[20px] h-[20px] ">
+          <ProfileBannerImage
+            onClick={() => {
+              setShowProfileSettings(!showProfileSettings)
+            }}
+          />
           <ProfileSettingsCard
-            onSignOut={() => signOut()}
-            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] `}
+            // onSignOut={() => signOut()}
+            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-6 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
             authUser={userSession}
             userData={userData}
           />

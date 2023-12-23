@@ -51,7 +51,6 @@ const Albums = () => {
               <HoizontalCard
                 title={album.title}
                 className=""
-                description={"fdlsjlfd"}
                 imageSrc={album.banner || ""}
                 key={album.id}
                 tags={album.keyword}

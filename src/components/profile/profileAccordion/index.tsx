@@ -261,12 +261,14 @@ export default function ProfileAccordion({
           {/* Report section*/}
           <div className="flex flex-col items-center text-center w-full mt-[50px] text-text_dull gap-2">
             <h6>MEMBER SINCE {memberSince}</h6>
-            <span className="flex flex-row gap-2">
-              <Link href={"#"} className="text-red-500">
-                Report
-              </Link>
-              {"   "}
-            </span>
+            {currentUser?.id !== authUser?.id && (
+              <span className="flex flex-row gap-2">
+                <Link href={"#"} className="text-red-500">
+                  Report
+                </Link>
+                {"   "}
+              </span>
+            )}
           </div>
         </div>
       </>

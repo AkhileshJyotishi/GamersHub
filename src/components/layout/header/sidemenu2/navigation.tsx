@@ -37,12 +37,14 @@ export const Navigation = () => {
       title: "Games",
       path: "/games",
     },
+  ]
+  const authOptions = [
     {
-      title: "profile",
+      title: "Profile",
       path: `/${userData?.id}/profile/albums`,
     },
   ]
-  const authOptions = [
+  const authOptions2 = [
     {
       title: "Login",
       path: "/auth/login",
@@ -59,8 +61,9 @@ export const Navigation = () => {
 
       <motion.ul variants={variants} className={styles.ul}>
         {navmenu?.map((data, index) => <MenuItem data={data} key={index} />)}
-        {!session.data?.user?.name &&
-          authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
+        {!session.data?.user?.name
+          ? authOptions2?.map((data, index) => <MenuItem data={data} key={index} />)
+          : authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
       </motion.ul>
     </>
   )

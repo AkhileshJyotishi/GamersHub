@@ -54,11 +54,12 @@ const SocialCard: React.FC<CardProps> = ({
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedUsers])
-
+  
   const savePost = async () => {
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
     if (data?.error) {
       toast.error(data.message)
+      // setSaved()
     } else {
       toast.success(data?.message)
       setSaved(!saved)

@@ -109,7 +109,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           </Button>
         </div>
       </Modal>
-      <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" />
+      {/* <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" /> */}
       <OverlayBackground />
       <div className="relative top-0">
         <OverlayContent />
@@ -174,7 +174,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
-  users = users?.data.posts
+  users = users?.data?.posts
   // console.log("home page ", users)
   // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 

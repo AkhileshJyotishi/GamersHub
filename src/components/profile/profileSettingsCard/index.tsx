@@ -7,13 +7,15 @@ import { Session } from "next-auth"
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
-import { shimmer, toBase64 } from "@/utils/functions"
+import { fetchWithoutAuthorization, shimmer, toBase64 } from "@/utils/functions"
 
 import GearIcon from "@/components/icons/gear"
 import HelpIcon from "@/components/icons/gear"
 import LogOutIcon from "@/components/icons/logout"
 import SaveIcon from "@/components/icons/save"
 import Button from "@/components/ui/button"
+import { signOut, useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 interface Props {
   authUser?: Session | null
@@ -22,12 +24,28 @@ interface Props {
   userData: Iuser | null
 }
 
-export default function ProfileSettingsCard({ className, onSignOut, userData }: Props) {
+export default function ProfileSettingsCard({ className, userData }: Props) {
   const router = useRouter()
+  const session = useSession()
   const { userData: newuserData } = useUserContext()
+  async function logoutUser() {
+    if (session && session.data?.user?.name) {
+      const res = await fetchWithoutAuthorization(`v1/auth/logout`, "POST", {
+        accessToken: session.data?.user?.name,
+      })
+      if (res?.error) {
+        toast.error("Error logging out")
+      } else {
+        signOut({
+          callbackUrl: "/?message=Logged out successfully",
+        })
+        // router.replace("/?message=Logged out successfully")
+      }
+    }
+  }
   return (
     <div
-      className={`p-4 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[6px] min-h-[560px] w-[340px] rounded-xl ${className}`}
+      className={`p-2 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[6px] min-h-[500px] w-[310px] rounded-xl ${className}`}
     >
       {/* IMAGE */}
       <div className="relative flex flex-col items-center w-full">
@@ -112,14 +130,13 @@ export default function ProfileSettingsCard({ className, onSignOut, userData }: 
 
       {/* Manage  End*/}
 
-      <div className="flex flex-col items-start w-full py-[15px] hover:bg-user_interface_4 group ">
-        <div
-          className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px] cursor-pointer group-hover:text-red-500 transition duration-200"
-          onClick={(e) => {
-            router.push("/")
-            onSignOut!(e)
-          }}
-        >
+      <div
+        onClick={() => {
+          logoutUser()
+        }}
+        className="flex flex-col cursor-pointer items-start w-full py-[15px] hover:bg-user_interface_4 group "
+      >
+        <div className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px]  group-hover:text-red-500 transition duration-200">
           <LogOutIcon className={"w-[17px] h-[17px]"} />
           <p>Sign Out</p>
         </div>
