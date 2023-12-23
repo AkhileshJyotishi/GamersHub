@@ -12,14 +12,22 @@ import { fetchFile } from "@/utils/functions"
 import UploadIcon from "@/components/icons/upload"
 import Button from "@/components/ui/button"
 
+type albumType = {
+  title: string
+  banner: File | null | string
+  AlbumKeywords: string[]
+  isEdit: boolean
+}
 const BannerImage = ({
   bannerImage,
   setisCreateAlbumOpen,
   className,
+  setnewAlbum,
 }: {
   bannerImage: string | undefined
   className?: string
   setisCreateAlbumOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setnewAlbum: React.Dispatch<React.SetStateAction<albumType>>
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -81,7 +89,15 @@ const BannerImage = ({
               {session && (
                 <Button
                   className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => setisCreateAlbumOpen(true)}
+                  onClick={() => {
+                    setnewAlbum({
+                      title: "",
+                      banner: null,
+                      AlbumKeywords: [],
+                      isEdit: false,
+                    })
+                    setisCreateAlbumOpen(true)
+                  }}
                 >
                   New Album
                 </Button>

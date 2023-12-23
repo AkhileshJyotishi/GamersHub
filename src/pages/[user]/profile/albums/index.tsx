@@ -11,15 +11,16 @@ import SkeletonLoader from "@/components/ui/SkeletonLoader"
 import HoizontalCard from "@/components/ui/Horizontalcard"
 
 import ProfilePageLayout from "../ProfileLayout"
+import { useUserContext } from "@/providers/user-context"
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Albums = () => {
   const router = useRouter()
   const [albumDetails, setalbumDetails] = useState<IAlbumBackend[]>([])
-  const { data: session } = useSession()
   const [loading, setLoading] = useState<boolean>(true)
+  const { userData } = useUserContext()
 
   useEffect(() => {
-    if (!session) {
+    if (!userData?.id) {
       router.replace("/?emessage=Please Authenticate")
       return
     }
@@ -45,6 +46,7 @@ const Albums = () => {
   } else {
     return (
       <>
+      
         {albumDetails.length > 0 ? (
           albumDetails?.map((album) => (
             <>
@@ -52,8 +54,11 @@ const Albums = () => {
                 title={album.title}
                 className=""
                 imageSrc={album.banner || ""}
+                id={album.id}
                 key={album.id}
                 tags={album.keyword}
+                userId={album.userId}
+                // handleAlbumEdit={handleAlbumEdit}
               />
             </>
           ))

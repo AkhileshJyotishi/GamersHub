@@ -13,7 +13,7 @@ interface GamePageHeaderProps {
   // location: string;
 }
 
-const UserImage = ({ href }: { href: string }) => (
+export const UserImage = ({ href }: { href: string }) => (
   <div className="my-auto">
     <div className="flex items-center">
       <Image width={400} height={400} alt={""} className="w-20 h-20 rounded-full" src={href} />
@@ -21,7 +21,7 @@ const UserImage = ({ href }: { href: string }) => (
   </div>
 )
 
-const UserInfo = ({ title }: { title: string }) => (
+export const UserInfo = ({ title }: { title: string }) => (
   <div className="flex flex-col items-start justify-center gap-1">
     <div className="font-bold text-[36px]">{title}</div>
   </div>

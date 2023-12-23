@@ -14,6 +14,11 @@ interface IUserContext {
   setVerifyMail: React.Dispatch<React.SetStateAction<string>>
   isRegisterModalOpen: boolean
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isCreateAlbumOpen: boolean
+  setisCreateAlbumOpen: React.Dispatch<React.SetStateAction<boolean>>
+  newAlbum: albumType
+  setnewAlbum: React.Dispatch<React.SetStateAction<albumType>>
+  handleAlbumEdit: ({ AlbumKeywords, banner, id, title }: albumUpdateType) => Promise<void>
   openLoginModal: () => void
   openRegisterModal: () => void
   isOpen: boolean
@@ -49,13 +54,33 @@ interface IUserProvider {
 }
 
 const Context = React.createContext<IUserContext>({} as IUserContext)
+type albumType = {
+  title: string
+  banner: File | null | string
+  AlbumKeywords: string[]
+  isEdit: boolean
+  id?: number
+}
+type albumUpdateType = {
+  id: number
+  title: string
+  banner: File | null | string
+  AlbumKeywords: string[]
+}
 
 const UserProvider = ({ children }: IUserProvider) => {
+  const [newAlbum, setnewAlbum] = useState<albumType>({
+    title: "",
+    banner: null,
+    AlbumKeywords: [],
+    isEdit: false,
+  })
   const session = useSession()
   const [userSession, setUserSession] = useState(useSession().data?.user)
   const [userData, setuserData] = useState<Iuser | null>(null)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false)
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState<boolean>(false)
+  const [isCreateAlbumOpen, setisCreateAlbumOpen] = useState<boolean>(false)
   const [verifyMail, setVerifyMail] = useState<string>("")
   const [verifyModal, setVerifyModal] = useState(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
@@ -69,7 +94,16 @@ const UserProvider = ({ children }: IUserProvider) => {
     setIsRegisterModalOpen(true)
     setIsLoginModalOpen(false)
   }
-
+  async function handleAlbumEdit({ AlbumKeywords, banner, id, title }: albumUpdateType) {
+    setnewAlbum({
+      title,
+      banner,
+      AlbumKeywords,
+      id,
+      isEdit: true,
+    })
+    setisCreateAlbumOpen(true)
+  }
   const containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // console.log("session  ", session.data?.user?.name, session.status)
@@ -115,6 +149,11 @@ const UserProvider = ({ children }: IUserProvider) => {
         setVerifyMail,
         verifyModal,
         setVerifyModal,
+        isCreateAlbumOpen,
+        setisCreateAlbumOpen,
+        newAlbum,
+        setnewAlbum,
+        handleAlbumEdit,
       }}
     >
       {children}

@@ -45,14 +45,15 @@ const ProfileLayout = ({
 }) => {
   const session = useSession()
   const router = useRouter()
-  const { userData } = useUserContext()
+  const { userData, isCreateAlbumOpen, setisCreateAlbumOpen, newAlbum, setnewAlbum } =
+    useUserContext()
 
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<User | null>(null)
   const param = useParams()
 
   useEffect(() => {
-    if (!session) router.replace(`/?emessage=Please Authenticate`)
+    if (!userData?.id) router.replace(`/?emessage=Please Authenticate`)
     const loaddata = async () => {
       if (router.query.user) {
         const users = await fetchWithoutAuthorization(
@@ -95,24 +96,17 @@ const ProfileLayout = ({
     })
   }
 
-  const [isCreateAlbumOpen, setisCreateAlbumOpen] = useState<boolean>(false)
-  type albumType = {
-    title: string
-    banner: File | null | string
-    AlbumKeywords: string[]
-  }
-  const [newAlbum, setnewAlbum] = useState<albumType>({
-    title: "",
-    banner: null,
-    AlbumKeywords: [],
-  })
   const handlecreateAlbum = async () => {
     const formdata = new FormData()
     // console.log(newAlbum)
     // return
-    toast.info("Creating Album...")
-    if (newAlbum.banner) {
-      formdata.append("file", newAlbum.banner as string)
+    if (newAlbum.isEdit) {
+      toast.info("Updating Album...")
+    } else {
+      toast.info("Creating Album...")
+    }
+    if (typeof newAlbum.banner == "object") {
+      formdata.append("file", newAlbum.banner as Blob)
       formdata.append("type", "portfolio")
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -123,28 +117,64 @@ const ProfileLayout = ({
       // console.log("is uploaded", isuploaded)
       newAlbum.banner = isuploaded?.data?.image?.Location
     } else {
-      newAlbum.banner = ""
+      if (!newAlbum.isEdit) {
+        newAlbum.banner = ""
+      }
     }
     toast.dismiss()
     toast.info("Uploading...")
-    const albumData = await fetchData(
-      "/v1/album/user",
-      session.data?.user?.name as string,
-      "POST",
-      {
-        title: newAlbum.title,
-        banner: newAlbum.banner,
-        keywords: newAlbum.AlbumKeywords,
+    if (newAlbum.isEdit) {
+      const albumData = await fetchData(
+        `/v1/album/${newAlbum?.id}`,
+        session.data?.user?.name as string,
+        "PATCH",
+        {
+          title: newAlbum.title,
+          banner: newAlbum.banner,
+          keywords: newAlbum.AlbumKeywords,
+        }
+      )
+      if (albumData?.error) {
+        toast.error(albumData.message)
+      } else {
+        setisCreateAlbumOpen(false)
+        setnewAlbum({
+          title: "",
+          banner: null,
+          AlbumKeywords: [],
+          isEdit: false,
+        })
+        router.push(`/${userData?.id}/profile/albums`)
+        toast.success(albumData?.message)
       }
-    )
-    if (albumData?.error) {
-      toast.error(albumData.message)
     } else {
-      router.push("/")
-      toast.success(albumData?.message)
+      const albumData = await fetchData(
+        "/v1/album/user",
+        session.data?.user?.name as string,
+        "POST",
+        {
+          title: newAlbum.title,
+          banner: newAlbum.banner,
+          keywords: newAlbum.AlbumKeywords,
+        }
+      )
+      if (albumData?.error) {
+        toast.error(albumData.message)
+      } else {
+        setisCreateAlbumOpen(false)
+        setnewAlbum({
+          title: "",
+          banner: null,
+          AlbumKeywords: [],
+          isEdit: false,
+        })
+        router.push(`/${userData?.id}/profile/albums`)
+        toast.success(albumData?.message)
+      }
     }
     // console.log(albumData)
   }
+
   if (loading) {
     return (
       <>
@@ -199,6 +229,7 @@ const ProfileLayout = ({
                 }
                 className={"bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
+                initialtags={newAlbum.AlbumKeywords}
               />
 
               <Filter
@@ -207,7 +238,7 @@ const ProfileLayout = ({
                 title={"Album Cover"}
                 accept="image/*"
                 multiple={false}
-                value={newAlbum.title}
+                value={newAlbum.banner as string}
                 onChange={(value) =>
                   setnewAlbum((prevState) => ({ ...prevState, banner: value as File }))
                 }
@@ -219,12 +250,13 @@ const ProfileLayout = ({
                 onClick={() => handlecreateAlbum()}
                 className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
               >
-                Create Album
+                {newAlbum.isEdit ? "Edit Album" : "Create Album"}
               </Button>
             </div>
           </Modal>
           <div className="w-full">
             <BannerImage
+              setnewAlbum={setnewAlbum}
               setisCreateAlbumOpen={setisCreateAlbumOpen}
               bannerImage={userData?.bannerImage || ""}
             />
@@ -237,6 +269,19 @@ const ProfileLayout = ({
               {children}
             </div>
           </div>
+          {/* <div
+            onClick={() => {
+              handleAlbumEdit({
+                AlbumKeywords: ["heavytest2"],
+                banner:
+                  "https://gch-dev-public.s3.eu-central-003.backblazeb2.com/uploads/yashAgarwal/portfolio/1703370588861_aaaaa.png",
+                id: 10,
+                title: "test 32",
+              })
+            }}
+          >
+            testing
+          </div> */}
         </div>
       </>
     )
