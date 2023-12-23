@@ -94,7 +94,7 @@ const SettingsLayout: React.FC<SettingsLayoutProps> = ({ settingsDetails }) => {
     }
   }, [])
   return (
-    <div className="flex w-[80%] mx-auto gap-[30px] p-[20px] relative flex-col md:flex-row">
+    <div className="flex w-full md:w-[80%] mx-auto gap-[30px] p-[20px] relative flex-col md:flex-row">
       <Sidebar
         navigator={sidebarNavigator}
         activeTab={activeTab}

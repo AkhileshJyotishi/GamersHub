@@ -15,7 +15,7 @@ const Editor = ({
   editable: boolean
   defaultValue?: string | JSONContent | undefined
   disableLocalStorage?: boolean
-  storageKey: string
+  storageKey?: string
 }) => {
   // console.log("tis should work ", defaultValue)
   return (

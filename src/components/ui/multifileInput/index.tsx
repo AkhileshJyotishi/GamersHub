@@ -24,7 +24,6 @@ const itemVariants = {
 
 const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, errorMessage }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
-  // const [fullscreenImage, setFullscreenImage] = useState<File | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<number | null>(null)
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +37,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
   }
 
   const handleRemoveFile = (index: number) => {
-    const removedFile = selectedFiles[index]
     const newFiles = [...selectedFiles]
     newFiles.splice(index, 1)
 
@@ -46,7 +44,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
 
     // Callback to parent component
     onFileChange(newFiles)
-    URL.revokeObjectURL(URL.createObjectURL(removedFile))
   }
 
   const handleFullscreen = (index: number) => {
@@ -67,11 +64,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
       setFullscreenImage(fullscreenImage - 1)
     }
   }
-  useEffect(() => {
-    return () => {
-      selectedFiles.forEach((file) => URL.revokeObjectURL(URL.createObjectURL(file)))
-    }
-  }, [])
 
   return (
     <div>
