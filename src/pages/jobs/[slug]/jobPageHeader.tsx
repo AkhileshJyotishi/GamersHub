@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react"
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
+import EditIcon from "@/components/icons/editIcon"
 
 import MapPinIcon from "@/components/icons/mappinicon"
 import Button from "@/components/ui/button"
@@ -15,6 +16,7 @@ interface JobPageHeaderProps {
   title: string
   jobId: number
   userId: number
+  remote:boolean
   // company: string;
   // website: string;
   location: string
@@ -42,6 +44,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   title,
   jobId,
   location,
+  remote,
   userId,
 }) => {
   const router = useRouter()
@@ -66,15 +69,16 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
                     <SaveIcon className="w-5 h-5" />
                 </div> */}
       </div>
-
+{
+  !remote &&
       <div className="flex flex-wrap gap-3 p-2">
         <MapPinIcon className="w-4 h-4 text-user_interface_6" />
 
         <div>{location}</div>
       </div>
-      {/* {userData?.id} */}
-      {/* {userId} */}
-      {userData?.id !== userId && (
+}
+ 
+      {userData?.id !== userId ? (
         <div className="flex mt-3 gap-x-4 ">
           <Button
             className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
@@ -86,7 +90,16 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             Apply Now
           </Button>
         </div>
-      )}
+      ):(
+        <>
+        <Button className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl" onClick={()=>router.push(`/user/profile/portfolio/updateJob/${jobId}`)}>
+        <EditIcon className="w-5 h-5 text-user_interface_7" />
+        Edit Job
+          </Button>
+      
+        </>
+      )
+    }
     </div>
   )
 }

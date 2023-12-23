@@ -7,7 +7,7 @@ import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Card from "@/components/jobs/jobsCard"
-import SkeletonLoader from "@/components/SkeletonLoader2"
+import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 
 import ProfilePageLayout from "../ProfileLayout"
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
@@ -40,8 +40,7 @@ const Jobs = () => {
     const loadData = async () => {
       // ${router.query.user}
       const data = await fetchWithoutAuthorization(`v1/job/user/${router.query.user}`, "GET")
-
-      setLoading(false)
+        setLoading(false)
 
       // console.log(data?.data.jobs)
       if (data?.error) {
@@ -49,9 +48,6 @@ const Jobs = () => {
       } else {
         setjobDetails(data?.data?.jobs)
       }
-      // console.log(data?.data)
-
-      // return data?.data;
     }
     loadData()
   }, [session.data?.user?.name, router])

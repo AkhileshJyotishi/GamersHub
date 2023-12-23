@@ -23,6 +23,7 @@ import RegisterModal from "@/components/ui/register"
 // import Search from "../../mainsearch/index"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
+import ModalComponent from "@/components/ui/ConfirmationModal"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">
@@ -156,6 +157,7 @@ export default function Navbar() {
         }}
       />
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      <ModalComponent/>
       <nav
         className={clsx(
           "  leading-[0.015rem] w-[100vw] flex flex-row items-center justify-between px-[15px] mx-auto py-[20px]   sticky top-0  h-[61px] backdrop-blur",

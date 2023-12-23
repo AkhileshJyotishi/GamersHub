@@ -169,7 +169,7 @@ export default function ProfileAccordion({
             <div className="flex flex-row py-1 text-center break-words">
               <div>
                 {/* {formatLargeNumber(1)} <br /> */}
-                <span>Following:</span>
+                <span>Followers:</span>
                 {currentUser?._count?.followers_users}
               </div>
             </div>

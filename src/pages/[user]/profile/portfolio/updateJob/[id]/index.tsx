@@ -46,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   const convertBackendJobToJobInfo = (backendJob: BackendJob): JobInfo => {
     const {
+      id,
       jobType,
       remote,
       country,
@@ -65,6 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
     // jobSoftwares=
     return {
+      id,
       jobType,
       remote,
       country: country || "", // Adjust based on your needs

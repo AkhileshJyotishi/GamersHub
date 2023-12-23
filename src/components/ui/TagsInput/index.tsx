@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import clsx from "clsx"
 
 import CloseIcon from "@/components/icons/closeIcon"
+import AddIcon from "@/components/icons/plus"
 
 // import { SecondaryTag } from "../badges"
 import TextInput from "../textInput"
@@ -65,28 +66,31 @@ const TagsInput: React.FC<TagsInputProps> = ({
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // console.log("the current inputValue is ", inputValue)
-      // console.log(e.currentTarget.value)
       addTag()
     }
   }
 
   return (
     <div className="flex flex-col items-start w-full ">
-      <TextInput
-        type="text"
-        placeholder="Enter tags"
-        name="tags"
-        className={clsx(
-          "bg-transparent rounded-md",
-          errorMessage && "border-accent_red focus:border-accent_red focus:shadow-accent_red"
-        )}
-        value={inputValue}
-        onChange={handleInput}
-        onBlur={handleBlur}
-        onKeyPress={handleKeyPress}
-        id={id}
-      />
+      <div className="flex flex-row justify-between w-full gap-1 p-1">
+
+        <TextInput
+          type="text"
+          placeholder="Enter tags"
+          name="tags"
+          className={clsx(
+            "bg-transparent rounded-md ",
+            errorMessage && "border-accent_red focus:border-accent_red focus:shadow-accent_red"
+          )}
+          value={inputValue}
+          onChange={handleInput}
+          onBlur={handleBlur}
+          onKeyPress={handleKeyPress}
+          id={id}
+
+        />
+        <AddIcon className="h-[40px] w-[46px] rounded-full bg-secondary cursor-pointer" handleclick={() => { addTag() }} />
+      </div>
 
       {suggestions.length > 0 && (
         <div
@@ -109,7 +113,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
       <div className="flex flex-wrap gap-2 mt-2 ">
         {tags &&
           tags?.map((chip, index) => (
-            <span key={index} className="flex items-center ">
+            <span key={index} className="flex items-center cursor-pointer">
               <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary">
                 {/* Add your Chip SVG or Icon here */}
                 <span className="" onClick={() => removeTag(chip)}>

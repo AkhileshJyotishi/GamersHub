@@ -146,7 +146,6 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
         >
           Load More
         </Button> */}
-
         <JobSection />
         <TalentSection Img={Img} RightSVG={RightSVG} />
         {/* <Example /> */}

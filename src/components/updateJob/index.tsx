@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -58,7 +58,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (jobInfo.banner) {
+    if (typeof jobInfo.banner === "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
@@ -66,23 +66,22 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
         formdata
       )
       if (isuploaded?.error) {
-        // toast.info(isuploaded?.message)
+        toast.info(isuploaded?.message)
         setLoading(false)
         return
       }
       // console.log(isuploaded?.data)
       // return;
       jobInfo.banner = isuploaded?.data.image.Location
-    } else {
-      jobInfo.banner = ""
     }
     // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()
-
+    delete jobInfo.userId;
+    delete jobInfo.id;
     const data = await fetchData(
-      "/v1/job/user",
+      `/v1/job/${router?.query.id}`,
       session?.data?.user?.name as string,
-      "POST",
+      "PATCH",
       jobInfo
     )
     if (data?.error) {
@@ -101,11 +100,16 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob}>
       {/* Render the filterDetails here */}
       <>
-        <Editor
-          className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
-          editable={true}
-          storageKey="noval__content"
-        />
+        <div className="flex flex-col w-full gap-4">
+
+          <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
+
+          <Editor
+            className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
+            editable={true}
+            storageKey="noval__content"
+          />
+        </div>
       </>
     </Layout>
   )

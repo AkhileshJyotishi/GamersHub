@@ -35,8 +35,7 @@ body {
   background-color: #fff;
 }
 
-@layer base {
-}
+@layer base {}
 
 @layer components {
   .center {
@@ -120,11 +119,9 @@ body {
 button,
 [type="button"],
 [type="reset"],
-[type="submit"] {
-}
+[type="submit"] {}
 
-@layer utilities {
-}
+@layer utilities {}
 
 ._loading_overlay_content {
   top: 45%;
@@ -135,4 +132,9 @@ button,
 .ProseMirror {
   /* z-index: 0; */
   position: static !important;
+}
+
+.is-empty,
+.is-editor-empty {
+  display: none !important;
 }

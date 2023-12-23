@@ -69,12 +69,13 @@ interface BackendJob {
 }
 
 interface JobInfo {
+  id?: number
   jobType: string
   description: string | null
   remote: boolean
   country?: string
   city?: string
-  userId: number
+  userId?: number
   paymentType: string
   paymentValue: number
 

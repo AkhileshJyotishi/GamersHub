@@ -14,6 +14,7 @@ import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
+import { useModalContext } from "@/providers/modal-context"
 
 interface JobCardProps {
   id: number
@@ -71,7 +72,7 @@ const JobDescription = ({ desc }: { desc: string }) => (
 )
 
 const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
-  <div className="flex flex-wrap gap-5 p-3 text-sm sm:mt-0">
+  <div className="flex flex-wrap gap-5 p-3 text-sm sm:mt-0 min-h-[85px]">
     <span className="flex items-center font-semibold">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -151,6 +152,7 @@ const Card: React.FC<JobCardProps> = ({
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
+  const { setmodalData } = useModalContext()
   const router = useRouter()
   const [saved, setSaved] = useState<boolean>(false)
   // console.log(saved)
@@ -159,9 +161,7 @@ const Card: React.FC<JobCardProps> = ({
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedUsers])
-  // console.log(id)
-  // const issaved=
-  // issaved?
+
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
@@ -173,6 +173,8 @@ const Card: React.FC<JobCardProps> = ({
     }
   }
   const deletePost = async (id: number) => {
+    toast.info("Removing the Job...")
+    handleClose();
     const data = await fetchData(`/v1/job/${id}`, session?.user?.name as string, "DELETE")
     if (data?.error) {
       toast.error(data.message)
@@ -181,6 +183,16 @@ const Card: React.FC<JobCardProps> = ({
       toast.success(data?.message)
       // setSaved(!saved)
     }
+  }
+  const handleClose = () => {
+    setmodalData(() => ({
+      buttonText: "",
+      onClick: () => { },
+      content: <></>,
+      isOpen: false,
+      onClose: () => { },
+      title: <></>
+    }))
   }
 
   // const updatePost = async (id: number) => {
@@ -191,7 +203,7 @@ const Card: React.FC<JobCardProps> = ({
     <>
       <div
         className={clsx(
-          "p-3 flex flex-col gap-3 bg-[#161A1F] justify-between  rounded-xl  hover:border-[0.1px] w-full h-fit",
+          "p-2 flex flex-col gap-3 bg-[#161A1F] justify-between  rounded-xl  hover:border-[0.1px] w-full h-fit",
           className
         )}
         // href={href}
@@ -200,49 +212,56 @@ const Card: React.FC<JobCardProps> = ({
         <div className="">
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
-              <div className="flex gap-[25px] flex-wrap justify-center">
+              <div className="flex gap-[14px] flex-wrap justify-center w-full">
                 <UserImage href={banner} />
                 <UserInfo title={title} location={location} />
-              </div>
 
-              {userData?.id !== userId ? (
-                <>
-                  <div
-                    className="flex items-center mx-auto"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      savePost(id)
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill={saved ? "#fff" : "none"}
-                      stroke="#fff"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                {userData?.id !== userId ? (
+                  <>
+                    <div
+                      className="flex items-center mx-auto"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        savePost(id)
+                      }}
                     >
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="flex items-center mx-auto "
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      deletePost(id)
-                    }}
-                  >
-                    <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200" />
-                  </div>
-                </>
-              )}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill={saved ? "#fff" : "none"}
+                        stroke="#fff"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className="flex items-center mx-auto "
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setmodalData(() => ({
+                          buttonText: "Delete Job",
+                          content: <>Are you sure you want to delete Job</>,
+                          onClick: () => deletePost(id),
+                          isOpen: true,
+                          onClose: () => { handleClose() },
+                          title: <>{title}</>
+                        }))
+                      }}
+                    >
+                      <DeleteIcon className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-150 transition duration-200" />
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
             <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
             <JobDescription desc={desc as string} />

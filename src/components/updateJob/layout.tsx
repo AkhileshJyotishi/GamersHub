@@ -64,6 +64,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       onChange: (value) => setJobInfo((prevState) => ({ ...prevState, jobType: value as string })),
       selectOptions: [
         {
+          label: "Select Job Type",
+          value: "",
+        },
+        {
           label: "Freelance",
           value: "FREELANCE",
         },
@@ -75,10 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           label: "Collab",
           value: "COLLAB",
         },
-        {
-          label: "Select Job Type",
-          value: "",
-        },
+
       ],
       className: "bg-transparent rounded-md",
     },
@@ -244,42 +245,51 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
             "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
           )}
         >
-          <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
-            {initialDetailsArray?.map((filter, index) => {
-              let hide = false
-              ;(filter.title == "City" || filter.title == "Country") &&
-                jobInfo.remote &&
-                (hide = true)
-              filter.title == "Payment Amount" &&
-                jobInfo.paymentType == "NEGOTIABLE" &&
-                (hide = true)
+          <div className="flex flex-col w-full gap-4 p-2">
 
-              return (
-                <Filter
-                  key={index}
-                  inputType={filter.inputType}
-                  title={filter.title}
-                  placeholder={filter.placeholder}
-                  value={filter.value}
-                  onChange={filter.onChange}
-                  onTagsChange={filter.onTagsChange}
-                  selectOptions={filter.selectOptions}
-                  className={filter.className}
-                  initialtags={filter.initialtags}
-                  Variant={clsx(
-                    "flex flex-col items-start gap-[10px] text-[14px]",
-                    hide ? "hidden" : ""
-                  )}
+            <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
+              <Button
+                className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
+                onClick={() => uploadJob()}
+              >
+                Upload Job
+              </Button>
+            </div>
+            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+              {initialDetailsArray?.map((filter, index) => {
+                let hide = false
+                  ; (filter.title == "City" || filter.title == "Country") &&
+                    jobInfo.remote &&
+                    (hide = true)
+                filter.title == "Payment Amount" &&
+                  jobInfo.paymentType == "NEGOTIABLE" &&
+                  (hide = true)
+
+                return (
+                  <Filter
+                    key={index}
+                    inputType={filter.inputType}
+                    title={filter.title}
+                    placeholder={filter.placeholder}
+                    value={filter.value}
+                    onChange={filter.onChange}
+                    onTagsChange={filter.onTagsChange}
+                    selectOptions={filter.selectOptions}
+                    className={filter.className}
+                    initialtags={filter.initialtags}
+                    Variant={clsx(
+                      "flex flex-col items-start gap-[10px] text-[14px]",
+                      hide ? "hidden" : ""
+                    )}
 
                   // hidden={filter.hidden}
-                />
-              )
-            })}
+                  />
+                )
+              })}
 
-            <Button className="p-2 bg-secondary" onClick={() => uploadJob()}>
-              update Job
-            </Button>
-            <>{/* {JSON.stringify(jobInfo)} */}</>
+
+              <>{/* {JSON.stringify(jobInfo)} */}</>
+            </div>
           </div>
         </div>
         {children}

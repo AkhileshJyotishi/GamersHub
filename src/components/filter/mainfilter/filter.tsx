@@ -16,6 +16,7 @@ import SelectFilter from "./selectfilter"
 
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
+import CustomCombobox from "@/components/ui/Combobox"
 
 const Filter: React.FC<FilterDetail> = ({
   title,
@@ -125,14 +126,20 @@ const Filter: React.FC<FilterDetail> = ({
 
       {inputType === "select" && (
         <>
-          <SelectFilter
+          <CustomCombobox
+            onChange={handleSelectChange}
+            value={value as string}
+            options={selectOptions}
+            errorMessage={errorMessage} />
+
+          {/* <SelectFilter
             onChange={handleSelectChange}
             value={value as string}
             options={selectOptions}
             errorMessage={errorMessage}
 
-            // hidden={hidden}
-          />
+          // hidden={hidden}
+          /> */}
         </>
       )}
       {inputType === "date" && (

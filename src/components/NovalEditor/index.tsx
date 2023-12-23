@@ -2,6 +2,7 @@ import React from "react"
 import { Editor as NovelEditor } from "novel"
 
 import { JSONContent } from "@tiptap/react"
+import clsx from "clsx"
 
 const Editor = ({
   className,
@@ -19,7 +20,7 @@ const Editor = ({
   // console.log("tis should work ", defaultValue)
   return (
     <NovelEditor
-      className={className}
+      className={clsx("min-h-[40vh]", className)}
       editorProps={{ editable: () => editable }}
       defaultValue={defaultValue}
       disableLocalStorage={disableLocalStorage}

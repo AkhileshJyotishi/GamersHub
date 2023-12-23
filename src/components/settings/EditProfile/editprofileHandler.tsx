@@ -286,7 +286,7 @@ export const uploadProfileData = async (
   // return
   toast.info("Uploading Your Profile...")
 
-  if (profileData?.profileImage) {
+  if (typeof profileData?.profileImage=="object") {
     formdata.append("file", profileData?.profileImage as File)
     formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
@@ -294,12 +294,7 @@ export const uploadProfileData = async (
     if (isuploaded?.error) toast.error(isuploaded?.message)
     profileData.profileImage = isuploaded?.data?.image?.Location
   }
-  //  else {
-  //   // newAlbum.banner = ""
-  //   return
-  // }
-  // console.log(profileData)
-  // const token = useSession().data?.user?.name as string
+ 
   const response = await fetchData(`/v1/users/details`, token, method, profileData)
   if (response?.error) {
     toast.error(response?.message)

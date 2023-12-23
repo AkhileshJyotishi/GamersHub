@@ -11,6 +11,7 @@ import { fetchData } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
+import { useModalContext } from "@/providers/modal-context"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
@@ -54,6 +55,8 @@ const Card: React.FC<CardProps> = ({
   const session = useSession()
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
+  const { setmodalData } = useModalContext()
+
   const likePost = async () => {
     let method
     if (liked) {
@@ -110,7 +113,16 @@ const Card: React.FC<CardProps> = ({
   //     setLiked(likedPost?.some(obj => obj.id == (userData?.id ?? 0)))
   //   }
   // }, [likedPost])
-
+  const handleClose = () => {
+    setmodalData(() => ({
+      buttonText: "",
+      onClick: () => { },
+      content: <></>,
+      isOpen: false,
+      onClose: () => { },
+      title: <></>
+    }))
+  }
   return (
     <div
       className={clsx(
@@ -146,7 +158,7 @@ const Card: React.FC<CardProps> = ({
                     onClick={() => {
                       router.push(`/${userId}/profile/albums`)
                     }}
-                    className="block cursor-pointer antialiased font-bold leading-tight break-words text-md"
+                    className="block antialiased font-bold leading-tight break-words cursor-pointer text-md"
                   >
                     {username}
                   </span>
@@ -202,7 +214,7 @@ const Card: React.FC<CardProps> = ({
                 </svg>
               </div>
             ) : (
-              <div className="flex gap-4 items-center">
+              <div className="flex items-center gap-4">
                 <div
                   className="flex items-center mx-auto "
                   onClick={(e) => {
@@ -218,7 +230,14 @@ const Card: React.FC<CardProps> = ({
                   onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    deletePost(id)
+                    setmodalData(() => ({
+                      buttonText: "Delete Post",
+                      content: <>Are you sure you want to delete Post</>,
+                      onClick: () => deletePost(id),
+                      isOpen: true,
+                      onClose: () => { handleClose() },
+                      title: <>{title}</>
+                    }))
                   }}
                 >
                   <DeleteIcon className="h-[24px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer hover:scale-110 transition duration-200" />

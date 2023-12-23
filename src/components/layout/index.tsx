@@ -11,6 +11,7 @@ import Header from "./header"
 
 // import LoadingOverlay  from 'react-loading-overlay'
 import "react-toastify/dist/ReactToastify.css"
+import { ModalProvider } from "@/providers/modal-context"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -21,6 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
     <>
       <UserProvider>
+        <ModalProvider>
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -44,6 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
           </main>
           <Footer />
         </div>
+        </ModalProvider>
       </UserProvider>
     </>
   )

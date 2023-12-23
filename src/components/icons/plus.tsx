@@ -1,6 +1,6 @@
 import React from "react"
 
-function PlusIcon({ className }: { className: string }) {
+function PlusIcon({ className,handleclick }: { className: string,handleclick?:()=>void }) {
   return (
     <svg
       className={className}
@@ -9,6 +9,7 @@ function PlusIcon({ className }: { className: string }) {
       height="14"
       fill="none"
       viewBox="0 0 14 14"
+      onClick={handleclick}
     >
       <path
         stroke="currentColor"

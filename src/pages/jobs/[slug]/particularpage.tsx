@@ -11,7 +11,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
     return <div>Loading...</div> // or any other handling mechanism
   }
 
-  const { title, city, banner, country, user, userId, ...profileDataJobSection } = profileData
+  const { title, city, banner, country, user,remote, userId, ...profileDataJobSection } = profileData
   // console.log("is this rendering  ", profileData)
   return (
     <>
@@ -23,7 +23,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
-      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3 z-20 w-full">
+      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full" style={{zIndex:19}}>
         <JobPageHeader
           title={title ?? ""}
           key={"1"}
@@ -31,6 +31,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
           logoSrc={user?.profileImage || banner}
           jobId={profileData?.id}
           userId={userId}
+          remote={remote}
         />
         <Jobsection jobData={profileDataJobSection} />
       </div>

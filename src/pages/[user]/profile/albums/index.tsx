@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
-import SkeletonLoader from "@/components/SkeletonLoader"
+import SkeletonLoader from "@/components/ui/SkeletonLoader"
 import HoizontalCard from "@/components/ui/Horizontalcard"
 
 import ProfilePageLayout from "../ProfileLayout"
