@@ -250,5 +250,5 @@ const Card: React.FC<CardProps> = ({
     </div>
   )
 }
-
+ 
 export default Card
