@@ -86,7 +86,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     formdata.append("type", "games")
 
     console.log("jobInfo.banner ", gameInfo.banner)
-    if (gameInfo.banner) {
+    if (typeof gameInfo.banner=="object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
@@ -94,20 +94,23 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata
       )
       if (isuploaded?.error) {
+        toast.error("Error uploading banner")
         setLoading(false)
         return
       }
       gameInfo.banner = isuploaded?.data.image.Location
     } else {
-      gameInfo.banner = ""
+      if(!gameInfo.banner){
+        gameInfo.banner = ""
+      }
     }
     gameInfo.releaseDate = new Date().toISOString()
     const formdata2 = new FormData()
 
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
-      formdata2.append("type", "games")
     })
+    formdata2.append("type", "games")
     const newArray: string[] = []
     if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
       const multiisuploaded = await fetchFile(
@@ -117,7 +120,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata2
       )
       if (multiisuploaded?.error) {
-        toast.error(multiisuploaded.error)
+        toast.error("Error uploading assets")
         setLoading(false)
         return
       } else {
