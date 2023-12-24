@@ -68,7 +68,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameAssets: null,
     }
   }
-
+  console.log("printing it ", initGameInfo)
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
   const session = useSession()
   // const router=useRouter()
@@ -164,7 +164,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
           storageKey="noval__content4"
-          defaultValue={{}}
+          defaultValue={isUpdate ? (gameInfo.description ||{}):{}}
+          
         />
       </>
     </Layout>

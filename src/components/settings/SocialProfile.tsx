@@ -147,14 +147,14 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
   }
 
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className="flex flex-col gap-5 p-2 md:p-5">
       <div className="mx-auto text-2xl font-bold text-center ">{title}</div>
-      <div className="flex flex-wrap items-start  gap-6 py-6 w-[80%] mx-auto">
+      <div className="flex flex-wrap items-start  gap-6 py-6 md:w-[80%] md:mx-auto">
         {socialMediaPlatforms?.map((platform) => (
           <div key={platform.name} className="flex items-center w-full gap-4 p-1 md:flex-row ">
             <label
               htmlFor={platform.name}
-              className={clsx("p-2 rounded-full focus-within:bg-user_interface_1")}
+              className={clsx("md:p-2 rounded-full focus-within:bg-user_interface_1")}
             >
               {platform.icon}
             </label>

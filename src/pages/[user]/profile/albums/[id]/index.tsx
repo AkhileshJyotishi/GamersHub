@@ -25,6 +25,7 @@ const index = ({
 }) => {
   const router = useRouter()
   const { userData } = useUserContext()
+  console.log("working or not ", albumPosts)
   return (
     <>
       <Head>
@@ -66,7 +67,7 @@ const index = ({
               <Card
                 id={post.id}
                 key={post.id}
-                username={post.user.username}
+                username={post?.user?.username}
                 userProfilePhoto={post.user.profileImage}
                 coverPhoto={post.banner}
                 matureContent={post.matureContent}
@@ -122,9 +123,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     toast.success(albumdata?.message)
   }
   // return resp.data;\
-  //   console.log(albumdata)
 
   let albumdata2 = albumdata?.data?.album
+  console.log("albumdata2 ", albumdata2)
   return {
     props: {
       title: albumdata2?.title,

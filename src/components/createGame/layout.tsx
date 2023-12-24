@@ -191,7 +191,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       title: "Game Cover",
       accept: "image/*",
       multiple: false,
-      value: null,
+      value: gameInfo.banner as string,
       onChange: (value) => handleInputChange("banner", value as File),
       // setGameInfo((prevState) => ({ ...prevState, banner: value as File })),
       className: "",
@@ -204,6 +204,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "platform",
       onTagsChange: (tags) => handleInputChange("platforms", tags),
       errorMessage: errors.platforms,
+      initialtags:gameInfo.platforms
 
       //  setGameInfo((prevState) => ({ ...prevState, platforms: tags })),
     },
@@ -214,6 +215,8 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "genres...",
       onTagsChange: (tags) => handleInputChange("genre", tags),
       errorMessage: errors.genre,
+      initialtags:gameInfo.genre
+      
     },
     {
       title: "Mode",
@@ -243,10 +246,6 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "developer name",
       value: gameInfo.developerName,
       onChange: (value) => handleInputChange("developerName", value as string),
-      // setGameInfo((prevState) => ({
-      //   ...prevState,
-      //   developerName: value as string,
-      // })),
       className: "bg-transparent rounded-md",
       errorMessage: errors.developerName,
     },
@@ -287,6 +286,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       // value: gameInfo.distributionPlatforms,
       onTagsChange: (value) => handleInputChange("distributionPlatforms", value),
       errorMessage: errors.distributionPlatforms,
+      initialtags:gameInfo.distributionPlatforms
 
       // (value) =>
       //   setGameInfo((prevState) => ({
@@ -300,6 +300,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "Action, Shooting",
       onTagsChange: (tags) => handleInputChange("tags", tags),
       errorMessage: errors.tags,
+      initialtags:gameInfo.tags ||[]
 
       //  (tags) => setGameInfo((prevState) => ({ ...prevState, tags: tags })),
     },
@@ -366,6 +367,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
                   Variant="flex flex-col items-start gap-[10px] text-[14px] "
                   errorMessage={filter.errorMessage}
                   dimensionsImage={dimensions}
+                  initialtags={filter.initialtags}
                 />
               ))}
 

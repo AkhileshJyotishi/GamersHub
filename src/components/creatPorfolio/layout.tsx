@@ -192,6 +192,7 @@ const Layout: React.FC<LayoutProps> = ({
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
       errorMessage: errors.postKeywords,
+      initialtags:filtersState?.postKeywords
     },
     {
       inputType: "select",
@@ -223,7 +224,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Upload File",
       accept: "image/*", // Define accepted file types
       multiple: true, // Set to true if you want to allow multiple file selection
-      value: null, // Initialize with null
+      value: filtersState.banner as string, // Initialize with null
       onChange: (value) => handleInputChange("banner", value as File),
       // setFiltersState((prevState) => ({ ...prevState, banner: value as File })), // Handle file input changes
       className:
@@ -260,7 +261,7 @@ const Layout: React.FC<LayoutProps> = ({
               </Button>
             </div>
 
-            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex">
+            <div className="h-fit md:h-[73vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex">
               {filterDetails?.map((filter, index) => (
                 <Filter
                   key={index}
@@ -275,6 +276,7 @@ const Layout: React.FC<LayoutProps> = ({
                   errorMessage={filter.errorMessage}
                   dimensionsImage={dimensions}
                   onTagsChange={filter.onTagsChange}
+                  initialtags={filter.initialtags}
                 />
               ))}
               {/* 

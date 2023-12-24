@@ -134,7 +134,7 @@ button,
   position: static !important;
 }
 
-.is-empty,
+/* .is-empty,
 .is-editor-empty {
   display: none !important;
-}
+} */

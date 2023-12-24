@@ -94,14 +94,14 @@ const SettingsLayout: React.FC<SettingsLayoutProps> = ({ settingsDetails }) => {
     }
   }, [])
   return (
-    <div className="flex w-[80%] mx-auto gap-[30px] p-[20px] relative flex-col md:flex-row">
+    <div className="flex w-full md:w-[80%] mx-auto gap-[30px] p-[10px] md:p-[20px] relative flex-col md:flex-row">
       <Sidebar
         navigator={sidebarNavigator}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         className="whitespace-nowrap md:whitespace-normal w-full md:w-[25%] md:sticky md:top-[65px] h-fit bg-user_interface_2 flex-col  "
       />
-      <div className="w-full p-3 bg-user_interface_2 rounded-xl">
+      <div className="w-full md:p-3 bg-user_interface_2 rounded-xl">
         {ActivePage ? ActivePage : <Error />}
       </div>
     </div>
