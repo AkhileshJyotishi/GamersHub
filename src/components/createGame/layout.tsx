@@ -16,6 +16,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, uploadGame }) => {
+  // console.log("gameInfo",gameInfo)
   const [errors, setErrors] = useState<Errors<Partial<GameInfo>>>({
     banner: "",
     description: "",
@@ -204,7 +205,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "platform",
       onTagsChange: (tags) => handleInputChange("platforms", tags),
       errorMessage: errors.platforms,
-      initialtags:gameInfo.platforms
+      initialtags: gameInfo.platforms,
 
       //  setGameInfo((prevState) => ({ ...prevState, platforms: tags })),
     },
@@ -215,8 +216,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "genres...",
       onTagsChange: (tags) => handleInputChange("genre", tags),
       errorMessage: errors.genre,
-      initialtags:gameInfo.genre
-      
+      initialtags: gameInfo.genre,
     },
     {
       title: "Mode",
@@ -286,7 +286,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       // value: gameInfo.distributionPlatforms,
       onTagsChange: (value) => handleInputChange("distributionPlatforms", value),
       errorMessage: errors.distributionPlatforms,
-      initialtags:gameInfo.distributionPlatforms
+      initialtags: gameInfo.distributionPlatforms,
 
       // (value) =>
       //   setGameInfo((prevState) => ({
@@ -300,7 +300,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       placeholder: "Action, Shooting",
       onTagsChange: (tags) => handleInputChange("tags", tags),
       errorMessage: errors.tags,
-      initialtags:gameInfo.tags ||[]
+      initialtags: gameInfo.tags || [],
 
       //  (tags) => setGameInfo((prevState) => ({ ...prevState, tags: tags })),
     },

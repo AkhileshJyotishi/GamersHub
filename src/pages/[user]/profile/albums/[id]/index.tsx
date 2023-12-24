@@ -25,7 +25,7 @@ const index = ({
 }) => {
   const router = useRouter()
   const { userData } = useUserContext()
-  console.log("working or not ", albumPosts)
+  // console.log("working or not ", albumPosts)
   return (
     <>
       <Head>

@@ -32,7 +32,7 @@ const Albums = () => {
   }, [router])
 
   return (
-    <>
+    <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
       {
         loading ?
           (<>
@@ -78,7 +78,7 @@ const Albums = () => {
 
             </>)
       }
-    </>
+    </div>
   )
 }
 

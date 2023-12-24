@@ -53,15 +53,15 @@ const Jobs = () => {
   }, [session.data?.user?.name, router])
   if (loading) {
     return (
-      <>
+      <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
         <SkeletonLoader />
         <SkeletonLoader />
         <SkeletonLoader />
-      </>
+      </div>
     )
   } else {
     return (
-      <>
+      <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
         {/* sdfsdfsdf */}
         {jobDetails.length > 0 ? (
           jobDetails?.map((job) => {
@@ -85,7 +85,7 @@ const Jobs = () => {
             }
           </>
         )}
-      </>
+      </div>
     )
   }
 }

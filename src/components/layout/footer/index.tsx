@@ -32,35 +32,38 @@ const FooterLink: React.FC<FooterLink> = ({ href, text }) => (
       href={href}
       className="inline-block mb-4 text-base font-medium text-body-color hover:text-primary"
     >
-      {text}
+      {text.toUpperCase()}
     </Link>
   </li>
 )
 
 const sections: FooterSection[] = [
   {
-    title: "Useful Links",
+    title: "Support",
     links: [
-      { href: "/", text: "Careers" },
-      { href: "/", text: "Pricing" },
-      { href: "/", text: "About" },
+      { href: "/", text: "Contact us" },
+      { href: "/", text: "FAQ" },
     ],
   },
   {
-    title: "Terms",
+    title: "Socials",
     links: [
-      { href: "/", text: "TOS" },
+      { href: "/", text: "Instagram" },
+      { href: "/", text: "Twitter" },
+      { href: "/", text: "Facebook" },
+      { href: "/", text: "Email" },
+    ],
+  },
+  {
+    title: "Comapny",
+    links: [
       { href: "/", text: "Privacy Policy" },
-      { href: "/", text: "Refund Policy" },
+      { href: "/", text: "Terms of Service" },
     ],
   },
   {
-    title: "Support & Help",
-    links: [
-      { href: "/", text: "Open Support Ticket" },
-      { href: "/", text: "Terms of Use" },
-      { href: "/", text: "About" },
-    ],
+    title: "About us",
+    links: [{ href: "/", text: "About Gameartists" }],
   },
 ]
 const TwitterIcon = () => (
@@ -102,43 +105,30 @@ const socialLinks: SocialLinkProps[] = [
 const Footer: React.FC = () => {
   return (
     <>
-      <footer
-        className="pt-16  wow fadeInUp bg-primary bg-opacity-5 md:pt-20 lg:pt-24"
-        data-wow-delay=".1s"
-      >
+      <footer className="pt-7 wow fadeInUp bg-primary bg-opacity-5" data-wow-delay=".1s">
         <div className="container mx-auto">
-          <div className="flex flex-wrap ">
-            <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
-              <div className="mb-12 max-w-[360px] lg:mb-16">
-                <Link href="/">
-                  <div className="inline-block mb-8">
-                    <Image src={logo} alt="logo" className="w-full" width={140} height={30} />
-                    <Image
+          <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
+            <div className="mb-4 max-w-[360px]">
+              <Link href="/">
+                <div className="inline-block mb-2">
+                  <Image src={logo} alt="logo" className="w-full" width={140} height={30} />
+                  {/* <Image
                       src="/logo_transparent.png"
                       alt="logo"
                       className="hidden w-full"
                       width={140}
                       height={30}
-                    />
-                  </div>
-                </Link>
-                <p className="text-base font-medium leading-relaxed mb-9 text-body-color">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis.
-                </p>
-                <div className="flex items-center">
-                  {socialLinks?.map((link) => <SocialLink key={link.label} {...link} />)}
+                    /> */}
                 </div>
-              </div>
+              </Link>
             </div>
-
+          </div>
+          <div className="flex flex-wrap justify-center ">
             {/* Map over sections and render links */}
             {sections?.map((section) => (
-              <div
-                key={section.title}
-                className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12"
-              >
-                <div className="mb-12 lg:mb-16">
-                  <h2 className="mb-10 text-xl font-bold text-black ">{section.title}</h2>
+              <div key={section.title} className="w-full px-4 sm:w-1/2 lg:w-1/4">
+                <div className="w-[70%] my-4 mx-auto">
+                  <h2 className="mb-2 text-xl font-bold text-secondary ">{section.title}</h2>
                   <ul>{section?.links?.map((link) => <FooterLink key={link.text} {...link} />)}</ul>
                 </div>
               </div>
@@ -149,7 +139,8 @@ const Footer: React.FC = () => {
         <div className="py-8 bg-primary/10">
           <div className="container mx-auto">
             <p className="text-base text-center text-body-color ">
-              COPYRIGHT © 2023 GAMECREATORSHUB. All Rights Reserved
+              COPYRIGHT © 2023 <span className="text-secondary">GAMECREATORSHUB.</span> All Rights
+              Reserved
             </p>
           </div>
         </div>

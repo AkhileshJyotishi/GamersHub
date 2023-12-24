@@ -37,15 +37,15 @@ const Albums = () => {
   }, [router])
   if (loading) {
     return (
-      <>
+      <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
         <SkeletonLoader />
         <SkeletonLoader />
         <SkeletonLoader />
-      </>
+      </div>
     )
   } else {
     return (
-      <>
+      <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
       
         {albumDetails.length > 0 ? (
           albumDetails?.map((album) => (
@@ -74,7 +74,7 @@ const Albums = () => {
             }
           </>
         )}
-      </>
+      </div>
     )
   }
 }

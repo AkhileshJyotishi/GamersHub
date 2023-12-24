@@ -12,7 +12,7 @@ import TextInput from "@/components/ui/textInput"
 import CheckboxFilter from "./checkboxfilter"
 import FileFilter from "./Filefilter"
 import RadioFilter from "./radiofilter"
-import SelectFilter from "./selectfilter"
+// import SelectFilter from "./selectfilter"
 
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
@@ -130,7 +130,9 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={handleSelectChange}
             value={value as string}
             options={selectOptions}
-            errorMessage={errorMessage} />
+            errorMessage={errorMessage}
+            defaultSelected={(selectOptions ?? [])?.filter((item) => item.value == value)[0] ?? []}
+          />
 
           {/* <SelectFilter
             onChange={handleSelectChange}

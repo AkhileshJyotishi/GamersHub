@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Cycle, useCycle } from "framer-motion"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 import { fetchData } from "@/utils/functions"
 
@@ -29,19 +29,19 @@ interface IUserContext {
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
   userSession:
-  | {
-    name?: string | null | undefined
-    email?: string | null | undefined
-    image?: string | null | undefined
-  }
-  | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
+    | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
+    | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
+          name?: string | null | undefined
+          email?: string | null | undefined
+          image?: string | null | undefined
+        }
       | undefined
     >
   >
@@ -110,7 +110,7 @@ const UserProvider = ({ children }: IUserProvider) => {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
         setuserData(data?.data?.user)
-      } 
+      }
       if (session.status == "authenticated") {
         loaddata()
       }
