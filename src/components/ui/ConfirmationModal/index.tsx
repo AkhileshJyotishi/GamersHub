@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 
 const ModalComponent = () => {
     const { modalData } = useModalContext()
-    const { isOpen, onClose, title, content, buttonText, onClick } = modalData
+    const { isOpen, onClose, title, content, onClick } = modalData
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -42,19 +42,20 @@ const ModalComponent = () => {
                                         {title}
                                     </Dialog.Title>
                                     <div className="mt-2">
-                                        <p className="text-sm text-gray-500">{content}</p>
+                                        <p className="text-sm text-text">{content}</p>
                                     </div>
 
-
-                                    <div className="mt-4">
-                                        <button
-                                            // type="button"
-                                            className="inline-flex justify-center px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-secondary text-text focus:outline-none"
-                                            onClick={onClick}
-                                        >
-                                            {buttonText}
-                                        </button>
-                                    </div>
+                                    {
+                                     modalData?.buttonText &&   <div className="mt-4">
+                                            <button
+                                                // type="button"
+                                                className="inline-flex justify-center px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-secondary text-text focus:outline-none"
+                                                onClick={onClick}
+                                            >
+                                                {modalData?.buttonText}
+                                            </button>
+                                        </div>
+                                    }
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

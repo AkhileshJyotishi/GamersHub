@@ -57,8 +57,9 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
     <div
       className={`relative max-w-sm rounded overflow-hidden shadow-lg bg-user_interface_2 ${className}`}
     >
+      <Image className="h-40 max-w-sm" src={imageSrc} alt={""} height={400} width={400} />
       <Image
-        className="max-w-sm h-40"
+        className="h-40 max-w-sm"
         src={imageSrc == "" ? defaultbannerImage : imageSrc}
         alt={""}
         height={400}
@@ -66,7 +67,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
       />
       <div className="px-6 py-2">
         <span
-          className="mb-2 p-1 text-xl font-bold hover:text-green-600 cursor-pointer"
+          className="p-1 mb-2 text-xl font-bold cursor-pointer hover:text-green-600"
           onClick={() => {
             router.push(`/${userData?.id}/profile/albums/${id}`)
           }}
@@ -86,7 +87,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
         ))}
       </div>
       {userId === userData?.id && (
-        <div className="absolute top-1 right-1 bg-[#00000080] rounded-md flex gap-2 items-center py-1">
+        <div className="flex items-center justify-start">
           <div
             className="flex items-center mx-auto "
             onClick={(e) => {

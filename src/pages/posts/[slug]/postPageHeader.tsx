@@ -2,14 +2,15 @@ import React, { useState } from "react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
-
+import ShareIcon from "@/components/icons/share"
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 import EditIcon from "@/components/icons/editIcon"
 import Button from "@/components/ui/button"
 import { toast } from "react-toastify"
-
+import { useModalContext } from "@/providers/modal-context"
+import Share from "@/components/ui/Share"
 interface JobPageHeaderProps {
   logoSrc: string | null
   title: string
@@ -40,8 +41,10 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   const router = useRouter()
   const { data: session } = useSession()
   const { userData } = useUserContext()
+  const { setmodalData } = useModalContext()
   const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
+  const [copied, setCopied] = useState<boolean>(false)
   const likePost = async (postId: number) => {
     let method
     if (liked) {
@@ -85,7 +88,27 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   const updatePost = async (postId: number) => {
     router.push(`/${userId}/profile/portfolio/updatePost/${postId}`)
   }
-
+  const handleClose = () => {
+    setmodalData(() => ({
+      buttonText: "",
+      onClick: () => { },
+      content: <></>,
+      isOpen: false,
+      onClose: () => { },
+      title: <></>
+    }))
+  }
+  const copy = async () => {
+    navigator.clipboard.writeText(`${window.location.href}`)
+      .then(() => {
+        setCopied(true)
+        toast.success("Copied!")
+      })
+      .catch((error) => {
+        console.error(error);
+        setCopied(false)
+      });
+  }
   return (
     <div>
       <div className="p-4 font-extrabold">
@@ -96,7 +119,38 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
           <UserImage href={logoSrc || defaultbannerImage} />
           <UserInfo title={title} />
         </div>
-        <div className="flex gap-[25px]"></div>
+        <div className="flex gap-[25px]">
+          <Button
+            className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setmodalData(() => ({
+                buttonText: "Copy Link",
+                content: <>{
+                  <Share
+                    description="description to the job post"
+                    hashtag="#GameCreatorsHub"
+                    image={logoSrc || window.location.href}
+                    title={title}
+                    key={Math.random() * 100}
+                  />
+                }
+                  <div className="w-[80%] mx-auto  p-2 my-2 mt-4  text-text border-[0.1px] rounded border-secondary overflow-x-scroll">{window.location.href}</div>
+                </>,
+                onClick: () => { copy() },
+                isOpen: true,
+                onClose: () => {
+                  handleClose()
+                },
+                title: <>{title}</>,
+              }))
+            }}
+          >
+            <ShareIcon className="w-5 h-5 mt-1 fill-text" />
+            Share
+          </Button>
+        </div>
 
       </div>
 

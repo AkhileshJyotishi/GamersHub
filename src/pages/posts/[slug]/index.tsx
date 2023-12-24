@@ -14,6 +14,7 @@ const index = ({ profileData }: { profileData: IPostbackend }) => {
     <>
       <Head>
         <title>Posts | {profileData.title || ""}</title>
+        
       </Head>
       <Particularpage profileData={profileData} />
     </>

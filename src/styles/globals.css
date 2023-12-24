@@ -138,3 +138,24 @@ button,
 .is-editor-empty {
   display: none !important;
 } */
+
+.rce-mbox-right {
+  background-color: rgb(56, 216, 168) !important;
+  max-width: 60%;
+}
+
+.rce-mbox-right-notch {
+  fill: rgb(56, 216, 168) !important;
+}
+.rce-mbox-left {
+  background-color: rgb(56, 216, 168) !important;
+  max-width: 60%;
+}
+
+.rce-mbox-left-notch {
+  fill: rgb(56, 216, 168) !important;
+}
+.rce-avatar-container ,.rce-avatar{
+border:0px;
+border-radius: 9999px;
+}

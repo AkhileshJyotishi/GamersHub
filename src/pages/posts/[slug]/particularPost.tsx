@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import clsx from "clsx"
 
 // import spinner from "@/assets/svg/spinner.svg"
@@ -14,6 +14,9 @@ const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
   const { title,  banner, ...profileDataJobSection } = profileData
   const user=profileData.user
   const userId=profileData.userId
+  useEffect(()=>{
+console.log("working",window.location.href)
+  },[])
   // console.log("is this rendering  ", profileData)
   return (
     <>

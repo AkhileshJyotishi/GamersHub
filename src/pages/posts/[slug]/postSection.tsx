@@ -3,6 +3,11 @@ import React from "react"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import Link from "next/link"
+import { MessageBox } from "react-chat-elements"
+import 'react-chat-elements/dist/main.css'
+import { useUserContext } from "@/providers/user-context"
+import { useRouter } from "next/router"
+import defaultUserImage from "@/assets/image/user-profile.svg"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -11,7 +16,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
   },
 })
 
-type OmittedProperties = "title" | "banner" 
+type OmittedProperties = "title" | "banner"
 type postdataProp = Omit<IPostbackend, OmittedProperties>
 
 interface Section {
@@ -35,8 +40,8 @@ const sections: Section[] = [
     dataKey: "user",
     render: (data) => (
       <Link className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-      // onClick={() => router.push(`/${id}/profile/albums`)}
-      href={`/${data.userId}/profile/albums`}
+        // onClick={() => router.push(`/${id}/profile/albums`)}
+        href={`/${data.userId}/profile/albums`}
       >
         {data?.user.username}
       </Link>
@@ -47,7 +52,7 @@ const sections: Section[] = [
     dataKey: "savedUsers",
     render: (data) => (
       <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {(data?.savedUsers.length ||0) + " users"}
+        {(data?.savedUsers.length || 0) + " users"}
       </span>
     ),
   },
@@ -56,7 +61,7 @@ const sections: Section[] = [
     dataKey: "savedUsers",
     render: (data) => (
       <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {(data?.postLikes?.length ||0) + " users"}
+        {(data?.postLikes?.length || 0) + " users"}
       </span>
     ),
   },
@@ -81,22 +86,22 @@ const sections: Section[] = [
     dataKey: "postSkills",
     render: (data) => (
       <div className="flex flex-wrap gap-2">
-        {data.postSkills.length>0 ? data?.postSkills?.map((software, index) => (
+        {data.postSkills.length > 0 ? data?.postSkills?.map((software, index) => (
           <span
             key={index}
             className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
           >
             {software.skill}
           </span>
-        )):
-        (
-          <span
-          key={"index"}
-          className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-        >
-          No Skills yet
-        </span>
-        )
+        )) :
+          (
+            <span
+              key={"index"}
+              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+            >
+              No Skills yet
+            </span>
+          )
         }
       </div>
     ),
@@ -117,6 +122,8 @@ const JobDetails: React.FC<{ postData: postdataProp }> = ({ postData }) => (
 )
 
 const Jobsection = ({ postData }: { postData: postdataProp }) => {
+  const { userData } = useUserContext()
+  const router = useRouter()
   console.log("jobdetails from backend", postData)
   return (
     <div className="flex flex-col gap-5 p-3">
@@ -142,7 +149,7 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             <>
               <h1 className="text-[22px] font-semibold">Post</h1>
               <Editor
-                className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
+                className={"bg-user_interface_2 w-full rounded-xl md:min-h-[73vh] md:overflow-y-scroll"}
                 editable={false}
                 // storageKey="noval__content2"
                 defaultValue={postData?.content || {}}
@@ -151,10 +158,49 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             </>
           </div>
 
+          <div className="flex flex-col w-full p-2 py-10">
+            <div className="text-[25px]  font-bold mb-6">Comments</div>
+            {
+              postData.comments.map((comment) => {
+                const currentUser = (comment.userId === userData?.id)
+                return (
+                  <>
+                    <MessageBox
+                      id={comment.id}
+                      position={currentUser ? "right" : "left"}
+                      type={"text"}
+                      title={currentUser ? userData?.username : comment?.user.username}
+                      text={comment.comment}
+                      titleColor="white"
+                      avatar={(currentUser ? userData?.profileImage : comment?.user?.profileImage) ?? defaultUserImage}
+
+                      // router.push("")
+                      onTitleClick={() => { router.push(`/${comment.userId}/profile/albums`) }}
+                      forwarded={false}
+                      status={"sent"}
+                      notch={false}
+                      retracted={false}
+                      className={"text-[#000]"}
+                      date={new Date(comment.createdAt)}
+                      focus
+                      removeButton={false}
+                      replyButton={false}
+                      styles={
+                        currentUser ?
+                          { backgroundColor: "#464E55" } : { backgroundColor: "#00B87D" }
+                      }
+                    />
+                  </>
+                )
+              })
+            }
+          </div>
         </div>
       </div>
+
     </div>
   )
 }
 
 export default Jobsection
+
