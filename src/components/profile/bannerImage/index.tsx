@@ -85,34 +85,7 @@ const BannerImage = ({
             className="absolute flex items-end justify-center w-full h-full overflow-hidden group"
             style={{ zIndex: 17 }}
           >
-            <div className="absolute top-0 right-0 flex flex-wrap justify-center gap-4 mt-3 md:justify-normal ">
-              {session && (
-                <Button
-                  className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    setnewAlbum({
-                      title: "",
-                      banner: null,
-                      AlbumKeywords: [],
-                      isEdit: false,
-                    })
-                    setisCreateAlbumOpen(true)
-                  }}
-                >
-                  New Album
-                </Button>
-              )}
-              {session && (
-                <Button
-                  className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
-                  }}
-                >
-                  New Post
-                </Button>
-              )}
-            </div>
+
             <>
               {session && (
                 <>

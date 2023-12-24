@@ -192,7 +192,7 @@ const Card: React.FC<CardProps> = ({
             <div
               className="mx-auto cursor-pointer"
               onClick={() => {
-                router.push(`/jobs/${id}`)
+                router.push(`/posts/${id}`)
               }}
             >
               {title}

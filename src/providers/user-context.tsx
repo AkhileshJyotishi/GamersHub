@@ -29,19 +29,19 @@ interface IUserContext {
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
   userSession:
-    | {
+  | {
+    name?: string | null | undefined
+    email?: string | null | undefined
+    image?: string | null | undefined
+  }
+  | undefined
+  setUserSession: React.Dispatch<
+    React.SetStateAction<
+      | {
         name?: string | null | undefined
         email?: string | null | undefined
         image?: string | null | undefined
       }
-    | undefined
-  setUserSession: React.Dispatch<
-    React.SetStateAction<
-      | {
-          name?: string | null | undefined
-          email?: string | null | undefined
-          image?: string | null | undefined
-        }
       | undefined
     >
   >
@@ -106,22 +106,15 @@ const UserProvider = ({ children }: IUserProvider) => {
   }
   const containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    // console.log("session  ", session.data?.user?.name, session.status)
     if (session.data?.user?.name && session.status == "authenticated" && session !== undefined) {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
-        // console.log("this is user0  ", data)
         setuserData(data?.data?.user)
-        // data?.data.user
-      }
+      } 
       if (session.status == "authenticated") {
         loaddata()
       }
-    } else {
-      // if(session)
-      // signOut()
     }
-    // userdata
   }, [session])
 
   return (

@@ -63,7 +63,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     formdata.append("file", filtersState.banner as string)
     formdata.append("type", "portfolio")
 
-    if (filtersState.banner) {
+    if (typeof filtersState.banner=="object" ) {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -76,8 +76,6 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         return
       }
       filtersState.banner = isuploaded?.data.image.Location
-    } else {
-      filtersState.banner = ""
     }
     let method
     let res
