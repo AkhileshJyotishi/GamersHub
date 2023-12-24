@@ -336,7 +336,14 @@ const getPostById = async (id: number): Promise<Post | object> => {
         select: {
           comment: true,
           userId: true,
-          id: true
+          id: true,
+          createdAt: true,
+          user: {
+            select: {
+              profileImage: true,
+              username: true
+            }
+          }
         }
       },
       postLikes: {

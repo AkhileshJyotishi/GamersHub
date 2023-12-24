@@ -297,6 +297,30 @@ const getAllCreators = catchAsync(async (req, res) => {
   const creators = await userService.getAllCreators()
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators fetched Successfully')
 })
+const getOtherDetails = catchAsync(async (req, res) => {
+  const userId = parseInt(req.params.id as string)
+  const userSocials = await userService.getSocialsByUserId(userId)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares?.map((k: Allow) => k.software)
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills?.map((k: Allow) => k.skill)
+  const userDetails = await userService.getUserDetailsByUserId(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software, socials: userSocials, details: userDetails },
+    'Other Details fetched Successfully'
+  )
+})
 
 export default {
   createUser,
@@ -328,5 +352,6 @@ export default {
   getSoftwares,
   getGenre,
   getPlatforms,
-  getAllDetails
+  getAllDetails,
+  getOtherDetails
 }

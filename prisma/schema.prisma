@@ -173,12 +173,13 @@ model PostLikes {
 }
 
 model PostComment {
-  id      Int    @id @default(autoincrement())
-  comment String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  Int
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  Int
+  id        Int      @id @default(autoincrement())
+  comment   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  createdAt DateTime @default(now())
 }
 
 // MODEL GAME
