@@ -174,16 +174,16 @@ export default function Navbar() {
             }}
             className="flex items-center w-full h-full xl:justify-center"
           >
-            {/* logo here */}
-            <Image
-              src={logotextblackbg}
-              width={200}
-              height={25}
-              alt="Game Creators Hub"
-              className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
-              priority
-              // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-            />
+            logo here
+            {/* <Image
+                src={logo}
+                width={200}
+                height={25}
+                alt="Game Creators Hub"
+                className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
+                priority
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              /> */}
           </Button>
         </div>
 
