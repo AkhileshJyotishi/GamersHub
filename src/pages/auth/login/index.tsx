@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -28,13 +28,20 @@ const LoginPage = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setFormValues({ ...formValues, [name]: value })
-    // const newError = validateForm()
-    // // console.log(newError)
-    // if (Object.values(newError).some((error) => error !== "")) {
-    //   setErrors(newError)
-    //   return
-    // }
   }
+  useEffect(() => {
+    if (!(formValues.email == "" && formValues.password == "")) {
+      const newErrors = validateForm()
+      if (Object.values(newErrors).some((error) => error !== "")) {
+        setErrors(newErrors)
+      } else {
+        setErrors({
+          email: "",
+          password: "",
+        })
+      }
+    }
+  }, [formValues.email, formValues.password])
   const validateForm = () => {
     const newErrors = { ...errors }
 
@@ -93,7 +100,7 @@ const LoginPage = () => {
         return
       } else {
         setFormValues({ email: "", password: "" })
-        router.push("/")
+        router.push("/?message=Login Successfull")
       }
     } catch (error: Allow) {
       // console.log("catch in auth login ", error)

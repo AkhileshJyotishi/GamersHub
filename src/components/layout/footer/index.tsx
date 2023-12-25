@@ -108,17 +108,15 @@ const Footer: React.FC = () => {
       <footer className="pt-7 wow fadeInUp bg-primary bg-opacity-5" data-wow-delay=".1s">
         <div className="container mx-auto">
           <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
-            <div className="mb-4 px-4 max-w-[300px]">
-              <Link href="/">
-                <div className="inline-block mb-2">
-                  <Image
-                    src={logotextblackbg}
-                    alt="logo"
-                    className="w-full"
-                    width={130}
-                    height={30}
-                  />
-                </div>
+            <div className="px-4 max-w-[300px]">
+              <Link className="inline-block mb-2" href="/">
+                <Image
+                  src={logotextblackbg}
+                  alt="logo"
+                  className="w-full"
+                  width={130}
+                  height={30}
+                />
               </Link>
             </div>
           </div>

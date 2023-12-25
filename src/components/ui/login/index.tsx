@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
@@ -38,6 +38,19 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     const { name, value } = event.target
     setFormValues({ ...formValues, [name]: value })
   }
+  useEffect(() => {
+    if (!(formValues.email == "" && formValues.password == "")) {
+      const newErrors = validateForm()
+      if (Object.values(newErrors).some((error) => error !== "")) {
+        setErrors(newErrors)
+      } else {
+        setErrors({
+          email: "",
+          password: "",
+        })
+      }
+    }
+  }, [formValues.email, formValues.password])
 
   const validateForm = () => {
     const newErrors = { ...errors }
@@ -83,9 +96,6 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
         const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
         if (statusCode == 511 && emessage.includes("verified")) {
-          // toast.error("Email not verified")
-          // setVerifyMail(formValues.email)
-          // setVerifyModal(true)
           setIsLoginModalOpen(false)
           router.replace(
             `/?verify=true&data=${formValues.email}&emessage=Email Not Verified`,
@@ -101,7 +111,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       } else {
         setFormValues({ email: "", password: "" })
         setIsLoginModalOpen(false)
-        router.push("/")
+        toast.success("Login Successfull")
       }
     } catch (error: Allow) {
       toast.error(error)

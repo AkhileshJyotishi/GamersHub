@@ -12,7 +12,7 @@ const Jobs = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Jobs</title>
+        <title>GameCreatorsHub | Jobs</title>
       </Head>
       <JobsPage jobs={jobs} />
     </>
@@ -47,12 +47,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // console.log("this is the job details ", parsedjobsDetails)
 
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-    const salary=backendJob.paymentValue!=0 ? `${backendJob.paymentValue} ${backendJob.paymentType}`:`${backendJob.paymentType}`
+    const salary =
+      backendJob.paymentValue != 0
+        ? `${backendJob.paymentValue} ${backendJob.paymentType}`
+        : `${backendJob.paymentType}`
     return {
       id: backendJob.id,
       title: backendJob.title,
       desc: backendJob.description,
-      remote:backendJob.remote,
+      remote: backendJob.remote,
       date: backendJob.publishDate, // Replace with the relevant date field from the backend
       salary, // Adjust based on your backend structure
       type: backendJob.jobType,
