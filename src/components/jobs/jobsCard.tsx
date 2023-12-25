@@ -8,15 +8,14 @@ import { toast } from "react-toastify"
 
 // import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
-
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 // import testImage from "@/assets/image/profiles-slide-show.png"
 import MapPinIcon from "@/components/icons/mappinicon"
-import { useModalContext } from "@/providers/modal-context"
 
 interface JobCardProps {
   id: number
@@ -58,14 +57,19 @@ const UserImage = ({ href }: { href: string | null }) => (
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
   <div className="flex flex-col justify-center gap-1 text-center ">
-    <Link href={"#"} className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate">
-      {title}
+    <Link
+      href={"#"}
+      className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate"
+    >
+      {title?.[0]?.toUpperCase() + title?.slice(1)}
     </Link>
-    {location.trim().length > 1 && (
+    {location.trim().length > 1 ? (
       <span className="flex flex-row items-center gap-2">
         <MapPinIcon height="19" className=" h-[inherit] text-user_interface_6" />
         <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
       </span>
+    ) : (
+      <div className="h-5" />
     )}
   </div>
 )
@@ -113,7 +117,6 @@ const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
 )
 
 const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => {
-  // chips?.push(type)
   return (
     <div className="flex flex-wrap gap-3 p-3">
       <div className="flex flex-wrap gap-2">
@@ -177,10 +180,8 @@ const Card: React.FC<JobCardProps> = ({
     } else {
       if (saved) {
         onsavedSuccess && onsavedSuccess(id, "unsave")
-
       } else {
         onsavedSuccess && onsavedSuccess(id, "save")
-
       }
       toast.success(data?.message)
       setSaved(!saved)
@@ -201,10 +202,10 @@ const Card: React.FC<JobCardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => { },
+      onClick: () => {},
       content: <></>,
       isOpen: false,
-      onClose: () => { },
+      onClose: () => {},
       title: <></>,
     }))
   }
@@ -233,7 +234,10 @@ const Card: React.FC<JobCardProps> = ({
                 {userData?.id !== userId ? (
                   <>
                     <div
-                      className={clsx("flex items-center  cursor-pointer", remote ? "ml-auto" : "mx-auto")}
+                      className={clsx(
+                        "flex items-center  cursor-pointer",
+                        remote ? "ml-auto" : "mx-auto"
+                      )}
                       onClick={(e) => {
                         e.stopPropagation()
                         savePost(id)
@@ -289,7 +293,7 @@ const Card: React.FC<JobCardProps> = ({
             <AdditionalDetails type={type} chips={chips!} />
           </div>
         </div>
-        <Link className="flex items-center text-secondary group" href={href}>
+        <Link className="flex items-center text-secondary group px-4 py-2" href={href}>
           Know More
           <Image
             width={2060}

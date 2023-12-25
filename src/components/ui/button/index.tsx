@@ -5,6 +5,7 @@ const variants = {
   secondary: "",
   link: "",
   pill: "",
+  nav: "px-6 py-2 rounded-lg hover:opacity-90",
 }
 
 interface ButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -25,7 +26,7 @@ const Button = ({
   style,
   ...properties
 }: ButtonProperties) => {
-  const BASE_CLASS = ""
+  const BASE_CLASS = "transition-all"
 
   return (
     <button

@@ -10,7 +10,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
   },
 })
 
-type OmittedProperties = "about" | "country" | "city" | "title" | "user" | "banner" | "userId" |"remote" |"savedUsers"
+type OmittedProperties = "about" | "country" | "city" | "title" | "user" | "banner" | "userId" |"remote"
 type jobdataprop = Omit<BackendJob, OmittedProperties>
 
 interface Section {

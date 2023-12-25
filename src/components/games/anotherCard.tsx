@@ -118,7 +118,7 @@ const SocialCard: React.FC<CardProps> = ({
           />
           <div className="ml-2 ">
             <span
-              className="block text-sm antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary"
+              className="block text-base antialiased leading-tight transition duration-200 cursor-pointer hover:text-secondary"
               onClick={() => router.push(`/${userId}/profile/albums`)}
             >
               {username}

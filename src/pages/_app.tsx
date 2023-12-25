@@ -21,7 +21,6 @@ const App: NextPage<AppProps> = ({ Component, pageProps: { session, ...pageProps
       />
 
       <SessionProvider session={session}>
-        
         <Layout>
           <RootLayout Component={Component} pageProps={pageProps} />
         </Layout>

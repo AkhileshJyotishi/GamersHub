@@ -97,7 +97,7 @@ const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({
   setQuery,
   filteredOptions,
 }) => (
-  <div className="w-full overflow-hidden text-left rounded-lg shadow-md cursor-default bg-user_interface_3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+  <div className="w-full overflow-hidden text-left rounded-lg shadow-md cursor-default ring-0 bg-user_interface_3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
     <ComboboxInput onChange={(event) => setQuery(event.target.value)} />
     <ComboboxButton />
     <ComboboxOptions filteredOptions={filteredOptions} query={query} setQuery={setQuery} />
@@ -145,7 +145,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
         )
 
   return (
-    <div className={clsx("relative  ", className)}>
+    <div className={clsx("relative ring-0 w-full", className)}>
       <Combobox
         value={selected}
         onChange={(value) => {

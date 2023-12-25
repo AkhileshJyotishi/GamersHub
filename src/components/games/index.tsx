@@ -72,8 +72,10 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
     // if(activetab==="Saved")
     if (activetab === "Saved" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     } else if (activetab === "My Games" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     }
   }, [activetab])
 
@@ -109,7 +111,8 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         <>
           {games.length > 0 ? (
             <>
-              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
+              {/* <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 xl:grid-cols-3"> */}
+              <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
                 {games?.map((game, idx) => (
                   <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}/>
                 ))}
