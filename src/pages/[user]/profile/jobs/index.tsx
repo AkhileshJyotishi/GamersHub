@@ -14,6 +14,7 @@ import ProfilePageLayout from "../ProfileLayout"
 const Jobs = () => {
   const session = useSession()
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
+    // console.log(backendJob)
     return {
       id: backendJob.id,
       title: backendJob.title,
@@ -27,6 +28,7 @@ const Jobs = () => {
       savedUsers: backendJob.savedUsers,
       userId: backendJob.userId,
       banner: backendJob.banner,
+      profileImage: backendJob?.user?.profileImage,
     }
   }
   const router = useRouter()
@@ -40,7 +42,7 @@ const Jobs = () => {
     const loadData = async () => {
       // ${router.query.user}
       const data = await fetchWithoutAuthorization(`v1/job/user/${router.query.user}`, "GET")
-        setLoading(false)
+      setLoading(false)
 
       // console.log(data?.data.jobs)
       if (data?.error) {

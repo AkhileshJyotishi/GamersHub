@@ -30,17 +30,12 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
   const { userData: newuserData } = useUserContext()
   async function logoutUser() {
     if (session && session.data?.user?.name) {
-      const res = await fetchWithoutAuthorization(`v1/auth/logout`, "POST", {
+      await fetchWithoutAuthorization(`v1/auth/logout`, "POST", {
         accessToken: session.data?.user?.name,
       })
-      if (res?.error) {
-        toast.error("Error logging out")
-      } else {
-        signOut({
-          callbackUrl: "/?message=Logged out successfully",
-        })
-        // router.replace("/?message=Logged out successfully")
-      }
+      signOut({
+        callbackUrl: "/?message=Logged out successfully",
+      })
     }
   }
   return (

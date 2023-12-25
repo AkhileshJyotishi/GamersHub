@@ -109,6 +109,11 @@ const UserProvider = ({ children }: IUserProvider) => {
     if (session.data?.user?.name && session.status == "authenticated" && session !== undefined) {
       const loaddata = async () => {
         const data = await fetchData("/v1/auth", session?.data?.user?.name as string, "GET")
+        if (data?.error) {
+          signOut({
+            callbackUrl: "/?message=Session Expired.Log In again",
+          })
+        }
         setuserData(data?.data?.user)
       }
       if (session.status == "authenticated") {

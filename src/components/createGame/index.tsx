@@ -86,7 +86,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     formdata.append("type", "games")
 
     console.log("jobInfo.banner ", gameInfo.banner)
-    if (typeof gameInfo.banner=="object") {
+    if (gameInfo.banner && typeof gameInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
@@ -100,7 +100,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       }
       gameInfo.banner = isuploaded?.data.image.Location
     } else {
-      if(!gameInfo.banner){
+      if (!gameInfo.banner) {
         gameInfo.banner = ""
       }
     }
@@ -164,8 +164,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
           storageKey="noval__content4"
-          defaultValue={isUpdate ? (gameInfo.description ||{}):{}}
-          
+          defaultValue={isUpdate ? gameInfo.description || {} : {}}
         />
       </>
     </Layout>

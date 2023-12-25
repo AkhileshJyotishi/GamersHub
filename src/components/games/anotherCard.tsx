@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
+
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
@@ -86,7 +88,7 @@ const SocialCard: React.FC<CardProps> = ({
         <div className="flex items-center px-2 py-2">
           <Image
             className="w-6 h-6 rounded-full"
-            src={cover || defaultbannerImage}
+            src={cover || defaultUserImage}
             alt={""}
             width={100}
             height={100}
@@ -130,7 +132,6 @@ const SocialCard: React.FC<CardProps> = ({
           />
         </div>
         <div className="flex items-center justify-between px-4 py-1">
-
           {userData?.id !== userId ? (
             <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
@@ -147,22 +148,20 @@ const SocialCard: React.FC<CardProps> = ({
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
               </svg>
             </div>
-          ) :
-            (
-              <>
-                <div
-                  className="flex items-center "
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    updatePost(id)
-                  }}
-                >
-                  <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
-                </div>
-              </>
-            )
-          }
+          ) : (
+            <>
+              <div
+                className="flex items-center "
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  updatePost(id)
+                }}
+              >
+                <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

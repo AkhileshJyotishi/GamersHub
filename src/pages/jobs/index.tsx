@@ -59,6 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
       banner: backendJob.banner,
+      profileImage: backendJob?.user?.profileImage ?? "",
       userId: backendJob.userId,
     }
   }

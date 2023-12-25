@@ -11,14 +11,18 @@ import Image from "next/image"
 import clsx from "clsx"
 import { UserImage, UserInfo } from "@/pages/games/[slug]/GamePageHeader"
 import Button from "@/components/ui/button"
+import defaultbannerImage from "@/assets/image/user-banner.png"
+
 import { useRouter } from "next/router"
 
 const index = ({
   albumPosts,
   banner,
   title,
+  profileImage,
 }: {
   banner: string
+  profileImage: string
   title: string
   userId: number
   albumPosts: IPostbackend[]
@@ -33,7 +37,9 @@ const index = ({
       </Head>
       <div
         className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}
-        style={{ backgroundImage: `url(${banner})` }}
+        style={{
+          backgroundImage: `url(${defaultbannerImage})`,
+        }}
       >
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
@@ -55,7 +61,7 @@ const index = ({
         </div>
         <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
           <div className="flex gap-[25px] flex-wrap justify-center md:justify-normal ">
-            <UserImage href={banner} />
+            <UserImage href={profileImage} />
             <UserInfo title={title} />
           </div>
           <div className="flex gap-[25px]"></div>
@@ -118,7 +124,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   let albumdata = await fetchWithoutAuthorization(`/v1/album/${id}`, "GET")
 
   if (albumdata?.error) {
-    toast.error(albumdata?.message)
+    return {
+      redirect: {
+        destination: `/?emessage=${albumdata?.message}`,
+        permanent: false,
+      },
+    }
   } else {
     toast.success(albumdata?.message)
   }
@@ -130,6 +141,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     props: {
       title: albumdata2?.title,
       banner: albumdata2?.banner,
+      profileImage: albumdata2?.user?.profileImage,
       albumPosts: albumdata2?.posts,
     },
   }

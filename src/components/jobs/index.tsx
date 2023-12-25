@@ -22,6 +22,7 @@ const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     savedUsers: backendJob.savedUsers,
     banner: backendJob.banner,
     userId: backendJob.userId,
+    profileImage: backendJob?.user?.profileImage ?? "",
   }
 }
 type JobsPageProps = {

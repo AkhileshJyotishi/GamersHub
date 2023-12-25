@@ -1,5 +1,6 @@
 import React from "react"
 import clsx from "clsx"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 // import spinner from "@/assets/svg/spinner.svg"
 import JobPageHeader from "./jobPageHeader"
@@ -11,24 +12,28 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
     return <div>Loading...</div> // or any other handling mechanism
   }
 
-  const { title, city, banner, country, user,remote, userId, ...profileDataJobSection } = profileData
+  const { title, city, banner, country, user, remote, userId, ...profileDataJobSection } =
+    profileData
   // console.log("is this rendering  ", profileData)
   return (
     <>
       <div
         className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}
-        style={{ backgroundImage: `url(${banner})` }}
+        style={{ backgroundImage: `url(${banner ?? ""})` }}
       >
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
-      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full" style={{zIndex:19}}>
+      <div
+        className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full"
+        style={{ zIndex: 19 }}
+      >
         <JobPageHeader
           title={title ?? ""}
           key={"1"}
           location={city + " " + country}
-          logoSrc={user?.profileImage || banner}
+          logoSrc={user?.profileImage || ""}
           jobId={profileData?.id}
           userId={userId}
           remote={remote}

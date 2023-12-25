@@ -3,7 +3,9 @@ import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
-import defaultbannerImage from "@/assets/image/user-banner.png"
+// import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
+
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 import EditIcon from "@/components/icons/editIcon"
@@ -16,7 +18,7 @@ interface JobPageHeaderProps {
   title: string
   jobId: number
   userId: number
-  remote:boolean
+  remote: boolean
   // company: string;
   // website: string;
   location: string
@@ -61,7 +63,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
         <div className="flex gap-[25px] flex-wrap">
-          <UserImage href={logoSrc || defaultbannerImage} />
+          <UserImage href={logoSrc || defaultUserImage} />
           <UserInfo title={title} />
         </div>
         <div className="flex gap-[25px]"></div>
@@ -69,15 +71,14 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
                     <SaveIcon className="w-5 h-5" />
                 </div> */}
       </div>
-{
-  !remote &&
-      <div className="flex flex-wrap gap-3 p-2">
-        <MapPinIcon className="w-4 h-4 text-user_interface_6" />
+      {!remote && (
+        <div className="flex flex-wrap gap-3 p-2">
+          <MapPinIcon className="w-4 h-4 text-user_interface_6" />
 
-        <div>{location}</div>
-      </div>
-}
- 
+          <div>{location}</div>
+        </div>
+      )}
+
       {userData?.id !== userId ? (
         <div className="flex mt-3 gap-x-4 ">
           <Button
@@ -90,16 +91,17 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             Apply Now
           </Button>
         </div>
-      ):(
+      ) : (
         <>
-        <Button className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl" onClick={()=>router.push(`/user/profile/portfolio/updateJob/${jobId}`)}>
-        <EditIcon className="w-5 h-5 text-user_interface_7" />
-        Edit Job
+          <Button
+            className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl"
+            onClick={() => router.push(`/user/profile/portfolio/updateJob/${jobId}`)}
+          >
+            <EditIcon className="w-5 h-5 text-user_interface_7" />
+            Edit Job
           </Button>
-      
         </>
-      )
-    }
+      )}
     </div>
   )
 }

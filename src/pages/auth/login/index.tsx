@@ -75,7 +75,7 @@ const LoginPage = () => {
         callbackUrl: `${window.location.origin}`,
       }
       const res = await signIn(provider, credentials)
-      setFormValues({ email: "", password: "" })
+      // setFormValues({ email: "", password: "" })
       if (res?.error) {
         const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
         const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
@@ -92,6 +92,7 @@ const LoginPage = () => {
         }
         return
       } else {
+        setFormValues({ email: "", password: "" })
         router.push("/")
       }
     } catch (error: Allow) {

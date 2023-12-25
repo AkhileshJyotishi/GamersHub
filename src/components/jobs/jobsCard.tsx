@@ -6,7 +6,9 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import defaultbannerImage from "@/assets/image/user-banner.png"
+// import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
+
 import ChevronDownIcon from "@/assets/svg/chevron-right.svg"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
@@ -32,6 +34,7 @@ interface JobCardProps {
     id: number
   }[]
   userId: number
+  profileImage: string
   onChange?: (id: number) => void
 }
 
@@ -43,7 +46,7 @@ const UserImage = ({ href }: { href: string | null }) => (
         height={100}
         alt={""}
         className="w-10 h-10 border-[0.1px] rounded-full "
-        src={href || defaultbannerImage}
+        src={href || defaultUserImage}
         priority
         placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
       />
@@ -146,7 +149,7 @@ const Card: React.FC<JobCardProps> = ({
   href,
   id,
   savedUsers,
-  banner,
+  profileImage,
   userId,
   onChange,
 }) => {
@@ -155,13 +158,13 @@ const Card: React.FC<JobCardProps> = ({
   const { setmodalData } = useModalContext()
   const router = useRouter()
   const [saved, setSaved] = useState<boolean>(false)
+  console.log(profileImage)
   // console.log(saved)
   useEffect(() => {
     if (savedUsers?.length) {
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedUsers])
-
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
@@ -174,7 +177,7 @@ const Card: React.FC<JobCardProps> = ({
   }
   const deletePost = async (id: number) => {
     toast.info("Removing the Job...")
-    handleClose();
+    handleClose()
     const data = await fetchData(`/v1/job/${id}`, session?.user?.name as string, "DELETE")
     if (data?.error) {
       toast.error(data.message)
@@ -187,11 +190,11 @@ const Card: React.FC<JobCardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => { },
+      onClick: () => {},
       content: <></>,
       isOpen: false,
-      onClose: () => { },
-      title: <></>
+      onClose: () => {},
+      title: <></>,
     }))
   }
 
@@ -213,7 +216,7 @@ const Card: React.FC<JobCardProps> = ({
           <div>
             <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
               <div className="flex gap-[14px] flex-wrap justify-center w-full">
-                <UserImage href={banner} />
+                <UserImage href={profileImage} />
                 <UserInfo title={title} location={location} />
 
                 {userData?.id !== userId ? (
@@ -252,8 +255,10 @@ const Card: React.FC<JobCardProps> = ({
                           content: <>Are you sure you want to delete Job</>,
                           onClick: () => deletePost(id),
                           isOpen: true,
-                          onClose: () => { handleClose() },
-                          title: <>{title}</>
+                          onClose: () => {
+                            handleClose()
+                          },
+                          title: <>{title}</>,
                         }))
                       }}
                     >

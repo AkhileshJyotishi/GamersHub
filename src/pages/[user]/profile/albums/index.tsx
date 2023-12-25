@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import image from "@/assets/image/void.svg"
@@ -46,16 +45,15 @@ const Albums = () => {
   } else {
     return (
       <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
-      
         {albumDetails.length > 0 ? (
-          albumDetails?.map((album) => (
+          albumDetails?.map((album, index) => (
             <>
               <HoizontalCard
                 title={album.title}
                 className=""
                 imageSrc={album.banner || ""}
                 id={album.id}
-                key={album.id}
+                key={index}
                 tags={album.keyword}
                 userId={album.userId}
                 // handleAlbumEdit={handleAlbumEdit}

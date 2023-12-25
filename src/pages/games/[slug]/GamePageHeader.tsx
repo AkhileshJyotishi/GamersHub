@@ -1,6 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import defaultUserImage from "@/assets/image/user-profile.svg"
 
 import { useUserContext } from "@/providers/user-context"
 
@@ -16,7 +17,13 @@ interface GamePageHeaderProps {
 export const UserImage = ({ href }: { href: string }) => (
   <div className="my-auto">
     <div className="flex items-center">
-      <Image width={400} height={400} alt={""} className="w-20 h-20 rounded-full" src={href} />
+      <Image
+        width={400}
+        height={400}
+        alt={""}
+        className="w-20 h-20 rounded-full"
+        src={href == "" ? defaultUserImage : href}
+      />
     </div>
   </div>
 )

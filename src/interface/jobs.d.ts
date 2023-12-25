@@ -26,6 +26,7 @@ interface Job {
     id: number
   }[]
   userId: number
+  profileImage: string
 }
 interface IjobsDetails {}
 

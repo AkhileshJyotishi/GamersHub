@@ -8,6 +8,7 @@ import DeleteIcon from "@/components/icons/deleteIcon"
 import { toast } from "react-toastify"
 import { fetchData } from "@/utils/functions"
 import { useSession } from "next-auth/react"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 interface CardProps {
   imageSrc: string
@@ -56,7 +57,13 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
     <div
       className={`relative max-w-sm rounded overflow-hidden shadow-lg bg-user_interface_2 ${className}`}
     >
-      <Image className="max-w-sm h-40" src={imageSrc} alt={""} height={400} width={400} />
+      <Image
+        className="max-w-sm h-40"
+        src={imageSrc == "" ? defaultbannerImage : imageSrc}
+        alt={""}
+        height={400}
+        width={400}
+      />
       <div className="px-6 py-2">
         <span
           className="mb-2 p-1 text-xl font-bold hover:text-green-600 cursor-pointer"

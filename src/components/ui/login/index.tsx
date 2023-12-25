@@ -79,7 +79,6 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         callbackUrl: `${window.location.origin}`,
       }
       const res = await signIn("credentials", credentials)
-      setFormValues({ email: "", password: "" })
       if (res?.error) {
         const statusCode = (await JSON.parse(res?.error)?.status) ?? "401"
         const emessage: string = (await JSON.parse(res?.error)?.message) ?? "Request failed"
@@ -100,6 +99,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         }
         return
       } else {
+        setFormValues({ email: "", password: "" })
         setIsLoginModalOpen(false)
         router.push("/")
       }

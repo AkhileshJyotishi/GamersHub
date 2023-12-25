@@ -72,25 +72,32 @@ const ProfileLayout = ({
       setLoading(false)
     })
   }, [param, router.query])
-  const tabs = ["posts", "albums", "jobs","about"]
+  const tabs = ["posts", "albums", "jobs", "about"]
+  const [activeTab, setActiveTab] = useState<string>("albums")
 
   const Tab = () => {
     return tabs?.map((tab) => {
       return (
         <>
-          <Link
-            className={clsx("sm:min-w-[80px] active:current cursor-pointer")}
-            href={`/${data?.id}/profile/${tab}`}
+          <div
+            className={clsx(
+              `sm:min-w-[80px]  rounded-xl active:current cursor-pointer ${
+                activeTab == tab && "bg-user_interface_4"
+              } `
+            )}
+            onClick={() => {
+              setActiveTab(tab)
+              router.push(`/${data?.id}/profile/${tab}`)
+            }}
           >
             <div
               // href="#"
               className={clsx(` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
-            bg-white
-              text-light outline-none focus:outline-none   `)}
+            bg-white text-light outline-none focus:outline-none capitalize`)}
             >
               {tab}
             </div>
-          </Link>
+          </div>
         </>
       )
     })
@@ -105,7 +112,9 @@ const ProfileLayout = ({
     } else {
       toast.info("Creating Album...")
     }
-    if (typeof newAlbum.banner == "object") {
+    console.log(newAlbum.banner)
+
+    if (newAlbum.banner && typeof newAlbum.banner == "object") {
       formdata.append("file", newAlbum.banner as Blob)
       formdata.append("type", "portfolio")
       const isuploaded = await fetchFile(
@@ -261,10 +270,10 @@ const ProfileLayout = ({
               bannerImage={userData?.bannerImage || ""}
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
-            <div className="flex justify-end w-full gap-3">
+            <div className="flex justify-center flex-wrap lg:justify-end w-full gap-3">
               {session && (
                 <Button
-                  className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
+                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
                   onClick={() => {
                     setnewAlbum({
                       title: "",
@@ -280,7 +289,7 @@ const ProfileLayout = ({
               )}
               {session && (
                 <Button
-                  className="  bg-secondary  py-[10px] px-[30px] font-medium rounded-xl"
+                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
                   onClick={() => {
                     router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
                   }}
@@ -289,12 +298,10 @@ const ProfileLayout = ({
                 </Button>
               )}
             </div>
-            <div className="backdrop-blur-sm bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
+            <div className="backdrop-blur-sm sm:bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
               <Tab />
             </div>
-            <div className="w-full">
-              {children}
-            </div>
+            <div className="w-full">{children}</div>
           </div>
           {/* <div
             onClick={() => {

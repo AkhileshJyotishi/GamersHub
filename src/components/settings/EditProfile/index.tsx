@@ -56,9 +56,9 @@ const EditProfilePage = ({
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
   // console.log(profileDetails)
   const initProfile = {
-    userBio: profileDetails?.userBio,
-    country: profileDetails?.country,
-    city: profileDetails?.city,
+    userBio: profileDetails?.userBio ?? "",
+    country: profileDetails?.country ?? "",
+    city: profileDetails?.city ?? "",
     // userSkills: profileDetails?.userSkills,
     userSkills: profileDetails?.userSkills
       ? profileDetails?.userSkills?.map((userskill) => userskill.skill)
@@ -67,7 +67,7 @@ const EditProfilePage = ({
       profileDetails?.userSoftwares && profileDetails?.userSoftwares.length > 0
         ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
         : undefined,
-    profileImage: profileDetails?.user?.profileImage,
+    profileImage: profileDetails?.user?.profileImage ?? "",
   }
   const [profileData, setprofileData] = useState(initProfile)
   // console.log(initProfile)

@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
@@ -116,11 +117,11 @@ const Card: React.FC<CardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => { },
+      onClick: () => {},
       content: <></>,
       isOpen: false,
-      onClose: () => { },
-      title: <></>
+      onClose: () => {},
+      title: <></>,
     }))
   }
   return (
@@ -150,7 +151,7 @@ const Card: React.FC<CardProps> = ({
                   width={8}
                   height={8}
                   className="w-10 h-10 rounded-full"
-                  src={userProfilePhoto || defaultbannerImage}
+                  src={userProfilePhoto || defaultUserImage}
                   alt={``}
                 />
                 <div className="flex justify-center ml-3">
@@ -235,8 +236,10 @@ const Card: React.FC<CardProps> = ({
                       content: <>Are you sure you want to delete Post</>,
                       onClick: () => deletePost(id),
                       isOpen: true,
-                      onClose: () => { handleClose() },
-                      title: <>{title}</>
+                      onClose: () => {
+                        handleClose()
+                      },
+                      title: <>{title}</>,
                     }))
                   }}
                 >
@@ -250,5 +253,5 @@ const Card: React.FC<CardProps> = ({
     </div>
   )
 }
- 
+
 export default Card

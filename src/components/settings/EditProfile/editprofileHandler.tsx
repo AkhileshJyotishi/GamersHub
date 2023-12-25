@@ -286,15 +286,18 @@ export const uploadProfileData = async (
   // return
   toast.info("Uploading Your Profile...")
 
-  if (typeof profileData?.profileImage=="object") {
+  if (typeof profileData?.profileImage == "object") {
     formdata.append("file", profileData?.profileImage as File)
     formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
     // console.log("is uploaded", isuploaded)
-    if (isuploaded?.error) toast.error(isuploaded?.message)
+    if (isuploaded?.error) {
+      toast.error(isuploaded?.message)
+      return
+    }
     profileData.profileImage = isuploaded?.data?.image?.Location
   }
- 
+
   const response = await fetchData(`/v1/users/details`, token, method, profileData)
   if (response?.error) {
     toast.error(response?.message)
