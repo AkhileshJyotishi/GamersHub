@@ -12,6 +12,7 @@ import EditIcon from "@/components/icons/editIcon"
 
 import MapPinIcon from "@/components/icons/mappinicon"
 import Button from "@/components/ui/button"
+import { toast } from "react-toastify"
 
 interface JobPageHeaderProps {
   logoSrc: string | null
@@ -53,7 +54,12 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   const { data: session } = useSession()
   const { userData } = useUserContext()
   const saveJob = async (jobId: number) => {
-    fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
+   const res=await fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
+   if(res?.error){
+    toast.error(res.message)
+   }else{
+    toast.success(res?.message)
+   }
   }
 
   return (

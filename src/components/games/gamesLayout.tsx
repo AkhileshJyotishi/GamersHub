@@ -176,7 +176,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
           />
 
           {/* <TabButtons tabNames={["Trending", "Latest", "Saved"]} /> */}
-          {
+          {userData &&
             <Button
               onClick={() => {
                 if (session) router.push(`/${userData?.id}/profile/portfolio/createGame`)

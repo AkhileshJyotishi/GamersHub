@@ -13,6 +13,7 @@ import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
+import { useModalContext } from "@/providers/modal-context"
 
 // import EditIcon from "../icons/editIcon"
 
@@ -29,6 +30,8 @@ interface CardProps {
     id: number
   }[]
   onChange?: (id: number) => void
+  onsavedSuccess?: (id: number, state: string) => void
+
   //   likes: number;
 }
 
@@ -43,10 +46,13 @@ const SocialCard: React.FC<CardProps> = ({
   className,
   savedUsers,
   onChange,
+  onsavedSuccess
   //   likes,
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
+  const { setmodalData } = useModalContext()
+
   // const isSaved
 
   // const [liked, setLiked] = useState<boolean>(false)
@@ -56,7 +62,7 @@ const SocialCard: React.FC<CardProps> = ({
     if (savedUsers?.length) {
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
-  }, [savedUsers])
+  }, [savedUsers, userData])
 
   const savePost = async () => {
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
@@ -64,6 +70,11 @@ const SocialCard: React.FC<CardProps> = ({
       toast.error(data.message)
       // setSaved()
     } else {
+      if (saved) {
+        onsavedSuccess && onsavedSuccess(id, "unsave")
+      } else {
+        onsavedSuccess && onsavedSuccess(id, "save")
+      }
       toast.success(data?.message)
       setSaved(!saved)
     }
@@ -73,6 +84,7 @@ const SocialCard: React.FC<CardProps> = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
+
       onChange && onChange(id)
       toast.success(data?.message)
       // setSaved(!saved)
@@ -80,6 +92,16 @@ const SocialCard: React.FC<CardProps> = ({
   }
   const updatePost = async (id: number) => {
     router.push(`/${userId}/profile/portfolio/updateGame/${id}`)
+  }
+  const handleClose = () => {
+    setmodalData(() => ({
+      buttonText: "",
+      onClick: () => { },
+      content: <></>,
+      isOpen: false,
+      onClose: () => { },
+      title: <></>,
+    }))
   }
 
   return (
@@ -104,13 +126,38 @@ const SocialCard: React.FC<CardProps> = ({
             {/* <span className="block text-xs text-gray-600">{location}</span> */}
           </div>
           {session && userData?.id == userId && (
-            <div className="ml-auto">
+            <div className="ml-auto mr-1">
               <DeleteIcon
-                className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200"
-                onClick={() => deletePost(id)}
+                className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200 mt-1"
+                onClick={() => {
+                  setmodalData(() => ({
+                    buttonText: "Delete Game",
+                    content: <>Are you sure you want to delete Game</>,
+                    onClick: () => deletePost(id),
+                    isOpen: true,
+                    onClose: () => {
+                      handleClose()
+                    },
+                    title: <>{title}</>,
+                  }))
+                }}
               />
             </div>
-          )}
+          )
+          }
+          <>
+            <div
+              className="flex items-center "
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                updatePost(id)
+              }}
+            >
+              <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+            </div>
+          </>
+
         </div>
         <div className="flex items-center px-2">
           <span
@@ -132,7 +179,7 @@ const SocialCard: React.FC<CardProps> = ({
           />
         </div>
         <div className="flex items-center justify-between px-4 py-1">
-          {userData?.id !== userId ? (
+          {userData?.id !== userId && (
             <div className="flex cursor-pointer" onClick={() => savePost()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -148,20 +195,8 @@ const SocialCard: React.FC<CardProps> = ({
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
               </svg>
             </div>
-          ) : (
-            <>
-              <div
-                className="flex items-center "
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  updatePost(id)
-                }}
-              >
-                <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
-              </div>
-            </>
-          )}
+          )
+          }
         </div>
       </div>
     </div>

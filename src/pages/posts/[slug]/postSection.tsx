@@ -163,10 +163,10 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex justify-center min-w-[200px] md:sticky top-[61px] h-[91vh] md:overflow-y-scroll"
+            "w-full md:w-[23vw] flex justify-center min-w-[200px] md:sticky top-[61px] h-fit"
           )}
         >
-          <div className="flex flex-col min-w-[200px] md:px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
+          <div className="flex flex-col min-w-[200px] md:px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex h-[91vh] md:overflow-y-scroll">
             <JobDetails postData={postData} />
           </div>
         </div>
