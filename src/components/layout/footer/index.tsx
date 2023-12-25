@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import logo from "@/assets/image/logo-with-text.svg"
+import logotextblackbg from "@/assets/image/text-black-bg.png"
 
 interface SocialLinkProps {
   href: string
@@ -108,17 +108,16 @@ const Footer: React.FC = () => {
       <footer className="pt-7 wow fadeInUp bg-primary bg-opacity-5" data-wow-delay=".1s">
         <div className="container mx-auto">
           <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
-            <div className="mb-4 max-w-[360px]">
+            <div className="mb-4 px-4 max-w-[300px]">
               <Link href="/">
                 <div className="inline-block mb-2">
-                  <Image src={logo} alt="logo" className="w-full" width={140} height={30} />
-                  {/* <Image
-                      src="/logo_transparent.png"
-                      alt="logo"
-                      className="hidden w-full"
-                      width={140}
-                      height={30}
-                    /> */}
+                  <Image
+                    src={logotextblackbg}
+                    alt="logo"
+                    className="w-full"
+                    width={130}
+                    height={30}
+                  />
                 </div>
               </Link>
             </div>

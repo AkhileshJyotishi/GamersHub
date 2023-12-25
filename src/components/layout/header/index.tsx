@@ -5,8 +5,8 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
-import { signOut, useSession } from "next-auth/react"
-
+import { useSession } from "next-auth/react"
+import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
@@ -157,7 +157,7 @@ export default function Navbar() {
         }}
       />
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-      <ModalComponent/>
+      <ModalComponent />
       <nav
         className={clsx(
           "  leading-[0.015rem] w-[100vw] flex flex-row items-center justify-between px-[15px] mx-auto py-[20px]   sticky top-0  h-[61px] backdrop-blur",
@@ -177,16 +177,15 @@ export default function Navbar() {
               }}
               className="flex items-center w-full h-full xl:justify-center"
             >
-              logo here
-              {/* <Image
-                src={logo}
+              <Image
+                src={logotextblackbg}
                 width={200}
                 height={25}
                 alt="Game Creators Hub"
                 className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
                 priority
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              /> */}
+                // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              />
             </Button>
           </div>
 

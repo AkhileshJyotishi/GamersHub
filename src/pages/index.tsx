@@ -5,7 +5,9 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.svg"
+// import logo from "@/assets/image/logo-with-text.svg"
+import logotextblackbg from "@/assets/image/text-black-bg.png"
+
 import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
@@ -45,9 +47,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       router.replace("/", undefined, { shallow: true })
     }
     if (emessage) {
-      router.replace("/", undefined, { shallow: true })
-
       toast.error(emessage)
+      router.replace("/", undefined, { shallow: true })
     }
     if (data) {
       setVerifyMail((data as string) ?? "")
@@ -82,11 +83,16 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           </div>
           <div className="flex justify-center w-full h-[25px] relative">
             <Image
-              src={logo}
-              // width={200}
+              src={logotextblackbg}
+              width={200}
               height={25}
               alt="Game Creators Hub"
-              className="mx-auto xl:absolute left-5"
+              onClick={() => {
+                router.push("/")
+                setVerifyMail("")
+                setVerifyModal(false)
+              }}
+              className="cursor-pointer"
             />
           </div>
           <Filter
