@@ -63,7 +63,7 @@ const CreateJob: React.FC = () => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (jobInfo.banner) {
+    if (typeof jobInfo.banner=="object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -78,9 +78,7 @@ const CreateJob: React.FC = () => {
       // console.log(isuploaded?.data)
       // return;
       jobInfo.banner = isuploaded?.data.image.Location
-    } else {
-      jobInfo.banner = ""
-    }
+    } 
     // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()
 
@@ -116,12 +114,6 @@ const CreateJob: React.FC = () => {
               onChange={(value) =>
                 setJobInfo((prev) => ({ ...prev, description: value as string }))
               }
-
-              // Variant={clsx(
-              //   "flex flex-col items-start gap-[10px] text-[14px]",
-              //   // hide ? "hidden" : ""
-              // )}
-              // hidden={filter.hidden}
             />
           </div>
         </>

@@ -14,9 +14,7 @@ const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
   const { title,  banner, ...profileDataJobSection } = profileData
   const user=profileData.user
   const userId=profileData.userId
-  useEffect(()=>{
-console.log("working",window.location.href)
-  },[])
+
   // console.log("is this rendering  ", profileData)
   return (
     <>

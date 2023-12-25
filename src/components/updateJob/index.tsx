@@ -8,6 +8,7 @@ import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
 import Layout from "./layout"
+import Filter from "../filter/mainfilter/filter"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -101,14 +102,42 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
       {/* Render the filterDetails here */}
       <>
         <div className="flex flex-col w-full gap-4">
-
+        <>
           <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 
+          <div className="w-full p-12 bg-user_interface_2 rounded-xl">
+            <Filter
+              key={"text"}
+              inputType={"text"}
+              title={""}
+              placeholder={"Enter the description"}
+              value={jobInfo.description}
+              className="static bg-transparent border-none rounded-md"
+              onChange={(value) =>
+                setJobInfo((prev) => ({ ...prev, description: value as string }))
+              }
+            />
+          </div>
+        </>
+        <>
+          <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
             editable={true}
-            storageKey="noval__content"
+            storageKey="noval__content2"
+            defaultValue={jobInfo.jobDetails ?? {}}
           />
+        </>
+
+        <>
+          <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
+          <Editor
+            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
+            editable={true}
+            storageKey="noval__content1"
+            defaultValue={jobInfo.aboutRecruiter ?? {}}
+          />
+        </>
         </div>
       </>
     </Layout>

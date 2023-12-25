@@ -27,6 +27,7 @@ interface JobCardProps {
   type: string
   banner: string | null
   location: string
+  remote:boolean
   href: string
   className: string
   chips?: string[]
@@ -147,6 +148,7 @@ const Card: React.FC<JobCardProps> = ({
   chips,
   title,
   href,
+  remote,
   id,
   savedUsers,
   profileImage,
@@ -164,7 +166,7 @@ const Card: React.FC<JobCardProps> = ({
     if (savedUsers?.length) {
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
-  }, [savedUsers])
+  }, [savedUsers,userData])
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
@@ -222,7 +224,7 @@ const Card: React.FC<JobCardProps> = ({
                 {userData?.id !== userId ? (
                   <>
                     <div
-                      className="flex items-center mx-auto"
+                      className="flex items-center mx-auto cursor-pointer "
                       onClick={(e) => {
                         e.stopPropagation()
                         savePost(id)
@@ -246,7 +248,7 @@ const Card: React.FC<JobCardProps> = ({
                 ) : (
                   <>
                     <div
-                      className="flex items-center mx-auto "
+                      className={clsx("flex items-center ",remote ? "ml-auto":"mx-auto")}
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()

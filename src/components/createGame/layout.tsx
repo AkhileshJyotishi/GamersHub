@@ -339,7 +339,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto md:flex-row flex-col items-center md:items-start">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
+            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[200px] md:sticky top-[61px] h-fit flex-col md:h-[87vh] md:overflow-y-scroll"
           )}
         >
           <div className="flex flex-col w-full gap-4 p-2">

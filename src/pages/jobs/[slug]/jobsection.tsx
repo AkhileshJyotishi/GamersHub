@@ -105,10 +105,10 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex justify-center min-w-[280px] md:sticky top-[61px] h-fit"
+            "w-full md:w-[23vw] flex justify-center min-w-[200px] md:sticky top-[61px] h-fit"
           )}
         >
-          <div className="flex flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
+          <div className="flex flex-col min-w-[200px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
             <JobDetails jobData={jobData} />
           </div>
         </div>
@@ -131,7 +131,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
             <>
               <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
               <Editor
-                className={"bg-user_interface_2 w-full rounded-xl md:h-[20h] md:overflow-y-scroll"}
+                className={"bg-user_interface_2 w-full rounded-xl  md:overflow-y-scroll"}
                 editable={false}
                 storageKey="noval__content2"
                 defaultValue={jobData?.jobDetails || {}}

@@ -14,14 +14,16 @@ import ProfilePageLayout from "../ProfileLayout"
 const Jobs = () => {
   const session = useSession()
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-    // console.log(backendJob)
+  const salary=backendJob.paymentValue!=0 ? `${backendJob.paymentValue} ${backendJob.paymentType}`:`${backendJob.paymentType}`
+
     return {
       id: backendJob.id,
       title: backendJob.title,
       desc: backendJob.description,
       date: backendJob.publishDate, // Replace with the relevant date field from the backend
-      salary: `${backendJob.paymentValue} ${backendJob.paymentType}`, // Adjust based on your backend structure
+      salary, // Adjust based on your backend structure
       type: backendJob.jobType,
+      remote:backendJob.remote,
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,

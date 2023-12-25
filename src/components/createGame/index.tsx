@@ -172,3 +172,4 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 }
 
 export default CreateGame
+

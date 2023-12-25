@@ -255,7 +255,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 Upload Job
               </Button>
             </div>
-            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+            <div className="h-fit md:h-[74vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
                   ; (filter.title == "City" || filter.title == "Country") &&
@@ -287,8 +287,6 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 )
               })}
 
-
-              <>{/* {JSON.stringify(jobInfo)} */}</>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 // import Editor from '@/components/NovalEditor'
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import Link from "next/link"
@@ -8,6 +8,11 @@ import 'react-chat-elements/dist/main.css'
 import { useUserContext } from "@/providers/user-context"
 import { useRouter } from "next/router"
 import defaultUserImage from "@/assets/image/user-profile.svg"
+import Filter from "@/components/filter/mainfilter/filter"
+import Button from "@/components/ui/button"
+import { fetchData } from "@/utils/functions"
+import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -124,21 +129,48 @@ const JobDetails: React.FC<{ postData: postdataProp }> = ({ postData }) => (
 const Jobsection = ({ postData }: { postData: postdataProp }) => {
   const { userData } = useUserContext()
   const router = useRouter()
-  console.log("jobdetails from backend", postData)
+  const [comment, setComment] = useState<string>("")
+  const [comments, setComments] = useState(postData.comments);
+  const { data: session } = useSession()
+  const addMessage = async () => {
+    const message = await fetchData(`/v1/post/comment/${postData?.id}`, session?.user?.name as string, "POST", {
+      comment
+    })
+    if (message?.error) {
+      toast.error(message.message)
+    }
+    else {
+      console.log(message?.message)
+      userData?.id && setComments((prev) => ([
+        ...prev, {
+          comment,
+          createdAt: new Date().toISOString(),
+          id: postData.comments.length,
+          user: {
+            username: userData?.username || "",
+            profileImage: userData?.profileImage || ""
+          },
+          userId: userData?.id
+
+        }
+      ]))
+    }
+  }
+
   return (
-    <div className="flex flex-col gap-5 p-3">
+    <div className="flex flex-col gap-5 md:p-3">
       <div className="text-[25px] font-bold">Post Description</div>
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex justify-center min-w-[280px] md:sticky top-[61px] h-fit"
+            "w-full md:w-[23vw] flex justify-center min-w-[200px] md:sticky top-[61px] h-[91vh] md:overflow-y-scroll"
           )}
         >
-          <div className="flex flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
+          <div className="flex flex-col min-w-[200px] md:px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-8  md:flex">
             <JobDetails postData={postData} />
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-[80%] sm:w-full">
           <div className="flex flex-col w-full gap-4">
             {/* <>
               <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
@@ -149,7 +181,7 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             <>
               <h1 className="text-[22px] font-semibold">Post</h1>
               <Editor
-                className={"bg-user_interface_2 w-full rounded-xl md:min-h-[73vh] md:overflow-y-scroll"}
+                className={"bg-user_interface_2 w-full rounded-xl md:min-h-[73vh] md:overflow-y-scroll "}
                 editable={false}
                 // storageKey="noval__content2"
                 defaultValue={postData?.content || {}}
@@ -158,11 +190,20 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             </>
           </div>
 
-          <div className="flex flex-col w-full p-2 py-10">
-            <div className="text-[25px]  font-bold mb-6">Comments</div>
+          <div className="flex flex-col p-2 py-10">
+            <div className="text-[25px]  font-bold mb-3">Comments</div>
+            <div className="flex gap-2 mb-6" >
+
+              <Filter inputType="text" title="" placeholder="Comment..." value={comment} onChange={(value) => setComment(value as string)} className="mt-2 bg-transparent rounded-md" />
+              <Button className="  border-secondary border-[0.1px] h-[42px] font-medium rounded-xl p-2 self-end" onClick={() => { addMessage() }}>
+                Send
+              </Button>
+
+            </div>
             {
-              postData.comments.map((comment) => {
+              comments.map((comment) => {
                 const currentUser = (comment.userId === userData?.id)
+                const color = currentUser ? { backgroundColor: "#00B87D", marginTop: "12px" } : { backgroundColor: "#fff", marginTop: "12px" }
                 return (
                   <>
                     <MessageBox
@@ -171,8 +212,8 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
                       type={"text"}
                       title={currentUser ? userData?.username : comment?.user.username}
                       text={comment.comment}
-                      titleColor="white"
-                      avatar={(currentUser ? userData?.profileImage : comment?.user?.profileImage) ?? defaultUserImage}
+                      titleColor={currentUser ?"white":"black"}
+                      avatar={(currentUser ? (userData?.profileImage || defaultUserImage) : (comment?.user?.profileImage || defaultUserImage))}
 
                       // router.push("")
                       onTitleClick={() => { router.push(`/${comment.userId}/profile/albums`) }}
@@ -185,10 +226,10 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
                       focus
                       removeButton={false}
                       replyButton={false}
-                      styles={
-                        currentUser ?
-                          { backgroundColor: "#464E55" } : { backgroundColor: "#00B87D" }
-                      }
+                      styles={color}
+                    // styles={
+
+                    // }
                     />
                   </>
                 )
