@@ -27,7 +27,7 @@ interface JobCardProps {
   type: string
   banner: string | null
   location: string
-  remote:boolean
+  remote: boolean
   href: string
   className: string
   chips?: string[]
@@ -37,6 +37,7 @@ interface JobCardProps {
   userId: number
   profileImage: string
   onChange?: (id: number) => void
+  onsavedSuccess?: (id: number, state: string) => void
 }
 
 const UserImage = ({ href }: { href: string | null }) => (
@@ -56,8 +57,8 @@ const UserImage = ({ href }: { href: string | null }) => (
 )
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
-  <div className="flex flex-col justify-center gap-1 text-center">
-    <Link href={"#"} className="font-serif font-bold text-[16px] mx-auto md:mx-0">
+  <div className="flex flex-col justify-center gap-1 text-center ">
+    <Link href={"#"} className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate">
       {title}
     </Link>
     {location.trim().length > 1 && (
@@ -152,6 +153,7 @@ const Card: React.FC<JobCardProps> = ({
   id,
   savedUsers,
   profileImage,
+  onsavedSuccess,
   userId,
   onChange,
 }) => {
@@ -166,13 +168,20 @@ const Card: React.FC<JobCardProps> = ({
     if (savedUsers?.length) {
       setSaved(savedUsers?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
-  }, [savedUsers,userData])
+  }, [savedUsers, userData])
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
     if (data?.error) {
       toast.error(data.message)
     } else {
+      if (saved) {
+        onsavedSuccess && onsavedSuccess(id, "unsave")
+
+      } else {
+        onsavedSuccess && onsavedSuccess(id, "save")
+
+      }
       toast.success(data?.message)
       setSaved(!saved)
     }
@@ -192,10 +201,10 @@ const Card: React.FC<JobCardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => {},
+      onClick: () => { },
       content: <></>,
       isOpen: false,
-      onClose: () => {},
+      onClose: () => { },
       title: <></>,
     }))
   }
@@ -216,7 +225,7 @@ const Card: React.FC<JobCardProps> = ({
       >
         <div className="">
           <div>
-            <div className="flex flex-row flex-wrap justify-between gap-3 p-3">
+            <div className="flex flex-row flex-wrap justify-between gap-1 p-1 md:gap-3 md:p-3">
               <div className="flex gap-[14px] flex-wrap justify-center w-full">
                 <UserImage href={profileImage} />
                 <UserInfo title={title} location={location} />
@@ -224,7 +233,7 @@ const Card: React.FC<JobCardProps> = ({
                 {userData?.id !== userId ? (
                   <>
                     <div
-                      className="flex items-center mx-auto cursor-pointer "
+                      className={clsx("flex items-center  cursor-pointer", remote ? "ml-auto" : "mx-auto")}
                       onClick={(e) => {
                         e.stopPropagation()
                         savePost(id)
@@ -248,7 +257,7 @@ const Card: React.FC<JobCardProps> = ({
                 ) : (
                   <>
                     <div
-                      className={clsx("flex items-center ",remote ? "ml-auto":"mx-auto")}
+                      className={clsx("flex items-center ", remote ? "ml-auto" : "mx-auto")}
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()

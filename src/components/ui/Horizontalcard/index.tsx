@@ -57,7 +57,6 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
     <div
       className={`relative max-w-sm rounded overflow-hidden shadow-lg bg-user_interface_2 ${className}`}
     >
-      <Image className="h-40 max-w-sm" src={imageSrc} alt={""} height={400} width={400} />
       <Image
         className="h-40 max-w-sm"
         src={imageSrc == "" ? defaultbannerImage : imageSrc}
