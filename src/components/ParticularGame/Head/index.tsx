@@ -6,6 +6,7 @@ import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
 import Button from "@/components/ui/button"
+import { IoIosArrowBack } from "react-icons/io"
 interface GamePageHeaderProps {
   logoSrc: string
   title: string
@@ -39,14 +40,10 @@ const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title, userId 
   const router = useRouter()
   return (
     <div>
-      <div className="p-4 font-extrabold ">
-        <Button
-          onClick={() => {
-            router.back()
-          }}
-        >
-          {" "}
-          Back
+      <div className="p-4">
+        <Button className="center gap-2 opacity-75 hover:opacity-100" onClick={() => router.back()}>
+          <IoIosArrowBack />
+          <span>back</span>
         </Button>
       </div>
       <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
@@ -58,10 +55,10 @@ const GamePageHeader: React.FC<GamePageHeaderProps> = ({ logoSrc, title, userId 
       </div>
       {userData?.id !== userId && (
         <div className="flex flex-wrap justify-center mt-3 md:justify-normal gap-x-4 gap-y-3">
-          <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
+          <Button className="border-secondary border py-4 px-8 hover:bg-secondary font-medium rounded-xl">
             Save Game
           </Button>
-          <Button className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
+          <Button className="border-secondary border py-4 px-8 hover:bg-secondary font-medium rounded-xl">
             Buy Now
           </Button>
         </div>

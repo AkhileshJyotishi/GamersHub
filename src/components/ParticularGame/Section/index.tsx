@@ -24,7 +24,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
     },
   })
-  console.log("gamesection ",GameData.description)
+  console.log("gamesection ", GameData.description)
 
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
     <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
@@ -161,7 +161,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl "}
           editable={false}
-          defaultValue={GameData.description ||{}}
+          defaultValue={GameData.description || {}}
         />
       </div>
     </div>

@@ -61,10 +61,10 @@ const AuthButtons = ({
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   return (
-    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2 ", className)}>
+    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2", className)}>
       <Button
-        variant="secondary"
-        className="flex px-4 sm:text-sm md:text-md "
+        variant="nav"
+        className="flex px-4 sm:text-sm md:text-md bg-user_interface_4"
         onClick={() => {
           setIsLoginModalOpen(true)
         }}
@@ -73,8 +73,8 @@ const AuthButtons = ({
       </Button>
 
       <Button
-        variant="primary"
-        className="flex px-4 sm:text-sm md:text-md "
+        variant="nav"
+        className="flex px-4 sm:text-sm md:text-md bg-secondary"
         onClick={() => {
           setIsRegisterModalOpen(true)
         }}
@@ -86,8 +86,6 @@ const AuthButtons = ({
 }
 
 const LoggedInUserButtons = ({ userSession, userData }: Props) => {
-  const router = useRouter()
-
   const [showProfileSettings, setShowProfileSettings] = useState(false)
   // const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
 
@@ -160,44 +158,43 @@ export default function Navbar() {
       <ModalComponent />
       <nav
         className={clsx(
-          "  leading-[0.015rem] w-[100vw] flex flex-row items-center justify-between px-[15px] mx-auto py-[20px]   sticky top-0  h-[61px] backdrop-blur",
+          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] backdrop-blur px-8 xl:px-28",
           !tap ? "z-20" : "z-0"
         )}
       >
-        <div className=" flex flex-row md:min-w-[70%] xl:w-fit">
-          <div
-            className={` transform transition-all -translate-y-5 ${
-              tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
-            } duration-[1s] ease-in-out`}
-          ></div>
-          <div className="flex flex-row items-center justify-start w-full sm:items-center ">
-            <Button
-              onClick={() => {
-                router.push("/")
-              }}
-              className="flex items-center w-full h-full xl:justify-center"
-            >
-              <Image
-                src={logotextblackbg}
+        <div
+          className={`absolute transform transition-all -translate-y-5 ${
+            tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
+          } duration-[1s] ease-in-out`}
+        ></div>
+        <div className="center">
+          <Button
+            onClick={() => {
+              router.push("/")
+            }}
+            className="flex items-center w-full h-full xl:justify-center"
+          >
+            logo here
+            {/* <Image
+                src={logo}
                 width={200}
                 height={25}
                 alt="Game Creators Hub"
                 className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
                 priority
-                // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              />
-            </Button>
-          </div>
+                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              /> */}
+          </Button>
+        </div>
 
-          <div className="flex-row items-center hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif] ml-[250px]">
-            <NavbarLink label="Home" href="/" />
-            <NavbarLink label="Jobs" href="/jobs" />
-            <NavbarLink label="Creators" href="/creator" />
-            <NavbarLink label="Games" href="/games" />
-            {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
+        <div className="center grow hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif]">
+          <NavbarLink label="Home" href="/" />
+          <NavbarLink label="Jobs" href="/jobs" />
+          <NavbarLink label="Creators" href="/creator" />
+          <NavbarLink label="Games" href="/games" />
+          {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
 
-            {userSession && <NavbarLink label="Assets" href="/help" />}
-          </div>
+          {userSession && <NavbarLink label="Assets" href="/help" />}
         </div>
 
         <div className="relative flex items-center gap-2 mb-1 xl:gap-12 ">

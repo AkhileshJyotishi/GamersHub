@@ -51,6 +51,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       profileData,
     },
   }
-
-  // http://localhost:5000/v1/users/details
 }

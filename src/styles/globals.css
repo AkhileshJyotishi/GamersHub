@@ -10,6 +10,7 @@
 
 html,
 body {
+  background-color: #08080a;
   overflow-x: hidden;
   letter-spacing: 0.015em;
   font-family: sans-serif;
@@ -18,8 +19,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track {
@@ -35,7 +35,8 @@ body {
   background-color: #fff;
 }
 
-@layer base {}
+@layer base {
+}
 
 @layer components {
   .center {
@@ -119,9 +120,11 @@ body {
 button,
 [type="button"],
 [type="reset"],
-[type="submit"] {}
+[type="submit"] {
+}
 
-@layer utilities {}
+@layer utilities {
+}
 
 ._loading_overlay_content {
   top: 45%;
@@ -155,7 +158,8 @@ button,
 .rce-mbox-left-notch {
   fill: rgb(56, 216, 168) !important;
 }
-.rce-avatar-container ,.rce-avatar{
-border:0px;
-border-radius: 9999px;
+.rce-avatar-container,
+.rce-avatar {
+  border: 0px;
+  border-radius: 9999px;
 }

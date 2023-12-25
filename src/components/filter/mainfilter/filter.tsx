@@ -6,17 +6,17 @@ import DatePicker from "react-date-picker"
 
 import { FilterDetail } from "@/interface/filter"
 
+import CustomCombobox from "@/components/ui/Combobox"
 import TagsInput from "@/components/ui/TagsInput"
 import TextInput from "@/components/ui/textInput"
 
 import CheckboxFilter from "./checkboxfilter"
 import FileFilter from "./Filefilter"
 import RadioFilter from "./radiofilter"
-// import SelectFilter from "./selectfilter"
 
+// import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
-import CustomCombobox from "@/components/ui/Combobox"
 
 const Filter: React.FC<FilterDetail> = ({
   title,
@@ -70,7 +70,7 @@ const Filter: React.FC<FilterDetail> = ({
   // console.log("selectOptions  ", selectOptions)
   return (
     <div className={clsx(Variant, "")}>
-      <label className="mb-2 font-medium" htmlFor={title}>
+      <label className="font-medium" htmlFor={title}>
         {title}
       </label>
       {inputType === "text" && (
@@ -133,7 +133,6 @@ const Filter: React.FC<FilterDetail> = ({
             errorMessage={errorMessage}
             defaultSelected={(selectOptions ?? [])?.filter((item) => item.value == value)[0] ?? []}
           />
-
           {/* <SelectFilter
             onChange={handleSelectChange}
             value={value as string}
