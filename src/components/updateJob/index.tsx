@@ -59,7 +59,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (typeof jobInfo.banner === "object") {
+    if (jobInfo.banner && typeof jobInfo.banner === "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
