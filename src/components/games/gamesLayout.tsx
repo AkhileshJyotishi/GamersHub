@@ -25,8 +25,6 @@ const Layout: React.FC<gamesLayoutProps> = ({
   children,
   setActiveTab,
   activeTab,
-  // games,
-  //  setGames
 }) => {
   const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
@@ -41,9 +39,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
       developerType: "",
       gameMode: "",
     })
-    // defaultJobs ||
-    // setJobs([]);
-    // setJobsMeta("defaultJobsMeta");
+ 
   }
 
   const [gamePlatformsSuggestions] = useState<string[]>([])
@@ -122,6 +118,10 @@ const Layout: React.FC<gamesLayoutProps> = ({
       onChange: (value) => setGamesFilter({ ...gamesFilters, gameMode: value as string }),
       selectOptions: [
         {
+          label: "Select mode",
+          value: "",
+        },
+        {
           label: "Single Player",
           value: "single-player",
         },
@@ -129,10 +129,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
           label: "Multi Player",
           value: "multi-player",
         },
-        {
-          label: "Select mode",
-          value: "",
-        },
+        
       ],
     },
     {
@@ -174,8 +171,6 @@ const Layout: React.FC<gamesLayoutProps> = ({
             setActiveTab={setActiveTab}
             activeTab={activeTab}
           />
-
-          {/* <TabButtons tabNames={["Trending", "Latest", "Saved"]} /> */}
           {userData &&
             <Button
               onClick={() => {
@@ -223,14 +218,12 @@ const Layout: React.FC<gamesLayoutProps> = ({
           key={1}
           clearFilters={clearFilters}
           Filters={gamesFilters}
-          // searchWithFilters={searchWithFilters}
           setFilters={setGamesFilter}
           FilterArray={filterArray2}
         />
         <FilterMobileDialog
           clearFilters={clearFilters}
           Filters={gamesFilters}
-          // searchWithFilters={searchWithFilters}
           setFilters={setGamesFilter}
           popup={popup}
           setPopup={setPopup}

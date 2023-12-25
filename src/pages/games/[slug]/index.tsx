@@ -7,8 +7,8 @@ import Head from "next/head"
 import { BackendGame } from "@/interface/games"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
-import GamePageHeader from "./GamePageHeader"
-import Gamesection from "./Gamesection"
+import GamePageHeader from "@/components/ParticularGame/Head"
+import Gamesection from "@/components/ParticularGame/Section"
 
 const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame }) => {
   // user,

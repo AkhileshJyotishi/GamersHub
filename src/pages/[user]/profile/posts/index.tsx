@@ -10,7 +10,7 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 import Card from "@/components/ui/card/card2"
 
 // import HoizontalCard from "@/components/ui/Horizontalcard"
-import ProfilePageLayout from "../ProfileLayout"
+import ProfilePageLayout from "@/components/profileLayout"
 import SkeletonLoader from "@/components/ui/SkeletonLoader3"
 // const shadeVariant ="absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Albums = () => {
