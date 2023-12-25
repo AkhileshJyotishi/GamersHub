@@ -18,7 +18,7 @@ import ProfileAccordion from "@/components/profile/profileAccordion"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
-import ProfileCard from "./profileCard"
+import ProfileCard from "@/components/profileCard"
 
 interface User {
   id: number
@@ -270,7 +270,7 @@ const ProfileLayout = ({
               bannerImage={userData?.bannerImage || ""}
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
-            <div className="flex justify-center flex-wrap lg:justify-end w-full gap-3">
+            <div className="flex flex-wrap justify-center w-full gap-3 lg:justify-end">
               {session && (
                 <Button
                   className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"

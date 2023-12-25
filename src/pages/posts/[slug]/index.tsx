@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
-import Particularpage from "./particularPost"
+import Particularpage from "@/components/particularPost"
 
 const index = ({ profileData }: { profileData: IPostbackend }) => {
   // console.log("prifle data ti is ", profileData)
