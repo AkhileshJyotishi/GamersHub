@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
+import logoblackbg from "@/assets/image/logo-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
@@ -117,8 +118,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
             }}
           />
           <ProfileSettingsCard
-            // onSignOut={() => signOut()}
-            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-6 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
+            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-7 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
             authUser={userSession}
             userData={userData}
           />
@@ -174,16 +174,24 @@ export default function Navbar() {
             }}
             className="flex items-center w-full h-full xl:justify-center"
           >
-            logo here
-            {/* <Image
-                src={logo}
-                width={200}
-                height={25}
-                alt="Game Creators Hub"
-                className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
-                priority
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              /> */}
+            <Image
+              src={logotextblackbg}
+              width={200}
+              height={25}
+              alt="Game Creators Hub"
+              className="hidden sm:block xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
+              priority
+              // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
+            <Image
+              src={logoblackbg}
+              width={60}
+              height={10}
+              alt="Game Creators Hub"
+              className="block sm:hidden xl:absolute w-[40px] left-5"
+              priority
+              // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
           </Button>
         </div>
 

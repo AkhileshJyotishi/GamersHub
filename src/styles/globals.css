@@ -144,7 +144,8 @@ button,
 
 .rce-mbox-right {
   background-color: rgb(56, 216, 168) !important;
-  max-width: 60%;
+  max-width: 70%;
+  margin-right: 1px !important;
 }
 
 .rce-mbox-right-notch {
@@ -152,7 +153,8 @@ button,
 }
 .rce-mbox-left {
   background-color: rgb(56, 216, 168) !important;
-  max-width: 60%;
+  max-width: 50%;
+  margin-left: 2px;
 }
 
 .rce-mbox-left-notch {
@@ -162,4 +164,14 @@ button,
 .rce-avatar {
   border: 0px;
   border-radius: 9999px;
+}
+
+.rce-mbox-status{
+  display: none;
+}
+.ProseMirror img{
+  width: 60vw;
+}
+.ProseMirror pre{
+  width: 60vw;
 }

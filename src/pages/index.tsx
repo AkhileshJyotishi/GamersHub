@@ -22,6 +22,7 @@ import CloseIcon from "@/components/icons/closeIcon"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
+import { signOut } from "next-auth/react"
 
 const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
@@ -34,7 +35,9 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
     // console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
-      // signOut();
+      signOut({
+        callbackUrl: "/",
+      })
 
       router.replace("/", undefined, { shallow: true })
     }
@@ -172,10 +175,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   if (users?.error) {
     // toast.error(jobsDetails.message)
+    // return {
+    //   redirect: {
+    //     destination: `/?emessage=${users.message}`,
+    //     permanent: false,
+    //   },
+    // }
     return {
-      redirect: {
-        destination: `/?emessage=${users.message}`,
-        permanent: false,
+      props: {
+        users: [],
       },
     }
   }

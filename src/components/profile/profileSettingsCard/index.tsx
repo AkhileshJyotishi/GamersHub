@@ -40,7 +40,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
   }
   return (
     <div
-      className={`p-2 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[6px] min-h-[500px] w-[310px] rounded-xl ${className}`}
+      className={`py-2 mt-2 sm:mt-0 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[2px] min-h-[500px] w-[310px] rounded-xl ${className}`}
     >
       {/* IMAGE */}
       <div className="relative flex flex-col items-center w-full">
@@ -67,14 +67,12 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
       {/* IMAGE  END*/}
 
       {/* Profile Info */}
-      <div className="flex flex-col items-center overflow-hidden gap-[3px] mt-[3.2rem] md:mt-[70px] w-[100%]">
-        <div className="mt-[10px] text-[12px]  font-semibold ">{userData?.username} </div>
-        <div className=" text-[10px] font-medium text-user_interface_6 mt-[20px] mb-1">
-          {userData?.email}
-        </div>
+      <div className="flex flex-col items-center overflow-hidden gap-[2px] mt-[3.2rem] md:mt-[70px] w-[100%]">
+        <div className="mt-[5px] text-[12px] font-semibold ">{userData?.username} </div>
+        <div className=" text-[10px] font-medium text-user_interface_6">{userData?.email}</div>
         <Button
           onClick={() => router.replace(`/${newuserData?.id}/profile/albums`)}
-          className="text-center rounded-xl  text-text py-[15px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
+          className="text-center rounded-xl  text-text py-[5px] bg-secondary font-medium mt-1 md:mt-[16px] w-[70%] "
         >
           View Profile
         </Button>
@@ -90,7 +88,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
         <div className="flex items-start w-full md:flex-col ">
           <Link
             href={`/settings`}
-            className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full py-[10px] pl-[32px] cursor-pointer"
+            className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full py-[5px] pl-[32px] cursor-pointer"
           >
             <GearIcon className={"w-[17px] h-[17px]"} />
             <span>Settings</span>
@@ -98,7 +96,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
 
           <Link
             href={`/help`}
-            className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full py-[10px] pl-[32px] cursor-pointer"
+            className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full py-[5px] pl-[32px] cursor-pointer"
           >
             <HelpIcon className={"w-[17px] h-[17px]"} />
             <p>Help</p>
@@ -109,7 +107,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
       {/* Account End */}
 
       {/* Manage  */}
-      <div className="flex flex-col items-start w-full mt-[20px] py-[15px] border-b-[1px] border-user_interface_3 ">
+      <div className="flex flex-col items-start w-full my-2 py-[5px] border-b-[1px] border-user_interface_3 ">
         <h1 className="text-[14px] mb-2 font-semibold pl-[32px]">Manage</h1>
 
         <div className="flex items-start w-full md:flex-col ">
@@ -129,7 +127,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
         onClick={() => {
           logoutUser()
         }}
-        className="flex flex-col cursor-pointer items-start w-full py-[15px] hover:bg-user_interface_4 group "
+        className="flex flex-col cursor-pointer items-start w-full py-[10px] hover:bg-user_interface_4 group "
       >
         <div className="flex flex-row items-center text-user_interface_7 gap-[12px]  w-full  pl-[32px]  group-hover:text-red-500 transition duration-200">
           <LogOutIcon className={"w-[17px] h-[17px]"} />

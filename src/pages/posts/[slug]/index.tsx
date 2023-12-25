@@ -14,7 +14,6 @@ const index = ({ profileData }: { profileData: IPostbackend }) => {
     <>
       <Head>
         <title>Posts | {profileData.title || ""}</title>
-        
       </Head>
       <Particularpage profileData={profileData} />
     </>
@@ -27,7 +26,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   const { slug } = query
 
-
   let profileData = await fetchData(`/v1/post/${slug}`, session?.user?.name as string, "GET")
 
   if (profileData?.error) {
@@ -37,8 +35,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   }
   // return resp.data;
 
-  profileData = profileData?.data.post
-  console.log("settings detaisls", profileData)
+  profileData = profileData?.data?.post
+  // console.log("settings detaisls", profileData)
   return {
     props: {
       profileData,

@@ -11,9 +11,9 @@ const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
     return <div>Loading...</div> // or any other handling mechanism
   }
 
-  const { title,  banner, ...profileDataJobSection } = profileData
-  const user=profileData.user
-  const userId=profileData.userId
+  const { title, banner, ...profileDataJobSection } = profileData
+  const user = profileData?.user
+  const userId = profileData?.userId
 
   // console.log("is this rendering  ", profileData)
   return (
@@ -26,11 +26,14 @@ const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
-      <div className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full" style={{zIndex:19}}>
+      <div
+        className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full"
+        style={{ zIndex: 19 }}
+      >
         <JobPageHeader
           title={title ?? ""}
           key={"1"}
-          logoSrc={user?.profileImage || banner}
+          logoSrc={user?.profileImage || ""}
           postId={profileData?.id}
           userId={userId}
         />
