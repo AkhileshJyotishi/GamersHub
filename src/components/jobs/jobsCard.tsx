@@ -40,49 +40,42 @@ interface JobCardProps {
 }
 
 const UserImage = ({ href }: { href: string | null }) => (
-  <Link href={"#"} className="my-auto">
-    <div className="flex items-center">
-      <Image
-        width={100}
-        height={100}
-        alt={""}
-        className="w-10 h-10 border-[0.1px] rounded-full "
-        src={href || defaultUserImage}
-        priority
-        placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-      />
-    </div>
-  </Link>
+  <div className="my-auto mx-auto">
+    <Image
+      width={100}
+      height={100}
+      alt={""}
+      className="w-10 h-10 border-[0.1px] rounded-full "
+      src={href || defaultUserImage}
+      priority
+      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+    />
+  </div>
 )
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
-  <div className="flex flex-col justify-center gap-1 text-center ">
-    <Link
-      href={"#"}
-      className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate"
-    >
+  <div className="flex flex-col justify-center gap-1 text-center mx-auto">
+    <div className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate">
       {title?.[0]?.toUpperCase() + title?.slice(1)}
-    </Link>
-    {location.trim().length > 1 ? (
+    </div>
+    {location.trim().length > 1 && (
       <span className="flex flex-row items-center gap-2">
         <MapPinIcon height="19" className=" h-[inherit] text-user_interface_6" />
         <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
       </span>
-    ) : (
-      <div className="h-5" />
     )}
   </div>
 )
 
 const JobDescription = ({ desc }: { desc: string }) => (
-  <div className="max-w-[280px] min-h-[100px] overflow-hidden mt-2 p-3">
+  <div className="w-[90%] min-h-[100px] overflow-hidden mt-2 px-3">
     <p className="w-full pr-2 overflow-hidden text-light/40 line-clamp-3">{desc}</p>
   </div>
 )
 
 const JobDetails = ({ salary, date }: { salary: string; date: string }) => (
   <div className="flex flex-wrap gap-5 p-3 text-sm sm:mt-0 min-h-[85px]">
-    <span className="flex items-center font-semibold">
+    <span className="flex items-center font-semibold break-all">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="w-5 h-5 mr-2"
@@ -130,14 +123,14 @@ const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) 
       </div>
       {chips &&
         chips?.map((chip, index) => (
-          <span key={index} className="flex items-center cursor-pointer ">
+          <div key={index} className="flex flex-wrap items-center cursor-pointer ">
             <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full hover:border-secondary bg-user_interface_2">
               {/* Add your Chip SVG or Icon here */}
               <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px] break-all">
                 {chip}
               </div>
             </div>
-          </span>
+          </div>
         ))}
     </div>
   )
@@ -225,19 +218,17 @@ const Card: React.FC<JobCardProps> = ({
         onClick={() => router.push(href)}
       >
         <div className="">
-          <div>
-            <div className="flex flex-row flex-wrap justify-between gap-1 p-1 md:gap-3 md:p-3">
-              <div className="flex gap-[14px] flex-wrap justify-center w-full">
-                <UserImage href={profileImage} />
+          <div className="flex flex-col justify-center gap-1">
+            {/* <div className="flex flex-row flex-wrap justify-between "> */}
+            <div className="flex gap-2 flex-wrap w-full p-1 md:gap-3 md:p-3">
+              <UserImage href={profileImage} />
+              <div className="w-[80%] flex gap-2 justify-between flex-wrap mx-auto">
                 <UserInfo title={title} location={location} />
 
                 {userData?.id !== userId ? (
                   <>
                     <div
-                      className={clsx(
-                        "flex items-center  cursor-pointer",
-                        remote ? "ml-auto" : "mx-auto"
-                      )}
+                      className={clsx("flex items-center  cursor-pointer mx-auto")}
                       onClick={(e) => {
                         e.stopPropagation()
                         savePost(id)
@@ -261,7 +252,7 @@ const Card: React.FC<JobCardProps> = ({
                 ) : (
                   <>
                     <div
-                      className={clsx("flex items-center ", remote ? "ml-auto" : "mx-auto")}
+                      className={clsx("flex items-center mx-auto")}
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -283,7 +274,8 @@ const Card: React.FC<JobCardProps> = ({
                 )}
               </div>
             </div>
-            <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
+            {/* </div> */}
+            <hr className="w-[70%] mx-auto my-[3px] h-[1px] border-user_interface_3" />
             <JobDescription desc={desc as string} />
           </div>
           <div>

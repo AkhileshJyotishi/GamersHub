@@ -73,7 +73,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
   return (
     <div className="flex flex-col items-start w-full ">
       <div className="flex flex-row justify-between w-full gap-1 p-1">
-
         <TextInput
           type="text"
           placeholder="Enter tags"
@@ -87,9 +86,13 @@ const TagsInput: React.FC<TagsInputProps> = ({
           onBlur={handleBlur}
           onKeyPress={handleKeyPress}
           id={id}
-
         />
-        <AddIcon className="h-[40px] w-[46px] rounded-full bg-secondary cursor-pointer" handleclick={() => { addTag() }} />
+        <AddIcon
+          className="h-[40px] w-[46px] rounded-full bg-secondary cursor-pointer"
+          handleclick={() => {
+            addTag()
+          }}
+        />
       </div>
 
       {suggestions.length > 0 && (

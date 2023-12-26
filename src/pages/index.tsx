@@ -70,7 +70,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
     }
     toast.success(res?.message)
   }
- 
+
   return (
     <>
       <Head>
@@ -124,31 +124,25 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
         <OverlayContent />
 
         <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
-          {users?.map((data, index) =>
-          {
-            console.log("savedUsers 1 ",data?.savedUsers)
-          return (
-            <Card
-              key={index}
-              username={data.user.username}
-              userId={data.userId}
-              userProfilePhoto={data.user.profileImage}
-              coverPhoto={data.banner}
-              matureContent={data.matureContent}
-              // location={data.location}
-              // views={data.views}
-              className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
-              id={data.id}
-              title={data.title}
-              likedPost={data?.postLikes?.likedUsers.map((like) => like) ?? []}
-              savedPost={
-                data.savedUsers && data?.savedUsers?.length > 0
-                  ? data?.savedUsers
-                  : []
-              }
-            />
-          )}
-          )}
+          {users?.map((data, index) => {
+            return (
+              <Card
+                key={index}
+                username={data.user.username}
+                userId={data.userId}
+                userProfilePhoto={data.user.profileImage}
+                coverPhoto={data.banner}
+                matureContent={data.matureContent}
+                // location={data.location}
+                // views={data.views}
+                className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
+                id={data.id}
+                title={data.title}
+                likedPost={data?.postLikes?.likedUsers.map((like) => like) ?? []}
+                savedPost={data.savedUsers && data?.savedUsers?.length > 0 ? data?.savedUsers : []}
+              />
+            )
+          })}
         </div>
         {/* 
         <Button

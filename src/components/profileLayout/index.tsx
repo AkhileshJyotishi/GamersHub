@@ -53,25 +53,25 @@ const ProfileLayout = ({
   const param = useParams()
 
   useEffect(() => {
-    if (!userData?.id) router.replace(`/?emessage=Please Authenticate`)
-    const loaddata = async () => {
-      if (router.query.user) {
-        const users = await fetchWithoutAuthorization(
-          `/v1/users/customDetails/${router.query.user}`,
-          "GET"
-        )
-        if (users?.error) {
-          router.replace(`/?emessage=Please Authenticate`)
-        } else {
-          setData(users?.data?.user)
+    if (userData?.id) {
+      const loaddata = async () => {
+        if (router.query.user) {
+          const users = await fetchWithoutAuthorization(
+            `/v1/users/customDetails/${router.query.user}`,
+            "GET"
+          )
+          if (users?.error) {
+            router.replace(`/?emessage=Please Authenticate`)
+          } else {
+            setData(users?.data?.user)
+          }
         }
       }
+      loaddata().finally(() => {
+        setLoading(false)
+      })
     }
-
-    loaddata().finally(() => {
-      setLoading(false)
-    })
-  }, [param, router.query])
+  }, [param, router.query, userData?.id])
   const tabs = ["posts", "albums", "jobs", "about"]
   const [activeTab, setActiveTab] = useState<string>("albums")
 

@@ -15,7 +15,6 @@ const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
   const user = profileData?.user
   const userId = profileData?.userId
 
-  // console.log("is this rendering  ", profileData)
   return (
     <>
       <div

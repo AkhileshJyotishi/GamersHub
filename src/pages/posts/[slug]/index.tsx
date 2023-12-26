@@ -11,7 +11,9 @@ const index = ({ profileData }: { profileData: IPostbackend }) => {
   // console.log("prifle data ti is ", profileData)
   return (
     <>
-      {/* <Head><title>Posts | {profileData.title || ""}</title></Head> */}
+      <Head>
+        <title>Posts | {profileData.title || ""}</title>
+      </Head>
       <Particularpage profileData={profileData} />
     </>
   )

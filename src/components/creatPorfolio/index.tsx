@@ -26,7 +26,6 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
   const { setLoading } = useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const isUpdate = path.includes("updatePost")
-  console.log(post)
   interface FiltersState {
     postKeywords: string[]
     albumId: number | undefined
@@ -66,7 +65,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     formdata.append("file", filtersState.banner as string)
     formdata.append("type", "portfolio")
 
-    if (typeof filtersState.banner == "object") {
+    if (filtersState.banner && typeof filtersState.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -74,11 +73,15 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         formdata
       )
       if (isuploaded?.error) {
-        // toast.info(isuploaded?.message)
+        toast.info("Error uploading file")
         setLoading(false)
         return
       }
       filtersState.banner = isuploaded?.data.image.Location
+    } else {
+      if (!isUpdate) {
+        filtersState.banner = ""
+      }
     }
     let method
     let res
@@ -110,6 +113,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       setFiltersState={setFiltersState}
       uploadPost={uploadPost}
       albums={albums}
+      isUpdate={isUpdate}
     >
       {/* Render the filterDetails here */}
       <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[67vw]">

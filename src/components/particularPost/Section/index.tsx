@@ -87,31 +87,31 @@ const sections: Section[] = [
       </div>
     ),
   },
-  {
-    title: "Post Skills",
-    dataKey: "postSkills",
-    render: (data) => (
-      <div className="flex flex-wrap gap-2">
-        {data.postSkills.length > 0 ? (
-          data?.postSkills?.map((software, index) => (
-            <span
-              key={index}
-              className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-            >
-              {software.skill}
-            </span>
-          ))
-        ) : (
-          <span
-            key={"index"}
-            className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
-          >
-            No Skills yet
-          </span>
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   title: "Post Skills",
+  //   dataKey: "postSkills",
+  //   render: (data) => (
+  //     <div className="flex flex-wrap gap-2">
+  //       {data.postSkills.length > 0 ? (
+  //         data?.postSkills?.map((software, index) => (
+  //           <span
+  //             key={index}
+  //             className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+  //           >
+  //             {software.skill}
+  //           </span>
+  //         ))
+  //       ) : (
+  //         <span
+  //           key={"index"}
+  //           className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+  //         >
+  //           No Skills yet
+  //         </span>
+  //       )}
+  //     </div>
+  //   ),
+  // },
 ]
 
 const SectionRenderer: React.FC<Section & { data: postdataProp }> = ({ title, data, render }) => (
@@ -244,10 +244,10 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
                             : defaultUserImage
                           : defaultUserImage
                         : comment.user?.profileImage
-                        ? comment.user?.profileImage != ""
-                          ? comment.user?.profileImage
+                          ? comment.user?.profileImage != ""
+                            ? comment.user?.profileImage
+                            : defaultUserImage
                           : defaultUserImage
-                        : defaultUserImage
                     }
                     // router.push("")
                     onTitleClick={() => {

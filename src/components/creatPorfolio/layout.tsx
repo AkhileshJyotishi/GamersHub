@@ -26,6 +26,7 @@ interface LayoutProps {
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>
   uploadPost: () => void
   albums: Allow
+  isUpdate?: boolean
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -34,6 +35,7 @@ const Layout: React.FC<LayoutProps> = ({
   setFiltersState,
   uploadPost,
   albums,
+  isUpdate,
 }) => {
   let albumsselectoptions = [{ label: "select an album", value: "" }]
   const [dimensions, setdimensions] = useState<{
@@ -127,7 +129,7 @@ const Layout: React.FC<LayoutProps> = ({
         break
 
       case "postKeywords":
-        // console.log("executing")
+        console.log("executing")
         if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
           if (value.length == 0) {
             setErrors((prev) => ({ ...prev, [field]: "*required" }))
@@ -192,7 +194,7 @@ const Layout: React.FC<LayoutProps> = ({
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
       errorMessage: errors.postKeywords,
-      initialtags:filtersState?.postKeywords
+      initialtags: filtersState?.postKeywords,
     },
     {
       inputType: "select",
@@ -208,10 +210,10 @@ const Layout: React.FC<LayoutProps> = ({
 
     {
       inputType: "radio",
-      title: "Adult content",
+      title: "Mature content",
       selectOptions: [
-        { label: "true", value: false },
-        { label: "false", value: true },
+        { label: "true", value: true },
+        { label: "false", value: false },
       ],
       value: filtersState.matureContent,
       onChange: (value) => handleInputChange("matureContent", value as boolean),
@@ -246,8 +248,11 @@ const Layout: React.FC<LayoutProps> = ({
               <Button
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
                 onClick={() => {
-                  const hasErrors = Object.values(errors).some((error) => error !== null)
+                  const hasErrors = Object.values(errors).some(
+                    (error) => !(error === null || error == "")
+                  )
                   if (hasErrors) {
+                    console.log("errors", errors)
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return
@@ -257,7 +262,7 @@ const Layout: React.FC<LayoutProps> = ({
                   }
                 }}
               >
-                Upload Post
+                {isUpdate ? "Update Post" : "Upload Post"}
               </Button>
             </div>
 

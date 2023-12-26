@@ -15,10 +15,18 @@ interface LayoutProps {
   uploadGame: () => Promise<void>
   setoldAssets?: React.Dispatch<React.SetStateAction<string[]>>
   oldAssets?: string[]
-  isUpdate:boolean
+  isUpdate: boolean
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, uploadGame, setoldAssets, oldAssets,isUpdate }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  gameInfo,
+  setGameInfo,
+  uploadGame,
+  setoldAssets,
+  oldAssets,
+  isUpdate,
+}) => {
   // console.log("gameInfo",gameInfo)
 
   const handleOldAssets = (remainingOldAssets: string[]) => {
@@ -350,7 +358,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto md:flex-row flex-col items-center md:items-start">
         <div
           className={clsx(
-            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[200px] md:sticky top-[61px] h-fit flex-col md:h-[87vh] md:overflow-y-scroll"
+            "w-full md:w-[23vw] flex md:flex-row justify-center min-w-[280px] md:sticky top-[61px] h-fit flex-col"
           )}
         >
           <div className="flex flex-col w-full gap-4 p-2">
@@ -387,12 +395,14 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           </div>
         </div>
         <div className="flex flex-col w-full gap-4 p-4">
-          {
-            isUpdate &&
-          <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
-            <InitMultipleFileInput initFiles={oldAssets as string[] | null} onChange={(value) => handleOldAssets(value)} />
-          </div>
-          }
+          {isUpdate && (
+            <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
+              <InitMultipleFileInput
+                initFiles={oldAssets as string[] | null}
+                onChange={(value) => handleOldAssets(value)}
+              />
+            </div>
+          )}
           <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
             <MultipleFileInput
               onFileChange={(value) => handleInputChange("gameAssets", value)}
