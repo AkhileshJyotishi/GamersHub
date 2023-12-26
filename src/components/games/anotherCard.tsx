@@ -125,8 +125,8 @@ const SocialCard: React.FC<CardProps> = ({
             </span>
             {/* <span className="block text-xs text-gray-600">{location}</span> */}
           </div>
-          {session && userData?.id == userId && (
-            <div className="ml-auto mr-1">
+          {session && userData?.id == userId ? (
+            <div className="flex gap-2 ml-auto mr-1">
               <DeleteIcon
                 className="h-[28px] w-[28px] fill-red-300  hover:fill-red-500 hover:cursor-pointer  transition duration-200 mt-1"
                 onClick={() => {
@@ -142,21 +142,42 @@ const SocialCard: React.FC<CardProps> = ({
                   }))
                 }}
               />
+              <>
+                <div
+                  className="flex items-center "
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    updatePost(id)
+                  }}
+                >
+                  <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
+                </div>
+              </>
+            </div>
+          ):(
+            <>
+            {userData?.id !== userId && (
+            <div className="flex ml-auto cursor-pointer" onClick={() => savePost()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={saved ? "#fff" : "none"}
+                stroke="#B4B4B4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
             </div>
           )
           }
-          <>
-            <div
-              className="flex items-center "
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                updatePost(id)
-              }}
-            >
-              <EditIcon className="h-[22px] w-[28px]  hover:fill-white hover:cursor-pointer hover:scale-110 transition duration-200" />
-            </div>
-          </>
+            </>
+          )
+          }
 
         </div>
         <div className="flex items-center px-2">
@@ -179,24 +200,7 @@ const SocialCard: React.FC<CardProps> = ({
           />
         </div>
         <div className="flex items-center justify-between px-4 py-1">
-          {userData?.id !== userId && (
-            <div className="flex cursor-pointer" onClick={() => savePost()}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill={saved ? "#fff" : "none"}
-                stroke="#B4B4B4"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
-          )
-          }
+          
         </div>
       </div>
     </div>

@@ -47,7 +47,7 @@ export const MenuItem = ({ data }: menuProps) => {
             setTap(!tap)
             router.replace(data.path)
           }}
-          className="hover:text-secondary hover:scale-125"
+          className="hover:text-secondary hover:scale-125 text-[18px]"
         >
           {" "}
           {data.title}

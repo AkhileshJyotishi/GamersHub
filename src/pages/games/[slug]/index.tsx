@@ -12,7 +12,7 @@ import Gamesection from "@/components/ParticularGame/Section"
 
 const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame }) => {
   // user,
-  const { title, banner } = parsedgamesDetails
+  const { title, banner,id,savedUsers } = parsedgamesDetails
   // console.log(profileDataGameSection)
   return (
     <>
@@ -37,11 +37,12 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
         className="relative max-w-[1500px] mx-auto top-10 flex gap-20 flex-col p-3  w-full "
         style={{ zIndex: 19 }}
       >
-        {/* profileData?.user?.profileImage ||  */}
         <GamePageHeader
           title={title}
           logoSrc={parsedgamesDetails.banner}
           userId={parsedgamesDetails.userId}
+          jobId={id}
+          savedUsers={savedUsers}
         />
         <Gamesection GameData={parsedgamesDetails} />
       </div>

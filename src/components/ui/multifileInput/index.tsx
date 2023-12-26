@@ -135,9 +135,7 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
                 "p-2 relative border-[0.1px]   rounded-xl group",
                 errorMessage ? "border-accent_red" : "border-gray-500"
               )}
-              // style={{ animation: `fadeIn 0.5s ${idx * 0.1}s forwards` }}
             >
-              {/* <div className='absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background '></div> */}
 
               <Image src={URL.createObjectURL(item)} alt={""} height={400} width={400} />
               <div className="absolute top-0 right-0 flex p-1 space-x-2 ">
@@ -147,7 +145,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
                 <Button onClick={() => handleFullscreen(idx)}>
                   <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
                 </Button>
-                {/* <Button onClick={() => handleRemoveFile(idx)}>Remove</Button> */}
               </div>
             </motion.div>
           ))}

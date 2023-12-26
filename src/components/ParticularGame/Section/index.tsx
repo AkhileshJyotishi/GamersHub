@@ -162,6 +162,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
           className={"bg-user_interface_2 w-full rounded-xl "}
           editable={false}
           defaultValue={GameData.description || {}}
+          disableLocalStorage
         />
       </div>
     </div>

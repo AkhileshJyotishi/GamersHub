@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
@@ -56,15 +56,20 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
     const router = useRouter()
     const { data: session } = useSession()
     const { userData } = useUserContext()
+    const [isJobSaved, setIsJobSaved] = useState(savedUsers.some((user) => user.id === userData?.id));
+    
     const saveJob = async (jobId: number) => {
         const res = await fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
         if (res?.error) {
             toast.error(res.message)
         } else {
+            setIsJobSaved(!isJobSaved);
             toast.success(res?.message)
         }
     }
-
+useEffect(()=>{
+    setIsJobSaved(savedUsers.some((user) => user.id === userData?.id));
+},[userData])
     return (
         <div>
             <div className="p-4">
@@ -94,11 +99,11 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             {userData?.id !== userId ? (
                 <div className="flex mt-3 gap-x-4 ">
                     <Button
-                        className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
+                        className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl gap-2"
                         onClick={() => saveJob(jobId)}
                     >
-                        <SaveIcon className="w-5 h-5" />
-                        Save Job
+                        <SaveIcon className="w-5 h-5 fill-text" fill=""/>
+                        {isJobSaved ? 'Unsave Job' : 'Save Job'}
                     </Button>
                     <Button className="  border-secondary hover:bg-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
                         Apply Now

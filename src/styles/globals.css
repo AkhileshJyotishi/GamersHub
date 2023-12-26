@@ -117,11 +117,11 @@ body {
   color: white;
 }
 
-button,
+/* button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-}
+} */
 
 @layer utilities {
 }
@@ -163,7 +163,11 @@ button,
 .rce-avatar-container,
 .rce-avatar {
   border: 0px;
-  border-radius: 9999px;
+  border-radius: 100%;
+}
+
+.rce-mbox-status{
+  display: none;
 }
 
 .rce-mbox-status{

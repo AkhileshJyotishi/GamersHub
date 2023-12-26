@@ -47,13 +47,13 @@
 .ul {
   padding: 25px;
   position: relative;
-  top: 181px;
+  top: 121px;
   width: 100%;
 }
 
 .li {
   list-style: none;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
