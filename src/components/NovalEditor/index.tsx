@@ -17,7 +17,6 @@ const Editor = ({
   disableLocalStorage?: boolean
   storageKey?: string
 }) => {
-  // console.log("tis should work ", defaultValue)
   return (
     <NovelEditor
       className={clsx("min-h-[40vh]", className)}

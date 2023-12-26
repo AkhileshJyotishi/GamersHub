@@ -26,6 +26,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
   const { setLoading } = useUserContext()
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const isUpdate = path.includes("updatePost")
+  console.log(post)
   interface FiltersState {
     postKeywords: string[]
     albumId: number | undefined
@@ -58,12 +59,14 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
 
   const uploadPost = async () => {
     setLoading(true)
-    filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
+    filtersState.content = JSON.parse(
+      localStorage.getItem(isUpdate ? "noval_content_update" : "noval_content") ?? ""
+    )
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
     formdata.append("type", "portfolio")
 
-    if (typeof filtersState.banner=="object" ) {
+    if (typeof filtersState.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -88,7 +91,6 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         filtersState
       )
     } else {
-      console.log("creating post ")
       method = "POST"
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
@@ -96,6 +98,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     else {
       toast.success(res?.message)
       setFiltersState(initState)
+      localStorage.removeItem(isUpdate ? "noval_content_update" : "noval_content")
     }
     setLoading(false)
     router.push("/")
@@ -114,8 +117,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         <Editor
           className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}
           editable={true}
-          storageKey="noval__content"
-          defaultValue={{}}
+          storageKey={isUpdate ? "noval_content_update" : "noval_content"}
+          defaultValue={isUpdate ? post?.content : {}}
         />
       </div>
     </Layout>

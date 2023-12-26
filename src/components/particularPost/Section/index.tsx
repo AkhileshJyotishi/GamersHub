@@ -190,7 +190,7 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             <>
               <Editor
                 className={
-                  "bg-user_interface_2 w-full rounded-xl md:min-h-[73vh] md:overflow-y-scroll "
+                  "bg-user_interface_2 w-full select-none rounded-xl md:min-h-[73vh] md:overflow-y-scroll "
                 }
                 editable={false}
                 // storageKey="noval__content2"

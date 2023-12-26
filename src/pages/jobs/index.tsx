@@ -25,19 +25,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let jobsDetails
   if (!session) {
-    console.log("this is jobs ")
     jobsDetails = await fetchWithoutAuthorization(`/v1/job`, "GET")
   } else {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
   }
-  // console.log("this  is session", session)
 
   if (jobsDetails?.error) {
-    // toast.error(jobsDetails.message)]
-
     return {
       redirect: {
-        destination: `/?emessage=${jobsDetails.message}`,
+        destination: `/?emessage="Something went wrong."`,
         permanent: false,
       },
     }

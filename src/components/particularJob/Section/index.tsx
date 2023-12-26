@@ -10,7 +10,15 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
   },
 })
 
-type OmittedProperties = "about" | "country" | "city" | "title" | "user" | "banner" | "userId" |"remote"
+type OmittedProperties =
+  | "about"
+  | "country"
+  | "city"
+  | "title"
+  | "user"
+  | "banner"
+  | "userId"
+  | "remote"
 type jobdataprop = Omit<BackendJob, OmittedProperties>
 
 interface Section {
@@ -131,7 +139,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
             <>
               <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
               <Editor
-                className={"bg-user_interface_2 w-full rounded-xl  md:overflow-y-scroll"}
+                className={"bg-user_interface_2 w-full rounded-xl select-none md:overflow-y-scroll"}
                 editable={false}
                 storageKey="noval__content2"
                 defaultValue={jobData?.jobDetails || {}}
@@ -142,7 +150,7 @@ const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
             <>
               <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
               <Editor
-                className={"bg-user_interface_2 w-full rounded-xl "}
+                className={"bg-user_interface_2 w-full select-none rounded-xl "}
                 editable={false}
                 storageKey="noval__content1"
                 defaultValue={jobData?.aboutRecruiter || {}}

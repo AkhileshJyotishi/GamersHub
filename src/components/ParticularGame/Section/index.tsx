@@ -153,11 +153,16 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
             <GameDetails GameData={GameData} />
           </div>
         </div>
-        <div className={clsx(" carousel-body w-[89vw] md:w-[60vw] lg:w-[70vw]", carousel["carousel-body"])}>
+        <div
+          className={clsx(
+            " carousel-body w-[89vw] md:w-[60vw] lg:w-[70vw]",
+            carousel["carousel-body"]
+          )}
+        >
           <Carousel GameAssets={GameData?.gameAssets} />
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full select-none">
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl "}
           editable={false}
