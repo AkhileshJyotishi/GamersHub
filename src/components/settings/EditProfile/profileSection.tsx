@@ -37,10 +37,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
     <>
       {profileArray?.map((filter, index) => (
         <>
-          <div
-            key={index}
-            className="flex items-center justify-between w-full p-2 md:gap-8"
-          >
+          <div key={index} className="flex items-center justify-between w-full p-2 md:gap-8">
             {/* vxbc */}
             <Filter
               key={index}

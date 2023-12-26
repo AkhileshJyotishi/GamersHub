@@ -1,7 +1,8 @@
 import React from "react"
 
-import Button from "../ui/button"
 import { useUserContext } from "@/providers/user-context"
+
+import Button from "../ui/button"
 
 interface VideoBackgroundProps {
   videoSource: string

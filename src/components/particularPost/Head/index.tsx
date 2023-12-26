@@ -2,15 +2,16 @@ import React, { useState } from "react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
-import ShareIcon from "@/components/icons/share"
-import defaultUserImage from "@/assets/image/user-profile.svg"
+import { toast } from "react-toastify"
 
+import defaultUserImage from "@/assets/image/user-profile.svg"
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
+
 import EditIcon from "@/components/icons/editIcon"
+import ShareIcon from "@/components/icons/share"
 import Button from "@/components/ui/button"
-import { toast } from "react-toastify"
-import { useModalContext } from "@/providers/modal-context"
 import Share from "@/components/ui/Share"
 interface JobPageHeaderProps {
   logoSrc: string | null

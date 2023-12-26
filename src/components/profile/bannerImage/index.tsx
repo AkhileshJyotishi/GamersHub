@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -29,8 +29,8 @@ const BannerImage = ({
   setisCreateAlbumOpen: React.Dispatch<React.SetStateAction<boolean>>
   setnewAlbum: React.Dispatch<React.SetStateAction<albumType>>
 }) => {
-  const router = useRouter()
   const { data: session } = useSession()
+  const params = useParams()
   const { userData, setuserData } = useUserContext()
   const [img, setBannerImage] = useState<File | undefined>(undefined)
 
@@ -80,131 +80,132 @@ const BannerImage = ({
           priority
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
-        <div className="absolute top-0 w-full h-full bg-top bg-no-repeat rounded-xl">
-          <div
-            className="absolute flex items-end justify-center w-full h-full overflow-hidden group"
-            style={{ zIndex: 17 }}
-          >
-
-            <>
-              {session && (
-                <>
-                  {bannerImageLink ? (
-                    <>
-                      {img ? (
-                        <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-8 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
-                            <Button
-                              variant="primary"
-                              className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
-                              onClick={() => {
-                                uploadBanner()
-                              }}
-                            >
-                              Upload
-                            </Button>
-                            <Button
-                              variant="primary"
-                              className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
-                            >
-                              <label htmlFor="file-replace" className="">
-                                Replace
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  if (!e.target.files) return
-                                  if (e.target.files?.length > 0) {
-                                    const file = e.target.files[0]
-                                    const url = URL.createObjectURL(file)
-                                    setBannerImage(file)
-                                    setBannerImageLink(url)
-                                    // URL.revokeObjectURL(url);
-                                    // uploadImage(file);
-                                  }
+        {session && params?.user && userData?.id === parseInt(params?.user as string) && (
+          <div className="absolute top-0 w-full h-full bg-top bg-no-repeat rounded-xl">
+            <div
+              className="absolute flex items-end justify-center w-full h-full overflow-hidden group"
+              style={{ zIndex: 17 }}
+            >
+              <>
+                {session && (
+                  <>
+                    {bannerImageLink ? (
+                      <>
+                        {img ? (
+                          <>
+                            <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-8 opacity-0 gap-9 group-hover:translate-y-0 group-hover:opacity-100">
+                              <Button
+                                variant="primary"
+                                className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
+                                onClick={() => {
+                                  uploadBanner()
                                 }}
-                                multiple={false}
-                                name="banner-image"
-                                accept="image/*"
-                                id="file-replace"
-                                type="file"
-                                className="hidden appearance-none"
-                              ></input>
-                            </Button>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:-translate-y-8 group-hover:opacity-100">
-                            <Button
-                              variant="primary"
-                              className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
-                            >
-                              <label htmlFor="file-replace" className="">
-                                Replace Image
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  if (!e.target.files) return
-                                  if (e.target.files?.length > 0) {
-                                    const file = e.target.files[0]
-                                    const url = URL.createObjectURL(file)
-                                    setBannerImage(file)
-                                    setBannerImageLink(url)
-                                    // URL.revokeObjectURL(url);
-                                    // uploadImage(file);
-                                  }
-                                }}
-                                multiple={false}
-                                name="banner-image"
-                                accept="image/*"
-                                id="file-replace"
-                                type="file"
-                                className="hidden appearance-none"
-                              ></input>
-                            </Button>
-                          </div>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <div className="transition duration-500 translate-y-32 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                      <label
-                        htmlFor="banner-file-upload"
-                        className="flex items-center mt-5 bg-white rounded-full cursor-pointer w-fit"
-                      >
-                        <UploadIcon className="h-[200px] fill-secondary" />
-                      </label>
+                              >
+                                Upload
+                              </Button>
+                              <Button
+                                variant="primary"
+                                className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
+                              >
+                                <label htmlFor="file-replace" className="">
+                                  Replace
+                                </label>
+                                <input
+                                  onChange={(e) => {
+                                    if (!e.target.files) return
+                                    if (e.target.files?.length > 0) {
+                                      const file = e.target.files[0]
+                                      const url = URL.createObjectURL(file)
+                                      setBannerImage(file)
+                                      setBannerImageLink(url)
+                                      // URL.revokeObjectURL(url);
+                                      // uploadImage(file);
+                                    }
+                                  }}
+                                  multiple={false}
+                                  name="banner-image"
+                                  accept="image/*"
+                                  id="file-replace"
+                                  type="file"
+                                  className="hidden appearance-none"
+                                ></input>
+                              </Button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex flex-row items-end p-4 overflow-hidden transition duration-500 translate-y-32 opacity-0 gap-9 group-hover:-translate-y-8 group-hover:opacity-100">
+                              <Button
+                                variant="primary"
+                                className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
+                              >
+                                <label htmlFor="file-replace" className="">
+                                  Replace Image
+                                </label>
+                                <input
+                                  onChange={(e) => {
+                                    if (!e.target.files) return
+                                    if (e.target.files?.length > 0) {
+                                      const file = e.target.files[0]
+                                      const url = URL.createObjectURL(file)
+                                      setBannerImage(file)
+                                      setBannerImageLink(url)
+                                      // URL.revokeObjectURL(url);
+                                      // uploadImage(file);
+                                    }
+                                  }}
+                                  multiple={false}
+                                  name="banner-image"
+                                  accept="image/*"
+                                  id="file-replace"
+                                  type="file"
+                                  className="hidden appearance-none"
+                                ></input>
+                              </Button>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <div className="transition duration-500 translate-y-32 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                        <label
+                          htmlFor="banner-file-upload"
+                          className="flex items-center mt-5 bg-white rounded-full cursor-pointer w-fit"
+                        >
+                          <UploadIcon className="h-[200px] fill-secondary" />
+                        </label>
 
-                      <input
-                        onChange={(e) => {
-                          if (!e.target.files) return
-                          if (e.target.files?.length > 0) {
-                            const file = e.target.files[0]
-                            const url = URL.createObjectURL(file)
-                            setBannerImage(file)
-                            setBannerImageLink(url)
-                            // URL.revokeObjectURL(url);
+                        <input
+                          onChange={(e) => {
+                            if (!e.target.files) return
+                            if (e.target.files?.length > 0) {
+                              const file = e.target.files[0]
+                              const url = URL.createObjectURL(file)
+                              setBannerImage(file)
+                              setBannerImageLink(url)
+                              // URL.revokeObjectURL(url);
 
-                            // uploadImage(file);
-                          }
-                        }}
-                        multiple={false}
-                        accept="image/*"
-                        id="banner-file-upload"
-                        type="file"
-                        className="hidden appearance-none"
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </>
+                              // uploadImage(file);
+                            }
+                          }}
+                          multiple={false}
+                          accept="image/*"
+                          id="banner-file-upload"
+                          type="file"
+                          className="hidden appearance-none"
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            </div>
+
+            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
           </div>
-
-          <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-          <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-          <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-        </div>
+        )}
       </div>
     </div>
   )

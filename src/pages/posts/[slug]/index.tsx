@@ -22,7 +22,7 @@ const index = ({ profileData }: { profileData: IPostbackend }) => {
 export default index
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
-  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  // const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   const { slug } = query
 
   let profileData = await fetchWithoutAuthorization(`/v1/post/${slug}`, "GET")

@@ -1,14 +1,16 @@
 import React from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useUserContext } from "@/providers/user-context"
-import EditIcon from "@/components/icons/editIcon"
-import { useModalContext } from "@/providers/modal-context"
-import DeleteIcon from "@/components/icons/deleteIcon"
-import { toast } from "react-toastify"
-import { fetchData } from "@/utils/functions"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
+
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import { useModalContext } from "@/providers/modal-context"
+import { useUserContext } from "@/providers/user-context"
+import { fetchData } from "@/utils/functions"
+
+import DeleteIcon from "@/components/icons/deleteIcon"
+import EditIcon from "@/components/icons/editIcon"
 
 interface CardProps {
   imageSrc: string

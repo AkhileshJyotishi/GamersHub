@@ -7,13 +7,12 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
-
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
-import { useModalContext } from "@/providers/modal-context"
 
 // import EditIcon from "../icons/editIcon"
 
@@ -46,7 +45,7 @@ const SocialCard: React.FC<CardProps> = ({
   className,
   savedUsers,
   onChange,
-  onsavedSuccess
+  onsavedSuccess,
   //   likes,
 }) => {
   const { data: session } = useSession()
@@ -84,7 +83,6 @@ const SocialCard: React.FC<CardProps> = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
-
       onChange && onChange(id)
       toast.success(data?.message)
       // setSaved(!saved)
@@ -96,10 +94,10 @@ const SocialCard: React.FC<CardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => { },
+      onClick: () => {},
       content: <></>,
       isOpen: false,
-      onClose: () => { },
+      onClose: () => {},
       title: <></>,
     }))
   }
@@ -155,30 +153,27 @@ const SocialCard: React.FC<CardProps> = ({
                 </div>
               </>
             </div>
-          ):(
+          ) : (
             <>
-            {userData?.id !== userId && (
-            <div className="flex ml-auto cursor-pointer" onClick={() => savePost()}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill={saved ? "#fff" : "none"}
-                stroke="#B4B4B4"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
-          )
-          }
+              {userData?.id !== userId && (
+                <div className="flex ml-auto cursor-pointer" onClick={() => savePost()}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill={saved ? "#fff" : "none"}
+                    stroke="#B4B4B4"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+              )}
             </>
-          )
-          }
-
+          )}
         </div>
         <div className="flex items-center px-2">
           <span
@@ -199,9 +194,7 @@ const SocialCard: React.FC<CardProps> = ({
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />
         </div>
-        <div className="flex items-center justify-between px-4 py-1">
-          
-        </div>
+        <div className="flex items-center justify-between px-4 py-1"></div>
       </div>
     </div>
   )

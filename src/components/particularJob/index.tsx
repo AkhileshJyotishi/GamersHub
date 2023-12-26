@@ -9,8 +9,17 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
     return <div>Loading...</div> // or any other handling mechanism
   }
 
-  const { title, city, banner, country, user, remote, userId,savedUsers, ...profileDataJobSection } =
-    profileData
+  const {
+    title,
+    city,
+    banner,
+    country,
+    user,
+    remote,
+    userId,
+    savedUsers,
+    ...profileDataJobSection
+  } = profileData
   return (
     <>
       <div

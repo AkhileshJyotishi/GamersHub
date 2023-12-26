@@ -7,14 +7,17 @@ import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Card from "@/components/jobs/jobsCard"
-import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 import ProfilePageLayout from "@/components/profileLayout"
+import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Jobs = () => {
   const session = useSession()
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-  const salary=backendJob.paymentValue!=0 ? `${backendJob.paymentValue} ${backendJob.paymentType}`:`${backendJob.paymentType}`
+    const salary =
+      backendJob.paymentValue != 0
+        ? `${backendJob.paymentValue} ${backendJob.paymentType}`
+        : `${backendJob.paymentType}`
 
     return {
       id: backendJob.id,
@@ -23,7 +26,7 @@ const Jobs = () => {
       date: backendJob.publishDate, // Replace with the relevant date field from the backend
       salary, // Adjust based on your backend structure
       type: backendJob.jobType,
-      remote:backendJob.remote,
+      remote: backendJob.remote,
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,

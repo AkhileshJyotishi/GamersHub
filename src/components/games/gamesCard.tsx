@@ -4,8 +4,8 @@ import Image from "next/image" // Import your Image component library
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
-import defaultbannerImage from "@/assets/image/user-banner.png"
 
+import defaultbannerImage from "@/assets/image/user-banner.png"
 import { Games } from "@/interface/games"
 // import { token } from "@/pages/settings"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"

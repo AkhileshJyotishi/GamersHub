@@ -7,12 +7,12 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
-import { useModalContext } from "@/providers/modal-context"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
@@ -172,7 +172,7 @@ const Card: React.FC<CardProps> = ({
                             </div> */}
             </div>
           </div>
-          <div className="flex justify-between h-[200px] items-end px-6 translate-y-36 group-hover:translate-y-20 transition duration-200">
+          <div className="flex justify-between h-[200px] items-end px-6 translate-y-40 group-hover:translate-y-20 transition duration-200">
             {userId !== userData?.id && (
               <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
                 <svg
@@ -191,7 +191,7 @@ const Card: React.FC<CardProps> = ({
               </div>
             )}
             <div
-              className="mx-auto cursor-pointer"
+              className="mx-auto break-all cursor-pointer"
               onClick={() => {
                 router.push(`/posts/${id}`)
               }}

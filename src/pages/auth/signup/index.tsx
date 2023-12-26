@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
-import textblackbg from "@/assets/image/text-black-bg.png"
 
+import textblackbg from "@/assets/image/text-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import showPassword from "@/assets/svg/view-white.svg"
+import { getSession } from "@/lib/auth"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import FacebookIcon from "@/components/icons/facebook"
@@ -16,8 +18,6 @@ import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import { InfoTag } from "@/components/ui/Info"
 import TextInput from "@/components/ui/textInput"
-import { getSession } from "@/lib/auth"
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 interface FormErrors {
   username: string
   email: string
@@ -214,7 +214,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -304,14 +304,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       redirect: {
         destination: `/`,
         permanent: false,
-      }
+      },
     }
-  }
-  else {
+  } else {
     return {
-      props: {
-
-      }
+      props: {},
     }
   }
 }

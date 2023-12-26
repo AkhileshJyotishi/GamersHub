@@ -63,7 +63,7 @@ const CreateJob: React.FC = () => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (jobInfo.banner && typeof jobInfo.banner=="object") {
+    if (jobInfo.banner && typeof jobInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -78,8 +78,8 @@ const CreateJob: React.FC = () => {
       // console.log(isuploaded?.data)
       // return;
       jobInfo.banner = isuploaded?.data.image.Location
-    } else{
-      jobInfo.banner=""
+    } else {
+      jobInfo.banner = ""
     }
     // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()

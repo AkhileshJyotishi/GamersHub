@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 import clsx from "clsx"
 import { motion } from "framer-motion"
 import Image from "next/image"
@@ -136,7 +136,6 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
                 errorMessage ? "border-accent_red" : "border-gray-500"
               )}
             >
-
               <Image src={URL.createObjectURL(item)} alt={""} height={400} width={400} />
               <div className="absolute top-0 right-0 flex p-1 space-x-2 ">
                 <Button className="hover:text-red-500" onClick={() => handleRemoveFile(idx)}>

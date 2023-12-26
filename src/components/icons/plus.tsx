@@ -1,6 +1,6 @@
 import React from "react"
 
-function PlusIcon({ className,handleclick }: { className: string,handleclick?:()=>void }) {
+function PlusIcon({ className, handleclick }: { className: string; handleclick?: () => void }) {
   return (
     <svg
       className={className}

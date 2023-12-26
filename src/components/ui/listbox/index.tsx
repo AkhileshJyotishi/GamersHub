@@ -1,11 +1,19 @@
-import { Fragment, useState } from "react"
+import { Fragment } from "react"
 
 import { Listbox, Transition } from "@headlessui/react"
 
 import CheckIcon from "@/components/icons/tick-white"
 import ChevronUpDownIcon from "@/components/icons/updown"
 
-export default function Example({ people,setActiveTab,activeTab }: { people: string[],setActiveTab: React.Dispatch<React.SetStateAction<string>>,activeTab:string }) {
+export default function Example({
+  people,
+  setActiveTab,
+  activeTab,
+}: {
+  people: string[]
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
+  activeTab: string
+}) {
   // const [selected, setSelected] = useState<string>(people[0])
 
   return (

@@ -1,6 +1,6 @@
 import React from "react"
 
-function SaveIcon({ className,fill }: { className: string,fill:string }) {
+function SaveIcon({ className, fill }: { className: string; fill: string }) {
   return (
     <svg className={className} width="16" height="20" fill="#000" viewBox="0 0 11 12">
       <path

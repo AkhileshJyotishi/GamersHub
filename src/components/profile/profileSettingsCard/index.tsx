@@ -3,7 +3,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
+import { signOut, useSession } from "next-auth/react"
 
+// import { toast } from "react-toastify"
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
@@ -14,8 +16,6 @@ import HelpIcon from "@/components/icons/gear"
 import LogOutIcon from "@/components/icons/logout"
 import SaveIcon from "@/components/icons/save"
 import Button from "@/components/ui/button"
-import { signOut, useSession } from "next-auth/react"
-import { toast } from "react-toastify"
 
 interface Props {
   authUser?: Session | null

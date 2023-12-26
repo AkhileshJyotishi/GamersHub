@@ -3,16 +3,19 @@ import React, { useState } from "react"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { MessageBox } from "react-chat-elements"
-import "react-chat-elements/dist/main.css"
-import { useUserContext } from "@/providers/user-context"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+import { MessageBox } from "react-chat-elements"
+import { toast } from "react-toastify"
+
 import defaultUserImage from "@/assets/image/user-profile.svg"
+import { useUserContext } from "@/providers/user-context"
+import { fetchData } from "@/utils/functions"
+
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
-import { fetchData } from "@/utils/functions"
-import { useSession } from "next-auth/react"
-import { toast } from "react-toastify"
+
+import "react-chat-elements/dist/main.css"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,

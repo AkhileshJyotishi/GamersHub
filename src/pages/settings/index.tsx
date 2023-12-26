@@ -9,7 +9,6 @@ import { fetchData } from "@/utils/functions"
 import SettingsPage from "@/components/settings"
 
 const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
-
   return (
     <>
       <Head>

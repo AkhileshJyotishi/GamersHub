@@ -18,11 +18,10 @@ interface IPostbackend {
 
   comments: {
     comment: string
-    userId: number;
+    userId: number
     user: {
       username: string
       profileImage: string
-
     }
     createdAt: string
     id: number

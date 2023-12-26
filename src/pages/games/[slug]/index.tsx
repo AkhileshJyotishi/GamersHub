@@ -12,7 +12,7 @@ import Gamesection from "@/components/ParticularGame/Section"
 
 const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame }) => {
   // user,
-  const { title, banner,id,savedUsers } = parsedgamesDetails
+  const { title, banner, id, savedUsers } = parsedgamesDetails
   // console.log(profileDataGameSection)
   return (
     <>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import Head from "next/head"
-import Link from "next/link"
+// import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
@@ -15,15 +15,15 @@ import CloseIcon from "@/components/icons/closeIcon"
 import Loading from "@/components/Loading"
 import BannerImage from "@/components/profile/bannerImage"
 import ProfileAccordion from "@/components/profile/profileAccordion"
+import ProfileCard from "@/components/profileCard"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
-
-import ProfileCard from "@/components/profileCard"
 
 interface User {
   id: number
   createdAt: string
   username: string
+  bannerImage: string
   userDetails: {
     country: string
     city: string
@@ -45,6 +45,8 @@ const ProfileLayout = ({
 }) => {
   const session = useSession()
   const router = useRouter()
+  const params = useParams()
+
   const { userData, isCreateAlbumOpen, setisCreateAlbumOpen, newAlbum, setnewAlbum } =
     useUserContext()
 
@@ -267,11 +269,11 @@ const ProfileLayout = ({
             <BannerImage
               setnewAlbum={setnewAlbum}
               setisCreateAlbumOpen={setisCreateAlbumOpen}
-              bannerImage={userData?.bannerImage || ""}
+              bannerImage={data?.bannerImage || ""}
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
             <div className="flex flex-wrap justify-center w-full gap-3 lg:justify-end">
-              {session && (
+              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
                 <Button
                   className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
                   onClick={() => {
@@ -287,7 +289,7 @@ const ProfileLayout = ({
                   New Album
                 </Button>
               )}
-              {session && (
+              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
                 <Button
                   className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
                   onClick={() => {

@@ -70,7 +70,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
   }
   console.log("printing it ", initGameInfo)
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
-  const [oldAssets,setoldAssets]=useState((initGameInfo?.gameAssets ??[]) as string[])
+  const [oldAssets, setoldAssets] = useState((initGameInfo?.gameAssets ?? []) as string[])
 
   const session = useSession()
   // const router=useRouter()
@@ -114,7 +114,11 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     })
     formdata2.append("type", "games")
     const newArray: string[] = []
-    if (gameInfo.gameAssets && gameInfo.gameAssets.every((asset)=>typeof asset==="object") && gameInfo.gameAssets?.length > 0) {
+    if (
+      gameInfo.gameAssets &&
+      gameInfo.gameAssets.every((asset) => typeof asset === "object") &&
+      gameInfo.gameAssets?.length > 0
+    ) {
       const multiisuploaded = await fetchFile(
         "/v1/upload/multiple",
         session?.data?.user?.name as string,
@@ -133,10 +137,10 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         })
       }
     } else {
-      console.log("worst case ",gameInfo.gameAssets)
+      console.log("worst case ", gameInfo.gameAssets)
       gameInfo.gameAssets = []
     }
-    gameInfo.gameAssets = [...newArray,...oldAssets]
+    gameInfo.gameAssets = [...newArray, ...oldAssets]
     let data
     if (isUpdate) {
       data = await fetchData(
@@ -159,12 +163,14 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
   }
 
   return (
-    <Layout 
-    gameInfo={gameInfo} 
-    setGameInfo={setGameInfo}
-     uploadGame={uploadGame} 
-     oldAssets={oldAssets}
-      setoldAssets={setoldAssets} isUpdate={isUpdate}>
+    <Layout
+      gameInfo={gameInfo}
+      setGameInfo={setGameInfo}
+      uploadGame={uploadGame}
+      oldAssets={oldAssets}
+      setoldAssets={setoldAssets}
+      isUpdate={isUpdate}
+    >
       {/* Render the filterDetails here */}
       <>
         <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
@@ -180,4 +186,3 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 }
 
 export default CreateGame
-

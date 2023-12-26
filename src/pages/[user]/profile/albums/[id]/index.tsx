@@ -1,19 +1,20 @@
 import React from "react"
+import clsx from "clsx"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
-import image from "@/assets/image/void.svg"
-import { toast } from "react-toastify"
-import Card from "@/components/ui/card/card2"
-import { getSession } from "@/lib/auth"
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import { useUserContext } from "@/providers/user-context"
 import Image from "next/image"
-import clsx from "clsx"
-import { UserImage, UserInfo } from "@/pages/games/[slug]/GamePageHeader"
-import Button from "@/components/ui/button"
-import defaultbannerImage from "@/assets/image/user-banner.png"
-
 import { useRouter } from "next/router"
+import { toast } from "react-toastify"
+
+import defaultbannerImage from "@/assets/image/user-banner.png"
+import image from "@/assets/image/void.svg"
+import { getSession } from "@/lib/auth"
+import { useUserContext } from "@/providers/user-context"
+import { fetchWithoutAuthorization } from "@/utils/functions"
+
+import { UserImage, UserInfo } from "@/components/ParticularGame/Head"
+import Button from "@/components/ui/button"
+import Card from "@/components/ui/card/card2"
 
 const index = ({
   albumPosts,
@@ -79,7 +80,7 @@ const index = ({
                 matureContent={post.matureContent}
                 title={post.title}
                 savedPost={post.savedUsers}
-                likedPost={post.postLikes?.map((like) => like.likedUsers)}
+                likedPost={(post?.postLikes ?? [])?.map((like) => like.likedUsers)}
                 userId={post.userId}
                 // location={data.location}
                 // views={data.views}
@@ -121,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     }
   }
 
-  let albumdata = await fetchWithoutAuthorization(`/v1/album/${id}`, "GET")
+  const albumdata = await fetchWithoutAuthorization(`/v1/album/${id}`, "GET")
 
   if (albumdata?.error) {
     return {
@@ -135,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   }
   // return resp.data;\
 
-  let albumdata2 = albumdata?.data?.album
+  const albumdata2 = albumdata?.data?.album
   console.log("albumdata2 ", albumdata2)
   return {
     props: {

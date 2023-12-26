@@ -21,11 +21,7 @@ interface gamesLayoutProps {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
 }
-const Layout: React.FC<gamesLayoutProps> = ({
-  children,
-  setActiveTab,
-  activeTab,
-}) => {
+const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab }) => {
   const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
   const { setIsLoginModalOpen, userData } = useUserContext()
@@ -39,7 +35,6 @@ const Layout: React.FC<gamesLayoutProps> = ({
       developerType: "",
       gameMode: "",
     })
- 
   }
 
   const [gamePlatformsSuggestions] = useState<string[]>([])
@@ -129,7 +124,6 @@ const Layout: React.FC<gamesLayoutProps> = ({
           label: "Multi Player",
           value: "multi-player",
         },
-        
       ],
     },
     {
@@ -171,7 +165,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
             setActiveTab={setActiveTab}
             activeTab={activeTab}
           />
-          {userData &&
+          {userData && (
             <Button
               onClick={() => {
                 if (session) router.push(`/${userData?.id}/profile/portfolio/createGame`)
@@ -185,7 +179,7 @@ const Layout: React.FC<gamesLayoutProps> = ({
               <span className="text-sm">Add Game</span>
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
-          }
+          )}
         </div>
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">

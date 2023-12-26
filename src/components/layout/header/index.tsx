@@ -6,8 +6,9 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
-import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
+
 import logoblackbg from "@/assets/image/logo-black-bg.png"
+import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
@@ -18,13 +19,13 @@ import MailIcon from "@/components/icons/mail"
 import ProfileBannerImage from "@/components/profile/profileImage"
 // import ProfileSettingsCard from "@/components/profile/profileSettingsCard"
 import Button from "@/components/ui/button"
+import ModalComponent from "@/components/ui/ConfirmationModal"
 import LoginModal from "@/components/ui/login"
 import RegisterModal from "@/components/ui/register"
 
 // import Search from "../../mainsearch/index"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
-import ModalComponent from "@/components/ui/ConfirmationModal"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">

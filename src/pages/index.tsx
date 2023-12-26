@@ -3,12 +3,12 @@ import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import Img from "@/assets/image/profiles-slide-show.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import logotextblackbg from "@/assets/image/text-black-bg.png"
-
-import Img from "@/assets/image/profiles-slide-show.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
@@ -22,7 +22,6 @@ import CloseIcon from "@/components/icons/closeIcon"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
-import { signOut } from "next-auth/react"
 
 const HomePage = ({ users }: { users: IPostbackend[] }) => {
   const router = useRouter()
@@ -118,7 +117,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           </Button>
         </div>
       </Modal>
-      {/* <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" /> */}
+      <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" />
       <OverlayBackground />
       <div className="relative top-0">
         <OverlayContent />

@@ -1,54 +1,51 @@
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react"
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
 
 interface IModalContext {
-    modalData: {
-        isOpen: boolean;
-        onClick: () => void;
-        buttonText: string;
-        onClose: () => void;
-        content: JSX.Element;
-        title: JSX.Element;
-    };
-    setmodalData: Dispatch<SetStateAction<{
-        isOpen: boolean;
-        onClick: () => void;
-        buttonText: string;
-        onClose: () => void;
-        content: JSX.Element;
-        title: JSX.Element;
-    }>>
+  modalData: {
+    isOpen: boolean
+    onClick: () => void
+    buttonText: string
+    onClose: () => void
+    content: JSX.Element
+    title: JSX.Element
+  }
+  setmodalData: Dispatch<
+    SetStateAction<{
+      isOpen: boolean
+      onClick: () => void
+      buttonText: string
+      onClose: () => void
+      content: JSX.Element
+      title: JSX.Element
+    }>
+  >
 }
 interface IModalProvider {
-    children: React.ReactNode
+  children: React.ReactNode
 }
 
 const Context = createContext<IModalContext>({} as IModalContext)
 
 const ModalProvider = ({ children }: IModalProvider) => {
-    const [modalData, setmodalData] = useState({
-        isOpen: false,
-        buttonText: "",
-        onClick: () => { },
-        onClose: () => { },
-        content: <></>,
-        title: <></>
-    })
+  const [modalData, setmodalData] = useState({
+    isOpen: false,
+    buttonText: "",
+    onClick: () => {},
+    onClose: () => {},
+    content: <></>,
+    title: <></>,
+  })
 
-    return <Context.Provider
-        value={{ modalData, setmodalData }}
-    >
-        {children}
-    </Context.Provider>
+  return <Context.Provider value={{ modalData, setmodalData }}>{children}</Context.Provider>
 }
 
-
 const useModalContext = () => {
-    const c = useContext(Context)
+  const c = useContext(Context)
 
-    if (c === undefined) {
-        throw new Error("useUserContext must be used within a UserProvider")
-    }
+  if (c === undefined) {
+    throw new Error("useUserContext must be used within a UserProvider")
+  }
 
-    return c
+  return c
 }
 export { ModalProvider, useModalContext }

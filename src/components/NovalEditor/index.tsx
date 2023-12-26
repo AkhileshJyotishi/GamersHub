@@ -1,8 +1,8 @@
 import React from "react"
+import clsx from "clsx"
 import { Editor as NovelEditor } from "novel"
 
 import { JSONContent } from "@tiptap/react"
-import clsx from "clsx"
 
 const Editor = ({
   className,

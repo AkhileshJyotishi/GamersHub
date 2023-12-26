@@ -4,10 +4,11 @@ import clsx from "clsx"
 import { Errors, FilterDetail } from "@/interface/filter"
 import { GameInfo } from "@/interface/games"
 
+import InitMultipleFileInput from "@/components/ui/initialMultifile"
+
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 import MultipleFileInput from "../ui/multifileInput"
-import InitMultipleFileInput from "@/components/ui/initialMultifile"
 interface LayoutProps {
   children: React.ReactNode
   gameInfo: GameInfo

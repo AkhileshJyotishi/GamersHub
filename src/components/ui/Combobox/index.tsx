@@ -1,8 +1,10 @@
-import React, { Fragment, useState, ChangeEvent } from "react"
+import React, { ChangeEvent, Fragment, useState } from "react"
+import clsx from "clsx"
+
 import { Combobox, Transition } from "@headlessui/react"
+
 import CheckIcon from "@/components/icons/tick-white"
 import ChevronUpDownIcon from "@/components/icons/updown"
-import clsx from "clsx"
 
 interface ComboboxInputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
