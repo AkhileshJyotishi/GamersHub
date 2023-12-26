@@ -925,6 +925,7 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
       id: true,
       username: true,
       createdAt: true,
+      bannerImage: true,
       userDetails: {
         select: {
           city: true,
