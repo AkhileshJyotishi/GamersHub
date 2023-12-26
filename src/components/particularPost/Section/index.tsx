@@ -67,7 +67,7 @@ const sections: Section[] = [
     dataKey: "savedUsers",
     render: (data) => (
       <span className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer">
-        {(data?.postLikes?.length || 0) + " users"}
+        {(data?.postLikes?.likedUsers.length || 0) + " users"}
       </span>
     ),
   },
@@ -200,7 +200,7 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
             </>
           </div>
 
-          <div className="flex flex-col sm:px-2 py-10">
+          <div className="flex flex-col py-10 sm:px-2">
             <div className="text-[25px] font-bold mb-3">Comments</div>
             <div className="flex gap-2 mb-6">
               <Filter

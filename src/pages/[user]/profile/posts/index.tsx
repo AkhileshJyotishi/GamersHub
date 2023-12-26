@@ -53,7 +53,7 @@ const Albums = () => {
                       matureContent={post.matureContent}
                       title={post.title}
                       savedPost={post.savedUsers}
-                      likedPost={post.postLikes?.map((like) => like.likedUsers)}
+                      likedPost={post?.postLikes.likedUsers.map((like) => like) ?? []}
                       userId={post.userId}
                       // location={data.location}
                       // views={data.views}

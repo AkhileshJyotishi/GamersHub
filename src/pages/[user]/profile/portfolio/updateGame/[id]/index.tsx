@@ -6,11 +6,15 @@ import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
 import CreateGame from "@/components/createGame"
+import Head from "next/head"
 
 const index = (game: Allow) => {
   // console.log("object in back", game)
   return (
     <>
+     <Head >
+        <title>GameCreatorsHub |Games</title>
+      </Head>
       <CreateGame game={game.game} />
     </>
   )

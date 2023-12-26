@@ -16,6 +16,8 @@ import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import { InfoTag } from "@/components/ui/Info"
 import TextInput from "@/components/ui/textInput"
+import { getSession } from "@/lib/auth"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 interface FormErrors {
   username: string
   email: string
@@ -171,7 +173,7 @@ export default function SignUpPage() {
             }}
             height={30}
             alt="Game Creators Hub"
-            className="cursor-pointer my-2"
+            className="my-2 cursor-pointer"
           />
           <h1 className="font-medium text-[2rem] mb-[10px] lg:px-9 lg:py-2">Sign Up</h1>
 
@@ -212,7 +214,7 @@ export default function SignUpPage() {
                 value={formValues.password}
                 name="password"
                 placeholder="*********"
-                // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
+              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
               />
               <Image
                 width={2060}
@@ -293,4 +295,23 @@ export default function SignUpPage() {
       <SignUpForm />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  if (session) {
+    return {
+      redirect: {
+        destination: `/`,
+        permanent: false,
+      }
+    }
+  }
+  else {
+    return {
+      props: {
+
+      }
+    }
+  }
 }

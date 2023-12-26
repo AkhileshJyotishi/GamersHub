@@ -19,6 +19,7 @@ type OmittedProperties =
   | "banner"
   | "userId"
   | "remote"
+  | "savedUsers"
 type jobdataprop = Omit<BackendJob, OmittedProperties>
 
 interface Section {

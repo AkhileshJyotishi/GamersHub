@@ -102,11 +102,13 @@ const Card: React.FC<CardProps> = ({
     router.push(`/${userId}/profile/portfolio/updatePost/${id}`)
   }
   useEffect(() => {
-    if (savedPost?.length) {
-      setSaved(savedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
+    console.log("savedPost ",savedPost)
+    console.log("likedPost ",likedPost)
+    if (savedPost?.length>0) {
+      setSaved((savedPost ??[])?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
-    if (likedPost?.length) {
-      setLiked(likedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
+    if (likedPost?.length>0) {
+      setLiked((likedPost??[])?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedPost, likePost])
   // useEffect(() => {

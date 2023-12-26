@@ -105,7 +105,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 
-          <div className="w-full p-12 bg-user_interface_2 rounded-xl">
+          <div className="w-full p-4 md:p-12 bg-user_interface_2 rounded-xl ">
             <Filter
               key={"text"}
               inputType={"text"}

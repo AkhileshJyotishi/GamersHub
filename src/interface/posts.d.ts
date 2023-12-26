@@ -30,8 +30,8 @@ interface IPostbackend {
   postLikes: {
     likedUsers: {
       id: number
-    }
-  }[]
+    }[]
+  }
 
   postSkills: {
     skill: string

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 
 import { Errors, FilterDetail } from "@/interface/filter"
@@ -7,16 +7,23 @@ import { GameInfo } from "@/interface/games"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 import MultipleFileInput from "../ui/multifileInput"
-
+import InitMultipleFileInput from "@/components/ui/initialMultifile"
 interface LayoutProps {
   children: React.ReactNode
   gameInfo: GameInfo
   setGameInfo: React.Dispatch<React.SetStateAction<GameInfo>>
   uploadGame: () => Promise<void>
+  setoldAssets?: React.Dispatch<React.SetStateAction<string[]>>
+  oldAssets?: string[]
+  isUpdate:boolean
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, uploadGame }) => {
+const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, uploadGame, setoldAssets, oldAssets,isUpdate }) => {
   // console.log("gameInfo",gameInfo)
+
+  const handleOldAssets = (remainingOldAssets: string[]) => {
+    setoldAssets && setoldAssets(remainingOldAssets)
+  }
   const [errors, setErrors] = useState<Errors<Partial<GameInfo>>>({
     banner: "",
     description: "",
@@ -331,6 +338,10 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
       //   })),
     },
   ]
+  useEffect(() => {
+    gameInfo.gameAssets = []
+  }, [])
+
   // const shadeVariant =
   //   " left-0 right-0 top-0  bg-gradient-to-b to-transparent from- group-hover:from-token-surface-primary dark:from-[#000]"
 
@@ -345,7 +356,7 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           <div className="flex flex-col w-full gap-4 p-2">
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
-                className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
+                className="z-10 justify-center p-2 mx-auto rounded-md bg-secondary"
                 onClick={() => uploadGame()}
               >
                 Upload Game
@@ -376,6 +387,12 @@ const Layout: React.FC<LayoutProps> = ({ children, gameInfo, setGameInfo, upload
           </div>
         </div>
         <div className="flex flex-col w-full gap-4 p-4">
+          {
+            isUpdate &&
+          <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
+            <InitMultipleFileInput initFiles={oldAssets as string[] | null} onChange={(value) => handleOldAssets(value)} />
+          </div>
+          }
           <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
             <MultipleFileInput
               onFileChange={(value) => handleInputChange("gameAssets", value)}
