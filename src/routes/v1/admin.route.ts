@@ -9,7 +9,7 @@ const router = express.Router()
 router.get('/blacklist', auth('getUsers'), adminController.getBlacklistedUser)
 router.get('/unblacklist', auth('getUsers'), adminController.getUnblacklistedUser)
 
-router.delete(
+router.post(
   '/blacklist/:userId',
   auth('manageUsers'),
   validate(adminValidation.paramsValidation),
@@ -21,7 +21,7 @@ router.post(
   validate(adminValidation.paramsValidation),
   adminController.unblacklistUserById
 )
-router.delete(
+router.post(
   '/blacklist/email',
   auth('manageUsers'),
   validate(adminValidation.userEmailValidation),
