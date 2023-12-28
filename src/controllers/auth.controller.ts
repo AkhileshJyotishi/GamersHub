@@ -63,6 +63,12 @@ const login = catchAsync(async (req, res) => {
   const tokens = await tokenService.generateAuthTokens(user)
   sendResponse(res, httpStatus.OK, null, { user, tokens }, 'User logged in successfully')
 })
+const adminLogin = catchAsync(async (req, res) => {
+  const { email, password } = req.body
+  const user = await authService.adminloginUserWithEmailAndPassword(email, password)
+  const tokens = await tokenService.generateAuthTokens(user)
+  sendResponse(res, httpStatus.OK, null, { user, tokens }, 'User logged in successfully')
+})
 
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.accessToken)
@@ -110,6 +116,7 @@ export default {
   register,
   registerProvider,
   login,
+  adminLogin,
   logout,
   refreshTokens,
   forgotPassword,

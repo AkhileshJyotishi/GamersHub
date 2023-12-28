@@ -51,6 +51,36 @@ const loginUserWithEmailAndPassword = async (
   await isUserValid(user.id)
   return exclude(user, ['password', 'validUser'])
 }
+/**
+ * Admin Login with username and password
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<Omit<User, 'password'>>}
+ */
+const adminloginUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<Omit<User, 'password' | 'validUser'>> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email
+    },
+    include: {
+      role: true
+    }
+  })
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User does not exist')
+  }
+  if (!(await isPasswordMatch(password, user.password as string))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password')
+  }
+  if (user.role?.role != 'ADMIN') {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Permission not Granted')
+  }
+  await isUserValid(user.id)
+  return exclude(user, ['password', 'validUser'])
+}
 
 /**
  * Logout
@@ -185,6 +215,7 @@ const isUserValid = async (userId: number): Promise<void> => {
 
 export default {
   loginUserWithEmailAndPassword,
+  adminloginUserWithEmailAndPassword,
   isPasswordMatch,
   encryptPassword,
   logout,
