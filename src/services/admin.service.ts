@@ -63,7 +63,12 @@ const getAllBlacklistedUsers = async (): Promise<
       email: true,
       createdAt: true,
       matureContent: true,
-      validUser: true
+      validUser: true,
+      role: {
+        select: {
+          role: true
+        }
+      }
     }
   })
   return users
@@ -100,7 +105,12 @@ const getAllUnblacklistedUsers = async (): Promise<
       email: true,
       createdAt: true,
       matureContent: true,
-      validUser: true
+      validUser: true,
+      role: {
+        select: {
+          role: true
+        }
+      }
     }
   })
   return users
