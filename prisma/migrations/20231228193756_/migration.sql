@@ -37,6 +37,7 @@ CREATE TABLE "User" (
     "profileImage" TEXT,
     "bannerImage" TEXT,
     "matureContent" BOOLEAN NOT NULL DEFAULT false,
+    "validUser" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

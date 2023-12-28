@@ -12,23 +12,103 @@ const blacklistUser = async (user: User) => {
       id: user.id
     },
     data: {
-      tokens: {
-        updateMany: {
-          where: {
-            blacklisted: false
-          },
-          data: {
-            blacklisted: true
-          }
-        }
-      }
-    },
-    include: {
-      tokens: true
+      validUser: false
     }
   })
 }
 
+/**
+ * Include user
+ * @param {User} user
+ */
+
+const unblacklistUser = async (user: User) => {
+  await prisma.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      validUser: true
+    }
+  })
+}
+/**
+ * Get all Blacklisted User
+ */
+
+const getAllBlacklistedUsers = async (): Promise<
+  Pick<
+    User,
+    | 'bannerImage'
+    | 'createdAt'
+    | 'email'
+    | 'id'
+    | 'isEmailVerified'
+    | 'matureContent'
+    | 'profileImage'
+    | 'username'
+    | 'validUser'
+  >[]
+> => {
+  const users = await prisma.user.findMany({
+    where: {
+      validUser: false
+    },
+    select: {
+      id: true,
+      username: true,
+      isEmailVerified: true,
+      profileImage: true,
+      bannerImage: true,
+      email: true,
+      createdAt: true,
+      matureContent: true,
+      validUser: true
+    }
+  })
+  return users
+}
+
+/**
+ * Get all Unblacklisted User
+ */
+
+const getAllUnblacklistedUsers = async (): Promise<
+  Pick<
+    User,
+    | 'bannerImage'
+    | 'createdAt'
+    | 'email'
+    | 'id'
+    | 'isEmailVerified'
+    | 'matureContent'
+    | 'profileImage'
+    | 'username'
+    | 'validUser'
+  >[]
+> => {
+  const users = await prisma.user.findMany({
+    where: {
+      validUser: true
+    },
+    select: {
+      id: true,
+      username: true,
+      isEmailVerified: true,
+      profileImage: true,
+      bannerImage: true,
+      email: true,
+      createdAt: true,
+      matureContent: true,
+      validUser: true
+    }
+  })
+  return users
+}
+
 export default {
-  blacklistUser
+  blacklistUser,
+  unblacklistUser,
+  getAllBlacklistedUsers,
+  getAllUnblacklistedUsers
 }

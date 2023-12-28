@@ -6,52 +6,32 @@ import { adminController } from '../../controllers'
 
 const router = express.Router()
 
-router
-  .route('/manage-user/:userId')
-  .delete(
-    auth('manageUsers'),
-    validate(adminValidation.blacklistUserById),
-    adminController.blacklistUserById
-  )
+router.get('/blacklist', auth('getUsers'), adminController.getBlacklistedUser)
+router.get('/unblacklist', auth('getUsers'), adminController.getUnblacklistedUser)
+
 router.delete(
-  '/manage-user',
+  '/blacklist/:userId',
   auth('manageUsers'),
-  validate(adminValidation.blacklistUserByEmail),
+  validate(adminValidation.paramsValidation),
+  adminController.blacklistUserById
+)
+router.post(
+  '/include/:userId',
+  auth('manageUsers'),
+  validate(adminValidation.paramsValidation),
+  adminController.unblacklistUserById
+)
+router.delete(
+  '/blacklist/email',
+  auth('manageUsers'),
+  validate(adminValidation.userEmailValidation),
   adminController.blacklistUserByEmail
+)
+router.post(
+  '/include/email',
+  auth('manageUsers'),
+  validate(adminValidation.userEmailValidation),
+  adminController.unblacklistUserByEmail
 )
 
 export default router
-
-/**
- * @swagger
- * tags:
- *   name: Admin
- *   description: Admin panel
- */
-
-/**
- * @swagger
- * /admin/manage-user/{userId}:
- *   delete:
- *     summary: Blacklist a user
- *     description: Admin can blacklist any user.
- *     tags: [Admin]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of user to be blacklisted
- *     responses:
- *       "204":
- *         description: No content
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- */

@@ -17,7 +17,7 @@ import exclude from '../utils/exclude'
 const loginUserWithEmailAndPassword = async (
   email: string,
   password: string
-): Promise<Omit<User, 'password'>> => {
+): Promise<Omit<User, 'password' | 'validUser'>> => {
   const user = await userService.getUserByEmail(email, [
     'id',
     'email',
@@ -28,7 +28,8 @@ const loginUserWithEmailAndPassword = async (
     'updatedAt',
     'profileImage',
     'bannerImage',
-    'matureContent'
+    'matureContent',
+    'validUser'
   ])
 
   if (user) {
@@ -48,7 +49,7 @@ const loginUserWithEmailAndPassword = async (
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password')
   }
   await isUserValid(user.id)
-  return exclude(user, ['password'])
+  return exclude(user, ['password', 'validUser'])
 }
 
 /**
@@ -126,7 +127,6 @@ const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
     })
     await userService.updateUserById(verifyEmailTokenData.userId, { isEmailVerified: true })
   } catch (error) {
-    console.log(error)
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed')
   }
 }
@@ -170,17 +170,16 @@ const isUserValid = async (userId: number): Promise<void> => {
     }
   })
   if (!verifiedUser) {
-    throw new ApiError(httpStatus.NETWORK_AUTHENTICATION_REQUIRED, 'Email not verified')
+    throw new ApiError(httpStatus.NETWORK_AUTHENTICATION_REQUIRED, 'Email not verified.')
   }
-  const validUserToken = await prisma.token.findFirst({
+  const validUser = await prisma.user.findUnique({
     where: {
-      userId: userId,
-      type: 'ACCESS',
-      blacklisted: true
+      id: userId,
+      validUser: true
     }
   })
-  if (validUserToken) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Access not granted')
+  if (!validUser) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Blocked Access.')
   }
 }
 
