@@ -10,6 +10,7 @@
 
 html,
 body {
+  background-color: #08080a;
   overflow-x: hidden;
   letter-spacing: 0.015em;
   font-family: sans-serif;
@@ -18,8 +19,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track {
@@ -35,7 +35,8 @@ body {
   background-color: #fff;
 }
 
-@layer base {}
+@layer base {
+}
 
 @layer components {
   .center {
@@ -116,12 +117,14 @@ body {
   color: white;
 }
 
-button,
+/* button,
 [type="button"],
 [type="reset"],
-[type="submit"] {}
+[type="submit"] {
+} */
 
-@layer utilities {}
+@layer utilities {
+}
 
 ._loading_overlay_content {
   top: 45%;
@@ -134,7 +137,45 @@ button,
   position: static !important;
 }
 
-.is-empty,
+/* .is-empty,
 .is-editor-empty {
   display: none !important;
+} */
+
+.rce-mbox-right {
+  background-color: rgb(56, 216, 168) !important;
+  max-width: 70%;
+  margin-right: 1px !important;
+}
+
+.rce-mbox-right-notch {
+  fill: rgb(56, 216, 168) !important;
+}
+.rce-mbox-left {
+  background-color: rgb(56, 216, 168) !important;
+  max-width: 50%;
+  margin-left: 2px;
+}
+
+.rce-mbox-left-notch {
+  fill: rgb(56, 216, 168) !important;
+}
+.rce-avatar-container,
+.rce-avatar {
+  border: 0px;
+  border-radius: 100%;
+}
+
+.rce-mbox-status {
+  display: none;
+}
+
+.rce-mbox-status {
+  display: none;
+}
+.ProseMirror img {
+  width: 60vw;
+}
+.ProseMirror pre {
+  width: 60vw;
 }

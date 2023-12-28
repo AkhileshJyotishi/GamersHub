@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ navigator, setActiveTab, activeTab, c
           </div>
         ))}
       </div>
-      <MyListbox people={people} />
+      <MyListbox people={people} setActiveTab={setActiveTab} activeTab={activeTab} />
     </>
   )
 }

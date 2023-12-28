@@ -58,12 +58,14 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
 
   const uploadPost = async () => {
     setLoading(true)
-    filtersState.content = JSON.parse(localStorage.getItem("noval__content") ?? "")
+    filtersState.content = JSON.parse(
+      localStorage.getItem(isUpdate ? "noval_content_update" : "noval_content") ?? ""
+    )
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
     formdata.append("type", "portfolio")
 
-    if (filtersState.banner) {
+    if (filtersState.banner && typeof filtersState.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -71,13 +73,15 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         formdata
       )
       if (isuploaded?.error) {
-        // toast.info(isuploaded?.message)
+        toast.info("Error uploading file")
         setLoading(false)
         return
       }
       filtersState.banner = isuploaded?.data.image.Location
     } else {
-      filtersState.banner = ""
+      if (!isUpdate) {
+        filtersState.banner = ""
+      }
     }
     let method
     let res
@@ -90,7 +94,6 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         filtersState
       )
     } else {
-      console.log("creating post ")
       method = "POST"
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
@@ -98,6 +101,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     else {
       toast.success(res?.message)
       setFiltersState(initState)
+      localStorage.removeItem(isUpdate ? "noval_content_update" : "noval_content")
     }
     setLoading(false)
     router.push("/")
@@ -109,6 +113,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       setFiltersState={setFiltersState}
       uploadPost={uploadPost}
       albums={albums}
+      isUpdate={isUpdate}
     >
       {/* Render the filterDetails here */}
       <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[67vw]">
@@ -116,8 +121,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         <Editor
           className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}
           editable={true}
-          storageKey="noval__content"
-          defaultValue={{}}
+          storageKey={isUpdate ? "noval_content_update" : "noval_content"}
+          defaultValue={isUpdate ? post?.content : {}}
         />
       </div>
     </Layout>

@@ -1,22 +1,20 @@
-import { Fragment, useState } from "react"
+import { Fragment } from "react"
 
 import { Listbox, Transition } from "@headlessui/react"
 
 import CheckIcon from "@/components/icons/tick-white"
 import ChevronUpDownIcon from "@/components/icons/updown"
-// import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
-// const people = [
-//     { name: 'Wade Cooper' },
-//     { name: 'Arlene Mccoy' },
-//     { name: 'Devon Webb' },
-//     { name: 'Tom Cook' },
-//     { name: 'Tanya Fox' },
-//     { name: 'Hellen Schmidt' },
-// ]
-
-export default function Example({ people }: { people: string[] }) {
-  const [selected, setSelected] = useState<string>(people[0])
+export default function Example({
+  people,
+  setActiveTab,
+  activeTab,
+}: {
+  people: string[]
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
+  activeTab: string
+}) {
+  // const [selected, setSelected] = useState<string>(people[0])
 
   return (
     <div className="w-full md:hidden bg-user_interface_2 rounded-xl">
@@ -30,10 +28,10 @@ export default function Example({ people }: { people: string[] }) {
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
       >
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={activeTab} onChange={setActiveTab}>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default focus:outline-none sm:text-sm">
-              <span className="block text-center truncate">{selected}</span>
+              <span className="block text-center truncate">{activeTab}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <ChevronUpDownIcon className="w-10 h-10 " aria-hidden="true" />
               </span>
@@ -44,7 +42,7 @@ export default function Example({ people }: { people: string[] }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="flex flex-col w-full gap-2 p-4 py-3 mt-1 overflow-auto text-base rounded-md shadow-lg max-h-60 focus:outline-none sm:text-sm bg-user_interface_2">
+              <Listbox.Options className="flex flex-col w-full gap-2 p-4 py-3 mt-1 overflow-auto text-base rounded-md shadow-lg max-h-64 focus:outline-none sm:text-sm bg-user_interface_2">
                 {people?.map((person, personIdx) => (
                   <Listbox.Option
                     key={personIdx}

@@ -5,8 +5,10 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
-import { signOut, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
+import logoblackbg from "@/assets/image/logo-black-bg.png"
+import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
 import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
@@ -17,13 +19,13 @@ import MailIcon from "@/components/icons/mail"
 import ProfileBannerImage from "@/components/profile/profileImage"
 // import ProfileSettingsCard from "@/components/profile/profileSettingsCard"
 import Button from "@/components/ui/button"
+import ModalComponent from "@/components/ui/ConfirmationModal"
 import LoginModal from "@/components/ui/login"
 import RegisterModal from "@/components/ui/register"
 
 // import Search from "../../mainsearch/index"
 import NavbarLink from "./NavbarLink"
 import { Example } from "./sidemenu2"
-import ModalComponent from "@/components/ui/ConfirmationModal"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">
@@ -61,10 +63,10 @@ const AuthButtons = ({
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   return (
-    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2 ", className)}>
+    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2", className)}>
       <Button
-        variant="secondary"
-        className="flex px-4 sm:text-sm md:text-md "
+        variant="nav"
+        className="flex px-4 sm:text-sm md:text-md bg-user_interface_4"
         onClick={() => {
           setIsLoginModalOpen(true)
         }}
@@ -73,8 +75,8 @@ const AuthButtons = ({
       </Button>
 
       <Button
-        variant="primary"
-        className="flex px-4 sm:text-sm md:text-md "
+        variant="nav"
+        className="flex px-4 sm:text-sm md:text-md bg-secondary"
         onClick={() => {
           setIsRegisterModalOpen(true)
         }}
@@ -86,8 +88,6 @@ const AuthButtons = ({
 }
 
 const LoggedInUserButtons = ({ userSession, userData }: Props) => {
-  const router = useRouter()
-
   const [showProfileSettings, setShowProfileSettings] = useState(false)
   // const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
 
@@ -119,8 +119,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
             }}
           />
           <ProfileSettingsCard
-            // onSignOut={() => signOut()}
-            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-6 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
+            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-7 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
             authUser={userSession}
             userData={userData}
           />
@@ -157,48 +156,54 @@ export default function Navbar() {
         }}
       />
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-      <ModalComponent/>
+      <ModalComponent />
       <nav
         className={clsx(
-          "  leading-[0.015rem] w-[100vw] flex flex-row items-center justify-between px-[15px] mx-auto py-[20px]   sticky top-0  h-[61px] backdrop-blur",
+          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] backdrop-blur px-8 xl:px-28",
           !tap ? "z-20" : "z-0"
         )}
       >
-        <div className=" flex flex-row md:min-w-[70%] xl:w-fit">
-          <div
-            className={` transform transition-all -translate-y-5 ${
-              tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
-            } duration-[1s] ease-in-out`}
-          ></div>
-          <div className="flex flex-row items-center justify-start w-full sm:items-center ">
-            <Button
-              onClick={() => {
-                router.push("/")
-              }}
-              className="flex items-center w-full h-full xl:justify-center"
-            >
-              logo here
-              {/* <Image
-                src={logo}
-                width={200}
-                height={25}
-                alt="Game Creators Hub"
-                className="xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
-                priority
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              /> */}
-            </Button>
-          </div>
+        <div
+          className={`absolute transform transition-all -translate-y-5 ${
+            tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
+          } duration-[1s] ease-in-out`}
+        ></div>
+        <div className="center">
+          <Button
+            onClick={() => {
+              router.push("/")
+            }}
+            className="flex items-center w-full h-full xl:justify-center"
+          >
+            <Image
+              src={logotextblackbg}
+              width={200}
+              height={25}
+              alt="Game Creators Hub"
+              className="hidden sm:block xl:absolute w-[180px] sm:w-[200px] md:w-[220px] left-5"
+              priority
+              // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
+            <Image
+              src={logoblackbg}
+              width={60}
+              height={10}
+              alt="Game Creators Hub"
+              className="block sm:hidden xl:absolute w-[40px] left-5"
+              priority
+              // placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
+          </Button>
+        </div>
 
-          <div className="flex-row items-center hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif] ml-[250px]">
-            <NavbarLink label="Home" href="/" />
-            <NavbarLink label="Jobs" href="/jobs" />
-            <NavbarLink label="Creators" href="/creator" />
-            <NavbarLink label="Games" href="/games" />
-            {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
+        <div className="center grow hidden w-fit xl:flex lg:gap-8 xl:gap-8 2xl:gap-14 font-[sans-serif]">
+          <NavbarLink label="Home" href="/" />
+          <NavbarLink label="Jobs" href="/jobs" />
+          <NavbarLink label="Creators" href="/creator" />
+          <NavbarLink label="Games" href="/games" />
+          {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
 
-            {userSession && <NavbarLink label="Assets" href="/help" />}
-          </div>
+          {userSession && <NavbarLink label="Assets" href="/help" />}
         </div>
 
         <div className="relative flex items-center gap-2 mb-1 xl:gap-12 ">

@@ -9,12 +9,16 @@ import { fetchData } from "@/utils/functions"
 import Card from "./jobsCard"
 import Layout from "./jobsLayout"
 const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
+  const salary =
+    backendJob.paymentValue != 0
+      ? `${backendJob.paymentValue} ${backendJob.paymentType}`
+      : `${backendJob.paymentType}`
   return {
     id: backendJob.id,
     title: backendJob.title,
     desc: backendJob.description,
     date: backendJob.publishDate, // Replace with the relevant date field from the backend
-    salary: `${backendJob.paymentValue} ${backendJob.paymentType}`, // Adjust based on your backend structure
+    salary, // Adjust based on your backend structure
     type: backendJob.jobType,
     location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
     href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
@@ -22,6 +26,8 @@ const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     savedUsers: backendJob.savedUsers,
     banner: backendJob.banner,
     userId: backendJob.userId,
+    remote: backendJob?.remote,
+    profileImage: backendJob?.user?.profileImage ?? "",
   }
 }
 type JobsPageProps = {
@@ -31,13 +37,15 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
   const [activetab, setactivetab] = useState<string>("All")
   const { userData, setIsLoginModalOpen } = useUserContext()
   const { data: session } = useSession()
+  const [Alljobs, setjobs] = useState<Job[] | null>(jobs)
   const [myjob, setmyjobs] = useState<Job[] | null>(null)
   useEffect(() => {
-    // if(activetab==="Saved")
     if (activetab === "Saved" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     } else if (activetab === "My Job Posts" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     }
   }, [activetab])
 
@@ -64,44 +72,30 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       else return null
     })
   }
+  const handleSavedSuccess = (id: number, state: string) => {
+    // Update the Alljobs state based on the state parameter
+    setjobs((prevJobs) => {
+      if (prevJobs) {
+        const updatedJobs = prevJobs.map((job) =>
+          job.id === id
+            ? {
+                ...job,
+                savedUsers:
+                  state === "save"
+                    ? [...job.savedUsers, { id: userData?.id ?? 0 }]
+                    : job.savedUsers.filter((user) => user.id !== (userData?.id ?? 0)),
+              }
+            : job
+        )
+        return updatedJobs
+      }
+      return prevJobs
+    })
+  }
 
   useEffect(() => {
     myjobs()
-  }, [])
-
-  // [
-  //   {
-  //     savedJobs:[
-  //       {
-  //         id : 6
-  //       }
-  //     ]
-  //   }
-  // ]
-
-  // let arr = job.savedUsers.map((obj) => obj.id)
-  // let savedPosts = arr.filter((id) => id == userData?.id)
-
-  // let savedJobs= jobs.map((job, idx) => (
-  //   job.savedUsers.filter((id) => id.id == userData?.id)
-  // )
-
-  // )
-  // console.log()
-  // let savedCount = false;
-  // savedJobs.map((job)=>(
-  //   job.map((op)=> op.id)
-  // ))
-
-  let savedPost = false
-
-  jobs.forEach((job) => {
-    job.savedUsers.forEach((id) => {
-      if (id.id == userData?.id) {
-        savedPost = true
-      }
-    })
-  })
+  }, [userData])
 
   return (
     <Layout jobs={jobs} activeTab={activetab} setActiveTab={setactivetab}>
@@ -109,8 +103,15 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {jobs.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
-                {jobs?.map((job, idx) => <Card {...job} className="" key={idx} />)}
+              <div className="grid grid-cols-1 gap-3 p-4 md:p-0 justify-items-center md:grid-cols-2 xl:grid-cols-3 w-[100%] mx-auto">
+                {Alljobs?.map((job, idx) => (
+                  <Card
+                    {...job}
+                    className=""
+                    key={idx}
+                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                  />
+                ))}
               </div>
             </>
           ) : (
@@ -130,38 +131,32 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
 
       {activetab === "Saved" && (
         <>
-          {savedPost ? (
-            <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
-              {jobs?.map((job, idx) => {
-                const arr = job?.savedUsers?.map((obj) => obj.id)
-                return arr.filter((id) => {
-                  id === userData?.id && (
-                    <>
-                      (
-                      <Card {...job} className="" key={idx} />)
-                    </>
-                  )
-                })
-              })}
+          {Alljobs?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
+            .length !== 0 ? (
+            <div className="grid grid-cols-1 gap-3 p-4 md:p-0  justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
+              {Alljobs?.filter((job) =>
+                job.savedUsers.some((user) => user.id === userData?.id)
+              ).map((job, idx) => (
+                <Card
+                  {...job}
+                  className=""
+                  key={idx}
+                  onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                />
+              ))}
             </div>
           ) : (
-            <>
-              {
-                <>
-                  <div className="flex flex-col items-center w-full gap-20">
-                    <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-                  </div>
-                </>
-              }
-            </>
+            <div className="flex flex-col items-center w-full gap-20">
+              <h3 className="text-3xl font-bold">No jobs yet.</h3>
+              <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+            </div>
           )}
         </>
       )}
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
+            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 md:gap-[20px] gap-[10px]">
               {myjob &&
                 myjob?.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />

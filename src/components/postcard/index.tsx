@@ -157,7 +157,7 @@ export default function PostCard({
                     // handlePostSave();
                   }}
                 >
-                  <SaveIcon className={"text-user_interface_2 w-5 h-5"} />
+                  <SaveIcon className={"text-user_interface_2 w-5 h-5"} fill="" />
                 </div>
               ) : (
                 <div
@@ -167,7 +167,7 @@ export default function PostCard({
                     // handlePostSave();
                   }}
                 >
-                  <SaveIcon className={"text-user_interface_2 w-5 h-5"} />
+                  <SaveIcon className={"text-user_interface_2 w-5 h-5"} fill="" />
                 </div>
               )}
             </div>

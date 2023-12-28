@@ -67,27 +67,40 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
 
   useEffect(() => {
     mygames()
-  }, [])
+  }, [userData])
   useEffect(() => {
     // if(activetab==="Saved")
     if (activetab === "Saved" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     } else if (activetab === "My Games" && userData === null) {
       setIsLoginModalOpen(true)
+      setactivetab("All")
     }
   }, [activetab])
 
-  let savedGame = false
-
-  games.forEach((game) => {
-    game.savedUsers.forEach((id) => {
-      if (id.id == userData?.id) {
-        savedGame = true
+  const handleSavedSuccess = (id: number, state: string) => {
+    setGames((prevGames) => {
+      if (prevGames) {
+        const updatedGames = prevGames.map((game) =>
+          game.id === id
+            ? {
+                ...game,
+                savedUsers:
+                  state === "save"
+                    ? [...game.savedUsers, { id: userData?.id ?? 0 }]
+                    : game.savedUsers.filter((user) => user.id !== (userData?.id ?? 0)),
+              }
+            : game
+        )
+        return updatedGames
       }
+      return prevGames
     })
-  })
-
-  // console.log(games)
+    setTimeout(() => {
+      console.log(games[0].savedUsers)
+    }, 2000)
+  }
 
   return (
     <Layout games={games} setGames={setGames} setActiveTab={setactivetab} activeTab={activetab}>
@@ -95,9 +108,15 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         <>
           {games.length > 0 ? (
             <>
-              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
+              {/* <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 xl:grid-cols-3"> */}
+              <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
                 {games?.map((game, idx) => (
-                  <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
+                  <Card
+                    {...game}
+                    className="w-[100%] max-w-[380px] h-[310px]"
+                    key={idx}
+                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                  />
                 ))}
               </div>
             </>
@@ -124,17 +143,20 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       )}
       {activetab === "Saved" && (
         <>
-          {savedGame ? (
+          {games?.filter((game) => game.savedUsers.some((user) => user.id === userData?.id))
+            .length !== 0 ? (
             <>
               <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {games?.map((game, idx) => {
-                  const arr = game?.savedUsers?.map((obj) => obj.id)
-                  return arr.filter((id) => {
-                    id === userData?.id && (
-                      <Card {...game} className="w-[100%] max-w-[380px] h-[310px]" key={idx} />
-                    )
-                  })
-                })}
+                {games
+                  ?.filter((game) => game.savedUsers.some((user) => user.id === userData?.id))
+                  .map((game, idx) => (
+                    <Card
+                      {...game}
+                      className="w-[100%] max-w-[380px] h-[310px]"
+                      key={idx}
+                      onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                    />
+                  ))}
               </div>
             </>
           ) : (

@@ -1,8 +1,8 @@
 import React from "react"
+import clsx from "clsx"
 import { Editor as NovelEditor } from "novel"
 
 import { JSONContent } from "@tiptap/react"
-import clsx from "clsx"
 
 const Editor = ({
   className,
@@ -15,9 +15,8 @@ const Editor = ({
   editable: boolean
   defaultValue?: string | JSONContent | undefined
   disableLocalStorage?: boolean
-  storageKey: string
+  storageKey?: string
 }) => {
-  // console.log("tis should work ", defaultValue)
   return (
     <NovelEditor
       className={clsx("min-h-[40vh]", className)}

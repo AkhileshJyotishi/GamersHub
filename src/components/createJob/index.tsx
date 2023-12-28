@@ -63,7 +63,7 @@ const CreateJob: React.FC = () => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (jobInfo.banner) {
+    if (jobInfo.banner && typeof jobInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.user?.name as string,
@@ -105,7 +105,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 
-          <div className="w-full p-12 bg-user_interface_2 rounded-xl">
+          <div className="w-full p-4 md:p-12 bg-user_interface_2 rounded-xl ">
             <Filter
               key={"text"}
               inputType={"text"}
@@ -116,12 +116,6 @@ const CreateJob: React.FC = () => {
               onChange={(value) =>
                 setJobInfo((prev) => ({ ...prev, description: value as string }))
               }
-
-              // Variant={clsx(
-              //   "flex flex-col items-start gap-[10px] text-[14px]",
-              //   // hide ? "hidden" : ""
-              // )}
-              // hidden={filter.hidden}
             />
           </div>
         </>

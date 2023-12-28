@@ -3,20 +3,21 @@
 import React from "react"
 import clsx from "clsx"
 import DatePicker from "react-date-picker"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import { FilterDetail } from "@/interface/filter"
 
+import CustomCombobox from "@/components/ui/Combobox"
 import TagsInput from "@/components/ui/TagsInput"
 import TextInput from "@/components/ui/textInput"
 
 import CheckboxFilter from "./checkboxfilter"
 import FileFilter from "./Filefilter"
 import RadioFilter from "./radiofilter"
-import SelectFilter from "./selectfilter"
 
+// import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
-import CustomCombobox from "@/components/ui/Combobox"
 
 const Filter: React.FC<FilterDetail> = ({
   title,
@@ -70,7 +71,7 @@ const Filter: React.FC<FilterDetail> = ({
   // console.log("selectOptions  ", selectOptions)
   return (
     <div className={clsx(Variant, "")}>
-      <label className="mb-2 font-medium" htmlFor={title}>
+      <label className="font-medium" htmlFor={title}>
         {title}
       </label>
       {inputType === "text" && (
@@ -130,8 +131,9 @@ const Filter: React.FC<FilterDetail> = ({
             onChange={handleSelectChange}
             value={value as string}
             options={selectOptions}
-            errorMessage={errorMessage} />
-
+            errorMessage={errorMessage}
+            defaultSelected={(selectOptions ?? [])?.filter((item) => item.value == value)[0] ?? []}
+          />
           {/* <SelectFilter
             onChange={handleSelectChange}
             value={value as string}
@@ -151,15 +153,16 @@ const Filter: React.FC<FilterDetail> = ({
             id={title}
           />
           {errorMessage ? (
-            <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+            <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+              <PiWarningCircleFill />
+              <div>{errorMessage}</div>
+            </span>
           ) : (
             <></>
           )}
         </>
       )}
       {inputType === "tags" && (
-        // Include the TagsInput component with the onTagsChange prop
-
         <TagsInput
           onTagsChange={handleTagsChange}
           id={title}

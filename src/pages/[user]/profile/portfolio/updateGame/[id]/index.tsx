@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import { signOut } from "next-auth/react"
 
 import { getSession } from "@/lib/auth"
@@ -11,6 +12,9 @@ const index = (game: Allow) => {
   // console.log("object in back", game)
   return (
     <>
+      <Head>
+        <title>GameCreatorsHub |Games</title>
+      </Head>
       <CreateGame game={game.game} />
     </>
   )

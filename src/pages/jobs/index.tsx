@@ -12,7 +12,7 @@ const Jobs = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Jobs</title>
+        <title>GameCreatorsHub | Jobs</title>
       </Head>
       <JobsPage jobs={jobs} />
     </>
@@ -25,19 +25,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let jobsDetails
   if (!session) {
-    console.log("this is jobs ")
     jobsDetails = await fetchWithoutAuthorization(`/v1/job`, "GET")
   } else {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
   }
-  // console.log("this  is session", session)
 
   if (jobsDetails?.error) {
-    // toast.error(jobsDetails.message)]
-
     return {
       redirect: {
-        destination: `/?emessage=${jobsDetails.message}`,
+        destination: `/?emessage="Something went wrong."`,
         permanent: false,
       },
     }
@@ -47,18 +43,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // console.log("this is the job details ", parsedjobsDetails)
 
   const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
+    const salary =
+      backendJob.paymentValue != 0
+        ? `${backendJob.paymentValue} ${backendJob.paymentType}`
+        : `${backendJob.paymentType}`
     return {
       id: backendJob.id,
       title: backendJob.title,
       desc: backendJob.description,
+      remote: backendJob.remote,
       date: backendJob.publishDate, // Replace with the relevant date field from the backend
-      salary: `${backendJob.paymentValue} ${backendJob.paymentType}`, // Adjust based on your backend structure
+      salary, // Adjust based on your backend structure
       type: backendJob.jobType,
       location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
       href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
       // chips: backendJob.jobSoftwares,
       savedUsers: backendJob.savedUsers,
       banner: backendJob.banner,
+      profileImage: backendJob?.user?.profileImage ?? "",
       userId: backendJob.userId,
     }
   }

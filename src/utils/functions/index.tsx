@@ -80,7 +80,6 @@ export const fetchData = async (
     }
     return await resp
   } catch (error: Allow) {
-    console.log(error)
     // console.log("nulliscoming")
     // if(error.message.contains(" request timed out")){
 
@@ -111,7 +110,6 @@ export const fetchWithoutAuthorization = async (
     const resp = response.data
     return await resp
   } catch (error: unknown) {
-    console.error(error)
     // console.log("Null is coming")
     return {
       error: error,

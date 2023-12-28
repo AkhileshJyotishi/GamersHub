@@ -7,6 +7,8 @@ import { toast } from "react-toastify"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
+import Filter from "../filter/mainfilter/filter"
+
 import Layout from "./layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
@@ -58,7 +60,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
-    if (typeof jobInfo.banner === "object") {
+    if (jobInfo.banner && typeof jobInfo.banner === "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
@@ -76,8 +78,8 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     }
     // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()
-    delete jobInfo.userId;
-    delete jobInfo.id;
+    delete jobInfo.userId
+    delete jobInfo.id
     const data = await fetchData(
       `/v1/job/${router?.query.id}`,
       session?.data?.user?.name as string,
@@ -101,14 +103,42 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
       {/* Render the filterDetails here */}
       <>
         <div className="flex flex-col w-full gap-4">
+          <>
+            <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 
-          <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
+            <div className="w-full p-12 bg-user_interface_2 rounded-xl">
+              <Filter
+                key={"text"}
+                inputType={"text"}
+                title={""}
+                placeholder={"Enter the description"}
+                value={jobInfo.description}
+                className="static bg-transparent border-none rounded-md"
+                onChange={(value) =>
+                  setJobInfo((prev) => ({ ...prev, description: value as string }))
+                }
+              />
+            </div>
+          </>
+          <>
+            <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
+            <Editor
+              className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
+              editable={true}
+              storageKey="noval__content2"
+              defaultValue={jobInfo.jobDetails ?? {}}
+            />
+          </>
 
-          <Editor
-            className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
-            editable={true}
-            storageKey="noval__content"
-          />
+          <>
+            <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
+            <Editor
+              className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
+              editable={true}
+              storageKey="noval__content1"
+              defaultValue={jobInfo.aboutRecruiter ?? {}}
+            />
+          </>
         </div>
       </>
     </Layout>

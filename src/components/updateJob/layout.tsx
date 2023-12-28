@@ -79,7 +79,6 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           label: "Collab",
           value: "COLLAB",
         },
-
       ],
       className: "bg-transparent rounded-md",
     },
@@ -246,7 +245,6 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           )}
         >
           <div className="flex flex-col w-full gap-4 p-2">
-
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
@@ -255,12 +253,12 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 Upload Job
               </Button>
             </div>
-            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+            <div className="h-fit md:h-[74vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
-                  ; (filter.title == "City" || filter.title == "Country") &&
-                    jobInfo.remote &&
-                    (hide = true)
+                ;(filter.title == "City" || filter.title == "Country") &&
+                  jobInfo.remote &&
+                  (hide = true)
                 filter.title == "Payment Amount" &&
                   jobInfo.paymentType == "NEGOTIABLE" &&
                   (hide = true)
@@ -282,13 +280,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                       hide ? "hidden" : ""
                     )}
 
-                  // hidden={filter.hidden}
+                    // hidden={filter.hidden}
                   />
                 )
               })}
-
-
-              <>{/* {JSON.stringify(jobInfo)} */}</>
             </div>
           </div>
         </div>

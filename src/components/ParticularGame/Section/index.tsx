@@ -24,7 +24,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
     },
   })
-  // console.log("gamesection ",GameData)
+  console.log("gamesection ", GameData.description)
 
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
     <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
@@ -142,7 +142,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
 
   return (
     <div className="flex flex-col gap-5 p-3">
-      <div className="text-[25px] font-bold flex-wrap">Job Description</div>
+      <div className="text-[25px] font-bold flex-wrap">Game Description</div>
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           className={clsx(
@@ -153,15 +153,21 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
             <GameDetails GameData={GameData} />
           </div>
         </div>
-        <div className={clsx(" carousel-body w-[60vw]", carousel["carousel-body"])}>
+        <div
+          className={clsx(
+            " carousel-body w-[89vw] md:w-[60vw] lg:w-[70vw]",
+            carousel["carousel-body"]
+          )}
+        >
           <Carousel GameAssets={GameData?.gameAssets} />
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full select-none">
         <Editor
           className={"bg-user_interface_2 w-full rounded-xl "}
           editable={false}
-          storageKey="noval__content"
+          defaultValue={GameData.description || {}}
+          disableLocalStorage
         />
       </div>
     </div>

@@ -68,8 +68,10 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameAssets: null,
     }
   }
-
+  console.log("printing it ", initGameInfo)
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
+  const [oldAssets, setoldAssets] = useState((initGameInfo?.gameAssets ?? []) as string[])
+
   const session = useSession()
   // const router=useRouter()
   const { setLoading } = useUserContext()
@@ -86,7 +88,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     formdata.append("type", "games")
 
     console.log("jobInfo.banner ", gameInfo.banner)
-    if (gameInfo.banner) {
+    if (gameInfo.banner && typeof gameInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
         session?.data?.user?.name as string,
@@ -94,22 +96,29 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata
       )
       if (isuploaded?.error) {
+        toast.error("Error uploading banner")
         setLoading(false)
         return
       }
       gameInfo.banner = isuploaded?.data.image.Location
     } else {
-      gameInfo.banner = ""
+      if (!gameInfo.banner) {
+        gameInfo.banner = ""
+      }
     }
     gameInfo.releaseDate = new Date().toISOString()
     const formdata2 = new FormData()
 
     gameInfo.gameAssets?.map((game) => {
       formdata2.append("files", game as Blob)
-      formdata2.append("type", "games")
     })
+    formdata2.append("type", "games")
     const newArray: string[] = []
-    if (gameInfo.gameAssets && gameInfo.gameAssets?.length > 0) {
+    if (
+      gameInfo.gameAssets &&
+      gameInfo.gameAssets.every((asset) => typeof asset === "object") &&
+      gameInfo.gameAssets?.length > 0
+    ) {
       const multiisuploaded = await fetchFile(
         "/v1/upload/multiple",
         session?.data?.user?.name as string,
@@ -117,7 +126,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata2
       )
       if (multiisuploaded?.error) {
-        toast.error(multiisuploaded.error)
+        toast.error("Error uploading assets")
         setLoading(false)
         return
       } else {
@@ -128,9 +137,10 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         })
       }
     } else {
+      console.log("worst case ", gameInfo.gameAssets)
       gameInfo.gameAssets = []
     }
-    gameInfo.gameAssets = [...newArray]
+    gameInfo.gameAssets = [...newArray, ...oldAssets]
     let data
     if (isUpdate) {
       data = await fetchData(
@@ -153,7 +163,14 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
   }
 
   return (
-    <Layout gameInfo={gameInfo} setGameInfo={setGameInfo} uploadGame={uploadGame}>
+    <Layout
+      gameInfo={gameInfo}
+      setGameInfo={setGameInfo}
+      uploadGame={uploadGame}
+      oldAssets={oldAssets}
+      setoldAssets={setoldAssets}
+      isUpdate={isUpdate}
+    >
       {/* Render the filterDetails here */}
       <>
         <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
@@ -161,7 +178,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
           className={"bg-user_interface_2 w-full rounded-xl h-[80vh] overflow-y-scroll"}
           editable
           storageKey="noval__content4"
-          defaultValue={{}}
+          defaultValue={isUpdate ? gameInfo.description || {} : {}}
         />
       </>
     </Layout>

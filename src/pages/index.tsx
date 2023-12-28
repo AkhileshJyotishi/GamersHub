@@ -3,10 +3,12 @@ import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import logo from "@/assets/image/logo-with-text.svg"
 import Img from "@/assets/image/profiles-slide-show.png"
+// import logo from "@/assets/image/logo-with-text.svg"
+import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
@@ -32,7 +34,9 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
     // console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
-      // signOut();
+      signOut({
+        callbackUrl: "/",
+      })
 
       router.replace("/", undefined, { shallow: true })
     }
@@ -45,9 +49,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       router.replace("/", undefined, { shallow: true })
     }
     if (emessage) {
-      router.replace("/", undefined, { shallow: true })
-
       toast.error(emessage)
+      router.replace("/", undefined, { shallow: true })
     }
     if (data) {
       setVerifyMail((data as string) ?? "")
@@ -70,7 +73,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Home</title>
+        <title>GameCreatorsHub | Home</title>
       </Head>
       <Modal isOpen={verifyModal} onClose={() => setVerifyModal(false)} className="">
         <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">
@@ -82,11 +85,16 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           </div>
           <div className="flex justify-center w-full h-[25px] relative">
             <Image
-              src={logo}
-              // width={200}
+              src={logotextblackbg}
+              width={200}
               height={25}
               alt="Game Creators Hub"
-              className="mx-auto xl:absolute left-5"
+              onClick={() => {
+                router.push("/")
+                setVerifyMail("")
+                setVerifyModal(false)
+              }}
+              className="cursor-pointer"
             />
           </div>
           <Filter
@@ -109,33 +117,31 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
           </Button>
         </div>
       </Modal>
-      {/* <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" /> */}
+      <VideoBackground videoSource="https://uploads-ssl.webflow.com/619bb8aeb704b2a91db4da59/619bb8aeb704b24e2ab4db00_ivs_hero_video-transcode.webm" />
       <OverlayBackground />
       <div className="relative top-0">
         <OverlayContent />
 
         <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
-          {users?.map((data, index) => (
-            <Card
-              key={index}
-              username={data.user.username}
-              userId={data.userId}
-              userProfilePhoto={data.user.profileImage}
-              coverPhoto={data.banner}
-              matureContent={data.matureContent}
-              // location={data.location}
-              // views={data.views}
-              className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
-              id={data.id}
-              title={data.title}
-              likedPost={data.savedUsers ?? []}
-              savedPost={
-                data.postLikes && data.postLikes.length > 0
-                  ? data?.postLikes?.map((liked) => liked.likedUsers)
-                  : []
-              }
-            />
-          ))}
+          {users?.map((data, index) => {
+            return (
+              <Card
+                key={index}
+                username={data.user.username}
+                userId={data.userId}
+                userProfilePhoto={data.user.profileImage}
+                coverPhoto={data.banner}
+                matureContent={data.matureContent}
+                // location={data.location}
+                // views={data.views}
+                className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
+                id={data.id}
+                title={data.title}
+                likedPost={data?.postLikes?.likedUsers.map((like) => like) ?? []}
+                savedPost={data.savedUsers && data?.savedUsers?.length > 0 ? data?.savedUsers : []}
+              />
+            )
+          })}
         </div>
         {/* 
         <Button
@@ -166,10 +172,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   if (users?.error) {
     // toast.error(jobsDetails.message)
+    // return {
+    //   redirect: {
+    //     destination: `/?emessage=${users.message}`,
+    //     permanent: false,
+    //   },
+    // }
     return {
-      redirect: {
-        destination: `/?emessage=${users.message}`,
-        permanent: false,
+      props: {
+        users: [],
       },
     }
   }

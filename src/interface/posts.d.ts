@@ -19,13 +19,18 @@ interface IPostbackend {
   comments: {
     comment: string
     userId: number
+    user: {
+      username: string
+      profileImage: string
+    }
+    createdAt: string
     id: number
   }[]
   postLikes: {
     likedUsers: {
       id: number
-    }
-  }[]
+    }[]
+  }
 
   postSkills: {
     skill: string

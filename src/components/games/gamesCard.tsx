@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import defaultbannerImage from "@/assets/image/user-banner.png"
 import { Games } from "@/interface/games"
 // import { token } from "@/pages/settings"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
@@ -69,7 +70,7 @@ const Card: React.FC<GamesCardProps> = ({
       <div className="relative w-[inherit] h-[inherit]">
         <div className="absolute inset-0 w-[inherit] h-[inherit]">
           <Image
-            src={banner ?? ""}
+            src={banner ?? defaultbannerImage}
             alt="img  "
             width={imageWidth || 320}
             height={200}
@@ -87,8 +88,8 @@ const Card: React.FC<GamesCardProps> = ({
                   width={8}
                   height={8}
                   className="w-10 h-10 rounded-full"
-                  src={banner ?? ""}
-                  alt={`Profile Photo of ${username}`}
+                  src={banner ?? defaultbannerImage}
+                  alt={``}
                 />
                 <div className="ml-3">
                   <span className="block antialiased font-bold leading-tight text-md">

@@ -20,10 +20,11 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           height={500}
           width={900}
           alt="banner"
-          className="w-full h-[140px] rounded-t-[10px]   absolute"
+          className="w-full h-[140px] rounded-t-[10px] absolute"
           src={bannerImage || defaultbannerImage}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
+        {!bannerImage}
         <Image
           width={100}
           height={100}
@@ -38,30 +39,32 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
 
       <div className="flex flex-col items-center mt-[40px]">
         <h3
-          className="text-[18px] font-semibold hover:text-secondary transition duration-200 cursor-pointer"
+          className="text-lghover:text-secondary transition duration-200 cursor-pointer"
           onClick={() => router.push(`/${id}/profile/albums`)}
         >
           {username ?? "Guest"}
           {/* {"Guest"} */}
         </h3>
-        {userDetails && userDetails?.country && (
+        {userDetails && userDetails?.country ? (
           <span className="flex items-center gap-2 mt-[10px]">
             <MapPinIcon className="w-4 h-4 text-user_interface_6" />
             <span className="text-center text-user_interface_6">
               {userDetails?.city},{userDetails?.country}
             </span>
           </span>
+        ) : (
+          <div className="h-8" />
         )}
       </div>
 
       <hr className="w-[70%] mx-auto my-[7px] h-[1px] border-user_interface_3" />
 
       {
-        <div className="flex flex-col items-start gap-3 p-3 min-h-[100px]">
-          <h3 className="text-[18px] font-semibold ">Bio</h3>
+        <div className="flex flex-col items-start gap-1.5 p-3 min-h-[100px]">
+          <h3 className="text-lg">Bio</h3>
           {userDetails?.userBio ? (
             <>
-              <p className=" line-clamp-3">{userDetails?.userBio}</p>
+              <p className="line-clamp-3">{userDetails?.userBio}</p>
             </>
           ) : (
             <>...</>
@@ -70,8 +73,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
       }
 
       {
-        <div className="flex flex-col items-start gap-3 p-3">
-          <h3 className="text-[18px] font-semibold ">Skills</h3>
+        <div className="flex flex-col items-start gap-1.5 p-3">
+          <h3 className="text-lg">Skills</h3>
           <div className="flex flex-wrap gap-[10px] ">
             {userDetails?.userSkills?.length && userDetails?.userSkills?.length > 0 ? (
               <>
@@ -86,8 +89,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         </div>
       }
 
-      <div className="flex flex-col items-start p-3 gap-3 mt-[10px]">
-        <h3 className="text-[18px] font-semibold ">Softwares</h3>
+      <div className="flex flex-col items-start p-3 gap-1.5 mt-[10px]">
+        <h3 className="text-lg">Softwares</h3>
         <div className="flex flex-wrap gap-[10px] ">
           {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
             <>

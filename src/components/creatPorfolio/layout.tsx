@@ -26,6 +26,7 @@ interface LayoutProps {
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>
   uploadPost: () => void
   albums: Allow
+  isUpdate?: boolean
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -34,6 +35,7 @@ const Layout: React.FC<LayoutProps> = ({
   setFiltersState,
   uploadPost,
   albums,
+  isUpdate,
 }) => {
   let albumsselectoptions = [{ label: "select an album", value: "" }]
   const [dimensions, setdimensions] = useState<{
@@ -127,7 +129,7 @@ const Layout: React.FC<LayoutProps> = ({
         break
 
       case "postKeywords":
-        // console.log("executing")
+        console.log("executing")
         if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
           if (value.length == 0) {
             setErrors((prev) => ({ ...prev, [field]: "*required" }))
@@ -192,6 +194,7 @@ const Layout: React.FC<LayoutProps> = ({
       // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
       errorMessage: errors.postKeywords,
+      initialtags: filtersState?.postKeywords,
     },
     {
       inputType: "select",
@@ -207,10 +210,10 @@ const Layout: React.FC<LayoutProps> = ({
 
     {
       inputType: "radio",
-      title: "Adult content",
+      title: "Mature content",
       selectOptions: [
-        { label: "true", value: false },
-        { label: "false", value: true },
+        { label: "true", value: true },
+        { label: "false", value: false },
       ],
       value: filtersState.matureContent,
       onChange: (value) => handleInputChange("matureContent", value as boolean),
@@ -223,7 +226,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Upload File",
       accept: "image/*", // Define accepted file types
       multiple: true, // Set to true if you want to allow multiple file selection
-      value: null, // Initialize with null
+      value: filtersState.banner as string, // Initialize with null
       onChange: (value) => handleInputChange("banner", value as File),
       // setFiltersState((prevState) => ({ ...prevState, banner: value as File })), // Handle file input changes
       className:
@@ -245,8 +248,11 @@ const Layout: React.FC<LayoutProps> = ({
               <Button
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
                 onClick={() => {
-                  const hasErrors = Object.values(errors).some((error) => error !== null)
+                  const hasErrors = Object.values(errors).some(
+                    (error) => !(error === null || error == "")
+                  )
                   if (hasErrors) {
+                    console.log("errors", errors)
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return
@@ -256,11 +262,11 @@ const Layout: React.FC<LayoutProps> = ({
                   }
                 }}
               >
-                Upload Post
+                {isUpdate ? "Update Post" : "Upload Post"}
               </Button>
             </div>
 
-            <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex">
+            <div className="h-fit md:h-[73vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[25px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex">
               {filterDetails?.map((filter, index) => (
                 <Filter
                   key={index}
@@ -275,6 +281,7 @@ const Layout: React.FC<LayoutProps> = ({
                   errorMessage={filter.errorMessage}
                   dimensionsImage={dimensions}
                   onTagsChange={filter.onTagsChange}
+                  initialtags={filter.initialtags}
                 />
               ))}
               {/* 

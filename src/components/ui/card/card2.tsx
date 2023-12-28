@@ -6,12 +6,13 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
-import { useModalContext } from "@/providers/modal-context"
 
 // import viewIcon from "@/components/icons/viewIcon.svg"
 
@@ -101,11 +102,11 @@ const Card: React.FC<CardProps> = ({
     router.push(`/${userId}/profile/portfolio/updatePost/${id}`)
   }
   useEffect(() => {
-    if (savedPost?.length) {
-      setSaved(savedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
+    if (savedPost?.length > 0) {
+      setSaved((savedPost ?? [])?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
-    if (likedPost?.length) {
-      setLiked(likedPost?.some((obj) => obj.id == (userData?.id ?? 0)))
+    if (likedPost?.length > 0) {
+      setLiked((likedPost ?? [])?.some((obj) => obj.id == (userData?.id ?? 0)))
     }
   }, [savedPost, likePost])
   // useEffect(() => {
@@ -116,11 +117,11 @@ const Card: React.FC<CardProps> = ({
   const handleClose = () => {
     setmodalData(() => ({
       buttonText: "",
-      onClick: () => { },
+      onClick: () => {},
       content: <></>,
       isOpen: false,
-      onClose: () => { },
-      title: <></>
+      onClose: () => {},
+      title: <></>,
     }))
   }
   return (
@@ -150,7 +151,7 @@ const Card: React.FC<CardProps> = ({
                   width={8}
                   height={8}
                   className="w-10 h-10 rounded-full"
-                  src={userProfilePhoto || defaultbannerImage}
+                  src={userProfilePhoto || defaultUserImage}
                   alt={``}
                 />
                 <div className="flex justify-center ml-3">
@@ -171,7 +172,7 @@ const Card: React.FC<CardProps> = ({
                             </div> */}
             </div>
           </div>
-          <div className="flex justify-between h-[200px] items-end px-6 translate-y-36 group-hover:translate-y-20 transition duration-200">
+          <div className="flex justify-between h-[200px] items-end px-6 translate-y-40 group-hover:translate-y-20 transition duration-200">
             {userId !== userData?.id && (
               <div className="flex gap-5 cursor-pointer" onClick={() => likePost()}>
                 <svg
@@ -190,9 +191,9 @@ const Card: React.FC<CardProps> = ({
               </div>
             )}
             <div
-              className="mx-auto cursor-pointer"
+              className="mx-auto break-all cursor-pointer"
               onClick={() => {
-                router.push(`/jobs/${id}`)
+                router.push(`/posts/${id}`)
               }}
             >
               {title}
@@ -235,8 +236,10 @@ const Card: React.FC<CardProps> = ({
                       content: <>Are you sure you want to delete Post</>,
                       onClick: () => deletePost(id),
                       isOpen: true,
-                      onClose: () => { handleClose() },
-                      title: <>{title}</>
+                      onClose: () => {
+                        handleClose()
+                      },
+                      title: <>{title}</>,
                     }))
                   }}
                 >

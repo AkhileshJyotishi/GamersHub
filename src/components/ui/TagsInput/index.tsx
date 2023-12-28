@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import AddIcon from "@/components/icons/plus"
@@ -73,7 +74,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
   return (
     <div className="flex flex-col items-start w-full ">
       <div className="flex flex-row justify-between w-full gap-1 p-1">
-
         <TextInput
           type="text"
           placeholder="Enter tags"
@@ -87,9 +87,13 @@ const TagsInput: React.FC<TagsInputProps> = ({
           onBlur={handleBlur}
           onKeyPress={handleKeyPress}
           id={id}
-
         />
-        <AddIcon className="h-[40px] w-[46px] rounded-full bg-secondary cursor-pointer" handleclick={() => { addTag() }} />
+        <AddIcon
+          className="h-[40px] w-[46px] rounded-full bg-secondary cursor-pointer"
+          handleclick={() => {
+            addTag()
+          }}
+        />
       </div>
 
       {suggestions.length > 0 && (
@@ -142,7 +146,10 @@ const TagsInput: React.FC<TagsInputProps> = ({
                 ))} */}
       </div>
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+          <PiWarningCircleFill />
+          <div>{errorMessage}</div>
+        </span>
       ) : (
         <></>
       )}

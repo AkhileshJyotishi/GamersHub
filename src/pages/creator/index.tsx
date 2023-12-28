@@ -11,7 +11,7 @@ const Creators = ({ users }: { users: Creator[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Creators</title>
+        <title>GameCreatorsHub | Creators</title>
       </Head>
       <CreatorsPage creatorsData={users} />
     </>
@@ -29,16 +29,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   if (users?.error) {
-    // toast.error(jobsDetails.message)
     return {
       redirect: {
-        destination: `/?emessage=${users.message}`,
+        destination: `/?emessage="Something went wrong."`,
         permanent: false,
       },
     }
   }
   users = users?.data.creators
-  // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
   console.log(users)
   return {
     props: {
