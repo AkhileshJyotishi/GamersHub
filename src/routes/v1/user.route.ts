@@ -60,6 +60,7 @@ router.get('/genre', auth(), userController.getGenre)
 router.get('/platform', auth(), userController.getPlatforms)
 
 router.get('/allDetails', auth(), userController.getAllDetails)
+router.get('/otherDetails/:id', userController.getOtherDetails)
 
 router
   .route('/:userId')
