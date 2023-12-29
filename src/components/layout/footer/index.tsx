@@ -19,6 +19,7 @@ import logotextblackbg from "@/assets/image/text-black-bg.png"
 interface FooterLink {
   href: string
   text: string
+  target: string
 }
 
 interface FooterSection {
@@ -26,10 +27,11 @@ interface FooterSection {
   links: FooterLink[]
 }
 
-const FooterLink: React.FC<FooterLink> = ({ href, text }) => (
+const FooterLink: React.FC<FooterLink> = ({ href, text, target }) => (
   <li>
     <Link
       href={href}
+      target={target}
       className="inline-block mb-4 text-base font-medium text-body-color hover:text-primary"
     >
       {text.toUpperCase()}
@@ -41,29 +43,33 @@ const sections: FooterSection[] = [
   {
     title: "Support",
     links: [
-      { href: "/", text: "Contact us" },
-      { href: "/", text: "FAQ" },
+      { href: "/", text: "Contact us", target: "_self" },
+      { href: "/help", text: "FAQ", target: "_self" },
     ],
   },
   {
     title: "Socials",
     links: [
-      { href: "/", text: "Instagram" },
-      { href: "/", text: "Twitter" },
-      { href: "/", text: "Facebook" },
-      { href: "/", text: "Email" },
+      {
+        href: "https://www.instagram.com/gamecreators.io?igsh=MTBpaHNwd2lubmJiaw%3D%3D",
+        text: "Instagram",
+        target: "_blank",
+      },
+      { href: "https://x.com/Gamecreatorsio?t=I8UCE8h7ziKBYJLrMN6loA&s=08", text: "Twitter", target: "_blank" },
+      { href: "https://www.facebook.com/gamecreators.io", text: "Facebook", target: "_blank" },
+      { href: "mailto:Info@gamecreators.io", text: "Email", target: "_blank" },
     ],
   },
   {
     title: "Comapny",
     links: [
-      { href: "/", text: "Privacy Policy" },
-      { href: "/", text: "Terms of Service" },
+      { href: "/privacy-policy", text: "Privacy Policy", target: "_self" },
+      { href: "/terms-and-conditions", text: "Terms of Service", target: "_self" },
     ],
   },
   {
     title: "About us",
-    links: [{ href: "/", text: "About Gameartists" }],
+    links: [{ href: "/creator", text: "About Gameartists", target: "_self" }],
   },
 ]
 // const TwitterIcon = () => (
@@ -136,7 +142,7 @@ const Footer: React.FC = () => {
         <div className="py-8 bg-primary/10">
           <div className="container mx-auto">
             <p className="text-base text-center text-body-color ">
-              COPYRIGHT © 2023 <span className="text-secondary">GAMECREATORSHUB</span>{" "}
+              COPYRIGHT © 2023 <span className="text-secondary">Game Creators</span>{" "}
               <br className="md:hidden" />
               All Rights Reserved
             </p>
