@@ -14,6 +14,7 @@ router.post(
   authController.registerProvider
 )
 router.post('/login', validate(authValidation.login), authController.login)
+router.post('/adminLogin', validate(authValidation.login), authController.adminLogin)
 router.post('/logout', validate(authValidation.logout), authController.logout)
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens)
 router.post(

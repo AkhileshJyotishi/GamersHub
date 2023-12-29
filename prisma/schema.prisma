@@ -19,6 +19,7 @@ model User {
   profileImage    String?
   bannerImage     String?
   matureContent   Boolean          @default(false)
+  validUser       Boolean          @default(true)
   role            Role?
   userDetails     UserDetails?
   tokens          Token[]
@@ -249,12 +250,13 @@ model HelpQuestion {
   question       String
   helpCategory   HelpCategory @relation(fields: [helpCategoryId], references: id, onDelete: Cascade)
   helpCategoryId Int
-  slug           String?      @default(uuid())
 }
 
 model HelpCategory {
   id            Int            @id @default(autoincrement())
   title         String
+  order         Int[]
+  position      Int
   helpQuestions HelpQuestion[]
 }
 

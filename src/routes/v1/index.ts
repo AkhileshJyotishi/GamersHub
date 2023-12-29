@@ -8,6 +8,7 @@ import albumRoute from './album.route'
 import postRoute from './post.route'
 import adminRoute from './admin.route'
 import uploadRoute from './upload.route'
+import helpRoute from './help.route'
 import config from '../../config/config'
 
 const router = express.Router()
@@ -44,6 +45,10 @@ const defaultRoutes = [
   {
     path: '/upload',
     route: uploadRoute
+  },
+  {
+    path: '/help',
+    route: helpRoute
   }
 ]
 
