@@ -110,11 +110,14 @@ const ProfileLayout = ({
     // console.log(newAlbum)
     // return
     if (newAlbum.isEdit) {
+      toast.dismiss()
+
       toast.info("Updating Album...")
     } else {
+      toast.dismiss()
+
       toast.info("Creating Album...")
     }
-    console.log(newAlbum.banner)
 
     if (newAlbum.banner && typeof newAlbum.banner == "object") {
       formdata.append("file", newAlbum.banner as Blob)
@@ -146,6 +149,7 @@ const ProfileLayout = ({
         }
       )
       if (albumData?.error) {
+        toast.dismiss()
         toast.error(albumData.message)
       } else {
         setisCreateAlbumOpen(false)
@@ -156,6 +160,7 @@ const ProfileLayout = ({
           isEdit: false,
         })
         router.push(`/${userData?.id}/profile/albums`)
+        toast.dismiss()
         toast.success(albumData?.message)
       }
     } else {
@@ -180,6 +185,7 @@ const ProfileLayout = ({
           isEdit: false,
         })
         router.push(`/${userData?.id}/profile/albums`)
+        toast.dismiss()
         toast.success(albumData?.message)
       }
     }

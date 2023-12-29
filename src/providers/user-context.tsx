@@ -25,6 +25,8 @@ interface IUserContext {
   toggleOpen: Cycle
   tap: boolean
   setTap: React.Dispatch<React.SetStateAction<boolean>>
+  drawerOpen: boolean
+  setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>
   containerRef: React.RefObject<HTMLDivElement>
   setuserData: React.Dispatch<React.SetStateAction<Iuser | null>>
   userData: Iuser | null
@@ -84,6 +86,7 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [verifyMail, setVerifyMail] = useState<string>("")
   const [verifyModal, setVerifyModal] = useState(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
+  const [drawerOpen, setIsDrawerOpen] = useState(false)
   const [tap, setTap] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const openLoginModal = () => {
@@ -136,6 +139,8 @@ const UserProvider = ({ children }: IUserProvider) => {
         toggleOpen,
         tap,
         setTap,
+        drawerOpen,
+        setIsDrawerOpen,
         containerRef,
         userSession,
         setUserSession,

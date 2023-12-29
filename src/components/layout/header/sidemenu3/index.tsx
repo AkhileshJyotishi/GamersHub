@@ -1,25 +1,14 @@
-import * as React from "react"
-import { motion } from "framer-motion"
+import React from "react"
 import { useSession } from "next-auth/react"
 
 import { useUserContext } from "@/providers/user-context"
 
-import { MenuItem } from "./menuitem"
-import { MenuToggle } from "./menutoggle"
+import Drawer from "@/components/ui/drawer"
 
-import styles from "./style.module.css"
-const variants = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-}
-
-export const Navigation = () => {
-  const session = useSession()
-  const { toggleOpen, isOpen, userData } = useUserContext()
+import { MenuItem } from "./menuItem"
+const Sidemenu = () => {
+  const { userData, drawerOpen, setIsDrawerOpen, setTap, tap } = useUserContext()
+  const { data: session } = useSession()
   const navmenu = [
     {
       title: "Home",
@@ -38,12 +27,14 @@ export const Navigation = () => {
       path: "/games",
     },
   ]
+
   const authOptions = [
     {
       title: "Profile",
       path: `/${userData?.id}/profile/albums`,
     },
   ]
+
   const authOptions2 = [
     {
       title: "Login",
@@ -54,17 +45,26 @@ export const Navigation = () => {
       path: "/auth/signup",
     },
   ]
-  React.useEffect(() => {}, [session])
-  return (
-    <>
-      <div className="flex justify-end">{isOpen && <MenuToggle toggle={() => toggleOpen()} />}</div>
 
-      <motion.ul variants={variants} className={styles.ul}>
+  return (
+    <div>
+      <Drawer
+        isOpen={drawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
+        overlayClickClose={true}
+        // header="GameCreators.io"
+        handleOverlayClick={() => {
+          setIsDrawerOpen(false)
+          setTap(!tap)
+        }}
+      >
         {navmenu?.map((data, index) => <MenuItem data={data} key={index} />)}
-        {!session.data?.user?.name
+        {!session?.user?.name
           ? authOptions2?.map((data, index) => <MenuItem data={data} key={index} />)
           : authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
-      </motion.ul>
-    </>
+      </Drawer>
+    </div>
   )
 }
+
+export default Sidemenu

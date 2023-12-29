@@ -42,7 +42,7 @@ const About = () => {
     )
   } else {
     return (
-      <div className="w-full">
+      <div className="w-[90%] mx-auto">
         {aboutData && (
           <div className="flex flex-col w-full items-start mt-[30px] gap-[10px] sm:gap-[20px]">
             {aboutData.userBio && (
