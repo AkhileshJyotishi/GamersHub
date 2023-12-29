@@ -215,7 +215,6 @@ CREATE TABLE "HelpQuestion" (
     "solution" TEXT,
     "question" TEXT NOT NULL,
     "helpCategoryId" INTEGER NOT NULL,
-    "slug" TEXT,
 
     CONSTRAINT "HelpQuestion_pkey" PRIMARY KEY ("id")
 );
@@ -224,6 +223,8 @@ CREATE TABLE "HelpQuestion" (
 CREATE TABLE "HelpCategory" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "order" INTEGER[],
+    "position" INTEGER NOT NULL,
 
     CONSTRAINT "HelpCategory_pkey" PRIMARY KEY ("id")
 );
