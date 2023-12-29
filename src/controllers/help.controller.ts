@@ -15,37 +15,37 @@ const getAllCategory = catchAsync(async (req, res) => {
 })
 
 const getCategoryById = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   const category = await helpService.getCategoryById(id)
   sendResponse(res, httpStatus.OK, null, { category }, 'Category fetched Successfully')
 })
 
 const getHelpQuestionById = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   const helpQuestion = await helpService.getHelpQuestionById(id)
   sendResponse(res, httpStatus.OK, null, { helpQuestion }, 'Help Question fetched Successfully')
 })
 
 const updateCategoryById = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   const data = req.body
   const updatedCategory = await helpService.updateCategoryById(id, data)
   sendResponse(res, httpStatus.OK, null, { updatedCategory }, 'Category updated Successfully')
 })
 const updateHelpQuestion = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   const data = req.body
   const updatedQuestion = await helpService.updateHelpQuestion(id, data)
   sendResponse(res, httpStatus.OK, null, { updatedQuestion }, 'Help Question updated Successfully')
 })
 
 const deleteCategoryById = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   await helpService.deleteCategoryById(id)
   sendResponse(res, httpStatus.OK, null, null, 'Category deleted Successfully')
 })
 const deleteHelpQuestion = catchAsync(async (req, res) => {
-  const { id } = req.params.id
+  const id = parseInt(req.params.id)
   await helpService.deleteHelpQuestion(id)
   sendResponse(res, httpStatus.OK, null, null, 'Help Question deleted Successfully')
 })

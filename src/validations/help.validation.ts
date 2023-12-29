@@ -19,7 +19,7 @@ const updateCategoryValidation = {
   body: Joi.object()
     .keys({
       title: Joi.string().optional().min(1),
-      position: Joi.number().optional().min(1),
+      position: Joi.number().optional(),
       order: Joi.array().items(Joi.number()).optional()
     })
     .min(1)
