@@ -133,7 +133,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {Alljobs?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
-            <div className="grid grid-cols-1 gap-3 p-4 md:p-0 p-2 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
+            <div className="grid grid-cols-1 gap-3 p-4 md:p-0  justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
               {Alljobs?.filter((job) =>
                 job.savedUsers.some((user) => user.id === userData?.id)
               ).map((job, idx) => (
