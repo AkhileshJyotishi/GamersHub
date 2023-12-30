@@ -45,7 +45,6 @@ const ProfileLayout = ({
 }) => {
   const session = useSession()
   const router = useRouter()
-  const params = useParams()
 
   const { userData, isCreateAlbumOpen, setisCreateAlbumOpen, newAlbum, setnewAlbum } =
     useUserContext()
@@ -74,7 +73,13 @@ const ProfileLayout = ({
       })
     }
   }, [param, router.query, userData?.id, router])
-  const tabs = ["posts", "albums", "jobs", "about"]
+  // const tabs = ["posts", "albums", "jobs", "about"]
+  const tabs = [
+    { name: "posts", href: "posts" },
+    { name: "Portfolio", href: "albums" },
+    { name: "Jobs", href: "jobs" },
+    { name: "About", href: "about" },
+  ]
   const [activeTab, setActiveTab] = useState<string>("albums")
 
   const Tab = () => {
@@ -84,12 +89,12 @@ const ProfileLayout = ({
           <div
             className={clsx(
               `sm:min-w-[80px]  rounded-xl active:current cursor-pointer ${
-                activeTab == tab && "bg-user_interface_4"
+                activeTab == tab.href && "bg-user_interface_4"
               } `
             )}
             onClick={() => {
-              setActiveTab(tab)
-              router.push(`/${data?.id}/profile/${tab}`)
+              setActiveTab(tab.href)
+              router.push(`/${data?.id}/profile/${tab.href}`)
             }}
           >
             <div
@@ -97,7 +102,7 @@ const ProfileLayout = ({
               className={clsx(` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
             bg-white text-light outline-none focus:outline-none capitalize`)}
             >
-              {tab}
+              {tab.name}
             </div>
           </div>
         </>
@@ -278,34 +283,7 @@ const ProfileLayout = ({
               bannerImage={data?.bannerImage || ""}
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
-            <div className="flex flex-wrap justify-center w-full gap-3 lg:justify-end">
-              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
-                <Button
-                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    setnewAlbum({
-                      title: "",
-                      banner: null,
-                      AlbumKeywords: [],
-                      isEdit: false,
-                    })
-                    setisCreateAlbumOpen(true)
-                  }}
-                >
-                  New Album
-                </Button>
-              )}
-              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
-                <Button
-                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
-                  }}
-                >
-                  New Post
-                </Button>
-              )}
-            </div>
+
             <div className="backdrop-blur-sm sm:bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
               <Tab />
             </div>

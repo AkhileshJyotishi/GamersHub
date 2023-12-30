@@ -10,12 +10,17 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 import ProfilePageLayout from "@/components/profileLayout"
 import HoizontalCard from "@/components/ui/Horizontalcard"
 import SkeletonLoader from "@/components/ui/SkeletonLoader"
+import Button from "@/components/ui/button"
+import { useSession } from "next-auth/react"
+import { useParams } from "next/navigation"
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Albums = () => {
   const router = useRouter()
   const [albumDetails, setalbumDetails] = useState<IAlbumBackend[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const { userData } = useUserContext()
+  const { userData, setnewAlbum, setisCreateAlbumOpen } = useUserContext()
+  const session = useSession()
+  const params = useParams()
 
   useEffect(() => {
     if (!userData?.id) {
@@ -43,34 +48,66 @@ const Albums = () => {
     )
   } else {
     return (
-      <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
-        {albumDetails.length > 0 ? (
-          albumDetails?.map((album, index) => (
-            <>
-              <HoizontalCard
-                title={album.title}
-                className=""
-                imageSrc={album.banner || ""}
-                id={album.id}
-                key={index}
-                tags={album.keyword}
-                userId={album.userId}
-                // handleAlbumEdit={handleAlbumEdit}
-              />
-            </>
-          ))
-        ) : (
-          <>
-            {
+      <div className="flex flex-col gap-4">
+        <div className="">
+          <div className="flex flex-wrap justify-center w-full gap-3 mt-4 sm:justify-end">
+            {session && params?.user && userData?.id === parseInt(params?.user as string) && (
+              <Button
+                className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
+                onClick={() => {
+                  setnewAlbum({
+                    title: "",
+                    banner: null,
+                    AlbumKeywords: [],
+                    isEdit: false,
+                  })
+                  setisCreateAlbumOpen(true)
+                }}
+              >
+                New Album
+              </Button>
+            )}
+            {session && params?.user && userData?.id === parseInt(params?.user as string) && (
+              <Button
+                className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
+                onClick={() => {
+                  router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
+                }}
+              >
+                New Post
+              </Button>
+            )}
+          </div>
+        </div>
+        <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
+          {albumDetails.length > 0 ? (
+            albumDetails?.map((album, index) => (
               <>
-                <div className="flex flex-col items-center w-full gap-20">
-                  <h3 className="text-3xl font-bold">No albums yet.</h3>
-                  <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-                </div>
+                <HoizontalCard
+                  title={album.title}
+                  className=""
+                  imageSrc={album.banner || ""}
+                  id={album.id}
+                  key={index}
+                  tags={album.keyword}
+                  userId={album.userId}
+                  // handleAlbumEdit={handleAlbumEdit}
+                />
               </>
-            }
-          </>
-        )}
+            ))
+          ) : (
+            <>
+              {
+                <>
+                  <div className="flex flex-col items-center w-full gap-20">
+                    <h3 className="text-3xl font-bold">No albums yet.</h3>
+                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+                  </div>
+                </>
+              }
+            </>
+          )}
+        </div>
       </div>
     )
   }
