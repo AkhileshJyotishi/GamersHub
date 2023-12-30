@@ -21,16 +21,7 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
       <Head>
         <title>GameCreators | {title}</title>
       </Head>
-      <div
-        className={clsx(
-          "absolute w-full ",
-          ` bg-cover  bg-no-repeat bg-top`,
-          "h-[490px]"
-          // banner && banner
-        )}
-        // style={{backgroundImage:`url(${banner})`}}
-        style={{ backgroundImage: `url(${banner})` }}
-      >
+      <div className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}>
         <Image
           alt=""
           src={banner || defaultbannerImage}

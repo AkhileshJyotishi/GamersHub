@@ -7,7 +7,7 @@ import defaultProfileImage from "@/assets/image/user-profile.svg"
 import { shimmer, toBase64 } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
-import { SecondaryTag } from "@/components/ui/badges"
+// import { SecondaryTag } from "@/components/ui/badges"
 
 const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profileImage }) => {
   //   let userProfile = creator?.profile_image?.url;
@@ -39,7 +39,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
 
       <div className="flex flex-col items-center mt-[40px]">
         <h3
-          className="text-lghover:text-secondary transition duration-200 cursor-pointer"
+          className="transition duration-200 cursor-pointer text-lghover:text-secondary"
           onClick={() => router.push(`/${id}/profile/albums`)}
         >
           {username ?? "Guest"}
@@ -72,7 +72,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         </div>
       }
 
-      {
+      {/* {
         <div className="flex flex-col items-start gap-1.5 p-3">
           <h3 className="text-lg">Skills</h3>
           <div className="flex flex-wrap gap-[10px] ">
@@ -87,9 +87,9 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
             )}
           </div>
         </div>
-      }
+      } */}
 
-      <div className="flex flex-col items-start p-3 gap-1.5 mt-[10px]">
+      {/* <div className="flex flex-col items-start p-3 gap-1.5 mt-[10px]">
         <h3 className="text-lg">Softwares</h3>
         <div className="flex flex-wrap gap-[10px] ">
           {userDetails?.userSoftwares?.length && userDetails?.userSoftwares?.length > 0 ? (
@@ -102,7 +102,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
             <>...</>
           )}
         </div>
-      </div>
+      </div> */}
     </article>
   )
 }

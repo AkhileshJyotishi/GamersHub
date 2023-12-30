@@ -333,7 +333,7 @@ const EditProfilePage = ({
       inputType: "select",
       value: profileData.country,
       onChange: (value) => handleFieldChange("country", value as string),
-      selectOptions: [{ label: "--Select a Country--", value: "" }, ...countryList],
+      selectOptions: [{ label: "", value: "" }, ...countryList],
     },
     {
       title: "City",
@@ -341,7 +341,7 @@ const EditProfilePage = ({
       value: profileData.city,
       onChange: (value) => handleFieldChange("city", value as string),
       className: "bg-transparent rounded-md",
-      selectOptions: [{ label: "--Select a City--", value: "" }, ...city],
+      selectOptions: [{ label: "", value: "" }, ...city],
     },
     {
       title: "skills",
