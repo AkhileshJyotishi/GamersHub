@@ -608,6 +608,9 @@ const EditProfilePage = ({
     })
   }
 
+  const [manageExperience, setManageExperience] = useState<boolean>(false)
+  const [manageEducation, setManageEducation] = useState<boolean>(false)
+
   return (
     <>
       <div className="bg-user_interface_1 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3  mt-[20px] ">
@@ -664,14 +667,17 @@ const EditProfilePage = ({
                 ))}
                 <div className="flex justify-between w-full">
                   <Button
+                    disabled={manageExperience}
                     className={
                       "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
                     }
-                    onClick={() =>
-                      uploadUserExperience(newExperience[0], session?.user?.name as string)
-                    }
+                    onClick={async () => {
+                      setManageExperience(true)
+                      await uploadUserExperience(newExperience[0], session?.user?.name as string)
+                      setManageExperience(false)
+                    }}
                   >
-                    upload
+                    {manageExperience ? "Uploading" : "Upload"}
                   </Button>
                   {/* {(ExperienceArray.length + newExperienceArray.length)} */}
                   {ExperienceArray.length + newExperienceArray.length > 1 && (
@@ -742,14 +748,17 @@ const EditProfilePage = ({
                 ))}
                 <div className="flex justify-between w-full">
                   <Button
+                    disabled={manageEducation}
                     className={
                       "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
                     }
-                    onClick={() =>
-                      uploadUserEducation(newEducation[0], session?.user?.name as string)
-                    }
+                    onClick={async () => {
+                      setManageEducation(true)
+                      await uploadUserEducation(newEducation[0], session?.user?.name as string)
+                      setManageEducation(false)
+                    }}
                   >
-                    Upload
+                    {manageEducation ? "Uploading" : "Upload"}
                   </Button>
                   {newEducationArray.length + EducationArray.length > 1 && (
                     <Button

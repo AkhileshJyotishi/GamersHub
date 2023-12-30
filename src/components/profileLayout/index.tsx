@@ -50,6 +50,7 @@ const ProfileLayout = ({
     useUserContext()
 
   const [loading, setLoading] = useState<boolean>(true)
+  const [createAlbum, setCreateAlbum] = useState<boolean>(false)
   const [data, setData] = useState<User | null>(null)
   const param = useParams()
 
@@ -111,9 +112,13 @@ const ProfileLayout = ({
   }
 
   const handlecreateAlbum = async () => {
+    setCreateAlbum(true)
+    if (newAlbum.title == "") {
+      toast.error("Please fill the title")
+      setCreateAlbum(false)
+      return
+    }
     const formdata = new FormData()
-    // console.log(newAlbum)
-    // return
     if (newAlbum.isEdit) {
       toast.dismiss()
 
@@ -194,6 +199,7 @@ const ProfileLayout = ({
         toast.success(albumData?.message)
       }
     }
+    setCreateAlbum(false)
     // console.log(albumData)
   }
 
@@ -269,10 +275,11 @@ const ProfileLayout = ({
                 fullScreen={false}
               />
               <Button
+                disabled={createAlbum}
                 onClick={() => handlecreateAlbum()}
                 className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
               >
-                {newAlbum.isEdit ? "Edit Album" : "Create Album"}
+                {createAlbum ? "Uploading..." : newAlbum.isEdit ? "Edit Album" : "Create Album"}
               </Button>
             </div>
           </Modal>
@@ -289,19 +296,6 @@ const ProfileLayout = ({
             </div>
             <div className="w-full">{children}</div>
           </div>
-          {/* <div
-            onClick={() => {
-              handleAlbumEdit({
-                AlbumKeywords: ["heavytest2"],
-                banner:
-                  "https://gch-dev-public.s3.eu-central-003.backblazeb2.com/uploads/yashAgarwal/portfolio/1703370588861_aaaaa.png",
-                id: 10,
-                title: "test 32",
-              })
-            }}
-          >
-            testing
-          </div> */}
         </div>
       </>
     )

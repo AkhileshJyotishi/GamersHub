@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
@@ -38,6 +38,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const { data: session } = useSession()
   const router = useRouter()
   const { userData } = useUserContext()
+  const [updateExp, setUpdateExp] = useState<boolean>(false)
+  const [removeExp, setRemoveExp] = useState<boolean>(false)
+
   return (
     <>
       {ExperienceArray?.map((filterdetailarray, idx) => (
@@ -68,10 +71,12 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           <div className="flex justify-between w-full">
             <Button
               id={String(filterdetailarray.id)}
+              disabled={updateExp}
               className={
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
               onClick={async () => {
+                setUpdateExp(true)
                 const exp = await updateUserExperience(
                   filterdetailarray.id,
                   experience,
@@ -80,23 +85,27 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 if (!exp?.error) {
                   router.push(`${userData?.id}/profile/about`)
                 }
+                setUpdateExp(false)
               }}
             >
-              Update
+              {updateExp ? "Updating" : "Update"}
             </Button>
             {ExperienceArray.length > 1 && (
               <Button
+                disabled={removeExp}
                 className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                onClick={() =>
-                  removeuserExperience(
+                onClick={async () => {
+                  setRemoveExp(true)
+                  await removeuserExperience(
                     filterdetailarray.id,
                     setExperience,
                     idx,
                     session?.user?.name as string
                   )
-                }
+                  setRemoveExp(false)
+                }}
               >
-                Remove
+                {removeExp ? "Removing" : "Remove"}
               </Button>
             )}
           </div>

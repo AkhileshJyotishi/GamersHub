@@ -25,7 +25,7 @@ export const uploadUserEducation = async (
     userEducation.description !== initialUserEducation.description
 
   if (!hasDataChanged) {
-    toast.info("fill the credentials")
+    toast.info("Fill the credentials")
     return
   }
   // if (hasDataChanged) {
@@ -244,7 +244,7 @@ export const uploadUserExperience = async (
     userExperience.role !== initialUserExperience?.role
 
   if (!hasDataChanged) {
-    toast.info("fill the credentials")
+    toast.info("Fill the credentials")
     return
   }
   // if (hasDataChanged) {
