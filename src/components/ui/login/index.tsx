@@ -54,11 +54,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         break
 
       case "password":
-        if (value.length < 8 || !/[A-Z]/.test(value) || !/[\W_]/.test(value)) {
+        if (value.length < 8 || !/[A-Z]/.test(value) || !/[\W_]/.test(value) || !/\d/.test(value)) {
           setErrors((prev) => ({
             ...prev,
             password:
-              "Password should be at least 4 characters with an uppercase letter and a special character",
+              "Password should be at least 8 characters with an uppercase letter, a digit and a special character",
           }))
         } else {
           setErrors((prev) => ({ ...prev, password: "" }))
@@ -211,7 +211,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
                 className="mt-2 tracking-wider bg-transparent rounded-md"
                 value={formValues.password}
                 name="password"
-                placeholder="***"
+                placeholder="****"
                 errorMessage={errors.password}
               />
             </div>

@@ -133,10 +133,11 @@ export default function SignUpPage() {
       if (
         formValues.password.length < 8 ||
         !/[A-Z]/.test(formValues.password) ||
-        !/[\W_]/.test(formValues.password)
+        !/[\W_]/.test(formValues.password) ||
+        !/\d/.test(formValues.password)
       ) {
         newErrors.password =
-          "Password should be at least 4 characters with an uppercase letter and a special character"
+          "Password should be at least 8 characters with an uppercase letter, a digit and a special character"
       } else {
         newErrors.password = ""
       }
