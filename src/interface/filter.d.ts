@@ -61,6 +61,7 @@ interface FilterDetail<SO = { label: string; value: string | boolean | number }>
     width: number | null
   }
   fullScreen?: boolean
+  element?: "input" | "textarea"
 }
 type Errors<T> = {
   [K in keyof T]: string | null

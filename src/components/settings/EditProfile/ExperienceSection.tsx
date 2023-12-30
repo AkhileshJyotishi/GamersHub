@@ -1,8 +1,10 @@
 import React from "react"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
+import { useUserContext } from "@/providers/user-context"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
@@ -34,6 +36,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   // initialExperience,
 }) => {
   const { data: session } = useSession()
+  const router = useRouter()
+  const { userData } = useUserContext()
   return (
     <>
       {ExperienceArray?.map((filterdetailarray, idx) => (
@@ -67,13 +71,16 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               className={
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
-              onClick={() =>
-                updateUserExperience(
+              onClick={async () => {
+                const exp = await updateUserExperience(
                   filterdetailarray.id,
                   experience,
                   session?.user?.name as string
                 )
-              }
+                if (!exp?.error) {
+                  router.push(`${userData?.id}/profile/about`)
+                }
+              }}
             >
               Update
             </Button>

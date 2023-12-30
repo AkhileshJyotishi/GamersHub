@@ -38,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
-  console.log(gameDetails?.data.games)
   const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 
   return {

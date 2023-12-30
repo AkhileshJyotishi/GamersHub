@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -25,53 +25,67 @@ const LoginPage = () => {
     email: "",
     password: "",
   })
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    setFormValues({ ...formValues, [name]: value })
+    handleInputChange(name as keyof typeof formValues, value)
   }
-  useEffect(() => {
-    if (!(formValues.email == "" && formValues.password == "")) {
-      const newErrors = validateForm()
-      if (Object.values(newErrors).some((error) => error !== "")) {
-        setErrors(newErrors)
-      } else {
-        setErrors({
-          email: "",
-          password: "",
-        })
-      }
-    }
-  }, [formValues.email, formValues.password])
-  const validateForm = () => {
-    const newErrors = { ...errors }
+  const handleInputChange = <K extends keyof typeof formValues>(
+    field: K,
+    value: (typeof formValues)[K]
+  ) => {
+    // Validation logic based on the field
+    switch (field) {
+      case "email":
+        if (!/^\S+@\S+\.\S+$/.test(value)) {
+          setErrors((prev) => ({ ...prev, email: "Invalid email address" }))
+        } else {
+          setErrors((prev) => ({ ...prev, email: "" }))
+        }
+        setFormValues((prev) => ({ ...prev, email: value }))
+        break
 
-    if (!/^\S+@\S+\.\S+$/.test(formValues.email)) {
-      newErrors.email = "Invalid email address"
-    } else {
-      newErrors.email = ""
-    }
+      case "password":
+        if (value.length < 8 || !/[A-Z]/.test(value) || !/[\W_]/.test(value)) {
+          setErrors((prev) => ({
+            ...prev,
+            password:
+              "Password should be at least 4 characters with an uppercase letter and a special character",
+          }))
+        } else {
+          setErrors((prev) => ({ ...prev, password: "" }))
+        }
+        setFormValues((prev) => ({ ...prev, password: value }))
+        break
 
-    if (
-      formValues.password.length < 8 ||
-      !/[A-Z]/.test(formValues.password) ||
-      !/[\W_]/.test(formValues.password)
-    ) {
-      newErrors.password =
-        "Password should be at least 8 characters with an uppercase letter and a special character"
-    } else {
-      newErrors.password = ""
+      default:
+        break
     }
-
-    return newErrors
   }
+  // useEffect(() => {
+  //   if (!(formValues.email == "" && formValues.password == "")) {
+  //     const newErrors = validateForm();
+  //     setErrors(newErrors);
+  //   } else {
+  //     // Clear errors when the form is empty
+  //     setErrors({
+  //       email: "",
+  //       password: "",
+  //     });
+  //   }
+  // }, [formValues.email, formValues.password])
+
+  const validateForm = () => Object.values(errors).every((error) => error === "")
 
   const onSubmit = async (provider: string) => {
-    const newError = validateForm()
-    // console.log(newError)
-    if (Object.values(newError).some((error) => error !== "")) {
-      setErrors(newError)
+    const isValid: boolean = validateForm()
+
+    // Check if the form is not valid
+    if (!isValid) {
+      // Handle the case where the form is not valid
       return
     }
+
     setErrors({ email: "", password: "" })
 
     try {

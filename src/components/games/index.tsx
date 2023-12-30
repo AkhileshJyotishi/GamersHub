@@ -97,9 +97,6 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       }
       return prevGames
     })
-    setTimeout(() => {
-      console.log(games[0].savedUsers)
-    }, 2000)
   }
 
   return (

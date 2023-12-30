@@ -68,7 +68,6 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       gameAssets: null,
     }
   }
-  console.log("printing it ", initGameInfo)
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)
   const [oldAssets, setoldAssets] = useState((initGameInfo?.gameAssets ?? []) as string[])
 
@@ -87,7 +86,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
     formdata.append("file", gameInfo.banner as Blob)
     formdata.append("type", "games")
 
-    console.log("jobInfo.banner ", gameInfo.banner)
+    // console.log("jobInfo.banner ", gameInfo.banner)
     if (gameInfo.banner && typeof gameInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -96,6 +95,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata
       )
       if (isuploaded?.error) {
+        toast.dismiss()
         toast.error("Error uploading banner")
         setLoading(false)
         return
@@ -126,6 +126,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         formdata2
       )
       if (multiisuploaded?.error) {
+        toast.dismiss()
+
         toast.error("Error uploading assets")
         setLoading(false)
         return
@@ -137,7 +139,6 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
         })
       }
     } else {
-      console.log("worst case ", gameInfo.gameAssets)
       gameInfo.gameAssets = []
     }
     gameInfo.gameAssets = [...newArray, ...oldAssets]
@@ -157,6 +158,8 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       toast.error(data?.message)
       return
     }
+    toast.dismiss()
+
     toast.success(data?.message)
     setLoading(false)
     router.push("/games")

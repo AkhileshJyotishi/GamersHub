@@ -45,7 +45,7 @@ const Card: React.FC<GamesCardProps> = ({
     if (data?.error) {
       toast.error(data.message)
     } else {
-      // toast.success(data?.message)
+      toast.success(data?.message)
       setLiked(!liked)
     }
   }

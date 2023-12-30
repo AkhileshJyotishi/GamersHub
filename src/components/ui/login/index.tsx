@@ -58,7 +58,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
           setErrors((prev) => ({
             ...prev,
             password:
-              "Password should be at least 8 characters with an uppercase letter and a special character",
+              "Password should be at least 4 characters with an uppercase letter and a special character",
           }))
         } else {
           setErrors((prev) => ({ ...prev, password: "" }))
@@ -71,11 +71,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
     }
   }
 
-  const validateForm = () => {
-    // Validation logic for the entire form if needed
-    // Return true if the form is valid, otherwise false
-    return Object.values(errors).every((error) => error === "")
-  }
+  const validateForm = () => Object.values(errors).every((error) => error === "")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -121,11 +117,6 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
 
   const userContext = useUserContext()
 
-  // const handleVerify = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   userContext.setIsLoginModalOpen(false)
-  //   router.push("/?verify=true")
-  // }
   const handleForgot = async (e: React.FormEvent) => {
     e.preventDefault()
     userContext.setIsLoginModalOpen(false)

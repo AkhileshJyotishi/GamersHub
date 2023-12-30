@@ -99,6 +99,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
       .writeText(`${window.location.href}`)
       .then(() => {
         setCopied(true)
+        toast.dismiss()
         toast.success("Copied!")
       })
       .catch((error) => {

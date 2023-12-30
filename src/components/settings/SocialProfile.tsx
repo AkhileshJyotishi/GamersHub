@@ -134,7 +134,6 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     platform: string
   ) => {
-    console.log("object")
     switch (platform) {
       case platform:
         if (isValidURL(e.target.value)) {

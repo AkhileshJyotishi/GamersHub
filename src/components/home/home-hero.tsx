@@ -1,4 +1,6 @@
 import React from "react"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 import { useUserContext } from "@/providers/user-context"
 
@@ -14,6 +16,8 @@ export const OverlayBackground = () => {
 
 export const OverlayContent: React.FC = () => {
   const { setIsRegisterModalOpen } = useUserContext()
+  const session = useSession()
+  const router = useRouter()
   return (
     <div className="relative top-0 flex flex-col items-start pt-[25vh] w-full h-screen px-[5vw] justify-start">
       <h1 className="text-2xl font-bold md:text-3xl lg:text-5xl xl:text-7xl">
@@ -28,7 +32,10 @@ export const OverlayContent: React.FC = () => {
       <Button
         className="mt-8 md:mt-[86px] bg-secondary_2 py-[10px] px-[30px] font-medium rounded-xl"
         onClick={() => {
-          setIsRegisterModalOpen(true)
+          if (!session) setIsRegisterModalOpen(true)
+          else {
+            router.push("/jobs")
+          }
         }}
       >
         Get Started

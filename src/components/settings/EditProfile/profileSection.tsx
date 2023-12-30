@@ -1,8 +1,10 @@
 import React from "react"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
+import { useUserContext } from "@/providers/user-context"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
@@ -32,6 +34,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   setProfileFilled,
 }) => {
   const { data: session } = useSession()
+  const router = useRouter()
+  const { userData } = useUserContext()
   // console.log(profileArray)
   return (
     <>
@@ -60,12 +64,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
           className={
             "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
           }
-          onClick={() => {
+          onClick={async () => {
             let method = "POST"
             if (isProfileDataFilled) {
               method = "PATCH"
             }
-            uploadProfileData(profileData, session?.user?.name as string, method, setProfileFilled)
+            const x = await uploadProfileData(
+              profileData,
+              session?.user?.name as string,
+              method,
+              setProfileFilled
+            )
+            if (!x?.error) {
+              router.push(`${userData?.id}/profile/about`)
+            }
           }}
         >
           {isProfileDataFilled ? "Update" : "Upload"}

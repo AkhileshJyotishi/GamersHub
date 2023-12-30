@@ -91,6 +91,8 @@ const CreateJob: React.FC = () => {
       toast.error(data?.message)
       return
     }
+    toast.dismiss()
+
     toast.success(data?.message)
     setLoading(false)
 
@@ -109,10 +111,11 @@ const CreateJob: React.FC = () => {
             <Filter
               key={"text"}
               inputType={"text"}
+              element={"textarea"}
               title={""}
               placeholder={"Enter the description"}
               value={jobInfo.description}
-              className="bg-transparent border-none rounded-md"
+              className="bg-transparent border-none rounded-md border-transparent"
               onChange={(value) =>
                 setJobInfo((prev) => ({ ...prev, description: value as string }))
               }

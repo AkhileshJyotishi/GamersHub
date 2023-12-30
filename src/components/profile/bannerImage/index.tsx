@@ -62,6 +62,7 @@ const BannerImage = ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setuserData((prev) => ({ ...prev, bannerImage: isuploaded?.data.image.Location }))
+      toast.dismiss()
       toast.success(data?.message)
     }
   }

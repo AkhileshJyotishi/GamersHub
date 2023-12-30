@@ -1,9 +1,11 @@
 import React from "react"
 import clsx from "clsx"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
+import { useUserContext } from "@/providers/user-context"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
@@ -35,6 +37,8 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   initialEducation,
 }) => {
   const { data: session } = useSession()
+  const { userData } = useUserContext()
+  const router = useRouter()
   return (
     <>
       {EducationArray?.map((filterdetailarray, idx) => (
@@ -68,14 +72,17 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               className={
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
-              onClick={() =>
-                updateUserEducation(
+              onClick={async () => {
+                const edu = await updateUserEducation(
                   filterdetailarray.id,
                   education,
                   initialEducation,
                   session?.user?.name as string
                 )
-              }
+                if (!edu?.error) {
+                  router.push(`${userData?.id}/profile/about`)
+                }
+              }}
             >
               Update
             </Button>

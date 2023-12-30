@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import clsx from "clsx"
 import { PiWarningCircleFill } from "react-icons/pi"
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   onKeyUp?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>
   value: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>["value"]
@@ -28,6 +28,19 @@ const TextInput: React.FC<Props> = ({
   pattern,
   onInvalid,
 }: Props) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  useEffect(() => {
+    if (element === "textarea" && textAreaRef.current) {
+      // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+      textAreaRef.current.style.height = "0px"
+      const scrollHeight = textAreaRef.current.scrollHeight
+
+      // We then set the height directly, outside of the render loop
+      // Trying to set this with state or a ref will product an incorrect value.
+      textAreaRef.current.style.height = scrollHeight + "px"
+    }
+  }, [textAreaRef.current, value])
+
   return (
     <div className="relative flex flex-col items-start w-full">
       {!element || element === "input" ? (
@@ -58,9 +71,16 @@ const TextInput: React.FC<Props> = ({
           placeholder={placeholder}
           name={name}
           id={id}
-          className={`bg-user_interface_3 w-full rounded-[10px] border-[1px] border-transparent hover:bg-transparent  focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm px-[12px] py-[10px] flex flex-row items-center ${
+          className={clsx(
+            ` w-full  border-[0.01px]  px-[12px] py-[9px] flex flex-row items-center focus:outline-none  focus-within:border-secondary ${className}`,
             errorMessage ? "border-accent_red focus:border-accent_red focus:shadow-accent_red" : ""
-          }   ${className}`}
+          )}
+          onKeyPress={onKeyPress}
+          onBlur={onBlur}
+          autoComplete="off"
+          spellCheck={false}
+          onInvalid={onInvalid}
+          ref={textAreaRef}
         ></textarea>
       )}
       {errorMessage ? (

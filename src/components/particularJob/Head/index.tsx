@@ -64,6 +64,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
       toast.error(res.message)
     } else {
       setIsJobSaved(!isJobSaved)
+      toast.dismiss()
       toast.success(res?.message)
     }
   }

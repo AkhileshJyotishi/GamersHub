@@ -1,5 +1,3 @@
-// import { useSession } from "next-auth/react"
-console.log("object")
 import { toast } from "react-toastify"
 
 import { fetchData, fetchFile } from "@/utils/functions"
@@ -86,6 +84,7 @@ export const updateUserEducation = async (
 
   // Send a request to update the education details
   delete educationToUpdate.id
+  toast.dismiss()
   toast.info("Updating Education Info...")
 
   const response = await fetchData(
@@ -95,11 +94,13 @@ export const updateUserEducation = async (
     educationToUpdate
   )
   if (response?.error) {
+    toast.dismiss()
     toast.error(response.message)
   } else {
+    toast.dismiss()
     toast.success(response?.message)
   }
-  return response?.data
+  return response
 }
 
 export const removeUserEducation = async (
@@ -216,7 +217,7 @@ export const updateUserExperience = async (
   } else {
     toast.success(response?.message)
   }
-  return response?.data
+  return response
 }
 
 export const uploadUserExperience = async (
@@ -286,7 +287,7 @@ export const uploadProfileData = async (
   // return
   toast.info("Uploading Your Profile...")
 
-  if (typeof profileData?.profileImage == "object") {
+  if (profileData?.profileImage && typeof profileData?.profileImage == "object") {
     formdata.append("file", profileData?.profileImage as File)
     formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
@@ -303,6 +304,8 @@ export const uploadProfileData = async (
     toast.error(response?.message)
   } else {
     toast.success(response?.message)
+
     setProfileFilled(true)
+    return response
   }
 }

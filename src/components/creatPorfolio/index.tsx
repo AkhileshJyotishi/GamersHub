@@ -73,6 +73,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
         formdata
       )
       if (isuploaded?.error) {
+        toast.dismiss()
+
         toast.info("Error uploading file")
         setLoading(false)
         return
@@ -99,6 +101,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
     }
     if (res?.error) toast.error(res.message)
     else {
+      toast.dismiss()
+
       toast.success(res?.message)
       setFiltersState(initState)
       localStorage.removeItem(isUpdate ? "noval_content_update" : "noval_content")

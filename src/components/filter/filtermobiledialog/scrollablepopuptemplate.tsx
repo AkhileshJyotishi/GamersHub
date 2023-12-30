@@ -20,11 +20,13 @@ export function ScrollablePopupTemplate({
         onClick={onClose}
       ></div>
 
-      <div className="fixed z-[90] inset-0  flex flex-col items-center justify-center overflow-x-hidden  overflow-y-scroll mt-12 w-full mx-auto backdrop-blur">
+      <div className="fixed z-[90] inset-0  flex flex-col items-center justify-center overflow-x-hidden   w-full mx-auto backdrop-blur">
         {/* Container */}
 
         {displayWithoutContainer ? (
-          <div className={"w-full flex items-center justify-center " + (containerClass ?? "")}>
+          <div
+            className={"w-full flex items-center justify-center h-[90vh] " + (containerClass ?? "")}
+          >
             {children}
           </div>
         ) : (

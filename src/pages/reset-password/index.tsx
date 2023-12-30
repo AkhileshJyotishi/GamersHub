@@ -32,7 +32,7 @@ const ResetPassword = () => {
       !/[\W_]/.test(formValues.password)
     ) {
       setErrors(
-        "Password should be at least 8 characters with an uppercase letter and a special character"
+        "Password should be at least 4 characters with an uppercase letter and a special character"
       )
       return
     } else {

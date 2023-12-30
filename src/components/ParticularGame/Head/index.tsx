@@ -63,6 +63,7 @@ const GamePageHeader: React.FC<GamePageHeaderProps> = ({
       toast.error(res.message)
     } else {
       setIsGameSaved(!isGameSaved)
+      toast.dismiss()
       toast.success(res?.message)
     }
   }

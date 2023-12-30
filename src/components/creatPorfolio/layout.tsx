@@ -129,7 +129,6 @@ const Layout: React.FC<LayoutProps> = ({
         break
 
       case "postKeywords":
-        console.log("executing")
         if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
           if (value.length == 0) {
             setErrors((prev) => ({ ...prev, [field]: "*required" }))
@@ -252,7 +251,7 @@ const Layout: React.FC<LayoutProps> = ({
                     (error) => !(error === null || error == "")
                   )
                   if (hasErrors) {
-                    console.log("errors", errors)
+                    toast.dismiss()
                     // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return

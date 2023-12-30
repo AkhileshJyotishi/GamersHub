@@ -49,7 +49,11 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
           height={300}
           alt={""}
           className="w-full object-cover  h-[100px] rounded-[5px]"
-          src={newuserData?.bannerImage || defaultbannerImage}
+          src={
+            newuserData?.bannerImage !== "" && newuserData && newuserData?.bannerImage !== null
+              ? newuserData.bannerImage
+              : defaultbannerImage
+          }
         />
 
         <Image
@@ -57,7 +61,11 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
           height={100}
           alt={""}
           className="w-[92px] h-[92px] rounded-full absolute bottom-[-50%] object-cover border-solid border-[2px] border-[#D9D9D9]"
-          src={userData?.profileImage ?? defaultUserImage}
+          src={
+            userData?.profileImage !== "" && userData && userData?.profileImage !== null
+              ? userData.profileImage
+              : defaultUserImage
+          }
           // placeholder="blur"
           priority
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
@@ -85,7 +93,7 @@ export default function ProfileSettingsCard({ className, userData }: Props) {
       <div className="flex flex-col items-start w-full mt-[20px] py-[15px] border-t-[1px] border-b-[1px] border-user_interface_3 ">
         <h1 className="text-[14px] mb-2 font-semibold pl-[32px]">Account</h1>
 
-        <div className="flex items-start w-full md:flex-col ">
+        <div className="flex items-start w-full flex-col ">
           <Link
             href={`/settings`}
             className="flex flex-row items-center text-user_interface_7 gap-[12px] hover:bg-user_interface_4 w-full py-[5px] pl-[32px] cursor-pointer"

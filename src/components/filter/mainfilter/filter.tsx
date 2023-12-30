@@ -36,7 +36,7 @@ const Filter: React.FC<FilterDetail> = ({
   errorMessage,
   dimensionsImage,
   fullScreen,
-
+  element,
   // hidden
 }) => {
   const handleCheckboxChange = (newValue: string) => {
@@ -85,6 +85,7 @@ const Filter: React.FC<FilterDetail> = ({
             placeholder={placeholder}
             id={title}
             errorMessage={errorMessage}
+            element={element}
           />
         </>
       )}
