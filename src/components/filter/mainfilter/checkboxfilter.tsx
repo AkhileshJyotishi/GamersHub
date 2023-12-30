@@ -1,6 +1,7 @@
 // CheckboxFilter.tsx
 
 import React from "react"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import CheckBox from "@/components/ui/checkbox2"
 
@@ -33,7 +34,10 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
         ))}
       </div>
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        <span className="flex gap-1 items-center p-1 text-accent_red  font-[10px] text-[12px]">
+          <PiWarningCircleFill />
+          <div>{errorMessage}</div>
+        </span>
       ) : (
         <></>
       )}

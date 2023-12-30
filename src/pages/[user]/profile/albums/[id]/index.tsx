@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+import defaultUserImage from "@/assets/image/user-profile.svg"
 import image from "@/assets/image/void.svg"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
@@ -16,7 +17,7 @@ import { UserImage, UserInfo } from "@/components/ParticularGame/Head"
 import Button from "@/components/ui/button"
 import Card from "@/components/ui/card/card2"
 
-const index = ({
+const Index = ({
   albumPosts,
   banner,
   title,
@@ -36,13 +37,19 @@ const index = ({
       <Head>
         <title>Album Posts | {userData?.username || ""}</title>
       </Head>
-      <div
-        className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}
-        style={{
-          backgroundImage: `url(${defaultbannerImage})`,
-        }}
-      >
-        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+      <div className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}>
+        {
+          <Image
+            alt=""
+            src={banner || defaultbannerImage}
+            height={500}
+            width={900}
+            className="h-[490px] absolute w-full bg-cover  bg-no-repeat bg-top"
+          />
+        }
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background ">
+          II
+        </div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
@@ -62,15 +69,18 @@ const index = ({
         </div>
         <div className="flex flex-col flex-wrap justify-between gap-3 p-3">
           <div className="flex gap-[25px] flex-wrap justify-center md:justify-normal ">
-            <UserImage href={profileImage} />
+            <UserImage href={profileImage || defaultUserImage} />
             <UserInfo title={title} />
           </div>
           <div className="flex gap-[25px]"></div>
         </div>
         {albumPosts.length > 0 && <h1 className="text-3xl font-bold text-center">Album Posts</h1>}
         {albumPosts.length > 0 ? (
-          albumPosts?.map((post) => (
-            <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
+          albumPosts?.map((post, key) => (
+            <div
+              className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]"
+              key={key}
+            >
               <Card
                 id={post.id}
                 key={post.id}
@@ -80,7 +90,7 @@ const index = ({
                 matureContent={post.matureContent}
                 title={post.title}
                 savedPost={post.savedUsers}
-                likedPost={(post?.postLikes ?? [])?.map((like) => like.likedUsers)}
+                likedPost={(post?.postLikes ?? []).likedUsers?.map((like) => like)}
                 userId={post.userId}
                 // location={data.location}
                 // views={data.views}
@@ -107,7 +117,7 @@ const index = ({
   )
 }
 
-export default index
+export default Index
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)

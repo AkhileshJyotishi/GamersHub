@@ -24,6 +24,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
           src={bannerImage || defaultbannerImage}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
+        {!bannerImage}
         <Image
           width={100}
           height={100}

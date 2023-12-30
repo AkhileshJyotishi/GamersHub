@@ -133,7 +133,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {Alljobs?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
-            <div className="grid grid-cols-1 gap-3 md:p-4 p-2 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
+            <div className="grid grid-cols-1 gap-3 p-4 md:p-0 p-2 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
               {Alljobs?.filter((job) =>
                 job.savedUsers.some((user) => user.id === userData?.id)
               ).map((job, idx) => (
@@ -156,7 +156,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px] ">
+            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 md:gap-[20px] gap-[10px]">
               {myjob &&
                 myjob?.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />

@@ -91,7 +91,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
         <div className="absolute top-1 right-1 bg-[#00000080] rounded-md flex gap-2 items-center py-1">
           <div
             className="flex items-center mx-auto "
-            onClick={(e) => {
+            onClick={() => {
               handleAlbumEdit({
                 AlbumKeywords: (tags ?? []).map((id) => id.keyword),
                 banner: imageSrc,

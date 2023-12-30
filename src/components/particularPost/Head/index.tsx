@@ -38,25 +38,25 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
   const { data: session } = useSession()
   const { userData } = useUserContext()
   const { setmodalData } = useModalContext()
-  const [liked, setLiked] = useState<boolean>(false)
+  // const [liked, setLiked] = useState<boolean>(false)
   const [saved, setSaved] = useState<boolean>(false)
-  const [copied, setCopied] = useState<boolean>(false)
-  const likePost = async (postId: number) => {
-    let method
-    if (liked) {
-      method = "DELETE"
-    } else {
-      method = "POST"
-    }
+  const [, setCopied] = useState<boolean>(false)
+  // const likePost = async (postId: number) => {
+  //   let method
+  //   if (liked) {
+  //     method = "DELETE"
+  //   } else {
+  //     method = "POST"
+  //   }
 
-    const data = await fetchData(`/v1/post/like/${postId}`, session?.user?.name as string, method)
-    if (data?.error) {
-      toast.error(data.message)
-    } else {
-      toast.success(data?.message)
-      setLiked(!liked)
-    }
-  }
+  //   const data = await fetchData(`/v1/post/like/${postId}`, session?.user?.name as string, method)
+  //   if (data?.error) {
+  //     toast.error(data.message)
+  //   } else {
+  //     toast.success(data?.message)
+  //     setLiked(!liked)
+  //   }
+  // }
 
   const savePost = async (postId: number) => {
     const data = await fetchData(

@@ -8,7 +8,7 @@ import CloseIcon from "@/components/icons/closeIcon"
 import FullscreenIcon from "@/components/icons/fullScreenIcon"
 
 import Button from "../button"
-const index = ({
+const Index = ({
   initFiles = [],
   onChange,
 }: {
@@ -126,4 +126,4 @@ const index = ({
   )
 }
 
-export default index
+export default Index

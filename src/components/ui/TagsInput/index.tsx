@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import AddIcon from "@/components/icons/plus"
@@ -145,7 +146,10 @@ const TagsInput: React.FC<TagsInputProps> = ({
                 ))} */}
       </div>
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+          <PiWarningCircleFill />
+          <div>{errorMessage}</div>
+        </span>
       ) : (
         <></>
       )}

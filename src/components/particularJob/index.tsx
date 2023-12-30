@@ -1,5 +1,8 @@
 import React from "react"
 import clsx from "clsx"
+import Image from "next/image"
+
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 import JobPageHeader from "@/components/particularJob/Head"
 import Jobsection from "@/components/particularJob/Section"
@@ -22,10 +25,14 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
   } = profileData
   return (
     <>
-      <div
-        className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}
-        style={{ backgroundImage: `url(${banner ?? ""})` }}
-      >
+      <div className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}>
+        <Image
+          alt=""
+          src={banner || defaultbannerImage}
+          height={500}
+          width={900}
+          className="h-[490px] absolute w-full bg-cover  bg-no-repeat bg-top"
+        />
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>

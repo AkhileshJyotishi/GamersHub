@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-
+import { PiWarningCircleFill } from "react-icons/pi"
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   onKeyUp?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -64,7 +64,10 @@ const TextInput: React.FC<Props> = ({
         ></textarea>
       )}
       {errorMessage ? (
-        <span className="p-1 text-accent_red text-[12px]">{errorMessage}</span>
+        <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+          <PiWarningCircleFill />
+          <div>{errorMessage}</div>
+        </span>
       ) : (
         <></>
       )}

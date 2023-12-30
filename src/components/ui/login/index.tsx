@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
@@ -36,54 +36,54 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
   const router = useRouter()
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    setFormValues({ ...formValues, [name]: value })
+    handleInputChange(name as keyof typeof formValues, value)
   }
-  useEffect(() => {
-    if (!(formValues.email == "" && formValues.password == "")) {
-      const newErrors = validateForm()
-      if (Object.values(newErrors).some((error) => error !== "")) {
-        setErrors(newErrors)
-      } else {
-        setErrors({
-          email: "",
-          password: "",
-        })
-      }
+  const handleInputChange = <K extends keyof typeof formValues>(
+    field: K,
+    value: (typeof formValues)[K]
+  ) => {
+    // Validation logic based on the field
+    switch (field) {
+      case "email":
+        if (!/^\S+@\S+\.\S+$/.test(value)) {
+          setErrors((prev) => ({ ...prev, email: "Invalid email address" }))
+        } else {
+          setErrors((prev) => ({ ...prev, email: "" }))
+        }
+        setFormValues((prev) => ({ ...prev, email: value }))
+        break
+
+      case "password":
+        if (value.length < 8 || !/[A-Z]/.test(value) || !/[\W_]/.test(value)) {
+          setErrors((prev) => ({
+            ...prev,
+            password:
+              "Password should be at least 8 characters with an uppercase letter and a special character",
+          }))
+        } else {
+          setErrors((prev) => ({ ...prev, password: "" }))
+        }
+        setFormValues((prev) => ({ ...prev, password: value }))
+        break
+
+      default:
+        break
     }
-  }, [formValues.email, formValues.password])
+  }
 
   const validateForm = () => {
-    const newErrors = { ...errors }
-
-    if (!/^\S+@\S+\.\S+$/.test(formValues.email)) {
-      newErrors.email = "Invalid email address"
-    } else {
-      newErrors.email = ""
-    }
-
-    if (
-      formValues.password.length < 8 ||
-      !/[A-Z]/.test(formValues.password) ||
-      !/[\W_]/.test(formValues.password)
-    ) {
-      newErrors.password =
-        "Password should be at least 8 characters with an uppercase letter and a special character"
-    } else {
-      newErrors.password = ""
-    }
-
-    return newErrors
+    // Validation logic for the entire form if needed
+    // Return true if the form is valid, otherwise false
+    return Object.values(errors).every((error) => error === "")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const newError = validateForm()
-    // console.log(newError)
-    if (Object.values(newError).some((error) => error !== "")) {
-      setErrors(newError)
+    if (!validateForm()) {
       return
     }
+
     try {
       const credentials = {
         redirect: false,
@@ -133,7 +133,13 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        onClose()
+        setErrors({ email: "", password: "" })
+      }}
+    >
       <div className="text-text text-[16px]  flex p-5  flex-col items-start  w-full  mb-6 justify-center">
         <form className="w-full">
           <div className="pb-[12px] w-full">
@@ -227,30 +233,6 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             <SigninIcon className="" />
             Sign in
           </Button>
-          {/* <div className=" text-secondary text-[14px] pt-4 cursor-pointer">
-            <div
-              onClick={(e) => {
-                handleVerify(e)
-              }}
-            >
-              Verify Email
-            </div>
-          </div> */}
-          {/* <div className='flex justify-between'>
-                        <div className='py-4 text-secondary text-[14px]'>
-                            <Link href={"hash"}>
-                                Forgot Password?
-                            </Link>
-                        </div>
-
-                        <div className='py-4 text-secondary text-[14px]'>
-                            <Link href={"hash"}>
-                                Sign Up
-                            </Link>
-                        </div>
-
-                    </div> */}
-          {/* <Input name="name" control={control}/> */}
         </form>
       </div>
       <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-b-3xl">

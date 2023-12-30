@@ -107,7 +107,7 @@ const SocialCard: React.FC<CardProps> = ({
       <div className="max-w-md bg-white rounded-sm">
         <div className="flex items-center px-2 py-2">
           <Image
-            className="w-6 h-6 rounded-full"
+            className="w-6 h-6 rounded-full object-cover"
             src={cover || defaultUserImage}
             alt={""}
             width={100}

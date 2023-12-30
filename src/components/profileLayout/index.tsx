@@ -73,7 +73,7 @@ const ProfileLayout = ({
         setLoading(false)
       })
     }
-  }, [param, router.query, userData?.id])
+  }, [param, router.query, userData?.id, router])
   const tabs = ["posts", "albums", "jobs", "about"]
   const [activeTab, setActiveTab] = useState<string>("albums")
 

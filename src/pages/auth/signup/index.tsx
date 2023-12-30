@@ -18,23 +18,19 @@ import GoogleIcon from "@/components/icons/google"
 import Button from "@/components/ui/button"
 import { InfoTag } from "@/components/ui/Info"
 import TextInput from "@/components/ui/textInput"
-interface FormErrors {
-  username: string
-  email: string
-  password: string
-}
 
 export default function SignUpPage() {
   const router = useRouter()
   const SignUpForm = () => {
     const [showPaswd, setShowPaswd] = useState(false)
+    const [currentFieldName, setCurrentFieldName] = useState("")
 
     const [formValues, setFormValues] = useState({
       username: "",
       email: "",
       password: "",
     })
-    const [errors, setErrors] = useState<FormErrors>({
+    const [errors, setErrors] = useState({
       username: "",
       email: "",
       password: "",
@@ -55,6 +51,7 @@ export default function SignUpPage() {
         password: "",
       })
       toast.info("Signing Up...")
+      setCurrentFieldName("")
       const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
         ...formValues,
       })
@@ -105,22 +102,19 @@ export default function SignUpPage() {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target
+      setCurrentFieldName(name as keyof typeof formValues) // Set the currently changing field
       setFormValues({ ...formValues, [name]: value })
     }
+
     useEffect(() => {
-      if (!(formValues.email == "" && formValues.password == "" && formValues.username == "")) {
+      if (currentFieldName) {
         const newErrors = validateForm()
-        if (Object.values(newErrors).some((error) => error !== "")) {
-          setErrors(newErrors)
-        } else {
-          setErrors({
-            username: "",
-            email: "",
-            password: "",
-          })
-        }
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [currentFieldName]: (newErrors as Allow)[currentFieldName],
+        }))
       }
-    }, [formValues.email, formValues.password, formValues.username])
+    }, [(formValues as Allow)[currentFieldName]])
     const validateForm = () => {
       const newErrors = { ...errors }
 
@@ -226,30 +220,6 @@ export default function SignUpPage() {
               />
             </div>
             <InfoTag />
-
-            {/* <div className="my-2 mt-6">*Confirm Password</div>
-            <div className="relative flex flex-row items-center">
-              <TextInput
-                type={showConfirmPaswd ? "text" : "password"}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                }}
-                value={confirmPassword}
-                className="bg-[#101014]"
-
-                name="password"
-                placeholder="*********"
-              // className="flex flex-row items-center w-full px-3 py-3 pr-12 text-sm border-2 border-transparent rounded-lg shadow-sm bg-gray_dull bg-user_interface_3 hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 "
-              />
-              <Image
-                width={2060}
-                height={2060}
-                alt={""}
-                onClick={() => setShowConfirmPaswd(!showConfirmPaswd)}
-                src={showPassword}
-                className="absolute right-[1rem] w-4 cursor-pointer"
-              />
-            </div> */}
 
             <Button
               type="submit"

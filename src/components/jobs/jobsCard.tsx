@@ -54,12 +54,12 @@ const UserImage = ({ href }: { href: string | null }) => (
 )
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
-  <div className="flex flex-col justify-center gap-1 text-center mx-auto">
+  <div className="flex flex-col justify-center gap-1 text-center mx-auto truncate">
     <div className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate">
       {title?.[0]?.toUpperCase() + title?.slice(1)}
     </div>
     {location.trim().length > 1 && (
-      <span className="flex flex-row items-center gap-2">
+      <span className="flex flex-row items-center gap-2 truncate">
         <MapPinIcon height="19" className=" h-[inherit] text-user_interface_6" />
         <span className="text-[15px] text-user_interface_6 font-medium">{location}</span>
       </span>
@@ -145,7 +145,6 @@ const Card: React.FC<JobCardProps> = ({
   chips,
   title,
   href,
-  remote,
   id,
   savedUsers,
   profileImage,

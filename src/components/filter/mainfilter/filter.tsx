@@ -3,6 +3,7 @@
 import React from "react"
 import clsx from "clsx"
 import DatePicker from "react-date-picker"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import { FilterDetail } from "@/interface/filter"
 
@@ -152,15 +153,16 @@ const Filter: React.FC<FilterDetail> = ({
             id={title}
           />
           {errorMessage ? (
-            <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+            <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+              <PiWarningCircleFill />
+              <div>{errorMessage}</div>
+            </span>
           ) : (
             <></>
           )}
         </>
       )}
       {inputType === "tags" && (
-        // Include the TagsInput component with the onTagsChange prop
-
         <TagsInput
           onTagsChange={handleTagsChange}
           id={title}

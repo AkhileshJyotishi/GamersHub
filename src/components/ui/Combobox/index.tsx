@@ -1,5 +1,6 @@
 import React, { ChangeEvent, Fragment, useState } from "react"
 import clsx from "clsx"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import { Combobox, Transition } from "@headlessui/react"
 
@@ -92,13 +93,7 @@ interface ComboboxWrapperProps {
   filteredOptions: Option[]
 }
 
-const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({
-  selected,
-  onChange,
-  query,
-  setQuery,
-  filteredOptions,
-}) => (
+const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({ query, setQuery, filteredOptions }) => (
   <div className="w-full overflow-hidden text-left rounded-lg shadow-md cursor-default ring-0 bg-user_interface_3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
     <ComboboxInput onChange={(event) => setQuery(event.target.value)} />
     <ComboboxButton />
@@ -122,12 +117,10 @@ interface CustomComboboxProps {
 }
 
 const CustomCombobox: React.FC<CustomComboboxProps> = ({
-  value,
   onChange,
   options,
   defaultSelected,
   className,
-  hidden,
   errorMessage,
 }) => {
   const [selected, setSelected] = useState<Option>(
@@ -162,7 +155,14 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
           setQuery={setQuery}
           filteredOptions={filteredOptions || []}
         />
-        {errorMessage && <span className="p-1 text-accent_red font-[10px]">{errorMessage}</span>}
+        {errorMessage ? (
+          <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+            <PiWarningCircleFill />
+            <div>{errorMessage}</div>
+          </span>
+        ) : (
+          <></>
+        )}
       </Combobox>
     </div>
   )

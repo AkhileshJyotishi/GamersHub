@@ -20,9 +20,7 @@ type albumType = {
 }
 const BannerImage = ({
   bannerImage,
-  setisCreateAlbumOpen,
   className,
-  setnewAlbum,
 }: {
   bannerImage: string | undefined
   className?: string

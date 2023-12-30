@@ -24,7 +24,9 @@ const RadioFilter: React.FC<RadioFilterProps> = ({ value, options, onChange, err
         ))}
       </div>
       {errorMessage ? (
-        <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
+        <span className="flex gap-1 items-center p-1 text-accent_red  font-[10px]">
+          <div>{errorMessage}</div>
+        </span>
       ) : (
         <></>
       )}

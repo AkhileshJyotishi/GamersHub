@@ -1,8 +1,7 @@
 import React from "react"
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import { GetServerSideProps } from "next"
 import Head from "next/head"
 
-import { getSession } from "@/lib/auth"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Particularpage from "@/components/particularPost"
@@ -21,7 +20,7 @@ const index = ({ profileData }: { profileData: IPostbackend }) => {
 
 export default index
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   const { slug } = query
 
