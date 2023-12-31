@@ -11,7 +11,7 @@ const Creators = ({ users }: { users: Creator[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Creators</title>
+        <title>GameCreators | Creators</title>
       </Head>
       <CreatorsPage creatorsData={users} />
     </>

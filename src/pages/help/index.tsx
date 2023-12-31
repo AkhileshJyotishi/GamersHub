@@ -10,7 +10,7 @@ const Index = ({ Categories }: { Categories: IFAQCategory[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Help</title>
+        <title>GameCreators | Help</title>
       </Head>
       <Helppage Categories={Categories} />
     </>

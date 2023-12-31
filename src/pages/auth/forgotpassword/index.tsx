@@ -37,7 +37,7 @@ const Forgotpassword = () => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Forgot</title>
+        <title>GameCreators | Forgot</title>
       </Head>
       <div className="w-full ">
         <h1 className="text-center text-[45px] font-[600]">Forgot your password?</h1>

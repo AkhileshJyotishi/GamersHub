@@ -12,7 +12,7 @@ const Sett = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Settings</title>
+        <title>GameCreators | Settings</title>
       </Head>
       <SettingsPage settingsDetails={settingsDetails} />
     </>

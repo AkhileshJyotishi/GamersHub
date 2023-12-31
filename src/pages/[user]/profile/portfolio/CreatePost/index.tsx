@@ -11,7 +11,7 @@ const index = ({ albums }: { albums: Allow }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | CreatePost</title>
+        <title>GameCreators | CreatePost</title>
       </Head>
       <CreatePortfolio albums={albums} />
     </>

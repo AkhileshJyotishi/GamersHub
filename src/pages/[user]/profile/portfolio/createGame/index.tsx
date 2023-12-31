@@ -7,7 +7,7 @@ const index = () => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | CreateGame</title>
+        <title>GameCreators | CreateGame</title>
       </Head>
 
       <CreateGame />

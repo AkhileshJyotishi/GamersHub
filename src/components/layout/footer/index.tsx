@@ -55,7 +55,11 @@ const sections: FooterSection[] = [
         text: "Instagram",
         target: "_blank",
       },
-      { href: "https://x.com/Gamecreatorsio?t=I8UCE8h7ziKBYJLrMN6loA&s=08", text: "Twitter", target: "_blank" },
+      {
+        href: "https://x.com/Gamecreatorsio?t=I8UCE8h7ziKBYJLrMN6loA&s=08",
+        text: "Twitter",
+        target: "_blank",
+      },
       { href: "https://www.facebook.com/gamecreators.io", text: "Facebook", target: "_blank" },
       { href: "mailto:Info@gamecreators.io", text: "Email", target: "_blank" },
     ],

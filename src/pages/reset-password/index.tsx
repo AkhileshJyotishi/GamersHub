@@ -55,7 +55,7 @@ const ResetPassword = () => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Reset</title>
+        <title>GameCreators | Reset</title>
       </Head>
       <div className="w-full ">
         <h1 className="text-center text-[45px] font-[600]">Reset password</h1>

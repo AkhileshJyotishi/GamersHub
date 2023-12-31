@@ -73,7 +73,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Home</title>
+        <title>GameCreators | Home</title>
       </Head>
       <Modal isOpen={verifyModal} onClose={() => setVerifyModal(false)} className="">
         <div className="bg-[#18181c] text-center text-[#bebec2] p-[15px] rounded-3xl flex flex-col gap-3">

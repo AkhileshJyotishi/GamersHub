@@ -31,7 +31,7 @@ const SocialIcon = ({
           url={window.location.href}
           className="p-[10px] bg-user_interface_4 rounded-full"
           title={title}
-          hashtag="#GameCreatorsHub"
+          hashtag="#GameCreators.io"
         >
           <FaceBookIcon className="w-6 h-6 fill-text" />{" "}
         </FacebookShareButton>
@@ -92,7 +92,7 @@ const SocialIcon = ({
         <meta property="og:image" itemProp="image" content={image} />
         <meta content="image/*" property="og:image:type" />
         <meta property="og:url" content={window.location.href} />
-        <meta property="og:site_name" content="GameCreatorsHub" />
+        <meta property="og:site_name" content="GameCreators" />
         <meta property="og:description" content={description} />
       </Head>
       <div className="flex flex-row flex-wrap gap-[35px] mt-4 justify-center">

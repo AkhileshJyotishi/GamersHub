@@ -131,7 +131,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
                   {
                     <Share
                       description="description to the job post"
-                      hashtag="#GameCreatorsHub"
+                      hashtag="#GameCreators.io"
                       image={logoSrc || window.location.href}
                       title={title}
                       key={Math.random() * 100}

@@ -147,7 +147,7 @@ export default function SignUpPage() {
     return (
       <>
         <Head>
-          <title>GameCreatorsHub | SignUp</title>
+          <title>GameCreators | SignUp</title>
         </Head>
         <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-3  flex-col items-start mt-12 lg:w-[40rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto my-10 rounded-xl">
           {/* <p>Step  1 of 2</p> */}
@@ -166,7 +166,7 @@ export default function SignUpPage() {
               router.push("/")
             }}
             height={30}
-            alt="Game Creators Hub"
+            alt=""
             className="my-2 cursor-pointer"
           />
           <h1 className="font-medium text-[2rem] mb-[10px] lg:px-9 lg:py-2">Sign Up</h1>

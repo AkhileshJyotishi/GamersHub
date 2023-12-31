@@ -12,7 +12,7 @@ const Games = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame[] }) =>
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Games</title>
+        <title>GameCreators |Games</title>
       </Head>
       <GamesPage gameDetails={parsedgamesDetails} />
     </>

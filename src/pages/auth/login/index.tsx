@@ -124,7 +124,7 @@ const LoginPage = () => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Login</title>
+        <title>GameCreators | Login</title>
       </Head>
       <div className="text-text text-[16px] bg-user_interface_2  shadow-secondary flex p-5  flex-col items-start mt-12 lg:w-[29rem] w-11/12 sm:w-5/6 md:w-2/3 mx-auto mb-6 rounded-xl">
         <div className="w-full">

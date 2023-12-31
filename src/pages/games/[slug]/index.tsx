@@ -19,7 +19,7 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | {title}</title>
+        <title>GameCreators | {title}</title>
       </Head>
       <div
         className={clsx(

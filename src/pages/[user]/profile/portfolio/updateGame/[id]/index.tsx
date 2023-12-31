@@ -13,7 +13,7 @@ const index = (game: Allow) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub |Games</title>
+        <title>GameCreators |Games</title>
       </Head>
       <CreateGame game={game.game} />
     </>

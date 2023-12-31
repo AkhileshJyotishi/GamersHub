@@ -9,7 +9,10 @@ export const InfoTag = () => {
       <p className="mt-[6px] text-[#707074]  text-[10px]">
         {" "}
         *By signing up you are adhereing with the{" "}
-        <Link href={"/TnC"} className="text-secondary hover:underline cursor-pointer">
+        <Link
+          href={"/terms-and-conditions"}
+          className="text-secondary hover:underline cursor-pointer"
+        >
           Terms and Service
         </Link>{" "}
         of platform

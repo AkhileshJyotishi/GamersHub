@@ -55,13 +55,13 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     {
       name: "linkedin",
       icon: <LinkedInIcon className="w-6 h-6 " />,
-      placeholder: "https://linkedin.com/in/gamecreatorshub",
+      placeholder: "https://linkedin.com/in/GameCreators",
       error: errors.linkedin,
     },
     {
       name: "twitter",
       icon: <TwitterIcon className="w-6 h-6" />,
-      placeholder: "https://twitter.com/gamecreatorshub",
+      placeholder: "https://twitter.com/GameCreators",
       error: errors.twitter,
     },
     {

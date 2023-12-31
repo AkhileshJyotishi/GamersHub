@@ -12,7 +12,7 @@ const Jobs = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
       <Head>
-        <title>GameCreatorsHub | Jobs</title>
+        <title>GameCreators | Jobs</title>
       </Head>
       <JobsPage jobs={jobs} />
     </>

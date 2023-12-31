@@ -9,21 +9,14 @@ import { useSession } from "next-auth/react"
 
 import logoblackbg from "@/assets/image/logo-black-bg.png"
 import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
-// import logo from "@/assets/image/logo-with-text.svg"
-// import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
 
-// import { shimmer, toBase64 } from "@/utils/functions"
-// import MailIcon from "@/components/icons/mail"
-// import ProfileImage from "@/components/profile/profileImage"
 import ProfileBannerImage from "@/components/profile/profileImage"
-// import ProfileSettingsCard from "@/components/profile/profileSettingsCard"
 import Button from "@/components/ui/button"
 import ModalComponent from "@/components/ui/ConfirmationModal"
 import LoginModal from "@/components/ui/login"
 import RegisterModal from "@/components/ui/register"
 
-// import Search from "../../mainsearch/index"
 import NavbarLink from "./NavbarLink"
 import Sidemenu from "./sidemenu3"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
@@ -89,7 +82,6 @@ const AuthButtons = ({
 
 const LoggedInUserButtons = ({ userSession, userData }: Props) => {
   const [showProfileSettings, setShowProfileSettings] = useState(false)
-  // const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
 
   return (
     <>
