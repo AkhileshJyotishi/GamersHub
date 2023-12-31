@@ -39,7 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
             <LoadingOverlay />
             <Header />
             <main
-              className={clsx("", className, " bg-background min-h-[539px]")}
+              className={clsx("", className, " bg-background min-h-[539px] max-w-[2000px] mx-auto")}
               style={{ zIndex: 16 }}
             >
               {children}

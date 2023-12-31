@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "clsx"
 
-import MyListbox from "../ui/listbox"
+import MyListbox from "@/components/ui/listbox"
 
 type Tab = {
   params: {
@@ -25,7 +25,6 @@ type SidebarProps = {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ navigator, setActiveTab, activeTab, className }) => {
-  // console.log(navigator?.tabs["DeleteAccount"]?.params?.className)
   const people = Object.keys(navigator?.tabs ?? {})?.map((val) => val)
   return (
     <>
@@ -38,8 +37,10 @@ const Sidebar: React.FC<SidebarProps> = ({ navigator, setActiveTab, activeTab, c
               `text-center p-2 cursor-pointer items-center truncate ${
                 activeTab === tab
                   ? `${
-                      activeTab === "DeleteAccount" ? "" : "bg-secondary"
-                    } text-background rounded-xl`
+                      activeTab === "DeleteAccount"
+                        ? ""
+                        : "border-l-[4px] border-secondary text-secondary"
+                    }  rounded-xl`
                   : ""
               }`,
               navigator?.tabs[tab]?.params?.className

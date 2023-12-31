@@ -1,11 +1,37 @@
 import React, { useState } from "react"
+// import Socials from "./SocialProfile"
+import dynamic from "next/dynamic"
 
-import EditProfilePage from "./EditProfile/index"
-import DeleteAccount from "./DeleteAccount"
-import Error from "./Error"
-import Password from "./Password"
-import Sidebar from "./sidebar"
-import Socials from "./SocialProfile"
+// import EditProfilePage from "./EditProfile/index"
+// import DeleteAccount from "./DeleteAccount"
+// import Error from "./Error"
+// import Password from "./Password"
+import Sidebar from "@/components/ui/Sidebar"
+const EditProfilePage = dynamic(() => import("@/components/settings/EditProfile"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const DeleteAccount = dynamic(() => import("@/components/settings/DeleteAccount"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Error = dynamic(() => import("@/components/settings/Error"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Password = dynamic(() => import("@/components/settings/Password"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Socials = dynamic(() => import("@/components/settings/SocialProfile"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 type SidebarNavigator = {
   tabs: { [key: string]: Tab }
   initialRouteName: string

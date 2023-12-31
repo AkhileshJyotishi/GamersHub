@@ -432,12 +432,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                       hide ? "hidden" : ""
                     )}
                     errorMessage={filter.errorMessage}
-                    // hidden={filter.hidden}
                   />
                 )
               })}
-
-              <>{/* {JSON.stringify(jobInfo)} */}</>
             </div>
           </div>
         </div>
