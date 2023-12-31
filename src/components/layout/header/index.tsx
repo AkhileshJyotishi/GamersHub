@@ -10,11 +10,11 @@ import { useSession } from "next-auth/react"
 import logoblackbg from "@/assets/image/logo-black-bg.png"
 import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
 // import logo from "@/assets/image/logo-with-text.svg"
-import BellSVG from "@/assets/svg/bell.svg"
+// import BellSVG from "@/assets/svg/bell.svg"
 import { useUserContext } from "@/providers/user-context"
 
 // import { shimmer, toBase64 } from "@/utils/functions"
-import MailIcon from "@/components/icons/mail"
+// import MailIcon from "@/components/icons/mail"
 // import ProfileImage from "@/components/profile/profileImage"
 import ProfileBannerImage from "@/components/profile/profileImage"
 // import ProfileSettingsCard from "@/components/profile/profileSettingsCard"
@@ -25,7 +25,7 @@ import RegisterModal from "@/components/ui/register"
 
 // import Search from "../../mainsearch/index"
 import NavbarLink from "./NavbarLink"
-import { Example } from "./sidemenu2"
+import Sidemenu from "./sidemenu3"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">
@@ -94,7 +94,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
   return (
     <>
       <div className="relative flex flex-row  items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit ">
-        <div className="relative w-fit">
+        {/* <div className="relative w-fit">
           <Image
             className="w-[18px] cursor-pointer mt-[5px]"
             src={BellSVG}
@@ -102,15 +102,12 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
             width={18}
             height={21}
           />
-        </div>
-        <Button
+        </div> */}
+        {/* <Button
           className="block w-[18px] h-[18px]"
-          // onClick={() => {
-          //   router.push("/inbox")
-          // }}
         >
           <MailIcon className="" fill="#fff" />
-        </Button>
+        </Button> */}
 
         <div className="group w-[20px] h-[20px] ">
           <ProfileBannerImage
@@ -136,12 +133,9 @@ export default function Navbar() {
     setIsRegisterModalOpen,
     isRegisterModalOpen,
     isLoginModalOpen,
-    isOpen,
-    toggleOpen,
+    setIsDrawerOpen,
     tap,
     setTap,
-    containerRef,
-    // handleLogout,
     userSession,
     userData,
   } = useUserContext()
@@ -159,7 +153,7 @@ export default function Navbar() {
       <ModalComponent />
       <nav
         className={clsx(
-          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] backdrop-blur px-8 xl:px-28",
+          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] backdrop-blur px-8 xl:pl-28",
           !tap ? "z-20" : "z-0"
         )}
       >
@@ -221,11 +215,8 @@ export default function Navbar() {
           <Button
             className="z-40 flex flex-col gap-1 mt-1 cursor-pointer xl:hidden"
             onClick={() => {
-              if (!isOpen && containerRef.current) {
-                containerRef.current.style.display = "block" // Set display back to block when the "Toggle" button is clicked
-              }
+              setIsDrawerOpen(true)
               setTap(!tap)
-              toggleOpen()
             }}
           >
             <div
@@ -246,8 +237,8 @@ export default function Navbar() {
           </Button>
         </div>
       </nav>
-
-      <Example />
+      <Sidemenu />
+      {/* <Example /> */}
     </>
   )
 }

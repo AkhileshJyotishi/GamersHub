@@ -224,7 +224,7 @@ export default function SignUpPage() {
             <Button
               type="submit"
               // variant="primary"
-              className="mt-14  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
+              className="mt-10  text-light  ml-auto bg-secondary  px-[30px] py-[10px] font-medium mb-[1.8em] rounded-xl"
             >
               Create account
             </Button>
