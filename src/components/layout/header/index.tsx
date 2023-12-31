@@ -85,7 +85,7 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
 
   return (
     <>
-      <div className="relative flex flex-row  items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit ">
+      <div className="relative flex flex-row items-center gap-2 sm:gap-4 md:flex xl:gap-10 w-fit ">
         {/* <div className="relative w-fit">
           <Image
             className="w-[18px] cursor-pointer mt-[5px]"
@@ -194,6 +194,7 @@ export default function Navbar() {
           <NavbarLink label="Creators" href="/creator" />
           <NavbarLink label="Games" href="/games" />
           <NavbarLink label="Help" href="/help" />
+          <NavbarLink label="About Us" href="/about-us" />
 
           {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
 

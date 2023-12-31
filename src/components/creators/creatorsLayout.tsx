@@ -112,7 +112,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
       />
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
-        <div className="flex flex-col items-center justify-between sm:flex-row">
+        {/* <div className="flex flex-col items-center justify-between sm:flex-row">
           {
             <Button
               onClick={() => {
@@ -129,7 +129,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
           }
-        </div>
+        </div> */}
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">
         <Button

@@ -56,14 +56,15 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
       value: gamesFilters.platform,
       onChange: (value) => setGamesFilter({ ...gamesFilters, platform: value as string }),
       selectOptions: [
-        ...(gamePlatformsSuggestions ?? []).map((s) => ({
-          label: s,
-          value: s,
-        })),
         {
           label: "Select platform",
           value: "",
         },
+        ...(gamePlatformsSuggestions ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+       
       ],
     },
     {

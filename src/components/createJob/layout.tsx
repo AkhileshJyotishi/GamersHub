@@ -54,6 +54,13 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     setCity(cityList!)
     return cityList!
   }
+  const [dimensions, setdimensions] = useState<{
+    height: number | null
+    width: number | null
+  }>({
+    height: null,
+    width: null,
+  })
   const handleInputChange = <K extends keyof JobInfo>(field: K, value: JobInfo[K]) => {
     // Validation logic based on the field
     switch (field) {
@@ -80,7 +87,66 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           setJobInfo((prevState) => ({ ...prevState, jobType: value as string }))
         }
         break
+      case "banner":
+        if (value instanceof File) {
+          // Your validation logic for banner (File type)
+          // Check file size
+          // value.
+          // console.log("banner working")
+          const maxSizeInBytes = 1024 * 1024 // 1MB
+          // console.log(value.size, maxSizeInBytes)
+          if (value.size > maxSizeInBytes) {
+            // console.log("errors")
+            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
+            return // Stop further processing
+          } else {
+            setErrors((prev) => ({ ...prev, banner: null }))
+          }
 
+          // Create an image element to check dimensions
+          const img = new Image()
+          img.src = URL.createObjectURL(value)
+
+          // Check image dimensions
+          img.onload = () => {
+            const maxWidth = 1920
+            const maxHeight = 1080
+            const minWidth = 640
+            const minHeight = 320
+
+            if (img.naturalWidth > maxWidth || img.naturalHeight > maxHeight) {
+              // console.log(img.width, maxWidth)
+              // console.log(img.height, maxHeight)
+              setErrors((prev) => ({
+                ...prev,
+
+                banner: `Cover dimensions needs to be ${maxWidth}p - ${maxHeight}p or smaller`,
+              }))
+            } else if (img.naturalWidth < minWidth || img.naturalHeight < minHeight) {
+              // console.log(img.width, minWidth)
+              // console.log(img.height, minHeight)
+              setErrors((prev) => ({
+                ...prev,
+                banner: `Cover dimensions needs to be ${minWidth}p - ${minHeight}p or larger`,
+              }))
+            } else {
+              setErrors((prev) => ({ ...prev, banner: null }))
+              // Proceed with setting the banner if all checks pass
+            }
+            setdimensions({
+              height: img.naturalHeight,
+              width: img.naturalWidth,
+            })
+            setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
+          }
+
+          // Handle image loading error
+          img.onerror = () => {
+            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
+          }
+          setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
+        }
+        break
       case "remote":
         setJobInfo({
           ...jobInfo,
@@ -152,7 +218,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           if (value.length == 0) {
             setErrors((prev) => ({ ...prev, jobSoftwares: "*required" }))
           } else if (value.length >= 11) {
-            setErrors((prev) => ({ ...prev, jobSoftwares: "*too many chosen" }))
+            setErrors((prev) => ({ ...prev, jobSoftwares: "*maximum 11 can  be selected" }))
           } else {
             setErrors((prev) => ({ ...prev, jobSoftwares: "" }))
           }
@@ -337,7 +403,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       accept: "image/*",
       multiple: false,
       value: null,
-      onChange: (value) => setJobInfo((prevState) => ({ ...prevState, banner: value as File })),
+      onChange: (value) => handleInputChange("banner", value as File),
       className: "",
       // errorMessage:errors.country
     },
@@ -403,15 +469,15 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 style={{ zIndex: 19 }}
                 onClick={() => uploadJob()}
               >
-                Upload Job
+                Post Job
               </Button>
             </div>
             <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
-                ;(filter.title == "City" || filter.title == "Country") &&
-                  jobInfo.remote &&
-                  (hide = true)
+                  ; (filter.title == "City" || filter.title == "Country") &&
+                    jobInfo.remote &&
+                    (hide = true)
                 filter.title == "Payment Amount" &&
                   jobInfo.paymentType == "NEGOTIABLE" &&
                   (hide = true)
@@ -431,6 +497,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                       "flex flex-col items-start gap-[10px] text-[14px]",
                       hide ? "hidden" : ""
                     )}
+                    dimensionsImage={dimensions}
                     errorMessage={filter.errorMessage}
                   />
                 )

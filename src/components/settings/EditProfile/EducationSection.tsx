@@ -64,6 +64,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                   selectOptions={field.selectOptions}
                   className={field.className || ""}
                   Variant="flex-col w-full flex"
+                  errorMessage={field.errorMessage}
                 />
               </div>
             </>

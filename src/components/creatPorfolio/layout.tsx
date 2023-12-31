@@ -60,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({
         if (typeof value === "string") {
           if (value === "") {
             setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else if (value.length > 11) {
+          } else if (value.length > 60) {
             setErrors((prev) => ({ ...prev, [field]: "*field too long" }))
           } else {
             setErrors((prev) => ({ ...prev, [field]: null }))
@@ -95,27 +95,27 @@ const Layout: React.FC<LayoutProps> = ({
             const minWidth = 640
             const minHeight = 320
 
-            if (img.width > maxWidth || img.height > maxHeight) {
+            if (img.naturalWidth > maxWidth || img.naturalHeight > maxHeight) {
               // console.log(img.width, maxWidth)
               // console.log(img.height, maxHeight)
               setErrors((prev) => ({
                 ...prev,
-                banner: `Image dimensions must be ${maxWidth}x${maxHeight} or smaller`,
+                banner: `Cover dimensions needs to be ${maxWidth}p - ${maxHeight}p or smaller`,
               }))
             } else if (img.width < minWidth || img.height < minHeight) {
               // console.log(img.width, minWidth)
               // console.log(img.height, minHeight)
               setErrors((prev) => ({
                 ...prev,
-                banner: `Image dimensions must be ${minWidth}x${minHeight} or larger`,
+                banner: `Cover dimensions needs be ${minWidth}p - ${minHeight}p or larger`,
               }))
             } else {
               setErrors((prev) => ({ ...prev, banner: null }))
               // Proceed with setting the banner if all checks pass
             }
             setdimensions({
-              height: img.height,
-              width: img.width,
+              height: img.naturalHeight,
+              width: img.naturalWidth,
             })
             setFiltersState((prevState) => ({ ...prevState, [field]: value as File }))
           }
@@ -222,7 +222,7 @@ const Layout: React.FC<LayoutProps> = ({
 
     {
       inputType: "file",
-      title: "Upload File",
+      title: "Post Cover",
       accept: "image/*", // Define accepted file types
       multiple: true, // Set to true if you want to allow multiple file selection
       value: filtersState.banner as string, // Initialize with null

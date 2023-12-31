@@ -105,7 +105,8 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
 
       toast.success(res?.message)
       setFiltersState(initState)
-      localStorage.removeItem(isUpdate ? "noval_content_update" : "noval_content")
+      const val=isUpdate ? "noval_content_update" : "noval_content"
+      localStorage.setItem(val,"")
     }
     setLoading(false)
     router.push("/")
@@ -120,7 +121,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       isUpdate={isUpdate}
     >
       {/* Render the filterDetails here */}
-      <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[67vw]">
+      <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[69vw]">
         <h1 className="text-[22px] mt-4 font-semibold">Content</h1>
         <Editor
           className={"bg-user_interface_2  rounded-xl min-h-[80vh]  "}

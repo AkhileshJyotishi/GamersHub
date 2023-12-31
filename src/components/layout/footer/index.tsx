@@ -69,6 +69,7 @@ const sections: FooterSection[] = [
     links: [
       { href: "/privacy-policy", text: "Privacy Policy", target: "_self" },
       { href: "/terms-and-conditions", text: "Terms of Service", target: "_self" },
+      { href: "/GPDR", text: "GPDR policy", target: "_self" },
     ],
   },
   {

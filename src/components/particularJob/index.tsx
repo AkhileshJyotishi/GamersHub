@@ -32,6 +32,7 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
           height={500}
           width={900}
           className="h-[490px] absolute w-full bg-cover  bg-no-repeat bg-top"
+          fetchPriority="high"
         />
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
         <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>

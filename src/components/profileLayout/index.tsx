@@ -55,7 +55,8 @@ const ProfileLayout = ({
   const param = useParams()
 
   useEffect(() => {
-    if (userData?.id) {
+    // userData?.id
+    if (router.query.user) {
       const loaddata = async () => {
         if (router.query.user) {
           const users = await fetchWithoutAuthorization(
@@ -65,7 +66,11 @@ const ProfileLayout = ({
           if (users?.error) {
             router.replace(`/?emessage=Please Authenticate`)
           } else {
+            // console.log("router ",)
+            let x=router.pathname.split("/")
             setData(users?.data?.user)
+            setActiveTab(x[x.length-1])
+            
           }
         }
       }

@@ -200,11 +200,11 @@ const BannerImage = ({
               </>
             </div>
 
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
           </div>
         )}
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
     </div>
   )

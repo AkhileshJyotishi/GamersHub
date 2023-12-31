@@ -47,12 +47,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         <>
           {filterdetailarray?.detail?.map((field, index) => (
             <>
+            {
+              !(( field.title === "Ending Date") && experience[idx].presentWorking) &&
               <div
                 key={index}
-                className={`flex items-center p-2 md:gap-8 w-full ${
-                  field.inputType == "date" ? "sm:w-[50%]" : ""
-                }`}
+                className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
+                  }`}
               >
+               
                 <Filter
                   key={index}
                   inputType={field.inputType}
@@ -63,8 +65,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   selectOptions={field.selectOptions}
                   className={field.className || ""}
                   Variant="flex-col w-full flex"
+                  errorMessage={field.errorMessage}
                 />
               </div>
+            }
             </>
           ))}
 

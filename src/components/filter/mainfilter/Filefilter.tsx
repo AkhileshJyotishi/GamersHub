@@ -147,7 +147,7 @@ const FileFilter: React.FC<FileInputProps> = ({
 
         {fullscreenImage != null && (
           <div
-            className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center w-screen h-screen p-4 bg-black bg-opacity-20 backdrop-blur-lg"
+            className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center p-4 bg-black bg-opacity-20 backdrop-blur-lg"
             style={{ zIndex: 9999 }}
           >
             <div
@@ -176,9 +176,7 @@ const FileFilter: React.FC<FileInputProps> = ({
 
         {errorMessage ? (
           <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
     </>
   )

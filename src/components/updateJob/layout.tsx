@@ -250,7 +250,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
                 className="z-30 justify-center p-2 mx-auto rounded-md bg-secondary"
                 onClick={() => uploadJob()}
               >
-                Upload Job
+                Update Job
               </Button>
             </div>
             <div className="h-fit md:h-[74vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">

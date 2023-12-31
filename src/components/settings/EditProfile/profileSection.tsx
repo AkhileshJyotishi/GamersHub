@@ -18,7 +18,7 @@ interface ProfileSectionProps {
     city: string | null | undefined
     userSkills: IuserSkill[] | string[] | undefined
     userSoftwares: IuserSoftware[] | undefined | string[]
-    profileImage: string | undefined
+    profileImage: string | undefined |File
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
@@ -56,6 +56,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               Variant={"flex-col  w-full flex "}
               initialtags={filter.initialtags}
               onTagsChange={filter.onTagsChange}
+              errorMessage={filter.errorMessage}
+              dimensionsImage={filter.dimensionsImage}
             />
           </div>
         </>
