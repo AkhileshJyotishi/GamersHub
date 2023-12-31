@@ -91,7 +91,7 @@ const HelpLayout: React.FC<SettingsLayoutProps> = ({ HelpCategories }) => {
           bannerText={
             <>
               <div>Ask questions, Find answers and Contact us</div>
-              <div className="mx-auto w-[40vw] flex items-center justify-between gap-4">
+              <div className="mx-auto sm:60vw md:w-[40vw] flex items-center justify-between gap-4 md:flex-row flex-col">
                 <Filter
                   key={"input"}
                   inputType={"text"}

@@ -49,7 +49,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
   const filterArray2: FilterDetail[] = [
     {
       inputType: "text",
-      title: "skills of professtionals",
+      title: "Skills of professionals",
       placeholder: "3D sfx voice over",
       value: creatorsFilters?.skills,
       onChange: (value) => setCreatorsFilter({ ...creatorsFilters, skills: value as string }),
