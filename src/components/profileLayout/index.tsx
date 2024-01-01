@@ -36,6 +36,16 @@ interface User {
   profileImage: string
   socials: Isocials
 }
+/**
+ * Renders the profile page layout, including the profile card, banner image, profile accordion, and tabs for different sections of the profile.
+ * Handles the creation and editing of albums.
+ *
+ * @param children - React node representing the content of the profile page.
+ * @param page - React JSX element representing the content of the profile page.
+ * @param id - Number representing the user ID.
+ *
+ * @returns The rendered profile page layout with the profile card, banner image, profile accordion, and tabs for different sections of the profile.
+ */
 const ProfileLayout = ({
   children,
 }: {

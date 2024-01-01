@@ -11,16 +11,7 @@ interface Props {
   className: string
 }
 
-// auth_user,
 
-// jobs: defaultJobs,
-// jobsMeta: defaultJobsMeta,
-
-// className:string
-
-// seo,
-// defaultAndFilter,
-// defaultPageSize,
 interface filterprops {
   // Function to clear the applied filters
   clearFilters?: () => void

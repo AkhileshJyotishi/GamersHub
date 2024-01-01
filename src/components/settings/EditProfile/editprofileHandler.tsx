@@ -273,7 +273,15 @@ export const uploadUserExperience = async (
 
   return response?.data
 }
-
+/**
+   * Uploads profile data to a server.
+   *
+   * @param {Object} profileData - An object containing profile details such as user bio, country, city, user skills, user softwares, and profile image.
+   * @param {string} token - The authentication token.
+   * @param {string} method - The HTTP method to be used for the API request.
+   * @param {function} setProfileFilled - A function to set the state indicating whether the profile is filled or not.
+   * @returns {Promise<Object>} - The response from the server if the request is successful. Otherwise, an error object with the error message and null data.
+   */
 export const uploadProfileData = async (
   profileData:
     | {
