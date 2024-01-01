@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import defaultbannerImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
+import ArtstationIcon from "@/components/icons/artstatio"
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
 import GitHubIcon from "@/components/icons/github"
@@ -212,13 +213,7 @@ export default function ProfileCard({
                   target="_blank"
                   href={"currentUser?.add_on_web?.artstation"}
                 >
-                  <Image
-                    src="/assets/icons/artstation.svg"
-                    alt=""
-                    width={50}
-                    height={50}
-                    className="w-10 h-10 mt-[-0.5rem] "
-                  />
+                  <ArtstationIcon className="w-6 h-6" />
                 </Link>
               )}
 

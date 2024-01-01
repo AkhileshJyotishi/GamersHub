@@ -61,7 +61,7 @@ const sections: FooterSection[] = [
         target: "_blank",
       },
       { href: "https://www.facebook.com/gamecreators.io", text: "Facebook", target: "_blank" },
-      { href: "mailto:Info@gamecreators.io", text: "Email", target: "_blank" },
+      { href: "mailto:info@gamecreators.io", text: "Email", target: "_blank" },
     ],
   },
   {

@@ -2,7 +2,8 @@
 
 import React from "react"
 import clsx from "clsx"
-import DatePicker from "react-date-picker"
+import dynamic from "next/dynamic"
+// import DatePicker from "react-date-picker"
 import { PiWarningCircleFill } from "react-icons/pi"
 
 import { FilterDetail } from "@/interface/filter"
@@ -18,7 +19,9 @@ import RadioFilter from "./radiofilter"
 // import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
-
+const DatePicker = dynamic(() => import("react-date-picker"), {
+  ssr: false,
+})
 const Filter: React.FC<FilterDetail> = ({
   title,
   placeholder,

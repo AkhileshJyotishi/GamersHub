@@ -7,6 +7,7 @@ import sample from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 import { shimmer, toBase64 } from "@/utils/functions"
 
+import ArtstationIcon from "@/components/icons/artstatio"
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
 import GitHubIcon from "@/components/icons/github"
@@ -19,6 +20,7 @@ import PlusIcon from "@/components/icons/plus"
 import TwitterIcon from "@/components/icons/twitter"
 import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
+
 interface User {
   id: number
   createdAt: string
@@ -220,13 +222,7 @@ export default function ProfileAccordion({
                       target="_blank"
                       href={"currentUser?.add_on_web?.artstation"}
                     >
-                      <Image
-                        src="/assets/icons/artstation.svg"
-                        alt=""
-                        width={50}
-                        height={50}
-                        className="w-10 h-10 mt-[-0.5rem] "
-                      />
+                      <ArtstationIcon className="w-6 h-6" />
                     </Link>
                   )}
 

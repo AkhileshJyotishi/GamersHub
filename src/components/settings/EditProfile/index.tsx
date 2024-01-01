@@ -369,7 +369,7 @@ const EditProfilePage = ({
     id: exp.id,
     detail: [
       {
-        title: `Company Name ${index + 1}`,
+        title: `Company Name `,
         inputType: "text",
         placeholder: "Eg: Epic games, Ubisoft",
         value: exp.company,
@@ -426,7 +426,7 @@ const EditProfilePage = ({
   }))
   const newExperienceArray: Array<FilterDetail[]> = newExperience?.map((exp, index) => [
     {
-      title: `Company Name ${experience.length + index + 1}`,
+      title: `Company Name`,
       inputType: "text",
       placeholder: "Eg: Epic games, Ubisoft",
       value: exp.company,
@@ -487,7 +487,7 @@ const EditProfilePage = ({
     id: edu.id,
     detail: [
       {
-        title: `Institution Name ${index + 1}`,
+        title: `Institution Name `,
         inputType: "text",
         placeholder: "Eg: Stanford University, Harvard University",
         value: edu.university || "",
@@ -541,7 +541,7 @@ const EditProfilePage = ({
 
   const newEducationArray: Array<FilterDetail[]> = newEducation?.map((edu, index) => [
     {
-      title: `Institution Name ${index + 1}`,
+      title: `Institution Name `,
       inputType: "text",
       placeholder: "Eg: Stanford University, Harvard University",
       value: edu.university || "",

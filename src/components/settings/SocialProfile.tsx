@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import clsx from "clsx"
-import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import { Errors } from "@/interface/filter"
 import { fetchData, isValidURL } from "@/utils/functions"
 
+import ArtstationIcon from "@/components/icons/artstatio"
 import FaceBookIcon from "@/components/icons/facebook"
 import GitHubIcon from "@/components/icons/github"
 import GlobeIcon from "@/components/icons/globe"
@@ -72,15 +72,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     },
     {
       name: "artstation",
-      icon: (
-        <Image
-          src="/assets/icons/artstation.svg"
-          alt="Artstation"
-          width={50}
-          height={50}
-          className="w-10 h-10 m-[-0.7rem]"
-        />
-      ),
+      icon: <ArtstationIcon className="w-6 h-6 text-secondary_2" />,
       placeholder: "https://artstation.com/yourprofile",
       error: errors.artstation,
     },
