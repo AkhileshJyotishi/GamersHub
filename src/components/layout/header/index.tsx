@@ -108,9 +108,15 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
             }}
           />
           <ProfileSettingsCard
-            className={`scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] -right-7 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`}
+            className={clsx(
+              `scale-0 origin-top-right   -right-7 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`,
+              showProfileSettings && "scale-100 top-[140%]"
+            )}
             authUser={userSession}
             userData={userData}
+            onClose={() => {
+              setShowProfileSettings(!setShowProfileSettings)
+            }}
           />
         </div>
       </div>
@@ -187,6 +193,8 @@ export default function Navbar() {
           <NavbarLink label="Jobs" href="/jobs" />
           <NavbarLink label="Creators" href="/creator" />
           <NavbarLink label="Games" href="/games" />
+          <NavbarLink label="Help" href="/help" />
+
           {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
 
           {userSession && <NavbarLink label="Assets" href="/help" />}
