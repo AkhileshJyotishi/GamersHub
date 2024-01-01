@@ -70,6 +70,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
     toast.success(res?.message)
   }
 
+  
   return (
     <>
       <Head>
@@ -88,7 +89,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
               src={logotextblackbg}
               width={200}
               height={25}
-              alt="Game Creators Hub"
+              alt=""
               onClick={() => {
                 router.push("/")
                 setVerifyMail("")

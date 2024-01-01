@@ -46,7 +46,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
             router.push("/")
           }}
           height={25}
-          alt="Game Creators Hub"
+          alt=""
           className="mx-auto cursor-pointer"
         />
 

@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react"
 import logoblackbg from "@/assets/image/logo-black-bg.png"
 import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
 import { useUserContext } from "@/providers/user-context"
-
+import defaultUserImage from "@/assets/image/user-profile.svg"
 import ProfileBannerImage from "@/components/profile/profileImage"
 import Button from "@/components/ui/button"
 import ModalComponent from "@/components/ui/ConfirmationModal"
@@ -19,6 +19,7 @@ import RegisterModal from "@/components/ui/register"
 
 import NavbarLink from "./NavbarLink"
 import Sidemenu from "./sidemenu3"
+import { shimmer, toBase64 } from "@/utils/functions"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">
@@ -46,6 +47,20 @@ interface Props {
   userData: Iuser | null
 }
 
+const UserImage = ({ href,onClick }: { href?: string | null, onClick?: React.MouseEventHandler<HTMLImageElement> | undefined }) => (
+  <div className="cursor-pointer" onClick={onClick}>
+    <Image
+      width={100}
+      height={100}
+      alt={""}
+      className="  rounded-full "
+      src={(href || defaultUserImage)??defaultUserImage}
+      priority
+      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+
+    />
+  </div>
+)
 const AuthButtons = ({
   className,
   setIsLoginModalOpen,
@@ -101,12 +116,15 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
           <MailIcon className="" fill="#fff" />
         </Button> */}
 
-        <div className="group w-[20px] h-[20px] ">
-          <ProfileBannerImage
+        <div className="group w-[36px] h-[36px] ">
+          <UserImage href={userData?.profileImage}   onClick={() => {
+              setShowProfileSettings(!showProfileSettings)
+            }} />
+          {/* <ProfileBannerImage
             onClick={() => {
               setShowProfileSettings(!showProfileSettings)
             }}
-          />
+          /> */}
           <ProfileSettingsCard
             className={clsx(
               `scale-0 origin-top-right   -right-7 sm:right-0 w-[95vw] sm:w-auto min-w-[250px] ease-in duration-200  absolute top-[100%] z-50 max-w-[170px]`,
@@ -151,7 +169,7 @@ export default function Navbar() {
       <ModalComponent />
       <nav
         className={clsx(
-          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] backdrop-blur px-8 xl:pl-28",
+          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] bg-background px-8 xl:pl-28",
           !tap ? "z-20" : "z-0"
         )}
       >
@@ -193,10 +211,9 @@ export default function Navbar() {
           <NavbarLink label="Jobs" href="/jobs" />
           <NavbarLink label="Creators" href="/creator" />
           <NavbarLink label="Games" href="/games" />
-          <NavbarLink label="Help" href="/help" />
           <NavbarLink label="About Us" href="/about-us" />
 
-          {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />}
+          {/* {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />} */}
 
           {userSession && <NavbarLink label="Assets" href="/help" />}
         </div>
