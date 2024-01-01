@@ -1,8 +1,11 @@
 import { toast } from "react-toastify"
 
 import { fetchData, fetchFile } from "@/utils/functions"
+import { NextRouter } from "next/router"
 
 export const uploadUserEducation = async (
+  router: NextRouter,
+  userId: number,
   userEducation: IuserEducation,
   token: string,
   initialUserEducation = {
@@ -42,6 +45,7 @@ export const uploadUserEducation = async (
     toast.error(response?.message)
   } else {
     toast.success(response?.message)
+    router.push(`${userId}/profile/about`)
   }
 
   return response?.data
@@ -221,6 +225,8 @@ export const updateUserExperience = async (
 }
 
 export const uploadUserExperience = async (
+  router: NextRouter,
+  userId: number,
   userExperience: IuserExperience,
   token: string,
   initialUserExperience = {
@@ -262,6 +268,7 @@ export const uploadUserExperience = async (
     toast.error(response?.message)
   } else {
     toast.success(response?.message)
+    router.push(`${userId}/profile/about`)
   }
 
   return response?.data

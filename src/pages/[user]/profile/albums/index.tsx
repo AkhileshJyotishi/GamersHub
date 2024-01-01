@@ -13,7 +13,7 @@ import SkeletonLoader from "@/components/ui/SkeletonLoader"
 import Button from "@/components/ui/button"
 import { useSession } from "next-auth/react"
 import { useParams } from "next/navigation"
-// const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
+
 const Albums = () => {
   const router = useRouter()
   const [albumDetails, setalbumDetails] = useState<IAlbumBackend[]>([])
@@ -23,7 +23,7 @@ const Albums = () => {
   const params = useParams()
 
   useEffect(() => {
-    if (!userData?.id) {
+    if (session && !userData?.id) {
       router.replace("/?emessage=Please Authenticate")
       return
     }

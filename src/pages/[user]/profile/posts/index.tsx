@@ -3,28 +3,32 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 
 import image from "@/assets/image/void.svg"
-// import { getSession } from "@/lib/auth"
-// import { token } from "@/pages/settings"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
-// import HoizontalCard from "@/components/ui/Horizontalcard"
 import ProfilePageLayout from "@/components/profileLayout"
 import Card from "@/components/ui/card/card2"
 import SkeletonLoader from "@/components/ui/SkeletonLoader3"
-// const shadeVariant ="absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
+import { toast } from "react-toastify"
+import { useUserContext } from "@/providers/user-context"
+
 const Albums = () => {
+  const { userData } = useUserContext()
   const router = useRouter()
-  //
   const [postsDetails, setpostsDetails] = useState<IPostbackend[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    // console.log("jwt  ", document.cookie.length)
+    if (!userData?.id) {
+      router.replace("/?emessage=Please Authenticate")
+      return
+    }
     const loadData = async () => {
       const data = await fetchWithoutAuthorization(`/v1/post/user/${router.query.user}`, "GET")
       setLoading(false)
       if (!data?.error) {
         setpostsDetails(data?.data?.posts || [])
+      } else {
+        toast.error(data.message)
       }
     }
     loadData()

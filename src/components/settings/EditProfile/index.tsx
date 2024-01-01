@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 // import clsx from "clsx"
 import { City, Country } from "country-state-city"
@@ -13,6 +13,8 @@ import { uploadUserEducation, uploadUserExperience } from "./editprofileHandler"
 import EducationSection from "./EducationSection"
 import ExperienceSection from "./ExperienceSection"
 import ProfileSection from "./profileSection"
+import { useRouter } from "next/router"
+import { useUserContext } from "@/providers/user-context"
 // import dynamic from "next/dynamic"
 // const { City, Country }=dynamic(import("country-state-city").then())
 const EditProfilePage = ({
@@ -78,19 +80,19 @@ const EditProfilePage = ({
     profileImage: profileDetails?.user?.profileImage ?? "",
   }
   interface ProfileInterface {
-    userBio: string;
-    country: string;
-    city: string;
-    userSkills: string[] | undefined;
-    userSoftwares: string[] | undefined;
-    profileImage: string | File;
+    userBio: string
+    country: string
+    city: string
+    userSkills: string[] | undefined
+    userSoftwares: string[] | undefined
+    profileImage: string | File
   }
   const [profileData, setprofileData] = useState<ProfileInterface>(initProfile)
-  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string | null }>({});
-  const [ExpErrors, setExpErrors] = useState<{ [key: string]: string | null }>({});
-  const [newExpErrors, setnewExpErrors] = useState<{ [key: string]: string | null }>({});
-  const [EduErrors, setEduErrors] = useState<{ [key: string]: string | null }>({});
-  const [newEduErrors, setnewEduErrors] = useState<{ [key: string]: string | null }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string | null }>({})
+  const [ExpErrors, setExpErrors] = useState<{ [key: string]: string | null }>({})
+  const [newExpErrors, setnewExpErrors] = useState<{ [key: string]: string | null }>({})
+  const [EduErrors, setEduErrors] = useState<{ [key: string]: string | null }>({})
+  const [newEduErrors, setnewEduErrors] = useState<{ [key: string]: string | null }>({})
 
   // console.log(initProfile)
 
@@ -180,12 +182,12 @@ const EditProfilePage = ({
           }
           setprofileData((prevState) => ({ ...prevState, [key]: value as File }))
         }
-        break;
+        break
       case "userBio":
         if (typeof value === "string") {
           setprofileData((prevState) => ({ ...prevState, [key]: value }))
         }
-        break;
+        break
       case "country":
         if (typeof value === "string") {
           handleCityOptions(codemapping[value as string])
@@ -209,9 +211,8 @@ const EditProfilePage = ({
             setFieldErrors((prev) => ({ ...prev, userSoftwares: "" }))
           }
           setprofileData((prevState) => ({ ...prevState, [key]: value as string[] }))
-
         }
-        break;
+        break
       case "userSkills":
         if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
           if (value.length == 0) {
@@ -222,9 +223,8 @@ const EditProfilePage = ({
             setFieldErrors((prev) => ({ ...prev, userSkills: "" }))
           }
           setprofileData((prevState) => ({ ...prevState, [key]: value as string[] }))
-
         }
-        break;
+        break
     }
     setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
@@ -458,7 +458,7 @@ const EditProfilePage = ({
       onChange: (value) => handleFieldChange("profileImage", value as File),
       className: "h-[200px]",
       errorMessage: fieldErrors.profileImage,
-      dimensionsImage: dimensions
+      dimensionsImage: dimensions,
     },
     {
       title: "Bio",
@@ -467,7 +467,7 @@ const EditProfilePage = ({
       value: profileData.userBio,
       onChange: (value) => handleFieldChange("userBio", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: fieldErrors.userBio
+      errorMessage: fieldErrors.userBio,
     },
     {
       title: "Country",
@@ -475,7 +475,7 @@ const EditProfilePage = ({
       value: profileData.country,
       onChange: (value) => handleFieldChange("country", value as string),
       selectOptions: [{ label: "", value: "" }, ...countryList],
-      errorMessage: fieldErrors.country
+      errorMessage: fieldErrors.country,
     },
     {
       title: "City",
@@ -484,7 +484,7 @@ const EditProfilePage = ({
       onChange: (value) => handleFieldChange("city", value as string),
       className: "bg-transparent rounded-md",
       selectOptions: [{ label: "", value: "" }, ...city],
-      errorMessage: fieldErrors.city
+      errorMessage: fieldErrors.city,
     },
     {
       title: "skills",
@@ -494,7 +494,7 @@ const EditProfilePage = ({
       onTagsChange: (value) => handleFieldChange("userSkills", value as string[]),
       selectOptions: predefinedTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
-      errorMessage: fieldErrors.userSkills
+      errorMessage: fieldErrors.userSkills,
     },
     {
       title: "Softwares",
@@ -504,8 +504,7 @@ const EditProfilePage = ({
       onTagsChange: (value) => handleFieldChange("userSoftwares", value as string[]),
       selectOptions: predefinedSoftwareTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
-      errorMessage: fieldErrors.userSoftwares
-
+      errorMessage: fieldErrors.userSoftwares,
     },
   ]
   type exptypes = Array<{ id?: number; detail: FilterDetail[] }>
@@ -521,7 +520,7 @@ const EditProfilePage = ({
         value: exp.company,
         onChange: (value) => handleExperienceChange(index, "company", value as string),
         className: "bg-transparent rounded-md",
-        errorMessage: ExpErrors.company
+        errorMessage: ExpErrors.company,
       },
       {
         title: `Job Title `,
@@ -530,8 +529,7 @@ const EditProfilePage = ({
         value: exp.role,
         onChange: (value) => handleExperienceChange(index, "role", value as string),
         className: "bg-transparent rounded-md",
-        errorMessage: ExpErrors.role
-
+        errorMessage: ExpErrors.role,
       },
       {
         title: `Working currently?`,
@@ -548,8 +546,7 @@ const EditProfilePage = ({
             value: false,
           },
         ],
-        errorMessage: ExpErrors.presentWorking
-
+        errorMessage: ExpErrors.presentWorking,
       },
       {
         title: `Starting Date `,
@@ -558,7 +555,6 @@ const EditProfilePage = ({
         onChange: (date) => handleExperienceChange(index, "startingDate", date as Date),
         className: "bg-transparent rounded-md w-[50%]",
         errorMessage: ExpErrors.startingDate,
-
       },
       {
         title: `Ending Date`,
@@ -567,7 +563,6 @@ const EditProfilePage = ({
         onChange: (date) => handleExperienceChange(index, "endingDate", date as Date),
         className: "bg-transparent rounded-md",
         errorMessage: ExpErrors.endingDate,
-
       },
       {
         title: `Description `,
@@ -577,9 +572,7 @@ const EditProfilePage = ({
         onChange: (value) => handleExperienceChange(index, "description", value as string),
         className: "bg-transparent rounded-md",
         errorMessage: ExpErrors.description,
-
       },
-
     ],
   }))
   const newExperienceArray: Array<FilterDetail[]> = newExperience?.map((exp, index) => [
@@ -590,9 +583,7 @@ const EditProfilePage = ({
       value: exp.company,
       onChange: (value) => handlenewExperienceChange(index, "company", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newExpErrors.company
-
-
+      errorMessage: newExpErrors.company,
     },
     {
       title: `Job Title `,
@@ -601,8 +592,7 @@ const EditProfilePage = ({
       value: exp.role,
       onChange: (value) => handlenewExperienceChange(index, "role", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newExpErrors.role
-
+      errorMessage: newExpErrors.role,
     },
     {
       title: `Working currently?`,
@@ -619,8 +609,7 @@ const EditProfilePage = ({
           value: false,
         },
       ],
-      errorMessage: newExpErrors.presentWorking
-
+      errorMessage: newExpErrors.presentWorking,
     },
     {
       title: `Starting Date`,
@@ -628,8 +617,7 @@ const EditProfilePage = ({
       value: exp.startingDate,
       onChange: (date) => handlenewExperienceChange(index, "startingDate", date as Date),
       className: "bg-transparent rounded-md w-[50%]",
-      errorMessage: newExpErrors.startingDate
-
+      errorMessage: newExpErrors.startingDate,
     },
     {
       title: `Ending Date`,
@@ -637,8 +625,7 @@ const EditProfilePage = ({
       value: exp.endingDate || "",
       onChange: (date) => handlenewExperienceChange(index, "endingDate", date as Date),
       className: "bg-transparent rounded-md",
-      errorMessage: newExpErrors.endingDate
-
+      errorMessage: newExpErrors.endingDate,
     },
     {
       title: `Description `,
@@ -647,10 +634,8 @@ const EditProfilePage = ({
       value: exp.description,
       onChange: (value) => handlenewExperienceChange(index, "description", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newExpErrors.description
-
+      errorMessage: newExpErrors.description,
     },
-
   ])
 
   type edutypes = Array<{ id?: number; detail: FilterDetail[] }>
@@ -665,7 +650,7 @@ const EditProfilePage = ({
         value: edu.university || "",
         onChange: (value) => handleEducationChange(index, "university", value as string),
         className: "bg-transparent rounded-md",
-        errorMessage: EduErrors.university
+        errorMessage: EduErrors.university,
       },
       {
         title: "Degree",
@@ -674,7 +659,7 @@ const EditProfilePage = ({
         value: edu.degree || "",
         onChange: (value) => handleEducationChange(index, "degree", value as string),
         className: "bg-transparent rounded-md",
-        errorMessage: EduErrors.degree
+        errorMessage: EduErrors.degree,
       },
       {
         title: "Starting Date",
@@ -682,7 +667,7 @@ const EditProfilePage = ({
         value: edu.startingDate,
         onChange: (date) => handleEducationChange(index, "startingDate", date as Date),
         className: "bg-transparent rounded-md w-[50%]",
-        errorMessage: EduErrors.startingDate
+        errorMessage: EduErrors.startingDate,
       },
       {
         // edu.endingDate || ''
@@ -691,7 +676,7 @@ const EditProfilePage = ({
         value: edu.endingDate,
         onChange: (date) => handleEducationChange(index, "endingDate", date as Date),
         className: "bg-transparent rounded-md w-[50%]",
-        errorMessage: EduErrors.endingDate
+        errorMessage: EduErrors.endingDate,
       },
       {
         title: "Description",
@@ -700,7 +685,7 @@ const EditProfilePage = ({
         value: edu.description || "",
         onChange: (value) => handleEducationChange(index, "description", value as string),
         className: "bg-transparent rounded-md",
-        errorMessage: EduErrors.description
+        errorMessage: EduErrors.description,
       },
     ],
   }))
@@ -724,7 +709,7 @@ const EditProfilePage = ({
       value: edu.university || "",
       onChange: (value) => handlenewEducationChange(index, "university", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newEduErrors.university
+      errorMessage: newEduErrors.university,
     },
     {
       title: "Degree",
@@ -733,8 +718,7 @@ const EditProfilePage = ({
       value: edu.degree || "",
       onChange: (value) => handlenewEducationChange(index, "degree", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newEduErrors.degree
-
+      errorMessage: newEduErrors.degree,
     },
     {
       title: "Starting Date",
@@ -742,8 +726,7 @@ const EditProfilePage = ({
       value: edu.startingDate || null,
       onChange: (date) => handlenewEducationChange(index, "startingDate", date as Date),
       className: "bg-transparent rounded-md w-[50%]",
-      errorMessage: newEduErrors.startingDate
-
+      errorMessage: newEduErrors.startingDate,
     },
     {
       // edu.endingDate || ''
@@ -752,8 +735,7 @@ const EditProfilePage = ({
       value: edu.endingDate,
       onChange: (date) => handlenewEducationChange(index, "endingDate", date as Date),
       className: "bg-transparent rounded-md w-[50%]",
-      errorMessage: newEduErrors.endingDate
-
+      errorMessage: newEduErrors.endingDate,
     },
     {
       title: "Description",
@@ -762,7 +744,7 @@ const EditProfilePage = ({
       value: edu.description || "",
       onChange: (value) => handlenewEducationChange(index, "description", value as string),
       className: "bg-transparent rounded-md",
-      errorMessage: newEduErrors.description
+      errorMessage: newEduErrors.description,
     },
   ])
   const tabs = ["Profile", "Experience", "Education"]
@@ -795,6 +777,15 @@ const EditProfilePage = ({
 
   const [manageExperience, setManageExperience] = useState<boolean>(false)
   const [manageEducation, setManageEducation] = useState<boolean>(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const tab = router.query?.tab
+    if (tab == "Profile" || tab == "Education" || tab == "Experience") {
+      setactiveTab(tab as string)
+    }
+  }, [router.query])
+  const { userData } = useUserContext()
 
   return (
     <>
@@ -812,7 +803,6 @@ const EditProfilePage = ({
         )}
         {activeTab == "Experience" && (
           <>
-
             {experience.length > 0 && (
               <ExperienceSection
                 ExperienceArray={ExperienceArray}
@@ -828,14 +818,13 @@ const EditProfilePage = ({
               <>
                 {filterdetailarray?.map((field, index) => (
                   <>
-                    {
-                      !((field.title === "Ending Date") && newExperience[idx].presentWorking) &&
+                    {!(field.title === "Ending Date" && newExperience[idx].presentWorking) && (
                       <div
                         key={index}
-                        className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                          }`}
+                        className={`flex items-center p-2 md:gap-8 w-full ${
+                          field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                       >
-
                         <Filter
                           key={index}
                           inputType={field.inputType}
@@ -849,7 +838,7 @@ const EditProfilePage = ({
                           errorMessage={field.errorMessage}
                         />
                       </div>
-                    }
+                    )}
                   </>
                 ))}
                 <div className="flex justify-between w-full">
@@ -860,7 +849,12 @@ const EditProfilePage = ({
                     }
                     onClick={async () => {
                       setManageExperience(true)
-                      await uploadUserExperience(newExperience[0], session?.user?.name as string)
+                      await uploadUserExperience(
+                        router,
+                        userData?.id as number,
+                        newExperience[0],
+                        session?.user?.name as string
+                      )
                       setManageExperience(false)
                     }}
                   >
@@ -915,8 +909,9 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                        }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
                     >
                       <Filter
                         key={index}
@@ -941,7 +936,12 @@ const EditProfilePage = ({
                     }
                     onClick={async () => {
                       setManageEducation(true)
-                      await uploadUserEducation(newEducation[0], session?.user?.name as string)
+                      await uploadUserEducation(
+                        router,
+                        userData?.id as number,
+                        newEducation[0],
+                        session?.user?.name as string
+                      )
                       setManageEducation(false)
                     }}
                   >
