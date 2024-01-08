@@ -7,7 +7,7 @@ const idParamsValidation = Joi.object().keys({
 const queryJobs = {
   query: Joi.object().keys({
     expertise: Joi.array().items(Joi.string().valid('ENTRY', 'EXPERT', 'INTERMEDIATE')),
-    jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB'),
+    jobType: Joi.array().items(Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB')),
     remote: Joi.boolean(),
     jobSoftwares: Joi.array().items(Joi.string())
   })
