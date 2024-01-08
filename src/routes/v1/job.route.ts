@@ -6,7 +6,7 @@ import { jobValidation } from '../../validations'
 
 const router = express.Router()
 
-router.get('/', jobController.getAllJobs)
+router.get('/', validate(jobValidation.queryJobs), jobController.getAllJobs)
 // router.get('/queryJobs',validate(jobValidation.queryJobs),jobController.queryJobs)
 router
   .route('/user')

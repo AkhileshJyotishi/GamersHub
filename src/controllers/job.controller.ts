@@ -23,7 +23,8 @@ const deleteUserJobs = catchAsync(async (req, res) => {
 })
 
 const getAllJobs = catchAsync(async (req, res) => {
-  const Jobs = await jobService.getAllJobs()
+  const filter = req.query
+  const Jobs = await jobService.getAllJobs(filter)
   sendResponse(res, httpStatus.OK, null, { jobs: Jobs }, 'Jobs fetched Successfully')
 })
 

@@ -139,8 +139,35 @@ const deleteUserJobs = async (userId: number): Promise<void> => {
  * @returns {Promise<Job[]>}
  */
 
-const getAllJobs = async (): Promise<Job[]> => {
+const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
   const jobs = await prisma.job.findMany({
+    where: {
+      ...(expertise && {
+        expertise: {
+          in: expertise
+        }
+      }),
+      ...(jobType && {
+        jobType: {
+          in: jobType
+        }
+      }),
+      ...(remote && {
+        remote: {
+          equals: remote
+        }
+      }),
+      ...(jobSoftwares && {
+        jobSoftwares: {
+          some: {
+            software: {
+              in: jobSoftwares
+            }
+          }
+        }
+      })
+    },
     include: {
       jobApplications: {
         select: {
@@ -605,7 +632,6 @@ interface QueryJobs {
 }
 const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
   const { expertise, jobType, remote, jobSoftwares } = filter
-  console.log(expertise)
   const jobs = await prisma.job.findMany({
     where: {
       ...(expertise && {
