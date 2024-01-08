@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 // import clsx from "clsx"
 import { City, Country } from "country-state-city"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
+import { useUserContext } from "@/providers/user-context"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
@@ -13,8 +15,6 @@ import { uploadUserEducation, uploadUserExperience } from "./editprofileHandler"
 import EducationSection from "./EducationSection"
 import ExperienceSection from "./ExperienceSection"
 import ProfileSection from "./profileSection"
-import { useRouter } from "next/router"
-import { useUserContext } from "@/providers/user-context"
 // import dynamic from "next/dynamic"
 // const { City, Country }=dynamic(import("country-state-city").then())
 const EditProfilePage = ({
@@ -489,7 +489,7 @@ const EditProfilePage = ({
     {
       title: "skills",
       inputType: "tags",
-      placeholder: "skills...",
+      placeholder: "3D modeller, 2D modeller ,voice artist....",
       initialtags: initialskillstags,
       onTagsChange: (value) => handleFieldChange("userSkills", value as string[]),
       selectOptions: predefinedTagsAsSelectOptions,
@@ -499,7 +499,7 @@ const EditProfilePage = ({
     {
       title: "Softwares",
       inputType: "tags",
-      placeholder: "Softwares...",
+      placeholder: "Blender, Unreal Engine, Photoshop...",
       initialtags: initialsoftwaretags,
       onTagsChange: (value) => handleFieldChange("userSoftwares", value as string[]),
       selectOptions: predefinedSoftwareTagsAsSelectOptions,

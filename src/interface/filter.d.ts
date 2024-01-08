@@ -11,12 +11,11 @@ interface Props {
   className: string
 }
 
-
 interface filterprops {
   // Function to clear the applied filters
   clearFilters?: () => void
   Filters?: JobFilterProps | GamesFilterProps | CreatorsFilterProps | FiltersState
-  searchWithFilters?: () => void
+  searchWithFilters: () => void
   setFilters?:
     | React.Dispatch<React.SetStateAction<JobFilterProps>>
     | React.Dispatch<React.SetStateAction<CreatorsFilterProps>>
@@ -28,21 +27,22 @@ interface filterprops {
   setCountry?: React.Dispatch<React.SetStateAction<{ label?: string; value?: string }[]>>
   city?: string[]
   setCity?: React.Dispatch<React.SetStateAction<string[]>>
+  loading?: boolean
 }
 
 interface FilterDetail<SO = { label: string; value: string | boolean | number }> {
   title: string
   inputType: "text" | "checkbox" | "radio" | "select" | "date" | "tags" | "file" | "number"
-  onTagsChange?: (tags: string[]) => void
+  onTagsChange?: (tags: readonly string[]) => void
   placeholder?: string
-  value?: string | boolean | Date | number | null
+  value?: string | boolean | Date | number | null | readonly string[]
   selectOptions?: { label?: SO["label"]; value?: SO["value"] }[]
-  onChange?: (value: string | boolean | Date | number | File) => void
+  onChange?: (value: string | boolean | Date | number | File | string[]) => void
   className?: string
   Variant?: string
   accept?: string
   multiple?: boolean
-  initialtags?: string[]
+  initialtags?: readonly string[]
   hidden?: boolean
   preview?: boolean
   errorMessage?: string | null

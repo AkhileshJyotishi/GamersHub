@@ -55,8 +55,8 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     if (aboutRecuiter) {
       jobInfo.aboutRecruiter = JSON.parse(aboutRecuiter)
     }
-    localStorage.setItem("noval__content1","")
-    localStorage.setItem("noval__content2","")
+    localStorage.setItem("noval__content1", "")
+    localStorage.setItem("noval__content2", "")
     // localStorage.removeItem("noval__content1")
     // localStorage.removeItem("noval__content2")
     const formdata = new FormData()
@@ -88,6 +88,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
       "PATCH",
       jobInfo
     )
+    toast.dismiss()
     if (data?.error) {
       setLoading(false)
 

@@ -27,7 +27,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
   // console.log("that is the path  ",path.includes("updatePost"),post)
   const isUpdate = path.includes("updatePost")
   interface FiltersState {
-    postKeywords: string[]
+    postKeywords: readonly string[]
     albumId: number | undefined
     matureContent: boolean | undefined
     banner: File | null | string
@@ -99,14 +99,16 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       method = "POST"
       res = await fetchData("/v1/post/user", session?.user?.name as string, method, filtersState)
     }
-    if (res?.error) toast.error(res.message)
-    else {
+    if (res?.error) {
+      toast.dismiss()
+      toast.error(res.message)
+    } else {
       toast.dismiss()
 
       toast.success(res?.message)
       setFiltersState(initState)
-      const val=isUpdate ? "noval_content_update" : "noval_content"
-      localStorage.setItem(val,"")
+      const val = isUpdate ? "noval_content_update" : "noval_content"
+      localStorage.setItem(val, "")
     }
     setLoading(false)
     router.push("/")

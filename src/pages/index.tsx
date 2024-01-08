@@ -19,11 +19,12 @@ import TalentSection from "@/components/home/banner"
 import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
 import JobSection from "@/components/home/Jobs"
 import CloseIcon from "@/components/icons/closeIcon"
+import GeneralizedComponent from "@/components/news"
 import Button from "@/components/ui/button"
-import Card from "@/components/ui/card/card2"
+// import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
-
-const HomePage = ({ users }: { users: IPostbackend[] }) => {
+// {}: { users: IPostbackend[] }
+const HomePage = () => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage, data } = router.query
@@ -48,7 +49,9 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       toast.success(message)
       router.replace("/", undefined, { shallow: true })
     }
+
     if (emessage) {
+      toast.dismiss()
       toast.error(emessage)
       router.replace("/", undefined, { shallow: true })
     }
@@ -64,13 +67,65 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
     setVerifyMail("")
     setVerifyModal(false)
     if (res?.error) {
+      toast.dismiss()
       toast.error((res.error?.response?.data?.message || "Request failed") ?? res?.message)
       return
     }
     toast.success(res?.message)
   }
 
-  
+  const sampleArticles = [
+    {
+      id: 1,
+      imgSrc: "https://picsum.photos/3400/2400",
+      imgAlt: "Image 1 Alt Text",
+      category: "Technology",
+      title: "Breaking News in Tech World",
+      link: "/breaking-news-in-tech-world",
+    },
+    {
+      id: 2,
+      imgSrc: "https://picsum.photos/3400/2400",
+      imgAlt: "Image 2 Alt Text",
+      category: "Science",
+      title: "Latest Scientific Discoveries",
+      link: "/latest-scientific-discoveries",
+    },
+    {
+      id: 3,
+      imgSrc: "https://picsum.photos/3400/2400",
+      imgAlt: "Image 3 Alt Text",
+      category: "Entertainment",
+      title: "Hollywood Blockbuster Releases",
+      link: "/hollywood-blockbuster-releases",
+    },
+    {
+      id: 4,
+      imgSrc: "https://picsum.photos/600/200",
+      imgAlt: "Image 3 Alt Text",
+      category: "Entertainment",
+      title: "Hollywood Blockbuster Releases",
+      link: "/hollywood-blockbuster-releases",
+    },
+    {
+      id: 5,
+      imgSrc: "https://picsum.photos/3400/2400",
+      imgAlt: "Image 3 Alt Text",
+      category: "Entertainment",
+      title: "Hollywood Blockbuster Releases",
+      link: "/hollywood-blockbuster-releases",
+    },
+    {
+      id: 6,
+      imgSrc: "https://picsum.photos/3400/2400",
+      imgAlt: "Image 3 Alt Text",
+      category: "Entertainment",
+      title: "Hollywood Blockbuster Releases",
+      link: "/hollywood-blockbuster-releases",
+    },
+    // Add more articles as needed
+  ]
+
   return (
     <>
       <Head>
@@ -123,7 +178,7 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
       <div className="relative top-0">
         <OverlayContent />
 
-        <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
+        {/* <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
           {users?.map((data, index) => {
             return (
               <Card
@@ -143,7 +198,8 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
               />
             )
           })}
-        </div>
+        </div> */}
+        <GeneralizedComponent articles={sampleArticles} />
         {/* 
         <Button
           className="
@@ -155,7 +211,6 @@ const HomePage = ({ users }: { users: IPostbackend[] }) => {
         </Button> */}
         <JobSection />
         <TalentSection Img={Img} RightSVG={RightSVG} />
-        {/* <Example /> */}
       </div>
     </>
   )

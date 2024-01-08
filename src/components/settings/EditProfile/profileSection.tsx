@@ -18,7 +18,7 @@ interface ProfileSectionProps {
     city: string | null | undefined
     userSkills: IuserSkill[] | string[] | undefined
     userSoftwares: IuserSoftware[] | undefined | string[]
-    profileImage: string | undefined |File
+    profileImage: string | undefined | File
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]

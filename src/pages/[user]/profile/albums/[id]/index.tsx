@@ -147,7 +147,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   // return resp.data;\
 
   const albumdata2 = albumdata?.data?.album
-  console.log("albumdata2 ", albumdata2)
   return {
     props: {
       title: albumdata2?.title,

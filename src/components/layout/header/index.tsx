@@ -9,9 +9,11 @@ import { useSession } from "next-auth/react"
 
 import logoblackbg from "@/assets/image/logo-black-bg.png"
 import logotextblackbg from "@/assets/image/logo-text-black-bg.png"
-import { useUserContext } from "@/providers/user-context"
 import defaultUserImage from "@/assets/image/user-profile.svg"
-import ProfileBannerImage from "@/components/profile/profileImage"
+import { useUserContext } from "@/providers/user-context"
+import { shimmer, toBase64 } from "@/utils/functions"
+
+// import ProfileBannerImage from "@/components/profile/profileImage"
 import Button from "@/components/ui/button"
 import ModalComponent from "@/components/ui/ConfirmationModal"
 import LoginModal from "@/components/ui/login"
@@ -19,7 +21,6 @@ import RegisterModal from "@/components/ui/register"
 
 import NavbarLink from "./NavbarLink"
 import Sidemenu from "./sidemenu3"
-import { shimmer, toBase64 } from "@/utils/functions"
 const ProfileSettingsCard = dynamic(() => import("@/components/profile/profileSettingsCard"), {
   loading: () => (
     <div className="scale-0 origin-top-right group-hover:scale-100 group-hover-top-[140%] sm:right-0 w-[95vw] sm:w-auto min-w-[250px] right-[-140%]  ease-in duration-200  absolute top-[100%] z-50 max-w-[170px] ">
@@ -47,17 +48,22 @@ interface Props {
   userData: Iuser | null
 }
 
-const UserImage = ({ href,onClick }: { href?: string | null, onClick?: React.MouseEventHandler<HTMLImageElement> | undefined }) => (
-  <div className="cursor-pointer" onClick={onClick}>
+const UserImage = ({
+  href,
+  onClick,
+}: {
+  href?: string | null
+  onClick?: React.MouseEventHandler<HTMLImageElement> | undefined
+}) => (
+  <div className="cursor-pointer w-[inherit] h-[inherit]" onClick={onClick}>
     <Image
       width={100}
       height={100}
       alt={""}
-      className="  rounded-full "
-      src={(href || defaultUserImage)??defaultUserImage}
+      className="  rounded-full w-[inherit] h-[inherit]"
+      src={(href || defaultUserImage) ?? defaultUserImage}
       priority
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-
     />
   </div>
 )
@@ -117,9 +123,12 @@ const LoggedInUserButtons = ({ userSession, userData }: Props) => {
         </Button> */}
 
         <div className="group w-[36px] h-[36px] ">
-          <UserImage href={userData?.profileImage}   onClick={() => {
+          <UserImage
+            href={userData?.profileImage}
+            onClick={() => {
               setShowProfileSettings(!showProfileSettings)
-            }} />
+            }}
+          />
           {/* <ProfileBannerImage
             onClick={() => {
               setShowProfileSettings(!showProfileSettings)

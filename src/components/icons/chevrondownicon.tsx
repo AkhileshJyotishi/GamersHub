@@ -16,7 +16,7 @@ function Icon({ className }: IconProps) {
     >
       <path
         d="M1 13L7 7L1 1"
-        stroke="#F7F7F7"
+        stroke="#00B87D"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

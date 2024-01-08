@@ -51,6 +51,7 @@ const FilterMobileDialog: React.FC<FilterMobileDialogProps> = ({
                 selectOptions={filter.selectOptions}
                 className={filter.className}
                 Variant="flex flex-col items-start gap-[10px] text-[14px]"
+                onTagsChange={filter.onTagsChange}
               />
             ))}
 

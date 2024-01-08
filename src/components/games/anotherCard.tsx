@@ -7,12 +7,15 @@ import { toast } from "react-toastify"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
+import { Tag } from "@/interface/games"
 import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
+
+import { SecondaryTag } from "../ui/badges"
 
 // import EditIcon from "../icons/editIcon"
 
@@ -28,6 +31,7 @@ interface CardProps {
   savedUsers: {
     id: number
   }[]
+  tags: Tag[]
   onChange?: (id: number) => void
   onsavedSuccess?: (id: number, state: string) => void
 
@@ -42,6 +46,7 @@ const SocialCard: React.FC<CardProps> = ({
   userId,
   cover,
   banner,
+  tags,
   className,
   savedUsers,
   onChange,
@@ -82,6 +87,7 @@ const SocialCard: React.FC<CardProps> = ({
   const deletePost = async (id: number) => {
     const data = await fetchData(`/v1/game/${id}`, session?.user?.name as string, "DELETE")
     if (data?.error) {
+      toast.dismiss()
       toast.error(data.message)
     } else {
       onChange && onChange(id)
@@ -185,7 +191,8 @@ const SocialCard: React.FC<CardProps> = ({
             {title}
           </span>
         </div>
-        <div className="h-[200px] rounded-sm p-2">
+
+        <div className="h-[200px] rounded-sm p-2" onClick={() => router.push(`/games/${id}`)}>
           <Image
             src={banner || defaultbannerImage}
             alt=""
@@ -196,7 +203,13 @@ const SocialCard: React.FC<CardProps> = ({
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />
         </div>
-        <div className="flex items-center justify-between px-4 py-1"></div>
+        {tags && (
+          <div className="flex items-center px-2 py-1 gap-1 overflow-x-scroll w-[100%] bg-[inherit] no-scroll mb-2">
+            {tags.map((tag, idx) => (
+              <SecondaryTag name={tag.keyword} key={idx} className=" cursor-pointer" />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

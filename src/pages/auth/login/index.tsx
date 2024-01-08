@@ -109,6 +109,7 @@ const LoginPage = () => {
             }
           )
         } else {
+          toast.dismiss()
           toast.error(await JSON.parse(res?.error)?.message)
         }
         return
@@ -117,6 +118,7 @@ const LoginPage = () => {
         router.push("/?message=Login Successfull")
       }
     } catch (error: Allow) {
+      toast.dismiss()
       // console.log("catch in auth login ", error)
       toast.error(error)
     }
@@ -130,7 +132,7 @@ const LoginPage = () => {
         <div className="w-full">
           <div className="flex flex-col justify-around w-full gap-4 mt-3 overflow-hidden md:flex-row">
             <Button
-              type="button"
+              // type="button"
               className="inline-flex items-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 p-[2px] rounded-xl"
               onClick={() => {
                 signIn("google", { callbackUrl: "/" })
@@ -141,7 +143,7 @@ const LoginPage = () => {
             </Button>
 
             <Button
-              type="button"
+              // type="button"
               className="inline-flex items-center whitespace-nowrap mb-2 mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 p-[2px] min-h-[40px] rounded-xl"
               onClick={() => {
                 signIn("facebook", { callbackUrl: "/" })

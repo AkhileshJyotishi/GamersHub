@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import clsx from "clsx"
+import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
 import { GameInfo } from "@/interface/games"
+import {
+  validateFileArrayField,
+  validateFileField,
+  validateStringArrayField,
+  validateStringField,
+  ValidationFunction,
+  ValidationParams,
+} from "@/utils/functions/validationUtils"
 
 import InitMultipleFileInput from "@/components/ui/initialMultifile"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
 import MultipleFileInput from "../ui/multifileInput"
+
 interface LayoutProps {
   children: React.ReactNode
   gameInfo: GameInfo
@@ -28,8 +38,6 @@ const Layout: React.FC<LayoutProps> = ({
   oldAssets,
   isUpdate,
 }) => {
-  // console.log("gameInfo",gameInfo)
-
   const handleOldAssets = (remainingOldAssets: string[]) => {
     setoldAssets && setoldAssets(remainingOldAssets)
   }
@@ -48,150 +56,41 @@ const Layout: React.FC<LayoutProps> = ({
     title: "",
     // userId:""
   })
-  const [dimensions, setdimensions] = useState<{
+  const [dimensions] = useState<{
     height: number | null
     width: number | null
   }>({
     height: null,
     width: null,
   })
-  const handleInputChange = <K extends keyof GameInfo>(field: K, value: GameInfo[K]) => {
-    switch (field) {
-      case "developerName":
-      case "title":
-        if (typeof value === "string") {
-          if (value === "") {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else if (value.length > 60) {
-            setErrors((prev) => ({ ...prev, [field]: "*field too long" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          }
+  const handleInputChange = useCallback(
+    async <K extends keyof GameInfo>(
+      field: K,
+      value: GameInfo[K],
+      validationFn: ValidationFunction<GameInfo[K]>,
+      validationParams?: ValidationParams
+    ) => {
+      try {
+        const validationError = value === null ? "" : await validationFn(value, validationParams)
+
+        if (validationError) {
+          setErrors((prev) => ({ ...prev, [field]: validationError }))
+        } else {
+          setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        break
-      case "banner":
-        if (value instanceof File) {
-          // Your validation logic for banner (File type)
-          // Check file size
-          // value.
-          // console.log("banner working")
-          const maxSizeInBytes = 1024 * 1024 // 1MB
-          // console.log(value.size, maxSizeInBytes)
-          if (value.size > maxSizeInBytes) {
-            // console.log("errors")
-            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
-            return // Stop further processing
-          } else {
-            setErrors((prev) => ({ ...prev, banner: null }))
-          }
-
-          // Create an image element to check dimensions
-          const img = new Image()
-          img.src = URL.createObjectURL(value)
-
-          // Check image dimensions
-          img.onload = () => {
-            const maxWidth = 1920
-            const maxHeight = 1080
-            const minWidth = 640
-            const minHeight = 320
-
-            if (img.naturalWidth > maxWidth || img.naturalHeight > maxHeight) {
-              // console.log(img.width, maxWidth)
-              // console.log(img.height, maxHeight)
-              setErrors((prev) => ({
-                ...prev,
-                
-                banner: `Cover dimensions needs to be ${maxWidth}p - ${maxHeight}p or smaller`,
-              }))
-            } else if (img.naturalWidth < minWidth || img.naturalHeight < minHeight) {
-              // console.log(img.width, minWidth)
-              // console.log(img.height, minHeight)
-              setErrors((prev) => ({
-                ...prev,
-                banner: `Cover dimensions needs to be ${minWidth}p - ${minHeight}p or larger`,
-              }))
-            } else {
-              setErrors((prev) => ({ ...prev, banner: null }))
-              // Proceed with setting the banner if all checks pass
-            }
-            setdimensions({
-              height: img.naturalHeight,
-              width: img.naturalWidth,
-            })
-            setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
-          }
-
-          // Handle image loading error
-          img.onerror = () => {
-            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
-          }
+        if (field !== "gameAssets" && field !== "banner") {
+          setGameInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
+        } else if (field == "gameAssets") {
+          setGameInfo((prevState) => ({ ...prevState, [field]: value as File[] }))
+        } else {
           setGameInfo((prevState) => ({ ...prevState, [field]: value as File }))
         }
-        break
-      case "platforms":
-      case "genre":
-      case "distributionPlatforms":
-      case "tags":
-        if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
-          if (value.length == 0) {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else if (value.length >= 11) {
-            setErrors((prev) => ({ ...prev, [field]: "*too many chosen" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          }
-        }
-        break
-
-      case "gameMode":
-        if (typeof value === "string") {
-          const chk = ["singlePlayer", "multiPlayer"].includes(value)
-          if (chk) {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          }
-        }
-        break
-
-      case "developerType":
-        if (typeof value === "string") {
-          const chk = ["indie", "studio", "collaboration"].includes(value)
-          if (chk) {
-            setErrors((prev) => ({ ...prev, [field]: "" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          }
-        }
-        break
-
-      case "releaseDate":
-        if (typeof value === "string") {
-          const currentDate = new Date()
-          const check = new Date(value)
-          if (check < currentDate) {
-            setErrors((prev) => ({ ...prev, releaseDate: "Release date cannot be in the past" }))
-          }
-        }
-        break
-      case "gameAssets":
-        if (Array.isArray(value) && value.every((item) => item instanceof File)) {
-          if (value.length >= 10) {
-            setErrors((prev) => ({ ...prev, gameAssets: "*length must be less than 10" }))
-          } else {
-            setErrors((prev) => ({ ...prev, gameAssets: "" }))
-          }
-          setGameInfo((prevState) => ({ ...prevState, [field]: value as File[] }))
-        }
-        break
-
-      default:
-        break
-    }
-    if (field !== "gameAssets" && field !== "banner")
-      setGameInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
-  }
+      } catch (error) {
+        console.error("Async validation error:", error)
+      }
+    },
+    [setGameInfo, setErrors]
+  )
 
   const initialDetailsArray: FilterDetail[] = [
     {
@@ -199,8 +98,11 @@ const Layout: React.FC<LayoutProps> = ({
       inputType: "text",
       placeholder: "what's your game called",
       value: gameInfo?.title || "",
-      onChange: (value) => handleInputChange("title", value as string),
-      // setGameInfo((prevState) => ({ ...prevState, title: value as string })),
+      onChange: (value) =>
+        handleInputChange("title", value as string, validateStringField, {
+          maxLength: 60,
+          required: true,
+        }),
       className: "bg-transparent rounded-md",
       errorMessage: errors.title,
     },
@@ -210,30 +112,38 @@ const Layout: React.FC<LayoutProps> = ({
       accept: "image/*",
       multiple: false,
       value: gameInfo.banner as string,
-      onChange: (value) => handleInputChange("banner", value as File),
-      // setGameInfo((prevState) => ({ ...prevState, banner: value as File })),
+      onChange: async (value) =>
+        await handleInputChange("banner", value as File | null, validateFileField, {
+          required: true,
+          fileMaxSize: 1024 * 1024,
+        }),
       className: "",
       errorMessage: errors.banner,
-      // errorMessage:errors.title
     },
     {
       title: "Supported Platforms",
       inputType: "tags",
       placeholder: "platform",
-      onTagsChange: (tags) => handleInputChange("platforms", tags),
-      errorMessage: errors.platforms,
+      onTagsChange: (tags) =>
+        handleInputChange("platforms", tags, validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
       initialtags: gameInfo.platforms,
-
-      //  setGameInfo((prevState) => ({ ...prevState, platforms: tags })),
+      errorMessage: errors.platforms,
     },
 
     {
       title: "Genre",
       inputType: "tags",
       placeholder: "genres...",
-      onTagsChange: (tags) => handleInputChange("genre", tags),
-      errorMessage: errors.genre,
+      onTagsChange: (tags) =>
+        handleInputChange("genre", tags, validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
       initialtags: gameInfo.genre,
+      errorMessage: errors.genre,
     },
     {
       title: "Mode",
@@ -253,7 +163,8 @@ const Layout: React.FC<LayoutProps> = ({
         },
       ],
       value: gameInfo.gameMode,
-      onChange: (value) => handleInputChange("gameMode", value as string),
+      onChange: (value) =>
+        handleInputChange("gameMode", value as string, validateStringField, { required: true }),
       errorMessage: errors.gameMode,
     },
 
@@ -262,7 +173,11 @@ const Layout: React.FC<LayoutProps> = ({
       inputType: "text",
       placeholder: "developer name",
       value: gameInfo.developerName,
-      onChange: (value) => handleInputChange("developerName", value as string),
+      onChange: (value) =>
+        handleInputChange("developerName", value as string, validateStringField, {
+          maxLength: 60,
+          required: true,
+        }),
       className: "bg-transparent rounded-md",
       errorMessage: errors.developerName,
     },
@@ -288,7 +203,10 @@ const Layout: React.FC<LayoutProps> = ({
         },
       ],
       value: gameInfo.developerType,
-      onChange: (value) => handleInputChange("developerType", value as string),
+      onChange: (value) =>
+        handleInputChange("developerType", value as string, validateStringField, {
+          required: true,
+        }),
       errorMessage: errors.developerType,
 
       // setGameInfo((prevState) => ({
@@ -300,52 +218,34 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Distribution platforms",
       inputType: "tags",
       placeholder: "distribution platforms...",
-      // value: gameInfo.distributionPlatforms,
-      onTagsChange: (value) => handleInputChange("distributionPlatforms", value),
+      onTagsChange: (value) =>
+        handleInputChange("distributionPlatforms", value, validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
       errorMessage: errors.distributionPlatforms,
       initialtags: gameInfo.distributionPlatforms,
-
-      // (value) =>
-      //   setGameInfo((prevState) => ({
-      //     ...prevState,
-      //     distributionPlatforms: value,
-      //   })),
     },
     {
       title: "Tags",
       inputType: "tags",
       placeholder: "Action, Shooting",
-      onTagsChange: (tags) => handleInputChange("tags", tags),
+      onTagsChange: (tags) =>
+        handleInputChange("tags", tags, validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
       errorMessage: errors.tags,
       initialtags: gameInfo.tags || [],
-
-      //  (tags) => setGameInfo((prevState) => ({ ...prevState, tags: tags })),
     },
-    // {
-    //     title: "Publisher name",
-    //     inputType: "text",
-    //     placeholder: "Publisher name",
-    //     value: gameInfo.publisherName,
-    //     onChange: (value) => setGameInfo((prevState) => ({
-    //         ...prevState,
-    //         publisherName: value as string
-    //     })),
-    //     className: 'bg-transparent rounded-md',
 
-    // },
     {
       title: "Release date",
       inputType: "date",
       value: gameInfo.releaseDate,
       className: "bg-transparent rounded-md w-[50%]",
-      onChange: (value) => handleInputChange("releaseDate", value as string),
+      onChange: (value) => handleInputChange("releaseDate", value as string, validateStringField),
       errorMessage: errors.releaseDate,
-
-      // (value) =>
-      //   setGameInfo((prevState) => ({
-      //     ...prevState,
-      //     releaseDate: value as string,
-      //   })),
     },
   ]
   useEffect(() => {
@@ -354,7 +254,103 @@ const Layout: React.FC<LayoutProps> = ({
 
   // const shadeVariant =
   //   " left-0 right-0 top-0  bg-gradient-to-b to-transparent from- group-hover:from-token-surface-primary dark:from-[#000]"
+  const handleGameUpload = async () => {
+    // Validate all fields
 
+    let flg = true
+    const validationPromises = Object.entries(gameInfo).map(async ([field, value]) => {
+      let validationFunction: (x: Allow, y: Allow) => string | Promise<string>
+      const validationParams = getValidationParamsForField(field)
+
+      switch (field) {
+        case "title":
+        case "gameMode":
+        case "developerName":
+        case "developerType":
+        case "releaseDate":
+          validationFunction = validateStringField
+          flg === true && validationFunction(value, validationParams) === ""
+            ? (flg = true)
+            : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: validationFunction(value, validationParams) }))
+          break
+        case "platforms":
+        case "genre":
+        case "distributionPlatforms":
+        case "tags":
+          validationFunction = validateStringArrayField
+          flg === true && validationFunction(value, validationParams) === ""
+            ? (flg = true)
+            : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: validationFunction(value, validationParams) }))
+          break
+
+        case "gameAssets": {
+          validationFunction = validateFileArrayField
+          const x = await validationFunction(value, validationParams)
+          flg === true && x === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: x }))
+
+          break
+        }
+
+        case "description":
+          validationFunction = validateStringField
+          flg === true && validationFunction(value, validationParams) === ""
+            ? (flg = true)
+            : (flg = false)
+          setErrors((prev) => ({
+            ...prev,
+            [field]: validationFunction(value, validationParams) as string,
+          }))
+
+          break
+
+        case "banner": {
+          validationFunction = validateFileField
+          const y = await validationFunction(value, validationParams)
+          flg === true && y === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: y }))
+
+          break
+        }
+      }
+    })
+    await Promise.all(validationPromises)
+    // let x = Object.values(errors).every((err) =>{ if(err==null){return true}else if(err==""){return true}else return false })
+
+    if (flg) {
+      uploadGame()
+    } else {
+      toast.info("Please fix the errors first!")
+    }
+  }
+  const getValidationParamsForField = (field: string): ValidationParams => {
+    // Define validation parameters for each field
+    const validationParams: Record<string, ValidationParams> = {
+      banner: { required: true, fileMaxSize: 1024 * 1024 },
+      description: {
+        /* add your validation params here */
+      },
+      developerName: { required: true, maxLength: 60 },
+      developerType: { required: true },
+      distributionPlatforms: { required: true, maxLength: 10 },
+      gameAssets: { required: true },
+      gameMode: { required: true },
+      genre: { required: true, maxLength: 10 },
+      platforms: { required: true, maxLength: 10 },
+      releaseDate: {
+        /* add your validation params here */
+      },
+      tags: { required: true, maxLength: 10 },
+      title: { required: true, maxLength: 60 },
+    }
+
+    return validationParams[field] || {}
+  }
   return (
     <>
       <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto md:flex-row flex-col items-center md:items-start">
@@ -367,13 +363,13 @@ const Layout: React.FC<LayoutProps> = ({
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
                 className="z-10 justify-center p-2 mx-auto rounded-md bg-secondary"
-                onClick={() => uploadGame()}
+                // uploadGame()
+                onClick={() => handleGameUpload()}
               >
                 Publish Game
               </Button>
             </div>
             <div className=" relative h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[20px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px] flex ">
-              {/* <div className={clsx("h-7 ")}></div> */}
               {initialDetailsArray?.map((filter, index) => (
                 <Filter
                   key={index}
@@ -391,13 +387,11 @@ const Layout: React.FC<LayoutProps> = ({
                   initialtags={filter.initialtags}
                 />
               ))}
-
-              {/* <>{JSON.stringify(gameInfo)}</> */}
             </div>
           </div>
         </div>
         <div className="flex flex-col w-full gap-4 p-4">
-          {isUpdate && (
+          {isUpdate && (oldAssets ?? [])?.length > 0 && (
             <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
               <InitMultipleFileInput
                 initFiles={oldAssets as string[] | null}
@@ -407,10 +401,11 @@ const Layout: React.FC<LayoutProps> = ({
           )}
           <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
             <MultipleFileInput
-              onFileChange={(value) => handleInputChange("gameAssets", value)}
+              onFileChange={(value) =>
+                handleInputChange("gameAssets", value, validateFileArrayField)
+              }
               errorMessage={errors.gameAssets}
             />
-            {/* {errors.gameAssets}   */}
           </div>
           {children}
         </div>

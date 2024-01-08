@@ -64,7 +64,6 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
           label: s,
           value: s,
         })),
-       
       ],
     },
     {

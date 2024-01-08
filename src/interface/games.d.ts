@@ -64,19 +64,20 @@ interface Games {
     id: number
   }[]
   userId: number
+  tags: Tag[]
 }
 interface GameInfo {
   title: string
   description: object | null
   banner: File | null | string
-  platforms: string[]
-  genre: string[]
+  platforms: readonly string[]
+  genre: readonly string[]
   gameMode: string
   developerName: string
   developerType: string
   // developerId?: number | null
-  distributionPlatforms: string[]
-  tags: string[] | null
+  distributionPlatforms: readonly string[]
+  tags: readonly string[] | null
   // publisherName: string;
   releaseDate: string
   gameAssets: File[] | null | string[]

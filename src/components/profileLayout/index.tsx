@@ -77,10 +77,9 @@ const ProfileLayout = ({
             router.replace(`/?emessage=Please Authenticate`)
           } else {
             // console.log("router ",)
-            let x=router.pathname.split("/")
+            const x = router.pathname.split("/")
             setData(users?.data?.user)
-            setActiveTab(x[x.length-1])
-            
+            setActiveTab(x[x.length - 1])
           }
         }
       }
@@ -91,7 +90,7 @@ const ProfileLayout = ({
   }, [param, router.query, userData?.id, router])
   // const tabs = ["posts", "albums", "jobs", "about"]
   const tabs = [
-    { name: "posts", href: "posts" },
+    // { name: "posts", href: "posts" },
     { name: "Portfolio", href: "albums" },
     { name: "Jobs", href: "jobs" },
     { name: "About", href: "about" },
@@ -128,6 +127,7 @@ const ProfileLayout = ({
 
   const handlecreateAlbum = async () => {
     setCreateAlbum(true)
+    toast.dismiss()
     if (newAlbum.title == "") {
       toast.error("Please fill the title")
       setCreateAlbum(false)
@@ -199,6 +199,7 @@ const ProfileLayout = ({
           keywords: newAlbum.AlbumKeywords,
         }
       )
+      toast.dismiss()
       if (albumData?.error) {
         toast.error(albumData.message)
       } else {
@@ -270,6 +271,7 @@ const ProfileLayout = ({
                 onTagsChange={(tags) =>
                   setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
                 }
+                value={newAlbum.AlbumKeywords}
                 className={"bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
                 initialtags={newAlbum.AlbumKeywords}

@@ -1,14 +1,8 @@
 interface JobFilterProps {
-  // searchText: string;
-  rolesNeeded: string
-  softwareSkills: string
-  expertise: string
+  expertise: string[]
   remote: undefined | boolean
-  country: string
-  city: string
-  type: string
-  postedOn: string
-  hasPrice: boolean
+  jobType: string[]
+  jobSoftwares: string[]
 }
 
 interface Job {
@@ -84,7 +78,7 @@ interface JobInfo {
 
   banner: File | null | string
   expertise: string
-  jobSoftwares: string[]
+  jobSoftwares: readonly string[]
   title: string
   publishDate: string | null
   jobDetails: object | null

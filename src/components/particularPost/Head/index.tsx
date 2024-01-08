@@ -64,6 +64,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
       session?.user?.name as string,
       "POST"
     )
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {

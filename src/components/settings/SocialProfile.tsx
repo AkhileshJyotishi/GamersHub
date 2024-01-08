@@ -96,6 +96,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
     )
 
     if (hasErrors) {
+      toast.dismiss()
       toast.error("Please enter valid urls before updating social links.")
       return
     }
@@ -115,6 +116,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
         addOnWeb
       )
       toast.dismiss()
+
       if (changeSocials?.error) {
         toast.error(changeSocials.message)
       } else {

@@ -39,31 +39,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const parsedjobsDetails: BackendJob[] = jobsDetails?.data.jobs
-  // console.log(parsedjobsDetails)
-  // console.log("this is the job details ", parsedjobsDetails)
-
-  const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-    const salary =
-      backendJob.paymentValue != 0
-        ? `${backendJob.paymentValue} ${backendJob.paymentType}`
-        : `${backendJob.paymentType}`
-    return {
-      id: backendJob.id,
-      title: backendJob.title,
-      desc: backendJob.description,
-      remote: backendJob.remote,
-      date: backendJob.publishDate, // Replace with the relevant date field from the backend
-      salary, // Adjust based on your backend structure
-      type: backendJob.jobType,
-      location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
-      href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
-      // chips: backendJob.jobSoftwares,
-      savedUsers: backendJob.savedUsers,
-      banner: backendJob.banner,
-      profileImage: backendJob?.user?.profileImage ?? "",
-      userId: backendJob.userId,
-    }
-  }
 
   const jobs: Job[] = parsedjobsDetails?.map((job) => FrontendCompatibleObject(job))
 
@@ -71,5 +46,27 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: {
       jobs,
     },
+  }
+}
+export const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
+  const salary =
+    backendJob.paymentValue != 0
+      ? `${backendJob.paymentValue} ${backendJob.paymentType}`
+      : `${backendJob.paymentType}`
+  return {
+    id: backendJob.id,
+    title: backendJob.title,
+    desc: backendJob.description,
+    remote: backendJob.remote,
+    date: backendJob.publishDate, // Replace with the relevant date field from the backend
+    salary, // Adjust based on your backend structure
+    type: backendJob.jobType,
+    location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
+    href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
+    // chips: backendJob.jobSoftwares,
+    savedUsers: backendJob.savedUsers,
+    banner: backendJob.banner,
+    profileImage: backendJob?.user?.profileImage ?? "",
+    userId: backendJob.userId,
   }
 }

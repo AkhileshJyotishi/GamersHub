@@ -45,7 +45,7 @@ const UserImage = ({ href }: { href: string | null }) => (
       width={100}
       height={100}
       alt={""}
-      className="w-10 h-10 border-[0.1px] rounded-full "
+      className="w-10 h-10  rounded-full "
       src={href || defaultUserImage}
       priority
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
@@ -157,7 +157,6 @@ const Card: React.FC<JobCardProps> = ({
   const { setmodalData } = useModalContext()
   const router = useRouter()
   const [saved, setSaved] = useState<boolean>(false)
-  console.log(profileImage)
   // console.log(saved)
   useEffect(() => {
     if (savedUsers?.length) {
@@ -167,6 +166,7 @@ const Card: React.FC<JobCardProps> = ({
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -183,6 +183,7 @@ const Card: React.FC<JobCardProps> = ({
     toast.info("Removing the Job...")
     handleClose()
     const data = await fetchData(`/v1/job/${id}`, session?.user?.name as string, "DELETE")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {

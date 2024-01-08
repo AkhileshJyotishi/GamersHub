@@ -1,7 +1,7 @@
+import { NextRouter } from "next/router"
 import { toast } from "react-toastify"
 
 import { fetchData, fetchFile } from "@/utils/functions"
-import { NextRouter } from "next/router"
 
 export const uploadUserEducation = async (
   router: NextRouter,
@@ -121,6 +121,7 @@ export const removeUserEducation = async (
     "DELETE"
   )
   // console.log("delete ", response)
+  toast.dismiss()
   if (response?.error) {
     toast.error(response.message)
   } else {
@@ -157,6 +158,8 @@ export const removeuserExperience = async (
     "DELETE"
   )
   // console.log("delete experince", response)
+
+  toast.dismiss()
   if (response?.error) {
     toast.error(response.message)
   } else {
@@ -216,6 +219,7 @@ export const updateUserExperience = async (
     "PATCH", // Use PATCH to update existing experience
     experienceToUpdate
   )
+  toast.dismiss()
   if (response?.error) {
     toast.error(response.message)
   } else {
@@ -264,6 +268,7 @@ export const uploadUserExperience = async (
     "POST",
     userExperience
   )
+  toast.dismiss()
   if (response?.error) {
     toast.error(response?.message)
   } else {
@@ -274,14 +279,14 @@ export const uploadUserExperience = async (
   return response?.data
 }
 /**
-   * Uploads profile data to a server.
-   *
-   * @param {Object} profileData - An object containing profile details such as user bio, country, city, user skills, user softwares, and profile image.
-   * @param {string} token - The authentication token.
-   * @param {string} method - The HTTP method to be used for the API request.
-   * @param {function} setProfileFilled - A function to set the state indicating whether the profile is filled or not.
-   * @returns {Promise<Object>} - The response from the server if the request is successful. Otherwise, an error object with the error message and null data.
-   */
+ * Uploads profile data to a server.
+ *
+ * @param {Object} profileData - An object containing profile details such as user bio, country, city, user skills, user softwares, and profile image.
+ * @param {string} token - The authentication token.
+ * @param {string} method - The HTTP method to be used for the API request.
+ * @param {function} setProfileFilled - A function to set the state indicating whether the profile is filled or not.
+ * @returns {Promise<Object>} - The response from the server if the request is successful. Otherwise, an error object with the error message and null data.
+ */
 export const uploadProfileData = async (
   profileData:
     | {
@@ -307,6 +312,7 @@ export const uploadProfileData = async (
     formdata.append("type", "user")
     const isuploaded = await fetchFile("/v1/upload/file", token, "POST", formdata)
     // console.log("is uploaded", isuploaded)
+    toast.dismiss()
     if (isuploaded?.error) {
       toast.error(isuploaded?.message)
       return
@@ -315,6 +321,7 @@ export const uploadProfileData = async (
   }
 
   const response = await fetchData(`/v1/users/details`, token, method, profileData)
+  toast.dismiss()
   if (response?.error) {
     toast.error(response?.message)
   } else {

@@ -26,12 +26,12 @@ const SelectFilter: React.FC<SelectFilterProps> = ({
         onChange={(e) => onChange(e.target.value)}
         className={clsx("p-1 border rounded-md border-user_interface_4", hidden ? "hidden" : "")}
         options={options}
+        errorMessage={errorMessage || ""}
       />
-      {errorMessage ? (
+
+      {/* {errorMessage ? (
         <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
-      ) : (
-        <></>
-      )}
+      ) : null} */}
     </>
   )
 }

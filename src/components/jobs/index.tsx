@@ -3,33 +3,16 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 
 import image from "@/assets/image/void.svg"
+import { FrontendCompatibleObject } from "@/pages/jobs"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData } from "@/utils/functions"
 
-import Card from "./jobsCard"
+import SkeletonLoader from "@/components/ui/SkeletonLoader2"
+
 import Layout from "./jobsLayout"
-const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-  const salary =
-    backendJob.paymentValue != 0
-      ? `${backendJob.paymentValue} ${backendJob.paymentType}`
-      : `${backendJob.paymentType}`
-  return {
-    id: backendJob.id,
-    title: backendJob.title,
-    desc: backendJob.description,
-    date: backendJob.publishDate, // Replace with the relevant date field from the backend
-    salary, // Adjust based on your backend structure
-    type: backendJob.jobType,
-    location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
-    href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
-    // chips: backendJob.jobSoftwares,
-    savedUsers: backendJob.savedUsers,
-    banner: backendJob.banner,
-    userId: backendJob.userId,
-    remote: backendJob?.remote,
-    profileImage: backendJob?.user?.profileImage ?? "",
-  }
-}
+// import Card from "./jobsCard"
+import Card from "./Old-GCH-card"
+
 type JobsPageProps = {
   jobs: Job[]
 }
@@ -39,6 +22,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
   const { data: session } = useSession()
   const [Alljobs, setjobs] = useState<Job[] | null>(jobs)
   const [myjob, setmyjobs] = useState<Job[] | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
     if (activetab === "Saved" && userData === null) {
       setIsLoginModalOpen(true)
@@ -59,13 +43,11 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       if (data?.error) {
         return
       }
-      // console.log("myjobposts     ", data)
       const sett = data?.data?.jobs?.map((job: BackendJob) => FrontendCompatibleObject(job))
       setmyjobs(sett)
     }
   }
   const onChange = (id: number) => {
-    // const updatedJobs = jobs.filter(job => );
     setmyjobs((prev) => {
       const x = prev?.filter((job) => job.id !== id)
       if (x) return x
@@ -73,7 +55,6 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
     })
   }
   const handleSavedSuccess = (id: number, state: string) => {
-    // Update the Alljobs state based on the state parameter
     setjobs((prevJobs) => {
       if (prevJobs) {
         const updatedJobs = prevJobs.map((job) =>
@@ -96,34 +77,47 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
   useEffect(() => {
     myjobs()
   }, [userData])
-
+  useEffect(() => {
+    setjobs(jobs)
+  }, [activetab])
   return (
-    <Layout jobs={jobs} activeTab={activetab} setActiveTab={setactivetab}>
+    <Layout
+      jobs={activetab === "My Job Posts" ? myjob || [] : jobs}
+      activeTab={activetab}
+      setActiveTab={setactivetab}
+      setjobs={activetab === "My Job Posts" ? setmyjobs || [] : setjobs}
+      setLoading={setLoading}
+      loading={loading}
+    >
       {activetab === "All" && (
         <>
           {jobs.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 gap-3 p-4 md:p-0 justify-items-center md:grid-cols-2 xl:grid-cols-3 w-[100%] mx-auto">
-                {Alljobs?.map((job, idx) => (
-                  <Card
-                    {...job}
-                    className=""
-                    key={idx}
-                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
-                  />
-                ))}
+              <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+                {loading ? (
+                  <>
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                  </>
+                ) : (
+                  Alljobs?.map((job, idx) => (
+                    <Card
+                      {...job}
+                      className=""
+                      key={idx}
+                      onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                    />
+                  ))
+                )}
               </div>
             </>
           ) : (
             <>
-              {
-                <>
-                  <div className="flex flex-col items-center w-full gap-20">
-                    <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-                  </div>
-                </>
-              }
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No jobs yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+              </div>
             </>
           )}
         </>
@@ -133,17 +127,25 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
         <>
           {Alljobs?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
-            <div className="grid grid-cols-1 gap-3 p-4 md:p-0  justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%] mx-auto">
-              {Alljobs?.filter((job) =>
-                job.savedUsers.some((user) => user.id === userData?.id)
-              ).map((job, idx) => (
-                <Card
-                  {...job}
-                  className=""
-                  key={idx}
-                  onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
-                />
-              ))}
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+              {loading ? (
+                <>
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                </>
+              ) : (
+                Alljobs?.filter((job) =>
+                  job.savedUsers.some((user) => user.id === userData?.id)
+                ).map((job, idx) => (
+                  <Card
+                    {...job}
+                    className=""
+                    key={idx}
+                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                  />
+                ))
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center w-full gap-20">
@@ -156,22 +158,26 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs }) => {
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid w-[90%] mx-auto my-4  p-4 lg:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px]">
-              {myjob &&
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+              {loading ? (
+                <>
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                </>
+              ) : (
+                myjob &&
                 myjob?.map((job, idx) => (
                   <Card {...job} className="" key={idx} onChange={onChange} />
-                ))}
+                ))
+              )}
             </div>
           ) : (
             <>
-              {
-                <>
-                  <div className="flex flex-col items-center w-full gap-20">
-                    <h3 className="text-3xl font-bold">No jobs yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-                  </div>
-                </>
-              }
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No jobs yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+              </div>
             </>
           )}
         </>

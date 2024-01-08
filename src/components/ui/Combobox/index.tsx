@@ -160,9 +160,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
             <PiWarningCircleFill />
             <div>{errorMessage}</div>
           </span>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Combobox>
     </div>
   )

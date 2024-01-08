@@ -6,9 +6,9 @@ import { useSession } from "next-auth/react"
 import image from "@/assets/image/void.svg"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
+import EditIcon from "@/components/icons/editIcon"
 import ProfilePageLayout from "@/components/profileLayout"
 import SkeletonLoader from "@/components/ui/SkeletonLoader2"
-import EditIcon from "@/components/icons/editIcon"
 
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const About = () => {

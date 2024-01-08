@@ -28,7 +28,6 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
 
   let isUpdate = false
   if (path) isUpdate = path.includes("updateGame")
-
   let initGameInfo
 
   if (isUpdate && game) {
@@ -65,7 +64,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       tags: [], //tags
       // publisherName: "",
       releaseDate: "",
-      gameAssets: null,
+      gameAssets: [],
     }
   }
   const [gameInfo, setGameInfo] = useState<GameInfo>(initGameInfo)

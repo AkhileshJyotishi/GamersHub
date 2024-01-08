@@ -57,6 +57,8 @@ const Editor = ({
         disableLocalStorage={disableLocalStorage}
         storageKey={storageKey}
         extensions={[Placeholder]}
+
+        // autofocus = 'start'
       />
     </>
   )

@@ -1,8 +1,18 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import clsx from "clsx"
 import { City, Country } from "country-state-city"
+import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
+import {
+  validateBooleanField,
+  validateFileField,
+  validateNumberField,
+  validateStringArrayField,
+  validateStringField,
+  ValidationFunction,
+  ValidationParams,
+} from "@/utils/functions/validationUtils"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
@@ -54,183 +64,43 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     setCity(cityList!)
     return cityList!
   }
-  const [dimensions, setdimensions] = useState<{
+  const [dimensions] = useState<{
     height: number | null
     width: number | null
   }>({
     height: null,
     width: null,
   })
-  const handleInputChange = <K extends keyof JobInfo>(field: K, value: JobInfo[K]) => {
-    // Validation logic based on the field
-    switch (field) {
-      case "title":
-        if (typeof value === "string") {
-          if (value === "") {
-            setErrors((prev) => ({ ...prev, title: "*required" }))
-          } else if (value.length > 11) {
-            setErrors((prev) => ({ ...prev, title: "*title too long" }))
-          } else {
-            setErrors((prev) => ({ ...prev, title: null }))
-          }
-          setJobInfo((prevState) => ({ ...prevState, title: value as string }))
+  const handleInputChange = useCallback(
+    async <K extends keyof JobInfo>(
+      field: K,
+      value: JobInfo[K],
+      validationFn: ValidationFunction<JobInfo[K]>,
+      validationParams?: ValidationParams
+    ) => {
+      // Validation logic based on the field
+      setTouched(true)
+      try {
+        const validationError = value === null ? "" : await validationFn(value, validationParams)
+        if (validationError) {
+          setErrors((prev) => ({ ...prev, [field]: validationError }))
+        } else {
+          setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        break
-
-      case "jobType":
-        if (typeof value === "string") {
-          if (value.length === 0) {
-            setErrors((prev) => ({ ...prev, jobType: "*required" }))
-          } else {
-            setErrors((prev) => ({ ...prev, jobType: "" }))
+        if (field !== "banner") {
+          if (field === "country") {
+            handleCityOptions(codemapping[value as string])
           }
-          setJobInfo((prevState) => ({ ...prevState, jobType: value as string }))
-        }
-        break
-      case "banner":
-        if (value instanceof File) {
-          // Your validation logic for banner (File type)
-          // Check file size
-          // value.
-          // console.log("banner working")
-          const maxSizeInBytes = 1024 * 1024 // 1MB
-          // console.log(value.size, maxSizeInBytes)
-          if (value.size > maxSizeInBytes) {
-            // console.log("errors")
-            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
-            return // Stop further processing
-          } else {
-            setErrors((prev) => ({ ...prev, banner: null }))
-          }
-
-          // Create an image element to check dimensions
-          const img = new Image()
-          img.src = URL.createObjectURL(value)
-
-          // Check image dimensions
-          img.onload = () => {
-            const maxWidth = 1920
-            const maxHeight = 1080
-            const minWidth = 640
-            const minHeight = 320
-
-            if (img.naturalWidth > maxWidth || img.naturalHeight > maxHeight) {
-              // console.log(img.width, maxWidth)
-              // console.log(img.height, maxHeight)
-              setErrors((prev) => ({
-                ...prev,
-
-                banner: `Cover dimensions needs to be ${maxWidth}p - ${maxHeight}p or smaller`,
-              }))
-            } else if (img.naturalWidth < minWidth || img.naturalHeight < minHeight) {
-              // console.log(img.width, minWidth)
-              // console.log(img.height, minHeight)
-              setErrors((prev) => ({
-                ...prev,
-                banner: `Cover dimensions needs to be ${minWidth}p - ${minHeight}p or larger`,
-              }))
-            } else {
-              setErrors((prev) => ({ ...prev, banner: null }))
-              // Proceed with setting the banner if all checks pass
-            }
-            setdimensions({
-              height: img.naturalHeight,
-              width: img.naturalWidth,
-            })
-            setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
-          }
-
-          // Handle image loading error
-          img.onerror = () => {
-            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
-          }
+          setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
+        } else {
           setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
         }
-        break
-      case "remote":
-        setJobInfo({
-          ...jobInfo,
-          remote: value as boolean,
-        })
-        break
-
-      case "country":
-        if (typeof value === "string") {
-          handleCityOptions(codemapping[value as string])
-          setJobInfo({
-            ...jobInfo,
-            country: value as string,
-          })
-        }
-        break
-
-      case "city":
-        if (typeof value === "string") {
-          setJobInfo({
-            ...jobInfo,
-            city: value as string,
-          })
-        }
-        break
-
-      case "paymentType":
-        if (typeof value === "string") {
-          if (value.length === 0) {
-            setErrors((prev) => ({ ...prev, paymentType: "*required" }))
-          } else {
-            setErrors((prev) => ({ ...prev, paymentType: "" }))
-          }
-          setJobInfo({
-            ...jobInfo,
-            paymentType: value as string,
-          })
-        }
-        break
-
-      case "paymentValue":
-        {
-          const val = typeof value === "number" ? value : Number(value)
-          if (val < 0) {
-            setErrors((prev) => ({ ...prev, paymentValue: "cant be negative" }))
-          } else {
-            setErrors((prev) => ({ ...prev, paymentValue: "" }))
-          }
-          setJobInfo((prevState) => ({
-            ...prevState,
-            paymentValue: val as number,
-          }))
-        }
-        break
-
-      case "expertise":
-        if (typeof value === "string") {
-          if (value.length === 0) {
-            setErrors((prev) => ({ ...prev, expertise: "*required" }))
-          } else {
-            setErrors((prev) => ({ ...prev, expertise: "" }))
-          }
-          setJobInfo((prevState) => ({ ...prevState, expertise: value as string }))
-        }
-        break
-
-      case "jobSoftwares":
-        if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
-          if (value.length == 0) {
-            setErrors((prev) => ({ ...prev, jobSoftwares: "*required" }))
-          } else if (value.length >= 11) {
-            setErrors((prev) => ({ ...prev, jobSoftwares: "*maximum 11 can  be selected" }))
-          } else {
-            setErrors((prev) => ({ ...prev, jobSoftwares: "" }))
-          }
-
-          setJobInfo((prevState) => ({ ...prevState, jobSoftwares: value as string[] }))
-        }
-        break
-
-      default:
-        break
-    }
-  }
+      } catch (error) {
+        console.error("Async validation error:", error)
+      }
+    },
+    [setJobInfo]
+  )
 
   const [errors, setErrors] = useState<Errors<Partial<JobInfo>>>({
     title: "",
@@ -249,6 +119,73 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     publishDate: "",
     // userId:""
   })
+  const [touched, setTouched] = useState<boolean>(false)
+
+  const uploadJobHandler = async () => {
+    let flg = true
+
+    const validationPromises = Object.entries(jobInfo).map(async ([field, value]) => {
+      let validationFunction: (x: Allow, y: Allow) => string | Promise<string>
+      const validationParams = getValidationParamsForField(field)
+      switch (field) {
+        case "title":
+        case "jobType":
+        case "country":
+        case "city":
+        case "paymentType":
+        case "expertise":
+          validationFunction = validateStringField
+          flg === true && validationFunction(value, validationParams) === ""
+            ? (flg = true)
+            : (flg = false)
+
+          setErrors((prev) => ({
+            ...prev,
+            [field]: validationFunction(value as string, validationParams),
+          }))
+          break
+
+        case "banner": {
+          validationFunction = validateFileField
+          const y = await validationFunction(value, validationParams)
+          flg === true && y === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: y }))
+          break
+        }
+        case "remote": {
+          validationFunction = validateBooleanField
+          const z = await validationFunction(value, validationParams)
+          flg === true && z === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: z }))
+          break
+        }
+        case "paymentValue": {
+          validationFunction = validateNumberField
+          const d = await validationFunction(value, validationParams)
+          flg === true && d === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: d }))
+          break
+        }
+        case "jobSoftwares": {
+          validationFunction = validateStringArrayField
+          const w = await validationFunction(value, validationParams)
+          flg === true && w === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: w }))
+          break
+        }
+        default:
+          break
+      }
+    })
+    await Promise.all(validationPromises)
+    if (flg) {
+      await uploadJob()
+    } else {
+      toast.dismiss()
+      toast.info("Please fill the details Correctly")
+    }
+  }
 
   const initialDetailsArray: FilterDetail[] = [
     {
@@ -256,7 +193,11 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       inputType: "text",
       placeholder: "title...",
       value: jobInfo.title,
-      onChange: (value) => handleInputChange("title", value as string),
+      onChange: (value) =>
+        handleInputChange("title", value as string, validateStringField, {
+          maxLength: 60,
+          required: true,
+        }),
       className: "bg-transparent rounded-md",
       errorMessage: errors.title,
     },
@@ -265,7 +206,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       inputType: "select",
       placeholder: "Select Job Type",
       value: jobInfo.jobType,
-      onChange: (value) => handleInputChange("jobType", value as string),
+      onChange: (value) =>
+        handleInputChange("jobType", value as string, validateStringField, { required: true }),
 
       selectOptions: [
         {
@@ -287,19 +229,13 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       ],
       className: "bg-transparent rounded-md",
       errorMessage: errors.jobType,
-
-      // errorMessage:"errors.title"
     },
     {
       title: "Job Location *",
       inputType: "radio",
       value: jobInfo.remote,
-      onChange: (value) => handleInputChange("remote", value as boolean),
-      // (value) =>
-      //   setJobInfo({
-      //     ...jobInfo,
-      //     remote: value as boolean,
-      //   }),
+      onChange: (value) => handleInputChange("remote", value as boolean, validateBooleanField),
+
       selectOptions: [
         {
           label: "Remote",
@@ -315,15 +251,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Country",
       inputType: "select",
-      onChange: (value) => handleInputChange("country", value as string),
-      //  (value) => {
-      //   handleCityOptions(codemapping[value as string])
+      onChange: (value) => handleInputChange("country", value as string, validateStringField, {}),
 
-      //   setJobInfo({
-      //     ...jobInfo,
-      //     country: value as string,
-      //   })
-      // },
       selectOptions: [{ label: "--Select a Country--", value: "" }, ...countryList],
       value: jobInfo.country || "",
       hidden: jobInfo.remote,
@@ -335,13 +264,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       inputType: "select",
       value: jobInfo.city as string,
 
-      onChange: (value) => handleInputChange("city", value as string),
-      //  (value) => {
-      //   setJobInfo({
-      //     ...jobInfo,
-      //     city: value as string,
-      //   })
-      // },
+      onChange: (value) => handleInputChange("city", value as string, validateStringField, {}),
+
       selectOptions: [{ label: "--Select a City--", value: "" }, ...city],
       hidden: jobInfo.remote,
       errorMessage: errors.city,
@@ -350,13 +274,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "Expected payment",
       inputType: "select",
 
-      onChange: (value) => handleInputChange("paymentType", value as string),
-      //  (value) =>
-      //   setJobInfo({
-      //     ...jobInfo,
-      //     paymentType: value as string,
-      //     // payment: { ...jobInfo.payment, type: value as string },
-      //   }),
+      onChange: (value) =>
+        handleInputChange("paymentType", value as string, validateStringField, { required: true }),
+
       selectOptions: [
         {
           label: "Payment type",
@@ -384,16 +304,12 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       // type:""
       value: Number(jobInfo.paymentValue),
       onChange: (value) => {
-        handleInputChange("paymentValue", value as number)
+        handleInputChange("paymentValue", Number(value) as number, validateNumberField, {
+          required: true,
+          minValue: 0,
+        })
       },
-      //  (value) => {
-      //   const val = Number(value)
 
-      //   setJobInfo((prevState) => ({
-      //     ...prevState,
-      //     paymentValue: val as number,
-      //   }))
-      // },
       className: "bg-transparent rounded-md",
       errorMessage: errors.paymentValue,
     },
@@ -403,23 +319,21 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       accept: "image/*",
       multiple: false,
       value: null,
-      onChange: (value) => handleInputChange("banner", value as File),
+      onChange: (value) =>
+        handleInputChange("banner", value as File, validateFileField, {
+          required: true,
+          fileMaxSize: 1024 * 1024,
+        }),
       className: "",
-      // errorMessage:errors.country
+      errorMessage: errors.banner,
     },
-    // {
-    //   title: "Roles Needed*",
-    //   inputType: "tags",
-    //   onTagsChange: (tags) => setJobInfo((prevState) => ({ ...prevState, rolesNeeded: tags })),
-    //   placeholder: "roles needed",
-    //   // onChange: (value) =>setJobInfo({ ...jobInfo, rolesNeeded: jobInfo.rolesNeeded }),
-    //   // value: roleNeedInput,
-    // },
+
     {
       title: "Level of Expertise",
       inputType: "select",
       value: jobInfo.expertise || "",
-      onChange: (value) => handleInputChange("expertise", value as string),
+      onChange: (value) =>
+        handleInputChange("expertise", value as string, validateStringField, { required: true }),
       // setJobInfo((prevState) => ({ ...prevState, expertise: value as string })),
       selectOptions: [
         {
@@ -445,15 +359,34 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Software expertise needed *",
       inputType: "tags",
-      onTagsChange: (value) => handleInputChange("jobSoftwares", value as string[]),
-      // (tags) => {
-      //   setJobInfo((prevState) => ({ ...prevState, jobSoftwares: tags }))
-      // },
+      onTagsChange: (value) =>
+        handleInputChange("jobSoftwares", value as string[], validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
+      value: jobInfo.jobSoftwares || [],
+
       placeholder: "softwares",
       errorMessage: errors.jobSoftwares,
     },
   ]
+  const getValidationParamsForField = (field: string): ValidationParams => {
+    // Define validation parameters for each field
+    const validationParams: Record<string, ValidationParams> = {
+      title: { required: true, maxLength: 60 },
+      jobType: { required: true },
+      remote: {},
+      country: {},
+      city: {},
+      paymentType: { required: true },
+      paymentValue: { required: true, minValue: 0 },
+      banner: { required: true, fileMaxSize: 1024 * 1024 },
+      expertise: { required: true },
+      jobSoftwares: { required: true, maxLength: 10 },
+    }
 
+    return validationParams[field] || {}
+  }
   return (
     <>
       <div className="flex gap-4 p-6 mt-3 w-[100%] mx-auto md:flex-row flex-col items-center md:items-start">
@@ -465,9 +398,22 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           <div className="flex flex-col w-full gap-4 p-2">
             <div className="flex w-full  bg-user_interface_2 border-user_interface_3 rounded-[15px] px-[6px] py-[15px] border-[1px]">
               <Button
-                className="justify-center p-2 mx-auto rounded-md bg-secondary"
+                className="justify-center p-2 mx-auto rounded-md bg-secondary disabled:cursor-not-allowed"
                 style={{ zIndex: 19 }}
-                onClick={() => uploadJob()}
+                onClick={() => {
+                  const hasErrors = Object.values(errors).some(
+                    (error) => !(error === null || error == "")
+                  )
+                  if (hasErrors) {
+                    toast.dismiss()
+                    // If there are errors, do not proceed with the upload
+                    toast.error("Cannot upload. Please fix errors first")
+                    return
+                  } else {
+                    uploadJobHandler()
+                  }
+                }}
+                disabled={touched ? false : true}
               >
                 Post Job
               </Button>
@@ -475,9 +421,9 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
             <div className="h-fit md:h-[80vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
-                  ; (filter.title == "City" || filter.title == "Country") &&
-                    jobInfo.remote &&
-                    (hide = true)
+                ;(filter.title == "City" || filter.title == "Country") &&
+                  jobInfo.remote &&
+                  (hide = true)
                 filter.title == "Payment Amount" &&
                   jobInfo.paymentType == "NEGOTIABLE" &&
                   (hide = true)

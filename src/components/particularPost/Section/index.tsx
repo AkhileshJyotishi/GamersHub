@@ -147,6 +147,7 @@ const Jobsection = ({ postData }: { postData: postdataProp }) => {
         comment,
       }
     )
+    toast.dismiss()
     if (message?.error) {
       toast.error(message.message)
     } else {

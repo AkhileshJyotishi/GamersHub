@@ -16,6 +16,7 @@ const Verify = () => {
         {}
       )
       // console.log(data)
+      toast.dismiss()
       if (data?.error) {
         toast.error("Email verification failed")
       } else {

@@ -1,8 +1,17 @@
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
+import {
+  validateBooleanField,
+  validateFileField,
+  validateNumberField,
+  validateStringArrayField,
+  validateStringField,
+  ValidationFunction,
+  ValidationParams,
+} from "@/utils/functions/validationUtils"
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
@@ -16,7 +25,7 @@ interface FiltersState {
   banner: File | null | string
   content: object
 
-  postKeywords: string[]
+  postKeywords: readonly string[]
   // toolUsed: string;
 }
 
@@ -38,7 +47,7 @@ const Layout: React.FC<LayoutProps> = ({
   isUpdate,
 }) => {
   let albumsselectoptions = [{ label: "select an album", value: "" }]
-  const [dimensions, setdimensions] = useState<{
+  const [dimensions] = useState<{
     height: number | null
     width: number | null
   }>({
@@ -53,118 +62,33 @@ const Layout: React.FC<LayoutProps> = ({
     postKeywords: null,
     title: "",
   })
-  const handleInputChange = <K extends keyof FiltersState>(field: K, value: FiltersState[K]) => {
-    // console.log("scgha")
-    switch (field) {
-      case "title":
-        if (typeof value === "string") {
-          if (value === "") {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else if (value.length > 60) {
-            setErrors((prev) => ({ ...prev, [field]: "*field too long" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          }
-          setFiltersState((prevState) => ({ ...prevState, [field]: value as string }))
+  const isInitialRender = useRef<boolean>(true)
+  const handleInputChange = useCallback(
+    async <K extends keyof FiltersState>(
+      field: K,
+      value: FiltersState[K],
+      validationFn: ValidationFunction<FiltersState[K]>,
+      validationParams?: ValidationParams
+    ) => {
+      // console.log("scgha")
+      try {
+        const validationError = value === null ? "" : await validationFn(value, validationParams)
+        if (validationError) {
+          setErrors((prev) => ({ ...prev, [field]: validationError }))
+        } else {
+          setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        break
-      case "banner":
-        if (value instanceof File) {
-          // Your validation logic for banner (File type)
-          // Check file size
-          // value.
-          // console.log("banner working")
-          const maxSizeInBytes = 1024 * 1024 // 1MB
-          // console.log(value.size, maxSizeInBytes)
-          if (value.size > maxSizeInBytes) {
-            // console.log("errors")
-            setErrors((prev) => ({ ...prev, banner: "File size must be less than 1MB" }))
-            return // Stop further processing
-          } else {
-            setErrors((prev) => ({ ...prev, banner: null }))
-          }
-
-          // Create an image element to check dimensions
-          const img = new Image()
-          img.src = URL.createObjectURL(value)
-
-          // Check image dimensions
-          img.onload = () => {
-            const maxWidth = 1920
-            const maxHeight = 1080
-            const minWidth = 640
-            const minHeight = 320
-
-            if (img.naturalWidth > maxWidth || img.naturalHeight > maxHeight) {
-              // console.log(img.width, maxWidth)
-              // console.log(img.height, maxHeight)
-              setErrors((prev) => ({
-                ...prev,
-                banner: `Cover dimensions needs to be ${maxWidth}p - ${maxHeight}p or smaller`,
-              }))
-            } else if (img.width < minWidth || img.height < minHeight) {
-              // console.log(img.width, minWidth)
-              // console.log(img.height, minHeight)
-              setErrors((prev) => ({
-                ...prev,
-                banner: `Cover dimensions needs be ${minWidth}p - ${minHeight}p or larger`,
-              }))
-            } else {
-              setErrors((prev) => ({ ...prev, banner: null }))
-              // Proceed with setting the banner if all checks pass
-            }
-            setdimensions({
-              height: img.naturalHeight,
-              width: img.naturalWidth,
-            })
-            setFiltersState((prevState) => ({ ...prevState, [field]: value as File }))
-          }
-
-          // Handle image loading error
-          img.onerror = () => {
-            setErrors((prev) => ({ ...prev, banner: "Error loading image" }))
-          }
+        if (field !== "banner") {
+          setFiltersState((prevState) => ({ ...prevState, [field]: value as string[] }))
+        } else {
           setFiltersState((prevState) => ({ ...prevState, [field]: value as File }))
         }
-        break
-
-      case "postKeywords":
-        if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
-          if (value.length == 0) {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else if (value.length >= 11) {
-            setErrors((prev) => ({ ...prev, [field]: "*too many chosen" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          }
-          setFiltersState((prevState) => ({ ...prevState, [field]: value as string[] }))
-        }
-        break
-
-      case "albumId":
-        // console.log(value)
-        if (typeof value === "number") {
-          // const chk = ["singlePlayer", "multiPlayer"].includes(value)
-          if (value === 0) {
-            setErrors((prev) => ({ ...prev, [field]: "*required" }))
-          } else {
-            setErrors((prev) => ({ ...prev, [field]: null }))
-          }
-
-          setFiltersState((prevState) => ({ ...prevState, [field]: value as number }))
-        }
-
-        break
-
-      case "matureContent":
-        if (typeof value === "boolean") {
-          // console.log(value);
-          setFiltersState((prevState) => ({ ...prevState, [field]: value as boolean }))
-        }
-
-        break
-    }
-  }
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    [setFiltersState]
+  )
 
   const alb = albums?.map((album: Allow) => ({ label: album.title, value: album.id }))
   albumsselectoptions = albumsselectoptions.concat(alb)
@@ -174,12 +98,11 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Title",
       placeholder: "title",
       value: filtersState?.title,
-      onChange: (value) => handleInputChange("title", value as string),
-
-      // setFiltersState((prevState) => ({
-      //   ...prevState,
-      //   title: value as string,
-      // })),
+      onChange: (value) =>
+        handleInputChange("title", value as string, validateStringField, {
+          required: true,
+          maxLength: 60,
+        }),
       className: "mt-2 bg-transparent rounded-md",
       errorMessage: errors.title,
     },
@@ -188,9 +111,11 @@ const Layout: React.FC<LayoutProps> = ({
       inputType: "tags",
       title: "Keyword Tags",
       onTagsChange: (value) => {
-        handleInputChange("postKeywords", value)
+        handleInputChange("postKeywords", value, validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        })
       },
-      // setFiltersState((prevState) => ({ ...prevState, postKeywords: tags })),
       placeholder: " keywords..",
       errorMessage: errors.postKeywords,
       initialtags: filtersState?.postKeywords,
@@ -200,8 +125,10 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Album Selection",
       selectOptions: albumsselectoptions,
       value: filtersState.albumId,
-      onChange: (value) => handleInputChange("albumId", Number(value) as number),
-      // setFiltersState((prevState) => ({ ...prevState, albumId: value as number })),
+      onChange: (value) =>
+        handleInputChange("albumId", Number(value) as number, validateNumberField, {
+          required: true,
+        }),
       className:
         "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
       errorMessage: errors.albumId,
@@ -215,24 +142,95 @@ const Layout: React.FC<LayoutProps> = ({
         { label: "false", value: false },
       ],
       value: filtersState.matureContent,
-      onChange: (value) => handleInputChange("matureContent", value as boolean),
-      // setFiltersState((prevState) => ({ ...prevState, matureContent: value as boolean })),
+      onChange: (value) =>
+        handleInputChange("matureContent", value as boolean, validateBooleanField, {}),
       errorMessage: errors.matureContent,
     },
 
     {
       inputType: "file",
       title: "Post Cover",
-      accept: "image/*", // Define accepted file types
-      multiple: true, // Set to true if you want to allow multiple file selection
-      value: filtersState.banner as string, // Initialize with null
-      onChange: (value) => handleInputChange("banner", value as File),
-      // setFiltersState((prevState) => ({ ...prevState, banner: value as File })), // Handle file input changes
+      accept: "image/*",
+      multiple: true,
+      value: filtersState.banner as string,
+      onChange: (value) =>
+        handleInputChange("banner", value as File, validateFileField, {
+          required: true,
+          fileMaxSize: 1024 * 1024,
+        }),
       className:
         "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
       errorMessage: errors.banner,
     },
   ]
+  const getValidationParamsForField = (field: string): ValidationParams => {
+    const validationParams: Record<string, ValidationParams> = {
+      title: { required: true, maxLength: 60 },
+      banner: { required: true, fileMaxSize: 1024 * 1024 },
+      albumId: { required: true },
+      matureContent: {},
+      postKeywords: { required: true, maxLength: 10 },
+    }
+
+    return validationParams[field] || {}
+  }
+  const handleUploadPortfolio = async () => {
+    let flg = true
+
+    const validationPromises = Object.entries(filtersState).map(async ([field, value]) => {
+      let validationFunction: (x: Allow, y: Allow) => string | Promise<string>
+      const validationParams = getValidationParamsForField(field)
+
+      switch (field) {
+        case "title": {
+          validationFunction = validateStringField
+          const x = await validationFunction(value as string, validationParams)
+          flg === true && x === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: x }))
+          break
+        }
+        case "banner": {
+          validationFunction = validateFileField
+          const y = await validationFunction(value, validationParams)
+          flg === true && y === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: y }))
+          break
+        }
+        case "albumId": {
+          validationFunction = validateNumberField
+          const q = await validationFunction(value as number, validationParams)
+          flg === true && q === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: q }))
+          break
+        }
+        case "postKeywords": {
+          validationFunction = validateStringArrayField
+          const w = await validationFunction(value, validationParams)
+          flg === true && w === "" ? (flg = true) : (flg = false)
+
+          setErrors((prev) => ({ ...prev, [field]: w }))
+          break
+        }
+        default:
+          return ""
+      }
+    })
+    await Promise.all(validationPromises)
+    if (flg) {
+      uploadPost()
+    } else {
+      toast.info("Please fix the errors first!")
+    }
+  }
+  useEffect(() => {
+    if (!isInitialRender.current) {
+      handleUploadPortfolio()
+      isInitialRender.current = true
+    }
+  }, [errors])
 
   return (
     <>
@@ -252,12 +250,10 @@ const Layout: React.FC<LayoutProps> = ({
                   )
                   if (hasErrors) {
                     toast.dismiss()
-                    // If there are errors, do not proceed with the upload
                     toast.error("Cannot upload. Please fix errors first")
                     return
                   } else {
-                    // console.log("first")
-                    uploadPost()
+                    handleUploadPortfolio()
                   }
                 }}
               >

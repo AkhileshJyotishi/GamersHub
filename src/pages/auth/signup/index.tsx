@@ -42,6 +42,7 @@ export default function SignUpPage() {
 
       if (Object.values(newErrors).some((error) => error !== "")) {
         setErrors(newErrors)
+        toast.dismiss()
         toast.error("Please fix all errors")
         return
       }

@@ -33,7 +33,7 @@ const Drawer: React.FC<DrawerProps> = ({
         ${isOpen ? "opacity-100 translate-x-0" : "delay-500 opacity-0 translate-x-full"}
         transition-opacity duration-500 backdrop-blur-lg
       `}
-      style={{zIndex:100000}}
+      style={{ zIndex: 100000 }}
     >
       <section
         className={`

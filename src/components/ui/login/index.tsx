@@ -101,6 +101,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             }
           )
         } else {
+          toast.dismiss()
           toast.error(await JSON.parse(res?.error)?.message)
         }
         return
@@ -111,6 +112,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         router.reload()
       }
     } catch (error: Allow) {
+      toast.dismiss()
       toast.error(error)
     }
   }
@@ -135,7 +137,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
         <form className="w-full">
           <div className="pb-[12px] w-full">
             <Button
-              type="button"
+              // type="button"
               className="float-right"
               onClick={(e) => {
                 e.preventDefault()
@@ -148,7 +150,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
           <h1 className="font-medium text-[2rem]  ">Sign In</h1>
           <div className="flex flex-col justify-around w-full gap-4 mt-3 overflow-hidden md:flex-row">
             <Button
-              type="button"
+              // type="button"
               className="flex items-center justify-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] bg-gray-100  hover:bg-gray-200  focus:outline-none rounded-xl focus:ring-gray-100 dark:focus:ring-gray-500 p-[2px]"
               onClick={() => {
                 signIn("google", { callbackUrl: "/" })
@@ -159,7 +161,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
             </Button>
 
             <Button
-              type="button"
+              // type="button"
               className="flex items-center justify-center whitespace-nowrap mb-2 rounded-xl mr-2 text-sm font-medium text-center  w-[100%] bg-[#2c5699]  text-[#fff] opacity-1  focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 p-[2px] min-h-[40px]"
               onClick={() => {
                 signIn("facebook", { callbackUrl: "/" })
@@ -218,7 +220,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
           </div>
           <Button
             className="px-[12px] py-[6px] border-[#323235] border-[0.01px] flex items-center mt-7  rounded-xl bg-secondary w-full justify-center h-10"
-            type="button"
+            // type="button"
             onClick={handleSubmit}
           >
             <SigninIcon className="" />

@@ -59,7 +59,7 @@ const Context = React.createContext<IUserContext>({} as IUserContext)
 type albumType = {
   title: string
   banner: File | null | string
-  AlbumKeywords: string[]
+  AlbumKeywords: readonly string[]
   isEdit: boolean
   id?: number
 }

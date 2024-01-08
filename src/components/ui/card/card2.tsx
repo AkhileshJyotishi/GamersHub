@@ -67,6 +67,7 @@ const Card: React.FC<CardProps> = ({
     }
 
     const data = await fetchData(`/v1/post/like/${id}`, session.data?.user?.name as string, method)
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -81,6 +82,7 @@ const Card: React.FC<CardProps> = ({
       session.data?.user?.name as string,
       "POST"
     )
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -91,6 +93,7 @@ const Card: React.FC<CardProps> = ({
 
   const deletePost = async (id: number) => {
     const data = await fetchData(`/v1/post/${id}`, session.data?.user?.name as string, "DELETE")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {

@@ -29,7 +29,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
         <div className="pb-[34px] w-full">
           <Button
             className="float-right"
-            type="button"
+            // type="button"
             onClick={(e) => {
               e.preventDefault()
               onClose()
@@ -52,7 +52,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
 
         <div className="grid grid-cols-1 gap-6 mx-auto mt-7">
           <Button
-            type="button"
+            // type="button"
             className="flex items-center justify-center justify-self-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] max-w-[228px] bg-gray-100  hover:bg-gray-200  focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 py-[2px] px-[10px] min-h-[40px] rounded-3xl"
             onClick={() => {
               signIn("google", { callbackUrl: "/" })
@@ -62,7 +62,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
             Sign up with Google
           </Button>
           <Button
-            type="button"
+            // type="button"
             className="flex items-center justify-center justify-self-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-[#fff] w-[100%] max-w-[228px] bg-[#2c5699]    focus:outline-none focus:ring-gray-100 dark:focus:ring-gray-500 py-[2px] px-[10px] min-h-[40px] rounded-3xl"
             onClick={() => {
               signIn("facebook", { callbackUrl: "/" })
@@ -72,7 +72,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModaProps) => {
             Sign up with Facebook
           </Button>
           <Button
-            type="button"
+            // type="button"
             className="flex items-center justify-center justify-self-center whitespace-nowrap  mb-2 mr-2 text-sm font-medium text-center text-gray-900 w-[100%] max-w-[228px] bg-gray-100  hover:bg-gray-200  focus:outline-none   p-[2px] min-h-[40px] rounded-3xl"
             onClick={() => {
               setIsRegisterModalOpen(false)

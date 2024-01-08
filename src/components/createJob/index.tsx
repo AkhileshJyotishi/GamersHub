@@ -77,7 +77,6 @@ const CreateJob: React.FC = () => {
    * Updates the loading state and redirects the user to the jobs page.
    */
   const uploadJob = async () => {
-
     setLoading(true)
 
     const storedContent = localStorage.getItem("noval__content2")
@@ -117,6 +116,8 @@ const CreateJob: React.FC = () => {
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
     if (data?.error) {
       setLoading(false)
+      toast.dismiss()
+
       toast.error(data?.message)
       return
     }

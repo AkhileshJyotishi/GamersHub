@@ -1,14 +1,14 @@
 // import { BannerComponent } from '@/components/filter/filterbanner'
 import React, { useEffect, useState } from "react"
 import { Country } from "country-state-city"
-import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 
+// import { useRouter } from "next/navigation"
+// import { useSession } from "next-auth/react"
 import { FilterDetail } from "@/interface/filter"
-import { useUserContext } from "@/providers/user-context"
 
+// import { useUserContext } from "@/providers/user-context"
 import BannerComponent from "@/components/filter/filterbanner"
-import PlusIcon from "@/components/icons/plus"
+// import PlusIcon from "@/components/icons/plus"
 import Button from "@/components/ui/button"
 
 import { DesktopFilter, FilterMobileDialog } from "../filter"
@@ -19,10 +19,10 @@ interface creatorLayoutProps {
   setCreators: React.Dispatch<React.SetStateAction<Creator[]>>
 }
 const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
-  const router = useRouter()
+  // const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
-  const { userData, setIsLoginModalOpen } = useUserContext()
-  const { data: session } = useSession()
+  // const { userData, setIsLoginModalOpen } = useUserContext()
+  // const { data: session } = useSession()
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   const [city, setCity] = useState<string[]>([])
   const clearFilters = () => {
@@ -78,10 +78,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
       selectOptions: country,
     },
   ]
-  // const searchWithFilters = async () => {
-  //   try {
-  //   } catch (error) {}
-  // }
+  const searchWithFilters = async () => {}
 
   useEffect(() => {
     const country = Country.getAllCountries()
@@ -161,7 +158,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
           key={1}
           clearFilters={clearFilters}
           Filters={creatorsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setCreatorsFilter}
           FilterArray={filterArray2}
           country={country}
@@ -172,7 +169,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
         <FilterMobileDialog
           clearFilters={clearFilters}
           Filters={creatorsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setCreatorsFilter}
           popup={popup}
           setPopup={setPopup}

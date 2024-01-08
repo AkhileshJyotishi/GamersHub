@@ -200,3 +200,80 @@ export const shimmer = (w: number, h: number) => `
       <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
       <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
     </svg>`
+export function dateToTimeAgo(date: Date) {
+  const currentDate = new Date()
+  const timestamp = currentDate.getTime() - date.getTime()
+
+  const seconds = Math.floor(timestamp / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+  const weeks = Math.floor(days / 7)
+  const months = Math.floor(days / 30)
+  const years = Math.floor(days / 365)
+
+  if (years > 0) {
+    if (years == 1) {
+      return "1 year ago"
+    } else {
+      return years + " years ago"
+    }
+  } else if (months > 0) {
+    if (months == 1) {
+      return "1 mon ago"
+    } else {
+      return months + " mon ago"
+    }
+  } else if (weeks > 0) {
+    if (weeks == 1) {
+      return "1 week ago"
+    } else {
+      return weeks + " weeks ago"
+    }
+  } else if (days > 0) {
+    if (days == 1) {
+      return "1 day ago"
+    } else {
+      return days + " days ago"
+    }
+  } else if (hours > 0) {
+    if (hours == 1) {
+      return "1 hour ago"
+    } else {
+      return hours + " hours ago"
+    }
+  } else if (minutes > 0) {
+    if (minutes == 1) {
+      return "1 min ago"
+    } else {
+      return minutes + " mins ago"
+    }
+  } else if (seconds === 0) {
+    return "Just now"
+  } else {
+    return seconds + " secs ago"
+  }
+}
+/**
+ * Generates a query parameter string based on the provided filter object.
+ *
+ * @param filter - The filter object containing key-value pairs.
+ * @returns The generated query parameter string.
+ */
+export const generateQueryParams = (filter: Allow): string => {
+  const queryParams: string[] = []
+
+  Object.entries(filter).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      // Handle array values
+      value.forEach((item) => {
+        queryParams.push(`${key}[]=${encodeURIComponent(String(item))}`)
+      })
+    } else if (value !== undefined && value !== null && value != "" && value) {
+      // Handle other types of values
+      queryParams.push(`${key}=${encodeURIComponent(String(value))}`)
+    }
+  })
+
+  return queryParams.join("&")
+}
