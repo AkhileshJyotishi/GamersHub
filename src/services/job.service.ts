@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
-import { Job, JobApplication } from '@prisma/client'
+import { Expertise, Job, JobApplication, JobType } from '@prisma/client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 /**
@@ -597,9 +597,41 @@ const toggleSaveJob = async (userId: number, id: number): Promise<string> => {
  * @returns {Promise<Job[]>}
  */
 
-const getAllJobsExceptCurrentUser = async (userId: number): Promise<Job[]> => {
+interface QueryJobs {
+  expertise?: Expertise[]
+  jobType?: JobType[]
+  remote?: boolean
+  jobSoftwares?: string[]
+}
+const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
+  console.log(expertise)
   const jobs = await prisma.job.findMany({
     where: {
+      ...(expertise && {
+        expertise: {
+          in: expertise
+        }
+      }),
+      ...(jobType && {
+        jobType: {
+          in: jobType
+        }
+      }),
+      ...(remote && {
+        remote: {
+          equals: remote
+        }
+      }),
+      ...(jobSoftwares && {
+        jobSoftwares: {
+          some: {
+            software: {
+              in: jobSoftwares
+            }
+          }
+        }
+      }),
       NOT: {
         userId
       }

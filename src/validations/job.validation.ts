@@ -4,6 +4,15 @@ const idParamsValidation = Joi.object().keys({
   id: Joi.number().integer()
 })
 
+const queryJobs = {
+  query: Joi.object().keys({
+    expertise: Joi.array().items(Joi.string().valid('ENTRY', 'EXPERT', 'INTERMEDIATE')),
+    jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB'),
+    remote: Joi.boolean(),
+    jobSoftwares: Joi.array().items(Joi.string())
+  })
+}
+
 const createJob = {
   body: Joi.object().keys({
     title: Joi.string().required(),
@@ -68,6 +77,7 @@ const createApplication = {
 
 export default {
   idValidation,
+  queryJobs,
   createJob,
   updateJob,
   createApplication,

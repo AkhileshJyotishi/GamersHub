@@ -132,8 +132,9 @@ const toggleSaveJob = catchAsync(async (req, res) => {
 })
 
 const getAllJobsExceptCurrentUser = catchAsync(async (req, res) => {
+  const filter = req.query
   const userId = res.locals.user.id
-  const jobs = await jobService.getAllJobsExceptCurrentUser(userId)
+  const jobs = await jobService.getAllJobsExceptCurrentUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { jobs }, 'Others Jobs fetched Successfully')
 })
 

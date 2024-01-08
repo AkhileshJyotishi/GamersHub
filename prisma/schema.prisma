@@ -38,6 +38,7 @@ model User {
   savedPosts      Post[]           @relation("SavedPosts")
   savedGames      Game[]           @relation("SavedGames")
   savedJobs       Job[]            @relation("SavedJobs")
+  News            News[]
 }
 
 model UserDetails {
@@ -347,4 +348,26 @@ model Keyword {
   posts   Post[]  @relation("PostKeywords")
   games   Game[]  @relation("GameKeywords")
   albums  Album[] @relation("AlbumKeywords")
+}
+
+model News {
+  id          Int          @id @default(autoincrement())
+  category    NewsCategory @relation(fields: [categoryId], references: id, onDelete: Cascade)
+  categoryId  Int
+  title       String
+  subtitle    String?
+  content     Json?
+  bannerImage String
+  publishedAt DateTime?    @default(now())
+  isSaved     Boolean      @default(true)
+  isPublished Boolean      @default(false)
+  publisher   User         @relation(fields: [userId], references: id, onDelete: Cascade)
+  userId      Int
+}
+
+model NewsCategory {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  News        News[]
 }

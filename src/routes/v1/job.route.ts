@@ -7,12 +7,18 @@ import { jobValidation } from '../../validations'
 const router = express.Router()
 
 router.get('/', jobController.getAllJobs)
+// router.get('/queryJobs',validate(jobValidation.queryJobs),jobController.queryJobs)
 router
   .route('/user')
   .post(auth(), validate(jobValidation.createJob), jobController.createUserJob)
   .delete(auth(), jobController.deleteUserJobs)
 
-router.get('/others', auth(), jobController.getAllJobsExceptCurrentUser)
+router.get(
+  '/others',
+  auth(),
+  validate(jobValidation.queryJobs),
+  jobController.getAllJobsExceptCurrentUser
+)
 
 router.get('/user/saved', auth(), jobController.getSavedJobs)
 router.post(
