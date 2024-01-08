@@ -305,7 +305,6 @@ const getAllGames = async (): Promise<Game[]> => {
 /**
  * Get a particular Game
  * @param {ObjectId} id
- * @param {ObjectId} userId
  * @returns {Promise<Game>}
  */
 
