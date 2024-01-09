@@ -126,8 +126,8 @@ const deleteNews = catchAsync(async (req, res) => {
  * @returns {Promise<void>} A Promise that resolves to an array of news articles.
  */
 const getAllNews = catchAsync(async (req, res) => {
-  const helpQuestions = await newsService.getAllNews()
-  sendResponse(res, httpStatus.OK, null, { helpQuestions }, 'News fetched Successfully')
+  const AllNews = await newsService.getAllNews()
+  sendResponse(res, httpStatus.OK, null, { AllNews }, 'News fetched Successfully')
 })
 
 /**
@@ -141,7 +141,7 @@ const getAllNews = catchAsync(async (req, res) => {
 const addNews = catchAsync(async (req, res) => {
   const data = req.body
   const question = await newsService.addNews(data)
-  sendResponse(res, httpStatus.OK, null, { question }, 'Help Question added Successfully')
+  sendResponse(res, httpStatus.OK, null, { question }, 'News added Successfully')
 })
 
 export default {

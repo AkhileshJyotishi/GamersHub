@@ -12,7 +12,7 @@ interface updateNewsCategoryProps {
 
 interface addNewsProps {
   categoryId: number
-  bannerImage: string
+  bannerImage?: string
   title: string
   subtitle?: string
   publishedAt?: Date
@@ -65,7 +65,8 @@ const addNewsCategory = async (data: addNewsCategoryProps): Promise<NewsCategory
  * @returns
  * A Promise that resolves to the created News object.
  */
-const addNews = async (data: addNewsProps): Promise<News> => await prisma.news.create({ data })
+const addNews = async (data: addNewsProps): Promise<Partial<News>> =>
+  await prisma.news.create({ data })
 /**
  * @function updateNewsCategoryById
  * @description
@@ -157,7 +158,7 @@ const getAllNewsCategory = async (): Promise<NewsCategory[]> => {
  * @returns {Promise<Pick<News, 'id'>[]>} A promise that resolves to an array of news articles, each containing only the 'id' property.
  */
 const getAllNews = async (): Promise<Partial<News>[]> => {
-  const helpQuestions = await prisma.news.findMany({
+  const AllNews = await prisma.news.findMany({
     select: {
       id: true,
       category: {
@@ -184,7 +185,7 @@ const getAllNews = async (): Promise<Partial<News>[]> => {
       }
     }
   })
-  return helpQuestions
+  return AllNews
 }
 /**
  * @function getNewsById

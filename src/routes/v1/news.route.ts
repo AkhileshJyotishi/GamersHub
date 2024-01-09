@@ -86,7 +86,7 @@ router
    * @function deleteCategoryByIdRoute
    * @async
    * @desc Handles the route for deleting a specific news category by its ID.
-   * @middleware auth('manageUsers') - Requires authentication with 'manageUsers' permission.
+   * @middlewar e auth('manageUsers') - Requires authentication with 'manageUsers' permission.
    * @middleware validate(newsValidation.paramsValidation) - Validates the request parameters.
    * @controller newsController.deleteNewsCategoryById - Controller function for deleting a news category by ID.
    */

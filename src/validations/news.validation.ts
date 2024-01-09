@@ -28,9 +28,11 @@ const newNewsValidation = {
     title: Joi.string().optional(),
     subtitle: Joi.string().optional(),
     content: Joi.object().optional(),
-    bannerImage: Joi.object().optional(),
+    bannerImage: Joi.string().optional(),
     isSaved: Joi.bool().optional(),
-    isPublished: Joi.bool().optional()
+    isPublished: Joi.bool().optional(),
+    userId: Joi.number().required(),
+    publishedAt: Joi.date().optional()
   })
 }
 const updateNewsValidation = {
@@ -41,19 +43,13 @@ const updateNewsValidation = {
       title: Joi.string().optional(),
       subtitle: Joi.string().optional(),
       content: Joi.object().optional(),
-      bannerImage: Joi.object().optional(),
+      bannerImage: Joi.string().optional(),
       isSaved: Joi.bool().optional(),
-      isPublished: Joi.bool().optional()
+      isPublished: Joi.bool().optional(),
+      publishedAt: Joi.date().optional(),
+      userId: Joi.number().required()
     })
     .min(1)
-    .custom((value, helpers) => {
-      if (!value.isSaved && !value.isPublished) {
-        return helpers.message({
-          'any.required': 'At least one of isSaved or isPublished must be present'
-        })
-      }
-      return value
-    })
 }
 export default {
   paramsValidation,
