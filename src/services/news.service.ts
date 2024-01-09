@@ -5,12 +5,17 @@ interface addNewsCategoryProps {
   title: string
   description?: string
 }
+interface updateNewsCategoryProps {
+  title?: string
+  description?: string
+}
 
 interface addNewsProps {
   categoryId: number
   bannerImage: string
   title: string
   subtitle?: string
+  publishedAt?: Date
   content?: object
   userId: number
   isPublished?: boolean
@@ -21,10 +26,11 @@ interface updateNewsProps {
   title?: string
   subtitle?: string
   content?: object
-  bannerImage?: object
+  bannerImage?: string
   isSaved?: boolean
   isPublished?: boolean
   userId: number
+  publishedAt?: Date
 }
 
 /**
@@ -75,7 +81,7 @@ const addNews = async (data: addNewsProps): Promise<News> => await prisma.news.c
  */
 const updateNewsCategoryById = async (
   id: number,
-  data: addNewsCategoryProps
+  data: updateNewsCategoryProps
 ): Promise<NewsCategory> => {
   return await prisma.newsCategory.update({
     where: {
@@ -150,7 +156,7 @@ const getAllNewsCategory = async (): Promise<NewsCategory[]> => {
  *
  * @returns {Promise<Pick<News, 'id'>[]>} A promise that resolves to an array of news articles, each containing only the 'id' property.
  */
-const getAllNews = async (): Promise<Pick<News, 'id'>[]> => {
+const getAllNews = async (): Promise<Partial<News>[]> => {
   const helpQuestions = await prisma.news.findMany({
     select: {
       id: true,
@@ -204,11 +210,17 @@ const getNewsById = async (id: number): Promise<Pick<News, 'id'> | object> => {
           id: true
         }
       },
+
       content: true,
       isSaved: true,
       isPublished: true,
       publishedAt: true,
-      publisher: true,
+      publisher: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      },
       subtitle: true,
       title: true,
       userId: true
@@ -225,6 +237,7 @@ const getNewsCategoryById = async (id: number): Promise<NewsCategory | object> =
     select: {
       id: true,
       title: true,
+      description: true,
       News: {
         select: {
           bannerImage: true,

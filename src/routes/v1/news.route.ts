@@ -41,7 +41,7 @@ const router = express.Router()
  * @controller newsController.addNewsCategory - Controller function for adding a new category.
  */
 router.post(
-  '/news/add',
+  '/newsCategory/add',
   auth('manageUsers'),
   validate(newsValidation.newNewsCategoryValidation),
   newsController.addNewsCategory
@@ -53,7 +53,7 @@ router.post(
  * @desc Handles the route for retrieving all news categories.
  * @controller newsController.getAllNewsCategory - Controller function for getting all news categories.
  */
-router.get('/category', newsController.getAllNewsCategory)
+router.get('/category/all', newsController.getAllNewsCategory)
 
 /**
  * @function categoryByIdRoute

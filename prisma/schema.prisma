@@ -357,8 +357,8 @@ model News {
   title       String
   subtitle    String?
   content     Json?
-  bannerImage String
-  publishedAt DateTime?    @default(now())
+  bannerImage String?
+  publishedAt DateTime?
   isSaved     Boolean      @default(true)
   isPublished Boolean      @default(false)
   publisher   User         @relation(fields: [userId], references: id, onDelete: Cascade)
