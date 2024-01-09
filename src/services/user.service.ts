@@ -969,37 +969,46 @@ const getAllCreatorsExceptUser = async (
   filter: QueryUsers
 ): Promise<object | null> => {
   const { country, userSkills, userSoftwares } = filter
+
   const userDetails = prisma.user.findMany({
     where: {
-      ...(country && {
-        userDetails: {
-          country: {
-            equals: country
-          }
-        }
-      }),
-      ...(userSkills && {
-        userDetails: {
-          userSkills: {
-            some: {
-              skill: {
-                in: userSkills
+      AND: [
+        country
+          ? {
+              userDetails: {
+                country: {
+                  equals: country
+                }
               }
             }
-          }
-        }
-      }),
-      ...(userSoftwares && {
-        userDetails: {
-          userSoftwares: {
-            some: {
-              software: {
-                in: userSoftwares
+          : {},
+        userSkills
+          ? {
+              userDetails: {
+                userSkills: {
+                  some: {
+                    skill: {
+                      in: userSkills
+                    }
+                  }
+                }
               }
             }
-          }
-        }
-      }),
+          : {},
+        userSoftwares
+          ? {
+              userDetails: {
+                userSoftwares: {
+                  some: {
+                    software: {
+                      in: userSoftwares
+                    }
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       NOT: {
         id: userId
       }
@@ -1039,36 +1048,45 @@ const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
 
   const userDetails = prisma.user.findMany({
     where: {
-      ...(userSkills && {
-        userDetails: {
-          userSkills: {
-            some: {
-              skill: {
-                in: userSkills
+      AND: [
+        userSkills
+          ? {
+              userDetails: {
+                userSkills: {
+                  some: {
+                    skill: {
+                      in: userSkills
+                    }
+                  }
+                }
               }
             }
-          }
-        }
-      }),
-      ...(country && {
-        userDetails: {
-          country: {
-            equals: country
-          }
-        }
-      }),
-      ...(userSoftwares && {
-        userDetails: {
-          userSoftwares: {
-            some: {
-              software: {
-                in: userSoftwares
+          : {},
+        country
+          ? {
+              userDetails: {
+                country: {
+                  equals: country
+                }
               }
             }
-          }
-        }
-      })
+          : {},
+        userSoftwares
+          ? {
+              userDetails: {
+                userSoftwares: {
+                  some: {
+                    software: {
+                      in: userSoftwares
+                    }
+                  }
+                }
+              }
+            }
+          : {}
+      ]
     },
+
     select: {
       id: true,
       username: true,
