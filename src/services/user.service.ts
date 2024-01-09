@@ -954,14 +954,52 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
   })
   return userDetails
 }
+interface QueryUsers {
+  country?: string
+  userSkills?: string[]
+  userSoftwares?: string[]
+}
 /**
  * Get Creators except user
  * @param {ObjectId} userId
  * @returns {Promise<object>}
  */
-const getAllCreatorsExceptUser = async (userId: number): Promise<object | null> => {
+const getAllCreatorsExceptUser = async (
+  userId: number,
+  filter: QueryUsers
+): Promise<object | null> => {
+  const { country, userSkills, userSoftwares } = filter
   const userDetails = prisma.user.findMany({
     where: {
+      ...(country && {
+        userDetails: {
+          country: {
+            equals: country
+          }
+        }
+      }),
+      ...(userSkills && {
+        userDetails: {
+          userSkills: {
+            some: {
+              skill: {
+                in: userSkills
+              }
+            }
+          }
+        }
+      }),
+      ...(userSoftwares && {
+        userDetails: {
+          userSoftwares: {
+            some: {
+              software: {
+                in: userSoftwares
+              }
+            }
+          }
+        }
+      }),
       NOT: {
         id: userId
       }
@@ -996,8 +1034,41 @@ const getAllCreatorsExceptUser = async (userId: number): Promise<object | null> 
  * Get Creators
  * @returns {Promise<object>}
  */
-const getAllCreators = async (): Promise<object | null> => {
+const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
+  const { country, userSkills, userSoftwares } = filter
+
   const userDetails = prisma.user.findMany({
+    where: {
+      ...(userSkills && {
+        userDetails: {
+          userSkills: {
+            some: {
+              skill: {
+                in: userSkills
+              }
+            }
+          }
+        }
+      }),
+      ...(country && {
+        userDetails: {
+          country: {
+            equals: country
+          }
+        }
+      }),
+      ...(userSoftwares && {
+        userDetails: {
+          userSoftwares: {
+            some: {
+              software: {
+                in: userSoftwares
+              }
+            }
+          }
+        }
+      })
+    },
     select: {
       id: true,
       username: true,

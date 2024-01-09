@@ -290,11 +290,13 @@ const getCustomDetails = catchAsync(async (req, res) => {
 })
 const getAllCreatorsExceptUser = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
-  const creators = await userService.getAllCreatorsExceptUser(userId)
+  const filter = req.query
+  const creators = await userService.getAllCreatorsExceptUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
 })
 const getAllCreators = catchAsync(async (req, res) => {
-  const creators = await userService.getAllCreators()
+  const filter = req.query
+  const creators = await userService.getAllCreators(filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators fetched Successfully')
 })
 const getOtherDetails = catchAsync(async (req, res) => {
