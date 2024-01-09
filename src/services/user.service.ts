@@ -977,7 +977,8 @@ const getAllCreatorsExceptUser = async (
           ? {
               userDetails: {
                 country: {
-                  equals: country
+                  equals: country,
+                  mode: 'insensitive'
                 }
               }
             }
@@ -988,7 +989,8 @@ const getAllCreatorsExceptUser = async (
                 userSkills: {
                   some: {
                     skill: {
-                      in: userSkills
+                      in: userSkills,
+                      mode: 'insensitive'
                     }
                   }
                 }
@@ -1001,7 +1003,8 @@ const getAllCreatorsExceptUser = async (
                 userSoftwares: {
                   some: {
                     software: {
-                      in: userSoftwares
+                      in: userSoftwares,
+                      mode: 'insensitive'
                     }
                   }
                 }
@@ -1055,7 +1058,8 @@ const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
                 userSkills: {
                   some: {
                     skill: {
-                      in: userSkills
+                      in: userSkills,
+                      mode: 'insensitive'
                     }
                   }
                 }
@@ -1066,7 +1070,8 @@ const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
           ? {
               userDetails: {
                 country: {
-                  equals: country
+                  equals: country,
+                  mode: 'insensitive'
                 }
               }
             }
@@ -1077,7 +1082,8 @@ const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
                 userSoftwares: {
                   some: {
                     software: {
-                      in: userSoftwares
+                      in: userSoftwares,
+                      mode: 'insensitive'
                     }
                   }
                 }

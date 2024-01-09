@@ -143,30 +143,41 @@ const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
   const { expertise, jobType, remote, jobSoftwares } = filter
   const jobs = await prisma.job.findMany({
     where: {
-      ...(expertise && {
-        expertise: {
-          in: expertise
-        }
-      }),
-      ...(jobType && {
-        jobType: {
-          in: jobType
-        }
-      }),
-      ...(remote && {
-        remote: {
-          equals: remote
-        }
-      }),
-      ...(jobSoftwares && {
-        jobSoftwares: {
-          some: {
-            software: {
-              in: jobSoftwares
+      AND: [
+        expertise
+          ? {
+              expertise: {
+                in: expertise
+              }
             }
-          }
-        }
-      })
+          : {},
+        jobType
+          ? {
+              jobType: {
+                in: jobType
+              }
+            }
+          : {},
+        remote
+          ? {
+              remote: {
+                equals: remote
+              }
+            }
+          : {},
+        jobSoftwares
+          ? {
+              jobSoftwares: {
+                some: {
+                  software: {
+                    in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ]
     },
     include: {
       jobApplications: {
@@ -634,30 +645,41 @@ const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): P
   const { expertise, jobType, remote, jobSoftwares } = filter
   const jobs = await prisma.job.findMany({
     where: {
-      ...(expertise && {
-        expertise: {
-          in: expertise
-        }
-      }),
-      ...(jobType && {
-        jobType: {
-          in: jobType
-        }
-      }),
-      ...(remote && {
-        remote: {
-          equals: remote
-        }
-      }),
-      ...(jobSoftwares && {
-        jobSoftwares: {
-          some: {
-            software: {
-              in: jobSoftwares
+      AND: [
+        expertise
+          ? {
+              expertise: {
+                in: expertise
+              }
             }
-          }
-        }
-      }),
+          : {},
+        jobType
+          ? {
+              jobType: {
+                in: jobType
+              }
+            }
+          : {},
+        remote
+          ? {
+              remote: {
+                equals: remote
+              }
+            }
+          : {},
+        jobSoftwares
+          ? {
+              jobSoftwares: {
+                some: {
+                  software: {
+                    in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       NOT: {
         userId
       }

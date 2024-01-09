@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
-import { Game } from '@prisma/client'
+import { DeveloperType, Game, GameMode } from '@prisma/client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 /**
@@ -252,13 +252,78 @@ const deleteUserGames = async (userId: number): Promise<void> => {
   })
 }
 
+interface QueryGames {
+  developerType?: DeveloperType[]
+  gameMode?: GameMode[]
+  genre?: string[]
+  tags?: string[]
+  platforms?: string[]
+}
+
 /**
  * Get All Games
  * @returns {Promise<Game[]>}
  */
 
-const getAllGames = async (): Promise<Game[]> => {
+const getAllGames = async (filter: QueryGames): Promise<Game[]> => {
+  const { developerType, gameMode, genre, platforms, tags } = filter
   const games = await prisma.game.findMany({
+    where: {
+      AND: [
+        developerType
+          ? {
+              developer: {
+                developerType: {
+                  in: developerType
+                }
+              }
+            }
+          : {},
+        gameMode
+          ? {
+              gameMode: {
+                in: gameMode
+              }
+            }
+          : {},
+        genre
+          ? {
+              genre: {
+                some: {
+                  name: {
+                    in: genre,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        platforms
+          ? {
+              platforms: {
+                some: {
+                  name: {
+                    in: platforms,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        tags
+          ? {
+              tags: {
+                some: {
+                  keyword: {
+                    in: tags,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ]
+    },
     include: {
       platforms: {
         select: {
@@ -834,9 +899,67 @@ const toggleSaveGame = async (userId: number, id: number): Promise<string> => {
  * @returns {Promise<Game[]>}
  */
 
-const getAllGamesExceptCurrentUser = async (userId: number): Promise<Game[]> => {
+const getAllGamesExceptCurrentUser = async (
+  userId: number,
+  filter: QueryGames
+): Promise<Game[]> => {
+  const { developerType, gameMode, genre, platforms, tags } = filter
   const games = await prisma.game.findMany({
     where: {
+      AND: [
+        developerType
+          ? {
+              developer: {
+                developerType: {
+                  in: developerType
+                }
+              }
+            }
+          : {},
+        gameMode
+          ? {
+              gameMode: {
+                in: gameMode
+              }
+            }
+          : {},
+        genre
+          ? {
+              genre: {
+                some: {
+                  name: {
+                    in: genre,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        platforms
+          ? {
+              platforms: {
+                some: {
+                  name: {
+                    in: platforms,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        tags
+          ? {
+              tags: {
+                some: {
+                  keyword: {
+                    in: tags,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       NOT: {
         userId
       }

@@ -6,14 +6,19 @@ import { gameValidation } from '../../validations'
 
 const router = express.Router()
 
-router.get('/', gameController.getAllGames)
+router.get('/', validate(gameValidation.queryGame), gameController.getAllGames)
 router
   .route('/user')
   .post(auth(), validate(gameValidation.createGame), gameController.createUserGame)
   .delete(auth(), gameController.deleteUserGames)
 
 router.get('/user/saved', auth(), gameController.getSavedGames)
-router.get('/others', auth(), gameController.getAllGameExceptCurrentUser)
+router.get(
+  '/others',
+  auth(),
+  validate(gameValidation.queryGame),
+  gameController.getAllGameExceptCurrentUser
+)
 
 router.post(
   '/user/save/:id',
