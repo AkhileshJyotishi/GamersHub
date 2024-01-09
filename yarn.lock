@@ -5119,6 +5119,11 @@ react-slick@^0.29.0:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
+react-slot-counter@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-slot-counter/-/react-slot-counter-2.2.5.tgz#19245a144c8e04b6d4b3afce13a5b27832ba5ddd"
+  integrity sha512-0PccUY3lbhgBuKdY1HAJSAsmapPsBb9t8vS3idsvWCXoqerNdkzzr4tiU9Pf0UJe/eicKr7uLLpfVhYqlRZefg==
+
 react-spinkit@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-spinkit/-/react-spinkit-3.0.0.tgz#31fdaf4e18177766c57d1b1f3330290f8492a85a"
