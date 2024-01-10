@@ -2,19 +2,25 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 
-import { BackendGame } from "@/interface/games"
+import { BackendGame, CustomGameTags } from "@/interface/games"
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import GamesPage from "@/components/games"
 
-const Games = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGame[] }) => {
+const Games = ({
+  parsedgamesDetails,
+  customGameTags,
+}: {
+  parsedgamesDetails: BackendGame[]
+  customGameTags: CustomGameTags
+}) => {
   return (
     <>
       <Head>
         <title>GameCreators |Games</title>
       </Head>
-      <GamesPage gameDetails={parsedgamesDetails} />
+      <GamesPage gameDetails={parsedgamesDetails} customGameTags={customGameTags} />
     </>
   )
 }
@@ -29,7 +35,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   } else {
     gameDetails = await fetchWithoutAuthorization(`/v1/game`, "GET")
   }
-
+  const res2 = await fetchWithoutAuthorization("/v1/users/customGameTags", "GET")
+  if (res2?.error) {
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
+  }
   if (gameDetails?.error) {
     return {
       redirect: {
@@ -39,10 +53,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
+  console.log("res2?.data ", res2?.data)
 
+  const customGameTags: CustomGameTags = res2?.data
   return {
     props: {
       parsedgamesDetails,
+      customGameTags,
     },
   }
 }

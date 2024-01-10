@@ -9,7 +9,13 @@ import SkeletonLoader from "../ui/SkeletonLoader2"
 import Card from "./creatorCard"
 import Layout from "./creatorsLayout"
 
-const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
+const CreatorsPage = ({
+  creatorsData,
+  customCreatorsTags,
+}: {
+  creatorsData: Creator[]
+  customCreatorsTags: ICustomCreatorsTags
+}) => {
   const [creators, setCreators] = useState<Creator[]>(creatorsData)
   const [loading, setLoading] = useState<boolean>(false)
   if (loading) {
@@ -20,6 +26,7 @@ const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
           setCreators={setCreators}
           setLoading={setLoading}
           loading={loading}
+          customCreatorsTags={customCreatorsTags}
         >
           <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center  lg:grid-cols-3">
             <SkeletonLoader />
@@ -36,6 +43,7 @@ const CreatorsPage = ({ creatorsData }: { creatorsData: Creator[] }) => {
         setCreators={setCreators}
         setLoading={setLoading}
         loading={loading}
+        customCreatorsTags={customCreatorsTags}
       >
         {creators.length > 0 ? (
           <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center  lg:grid-cols-3">

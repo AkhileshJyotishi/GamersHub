@@ -88,7 +88,6 @@ const ProfileLayout = ({
       })
     }
   }, [param, router.query, userData?.id, router])
-  // const tabs = ["posts", "albums", "jobs", "about"]
   const tabs = [
     // { name: "posts", href: "posts" },
     { name: "Portfolio", href: "albums" },

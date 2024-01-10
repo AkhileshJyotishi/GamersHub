@@ -39,7 +39,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
 
       <div className="flex flex-col items-center mt-[40px]">
         <h3
-          className="transition duration-200 cursor-pointer text-lghover:text-secondary"
+          className="transition duration-300 cursor-pointer text-lg hover:text-secondary"
           onClick={() => router.push(`/${id}/profile/albums`)}
         >
           {username ?? "Guest"}

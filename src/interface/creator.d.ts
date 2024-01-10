@@ -22,3 +22,7 @@ interface Creator {
     country?: string
   }
 }
+interface ICustomCreatorsTags {
+  skill: string[]
+  software: string[]
+}

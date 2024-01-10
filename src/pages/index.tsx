@@ -123,7 +123,6 @@ const HomePage = () => {
       title: "Hollywood Blockbuster Releases",
       link: "/hollywood-blockbuster-releases",
     },
-    // Add more articles as needed
   ]
 
   return (

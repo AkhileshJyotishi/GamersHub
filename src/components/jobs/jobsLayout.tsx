@@ -25,6 +25,7 @@ interface LayoutProps {
   setjobs: React.Dispatch<React.SetStateAction<Job[] | null>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
+  jobSoftwareSuggestions: JobSoftwareSuggestions
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -35,6 +36,7 @@ const Layout: React.FC<LayoutProps> = ({
   loading,
   setLoading,
   jobs,
+  jobSoftwareSuggestions,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -98,7 +100,13 @@ const Layout: React.FC<LayoutProps> = ({
       placeholder: "Eg : Blender , Illustrator",
       value: jobsFilters?.jobSoftwares,
       onTagsChange: (value) => setJobsFilters({ ...jobsFilters, jobSoftwares: value as string[] }),
-      className: "mt-2 bg-transparent rounded-md",
+      // className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(jobSoftwareSuggestions.software ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
       // initialtags:
     },
   ]

@@ -3,16 +3,20 @@ import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { title } from "process"
 import { toast } from "react-toastify"
 
 import image from "@/assets/image/void.svg"
+import ProfileCard from "@/pages/dev/storybook/profile-card"
+import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
-import { fetchWithoutAuthorization } from "@/utils/functions"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import ProfilePageLayout from "@/components/profileLayout"
 import Button from "@/components/ui/button"
-import Card from "@/components/ui/card/card2"
+// import Card from "@/components/ui/card/card2"
 import HoizontalCard from "@/components/ui/Horizontalcard"
+import Share from "@/components/ui/Share"
 import SkeletonLoader from "@/components/ui/SkeletonLoader"
 
 const Albums = () => {
@@ -22,6 +26,9 @@ const Albums = () => {
   const { userData, setnewAlbum, setisCreateAlbumOpen } = useUserContext()
   const [postsDetails, setpostsDetails] = useState<IPostbackend[]>([])
   const [posts, setposts] = useState<boolean>()
+  const [, setCopied] = useState<boolean>(false)
+  const { setmodalData } = useModalContext()
+
   const session = useSession()
   const params = useParams()
 
@@ -60,7 +67,80 @@ const Albums = () => {
     }
     loadData()
   }, [router])
+  const handleClose = () => {
+    setmodalData(() => ({
+      buttonText: "",
+      onClick: () => {},
+      content: <></>,
+      isOpen: false,
+      onClose: () => {},
+      title: <></>,
+    }))
+  }
+  const copy = async () => {
+    navigator.clipboard
+      .writeText(`${window.location.href}`)
+      .then(() => {
+        setCopied(true)
+        toast.dismiss()
+        toast.success("Copied!")
+      })
+      .catch((error) => {
+        console.error(error)
+        setCopied(false)
+      })
+  }
+  const onShare = (logoSrc: string, title: string) => {
+    setmodalData(() => ({
+      buttonText: "Copy Link",
+      content: (
+        <>
+          {
+            <Share
+              description="description to the job post"
+              hashtag="#GameCreators.io"
+              image={logoSrc || window.location.href}
+              title={title}
+              key={Math.random() * 100}
+            />
+          }
+          <div className="w-[80%] mx-auto  p-1 my-2 mt-4  text-text border-[0.1px] rounded border-secondary overflow-x-scroll no-scrollbar">
+            {window.location.href}
+          </div>
+        </>
+      ),
+      onClick: () => {
+        copy()
+      },
+      isOpen: true,
+      onClose: () => {
+        handleClose()
+      },
+      title: <>{title}</>,
+    }))
+  }
 
+  const deletePost = async (id: number) => {
+    const data = await fetchData(`/v1/post/${id}`, session.data?.user?.name as string, "DELETE")
+    toast.dismiss()
+    if (data?.error) {
+      toast.error(data.message)
+    } else {
+      toast.success(data?.message)
+    }
+  }
+  const onDelete = (id: number) => {
+    setmodalData(() => ({
+      buttonText: "Delete Post",
+      content: <>Are you sure you want to delete Post</>,
+      onClick: () => deletePost(id),
+      isOpen: true,
+      onClose: () => {
+        handleClose()
+      },
+      title: <>{title}</>,
+    }))
+  }
   if (loading) {
     return (
       <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
@@ -143,21 +223,61 @@ const Albums = () => {
             <>
               {postsDetails.length > 0 ? (
                 postsDetails?.map((post) => (
-                  <Card
+                  <ProfileCard
                     id={post.id}
                     key={post.id}
                     username={post.user.username}
                     userProfilePhoto={post.user.profileImage}
-                    coverPhoto={post.banner}
+                    bannerImage={post.banner}
                     matureContent={post.matureContent}
                     title={post.title}
-                    savedPost={post.savedUsers}
                     likedPost={(post?.postLikes?.likedUsers ?? []).map((like) => like) ?? []}
+                    savedPost={post.savedUsers}
                     userId={post.userId}
-                    // location={data.location}
-                    // views={data.views}
-                    className="h-[350px] w-[100%] md:w-[300px] justify-self-center"
-                    imageWidth={400}
+                    actions={
+                      userData?.id === post.userId
+                        ? [
+                            {
+                              name: "Share",
+                              onClick: () => {
+                                onShare(post.user.profileImage, title)
+                              },
+                              className: "share-action",
+                            },
+                            {
+                              name: "Edit",
+                              onClick: () => {
+                                router.push(
+                                  `/${post.userId}/profile/portfolio/updatePost/${post.id}`
+                                )
+                              },
+                              className: "edit-action",
+                            },
+                            {
+                              name: "Delete",
+                              onClick: () => {
+                                onDelete(post.id)
+                              },
+                              className: "delete-action text-red-500 hover:!text-red-500  ",
+                            },
+                          ]
+                        : [
+                            {
+                              name: "Share",
+                              onClick: () => {
+                                onShare(post.user.profileImage, title)
+                              },
+                              className: "share-action",
+                            },
+                            {
+                              name: "Report",
+                              onClick: () => {},
+                              className: "report-action",
+                            },
+                          ]
+                    }
+                    likeCount={post?.postLikes?.likedUsers.length}
+                    commentCount={post.comments.length}
                   />
                 ))
               ) : (

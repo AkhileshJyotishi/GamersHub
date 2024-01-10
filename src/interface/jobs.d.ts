@@ -25,7 +25,9 @@ interface Job {
   profileImage: string
 }
 interface IjobsDetails {}
-
+interface JobSoftwareSuggestions {
+  software: string[]
+}
 interface BackendJob {
   id: number
   slug: string

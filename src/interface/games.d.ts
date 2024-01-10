@@ -84,3 +84,9 @@ interface GameInfo {
   releaseDate: string
   gameAssets: File[] | null | string[]
 }
+
+interface CustomGameTags {
+  platform: string[]
+  genre: string[]
+  tags: string[]
+}

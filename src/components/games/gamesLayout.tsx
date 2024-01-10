@@ -69,10 +69,10 @@ const Layout: React.FC<gamesLayoutProps> = ({
       value: gamesFilters.platforms,
       onTagsChange: (value) => setGamesFilter({ ...gamesFilters, platforms: value as string[] }),
       selectOptions: [
-        {
-          label: "Select platform",
-          value: "",
-        },
+        // {
+        //   label: "Select platform",
+        //   value: "",
+        // },
         ...(gamePlatformsSuggestions ?? []).map((s) => ({
           label: s,
           value: s,
@@ -85,10 +85,10 @@ const Layout: React.FC<gamesLayoutProps> = ({
       value: gamesFilters.genre,
       onTagsChange: (value) => setGamesFilter({ ...gamesFilters, genre: value as string[] }),
       selectOptions: [
-        {
-          label: "Select genre",
-          value: "",
-        },
+        // {
+        //   label: "Select genre",
+        //   value: "",
+        // },
         ...(genresSuggestions ?? []).map((s) => ({
           label: s,
           value: s,
@@ -151,7 +151,15 @@ const Layout: React.FC<gamesLayoutProps> = ({
   const searchWithFilters = async () => {
     const gamesFiltersParams = generateQueryParams(gamesFilters)
     setLoading(true)
-    const x = await fetchWithoutAuthorization(`v1/game/?${gamesFiltersParams}`, "GET")
+    let x
+    if (activeTab == "My Games") {
+      x = await fetchWithoutAuthorization(
+        `v1/game/user/${userData?.id}?${gamesFiltersParams}`,
+        "GET"
+      )
+    } else {
+      x = await fetchWithoutAuthorization(`v1/game/?${gamesFiltersParams}`, "GET")
+    }
 
     setLoading(false)
     toast.dismiss()

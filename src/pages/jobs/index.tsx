@@ -8,13 +8,19 @@ import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 import JobsPage from "@/components/jobs"
 
 // type jobsDetails=
-const Jobs = ({ jobs }: { jobs: Job[] }) => {
+const Jobs = ({
+  jobs,
+  jobSoftwareSuggestions,
+}: {
+  jobs: Job[]
+  jobSoftwareSuggestions: JobSoftwareSuggestions
+}) => {
   return (
     <>
       <Head>
         <title>GameCreators | Jobs</title>
       </Head>
-      <JobsPage jobs={jobs} />
+      <JobsPage jobs={jobs} jobSoftwareSuggestions={jobSoftwareSuggestions} />
     </>
   )
 }
@@ -29,7 +35,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   } else {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
   }
+  const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
+  console.log("res2?.data jobs", res2?.data)
 
+  if (res2?.error) {
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
+  }
   if (jobsDetails?.error) {
     return {
       redirect: {
@@ -39,12 +55,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const parsedjobsDetails: BackendJob[] = jobsDetails?.data.jobs
-
+  const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
   const jobs: Job[] = parsedjobsDetails?.map((job) => FrontendCompatibleObject(job))
 
   return {
     props: {
       jobs,
+      jobSoftwareSuggestions,
     },
   }
 }

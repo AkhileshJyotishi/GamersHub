@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
 import { toast } from "react-toastify"
 
@@ -41,6 +41,7 @@ const Layout: React.FC<LayoutProps> = ({
   const handleOldAssets = (remainingOldAssets: string[]) => {
     setoldAssets && setoldAssets(remainingOldAssets)
   }
+  const x = useMemo(() => oldAssets?.length, [])
   const [errors, setErrors] = useState<Errors<Partial<GameInfo>>>({
     banner: "",
     description: "",
@@ -395,7 +396,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
         <div className="flex flex-col w-full gap-4 p-4">
-          {isUpdate && (oldAssets ?? [])?.length > 0 && (
+          {isUpdate && x && (
             <div className="w-full bg-user_interface_2 py-[16px] px-[15px] ">
               <InitMultipleFileInput
                 initFiles={oldAssets as string[] | null}

@@ -64,10 +64,13 @@ const Index = ({
         <div className="mt-2">
           <Button
             onClick={handleUndoRemove}
-            className={clsx("flex gap-2 p-2  rounded-md bg-secondary disabled:bg-transparent ")}
+            className={clsx(
+              "flex gap-2 p-2  rounded-md bg-secondary disabled:bg-transparent items-center"
+            )}
             disabled={removedFiles.length > 0 ? false : true}
           >
-            <IoIosUndo className="h-[inherit]" /> Undo
+            <IoIosUndo className="h-[inherit] my-auto" />
+            <span>Undo</span>
           </Button>
         </div>
       }

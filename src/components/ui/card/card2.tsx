@@ -14,15 +14,13 @@ import { fetchData } from "@/utils/functions"
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
 
-// import viewIcon from "@/components/icons/viewIcon.svg"
-
 interface CardProps {
   id: number
+  userId: number
   username: string
   userProfilePhoto: string | null
   coverPhoto: string | null
   title: string
-  userId: number
   // location: string;
   // views: string;
   className?: string

@@ -18,6 +18,7 @@ interface creatorLayoutProps {
   setCreators: React.Dispatch<React.SetStateAction<Creator[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
+  customCreatorsTags: ICustomCreatorsTags
 }
 const Layout: React.FC<creatorLayoutProps> = ({
   children,
@@ -25,6 +26,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
   setCreators,
   setLoading,
   loading,
+  customCreatorsTags,
 }) => {
   const [popup, setPopup] = useState<boolean>(false)
   const session = useSession()
@@ -46,6 +48,12 @@ const Layout: React.FC<creatorLayoutProps> = ({
       onTagsChange: (value) =>
         setCreatorsFilter({ ...creatorsFilters, userSkills: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(customCreatorsTags.skill ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
     {
       inputType: "tags",
@@ -55,6 +63,12 @@ const Layout: React.FC<creatorLayoutProps> = ({
       onTagsChange: (value) =>
         setCreatorsFilter({ ...creatorsFilters, userSoftwares: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(customCreatorsTags.software ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
 
     {

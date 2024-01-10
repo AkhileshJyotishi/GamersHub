@@ -137,9 +137,9 @@ const TagsInput: React.FC<TagsInputProps> = ({
                   : isSelected
                     ? "red"
                     : isFocused
-                      ? "#464E55"
-                      : undefined,
-                color: "white",
+                      ? "#101014"
+                      : "#464E55",
+                color: isFocused ? "white" : "black",
                 ":active": {
                   ...styles[":active"],
                   backgroundColor: !isDisabled ? (isSelected ? "#161A1F" : "#161A1F") : undefined,

@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 
 import image from "@/assets/image/void.svg"
-import { BackendGame, Games } from "@/interface/games"
+import { BackendGame, CustomGameTags, Games } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
 import { convertToGamesInterface, fetchData } from "@/utils/functions"
 
@@ -19,7 +19,13 @@ const renderNoGamesMessage = () => (
   </div>
 )
 
-const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
+const GamesPage = ({
+  gameDetails,
+  customGameTags,
+}: {
+  gameDetails: BackendGame[]
+  customGameTags: CustomGameTags
+}) => {
   const games2 = useMemo(
     () =>
       gameDetails?.map((game) => {
@@ -31,15 +37,13 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
   const [activetab, setactivetab] = useState<string>("All")
   const [loading, setLoading] = useState<boolean>(false)
   const [myjob, setmyjobs] = useState<Games[] | null>(null)
-  const [gamePlatformsSuggestions, setgamePlatformsSuggestions] = useState<string[]>([
-    ...(games?.flatMap((game) => game.platforms.map((x) => x.name)) ?? []),
-  ])
-  const [genresSuggestions, setgenresSuggestions] = useState<string[]>(
-    games?.flatMap((game) => game.genre.map((g) => g.name)) ?? []
-  )
-  const [tagSuggestions, settagSuggestions] = useState<string[]>([
-    ...(games?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? []),
-  ])
+  // let temptagsuggestions = [...(games?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? [])]
+  // let tempgamePlatformsSuggestions = [...(games?.flatMap((game) => game.platforms.map((x) => x.name)) ?? [])]
+  // let tempgenresSuggestions = [...(games?.flatMap((game) => game.genre.map((x) => x.name)) ?? [])]
+
+  // const [gamePlatformsSuggestions, setgamePlatformsSuggestions] = useState<string[]>(tempgamePlatformsSuggestions)
+  // const [genresSuggestions, setgenresSuggestions] = useState<string[]>(tempgenresSuggestions)
+  // const [tagSuggestions, settagSuggestions] = useState<string[]>(temptagsuggestions)
 
   const { userData, setIsLoginModalOpen } = useUserContext()
   const { data: session } = useSession()
@@ -76,20 +80,25 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       setactivetab("All")
     }
   }, [activetab])
-  useEffect(() => {
-    setgamePlatformsSuggestions((prev) => [
-      ...prev,
-      ...(myjob?.flatMap((game) => game.platforms.map((x) => x.name)) ?? []),
-    ])
-    setgenresSuggestions((prev) => [
-      ...prev,
-      ...(myjob?.flatMap((game) => game.genre.map((x) => x.name)) ?? []),
-    ])
-    settagSuggestions((prev) => [
-      ...prev,
-      ...(myjob?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? []),
-    ])
-  }, [myjob])
+  // useEffect(() => {
+  //   setgamePlatformsSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.platforms.map((x) => x.name)) ?? []),
+  //   ])
+  //   setgenresSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.genre.map((x) => x.name)) ?? []),
+  //   ])
+  //   settagSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? []),
+  //   ])
+  //   return () => {
+  //     settagSuggestions(temptagsuggestions)
+  //     setgamePlatformsSuggestions(tempgamePlatformsSuggestions)
+  //     setgenresSuggestions(tempgenresSuggestions)
+  //   }
+  // }, [myjob])
   const handleSavedSuccess = (id: number, state: string) => {
     setGames((prevGames) => {
       if (prevGames) {
@@ -120,9 +129,9 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       activeTab={activetab}
       loading={loading}
       setLoading={setLoading}
-      gamePlatformsSuggestions={gamePlatformsSuggestions}
-      genresSuggestions={genresSuggestions}
-      tagSuggestions={tagSuggestions}
+      gamePlatformsSuggestions={customGameTags.platform}
+      genresSuggestions={customGameTags.genre}
+      tagSuggestions={customGameTags.tags}
     >
       {activetab === "All" && (
         <>
