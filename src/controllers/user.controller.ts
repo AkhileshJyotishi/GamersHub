@@ -275,7 +275,28 @@ const getCustomGameTags = catchAsync(async (req, res) => {
     httpStatus.OK,
     null,
     { platform, genre, tags },
-    'Custom Tags fetched Successfully'
+    'Custom Game Tags fetched Successfully'
+  )
+})
+const getCustomCreatorsTags = catchAsync(async (req, res) => {
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills?.map((k: Allow) => k.skill)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares?.map((k: Allow) => k.software)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software },
+    'Custom Creators Tags fetched Successfully'
   )
 })
 
@@ -382,6 +403,7 @@ export default {
   getGenre,
   getPlatforms,
   getCustomGameTags,
+  getCustomCreatorsTags,
   getAllDetails,
   getOtherDetails
 }

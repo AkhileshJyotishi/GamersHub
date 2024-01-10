@@ -17,19 +17,16 @@ interface addNewsProps {
   subtitle?: string
   publishedAt?: Date
   content?: object
-  userId: number
   isPublished?: boolean
   isSaved?: boolean
 }
 interface updateNewsProps {
-  categoryId: number
   title?: string
   subtitle?: string
   content?: object
   bannerImage?: string
   isSaved?: boolean
   isPublished?: boolean
-  userId: number
   publishedAt?: Date
 }
 
@@ -65,8 +62,15 @@ const addNewsCategory = async (data: addNewsCategoryProps): Promise<NewsCategory
  * @returns
  * A Promise that resolves to the created News object.
  */
-const addNews = async (data: addNewsProps): Promise<Partial<News>> =>
-  await prisma.news.create({ data })
+const addNews = async (data: addNewsProps, userId: number): Promise<Partial<News>> => {
+  return await prisma.news.create({
+    data: {
+      ...data,
+      userId
+    }
+  })
+}
+
 /**
  * @function updateNewsCategoryById
  * @description
@@ -111,10 +115,11 @@ const updateNewsCategoryById = async (
  * @returns
  * A Promise that resolves to the updated News object.
  */
-const updateNewsById = async (id: number, data: updateNewsProps): Promise<News> => {
+const updateNewsById = async (id: number, data: updateNewsProps, userId: number): Promise<News> => {
   return await prisma.news.update({
     where: {
-      id
+      id,
+      userId
     },
     data
   })
@@ -142,7 +147,12 @@ const getAllNewsCategory = async (): Promise<NewsCategory[]> => {
           id: true,
           isPublished: true,
           publishedAt: true,
-          publisher: true,
+          publisher: {
+            select: {
+              username: true,
+              profileImage: true
+            }
+          },
           subtitle: true,
           title: true,
           userId: true
@@ -247,7 +257,12 @@ const getNewsCategoryById = async (id: number): Promise<NewsCategory | object> =
           id: true,
           isPublished: true,
           publishedAt: true,
-          publisher: true,
+          publisher: {
+            select: {
+              username: true,
+              profileImage: true
+            }
+          },
           subtitle: true,
           title: true,
           userId: true
@@ -257,6 +272,7 @@ const getNewsCategoryById = async (id: number): Promise<NewsCategory | object> =
   })
   return category ?? {}
 }
+
 /**
  * Delete Category by id
  */
@@ -267,6 +283,7 @@ const deleteNewsCategoryById = async (id: number): Promise<void> => {
     }
   })
 }
+
 /**
  * Delete Help Question by id
  */

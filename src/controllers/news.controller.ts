@@ -85,8 +85,7 @@ const updateNewsById = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
   const userId = res.locals.user.id
   const data = req.body
-  data.userId = userId
-  const updatedQuestion = await newsService.updateNewsById(id, data)
+  const updatedQuestion = await newsService.updateNewsById(id, data, userId)
   sendResponse(res, httpStatus.OK, null, { updatedQuestion }, 'News updated Successfully')
 })
 
@@ -140,7 +139,8 @@ const getAllNews = catchAsync(async (req, res) => {
  */
 const addNews = catchAsync(async (req, res) => {
   const data = req.body
-  const question = await newsService.addNews(data)
+  const userId = res.locals.user.id
+  const question = await newsService.addNews(data, userId)
   sendResponse(res, httpStatus.OK, null, { question }, 'News added Successfully')
 })
 
