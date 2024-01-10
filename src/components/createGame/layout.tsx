@@ -124,6 +124,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Supported Platforms",
       inputType: "tags",
       placeholder: "platform",
+      value: gameInfo.platforms,
       onTagsChange: (tags) =>
         handleInputChange("platforms", tags, validateStringArrayField, {
           required: true,
@@ -137,6 +138,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Genre",
       inputType: "tags",
       placeholder: "genres...",
+      value: gameInfo.genre,
       onTagsChange: (tags) =>
         handleInputChange("genre", tags, validateStringArrayField, {
           required: true,
@@ -218,6 +220,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Distribution platforms",
       inputType: "tags",
       placeholder: "distribution platforms...",
+      value: gameInfo.distributionPlatforms,
       onTagsChange: (value) =>
         handleInputChange("distributionPlatforms", value, validateStringArrayField, {
           required: true,
@@ -230,6 +233,7 @@ const Layout: React.FC<LayoutProps> = ({
       title: "Tags",
       inputType: "tags",
       placeholder: "Action, Shooting",
+      value: gameInfo.tags,
       onTagsChange: (tags) =>
         handleInputChange("tags", tags, validateStringArrayField, {
           required: true,

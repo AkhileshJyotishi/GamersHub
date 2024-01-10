@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios"
 import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import { BackendGame, Games } from "@/interface/games"
 import instance, { fileInstance } from "@/lib/axios"
 
 export function getLocalRecentSearches(): string[] | null {
@@ -35,7 +36,18 @@ export function setLocalRecentSearches(search: string) {
   localStorage.setItem("recent-searches", JSON.stringify(recentSearches))
 }
 
-export const fetchWithAuthorization = async (
+/**
+ * Fetches data from the specified URL with authorization.
+ *
+ * @param url - The URL to fetch data from.
+ * @param token - The authorization token.
+ * @param method - The HTTP method to use for the request.
+ * @param data - The data to send with the request.
+ * @param customHeaders - Custom headers to include in the request.
+ * @returns A Promise that resolves to the response data or null.
+ */
+
+const fetchWithAuthorization = async (
   url: string,
   token: string,
   method: string,
@@ -55,6 +67,17 @@ export const fetchWithAuthorization = async (
   })
 }
 
+/**
+ * Fetches data from the specified URL with authorization and handles errors.
+ *
+ * @param url - The URL to fetch data from.
+ * @param token - The authorization token.
+ * @param method - The HTTP method to use for the request.
+ * @param data - The data to send with the request.
+ * @param customHeaders - Custom headers to include in the request.
+ * @param session - The session object.
+ * @returns A Promise that resolves to the response data or null.
+ */
 export const fetchData = async (
   url: string,
   token: string,
@@ -64,13 +87,12 @@ export const fetchData = async (
   session?: Allow
 ): Promise<APITypes | null> => {
   try {
-    // if( navigator && !navigator.onLine)
+    // if(typeof window!==undefined && typeof navigator!==undefined && !navigator.onLine)
     // {
     //   throw new Error("No Network Connection")
 
     // }
     const response = await fetchWithAuthorization(url, token, method, data, customHeaders)
-    // console.log("authchecker ", response.data)
 
     const resp = response.data
     if (resp?.error) {
@@ -80,17 +102,24 @@ export const fetchData = async (
     }
     return await resp
   } catch (error: Allow) {
-    // console.log("nulliscoming")
-    // if(error.message.contains(" request timed out")){
-
-    // }
+    console.error(error)
     return {
       error: error,
-      message: error?.response?.data?.message,
+      message: error?.response?.data?.message || error,
       data: null,
     }
   }
 }
+
+/**
+ * Fetches data from the API without requiring authorization.
+ *
+ * @param {string} url - The URL to fetch data from.
+ * @param {string} method - The HTTP method to use for the request.
+ * @param {Allow} data - Optional data to send with the request.
+ * @param {Object} customHeaders - Optional custom headers to include in the request.
+ * @returns {Promise<APITypes | null>} - A promise that resolves to the API response data or null if the request fails.
+ */
 export const fetchWithoutAuthorization = async (
   url: string,
   method: string,
@@ -105,12 +134,9 @@ export const fetchWithoutAuthorization = async (
       headers: customHeaders,
     })
 
-    // console.log("Response without authorization:", response.data)
-
     const resp = response.data
     return await resp
   } catch (error: unknown) {
-    // console.log("Null is coming")
     return {
       error: error,
       message: "Request failed",
@@ -118,6 +144,17 @@ export const fetchWithoutAuthorization = async (
     }
   }
 }
+
+/**
+ * Fetches/Uploads a file from/to the server using the specified URL, token, method, data, and custom headers.
+ *
+ * @param {string} url - The URL of the file to fetch.
+ * @param {string} token - The token used for authorization.
+ * @param {string} method - The HTTP method to use for the request.
+ * @param {Allow} [data] - The data to send with the request.
+ * @param {Object} [customHeaders] - Custom headers to include in the request.
+ * @returns {Promise<APITypes | null>} - A promise that resolves to the response data or null if there was an error.
+ */
 export const fetchFile = async (
   url: string,
   token: string,
@@ -164,26 +201,6 @@ export const isValidURL = (str: string): boolean => {
     return false
   }
 }
-// export const remoteUrlToBase64 = async (url: string): Promise<string> => {
-//   try {
-//     const response = await fetch(url);
-//     const blob = await response.blob();
-//     return new Promise((resolve, reject) => {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         if (typeof reader.result === 'string') {
-//           resolve(reader.result);
-//         } else {
-//           reject(new Error('Failed to convert image to Base64.'));
-//         }
-//       };
-//       reader.readAsDataURL(blob);
-//     });
-//   } catch (error) {
-//     // throw new Error('Failed to fetch the remote URL.');
-//     toast.error('Failed to fetch the remote URL.');
-//   }
-// };
 
 export const toBase64 = (str: string) =>
   typeof window === "undefined" ? Buffer.from(str).toString("base64") : window.btoa(str)
@@ -200,6 +217,13 @@ export const shimmer = (w: number, h: number) => `
       <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
       <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
     </svg>`
+
+/**
+ * Converts a given date to a human-readable time ago format.
+ *
+ * @param date - The date to convert.
+ * @returns The time ago representation of the date.
+ */
 export function dateToTimeAgo(date: Date) {
   const currentDate = new Date()
   const timestamp = currentDate.getTime() - date.getTime()
@@ -254,6 +278,7 @@ export function dateToTimeAgo(date: Date) {
     return seconds + " secs ago"
   }
 }
+
 /**
  * Generates a query parameter string based on the provided filter object.
  *
@@ -265,15 +290,44 @@ export const generateQueryParams = (filter: Allow): string => {
 
   Object.entries(filter).forEach(([key, value]) => {
     if (Array.isArray(value)) {
-      // Handle array values
       value.forEach((item) => {
         queryParams.push(`${key}[]=${encodeURIComponent(String(item))}`)
       })
     } else if (value !== undefined && value !== null && value != "" && value) {
-      // Handle other types of values
       queryParams.push(`${key}=${encodeURIComponent(String(value))}`)
     }
   })
 
   return queryParams.join("&")
+}
+
+export function convertToGamesInterface(backendGame: BackendGame): Games {
+  const {
+    id,
+    banner,
+    user,
+    title,
+    savedUsers,
+    userId,
+    tags,
+    distributionPlatforms,
+    platforms,
+    genre,
+  } = backendGame
+  const profileImage = user?.profileImage || ""
+  const gamesInterface: Games = {
+    id,
+    banner,
+    username: user?.username || "Unknown User",
+    title,
+    cover: profileImage,
+    savedUsers,
+    userId,
+    tags,
+    distributionPlatforms,
+    platforms,
+    genre,
+  }
+
+  return gamesInterface
 }

@@ -1,13 +1,13 @@
 import clsx from "clsx"
 
-import { filterprops, Props } from "@/interface/filter"
+import { filterprops } from "@/interface/filter"
 
 import Button from "@/components/ui/button"
 
 import Filter from "../mainfilter/filter"
 // import Filter from '../../components/filter/filter';
 
-const DesktpFilter: React.FC<filterprops & Props> = ({
+const DesktpFilter: React.FC<filterprops> = ({
   clearFilters,
   className,
   searchWithFilters,

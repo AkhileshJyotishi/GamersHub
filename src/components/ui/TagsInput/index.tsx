@@ -88,7 +88,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
   const init = (initialtags ?? [])?.map((init) => ({ label: init, value: init }))
   const predefinedInit = (predefinedTags ?? []).map((tag) => ({ label: tag, value: tag }))
   const val = value?.map((mp) => ({ label: mp, value: mp }))
-  console.log("yasgh ", value)
   return (
     <div className="flex flex-col items-start w-full ">
       <div className="flex flex-row justify-between w-full gap-1 p-1">

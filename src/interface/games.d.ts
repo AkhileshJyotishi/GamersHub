@@ -1,12 +1,11 @@
 import { StaticImageData } from "next/image"
 
 interface GamesFilterProps {
-  searchText: string
-  tags: string
-  platform: string
-  genre: string
-  developerType: string
-  gameMode: string
+  tags: string[]
+  platforms: string[]
+  genre: string[]
+  developerType: string[]
+  gameMode: string[]
 }
 
 interface Platform {
@@ -65,6 +64,9 @@ interface Games {
   }[]
   userId: number
   tags: Tag[]
+  distributionPlatforms: DistributionPlatform[]
+  platforms: Platform[]
+  genre: Genre[]
 }
 interface GameInfo {
   title: string

@@ -67,6 +67,7 @@ const FilterMobileDialog: React.FC<FilterMobileDialogProps> = ({
               <Button
                 onClick={() => {
                   searchWithFilters!()
+                  setPopup(false)
                 }}
                 className="p-2 bg-secondary rounded-xl"
               >

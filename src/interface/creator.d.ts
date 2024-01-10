@@ -1,10 +1,9 @@
 interface CreatorsFilterProps {
-  searchText: string
-  skills: string
-  softwares: string
+  userSkills: readonly string[]
+  userSoftwares: readonly string[]
   country?: string
-  city?: string
 }
+
 interface Creator {
   id: number
   username: string

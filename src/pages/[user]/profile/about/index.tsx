@@ -8,6 +8,7 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import EditIcon from "@/components/icons/editIcon"
 import ProfilePageLayout from "@/components/profileLayout"
+import { SecondaryTag } from "@/components/ui/badges"
 import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
@@ -151,14 +152,9 @@ const About = () => {
                     <EditIcon className="h-[22px] w-[22px] text-secondary cursor-pointer hover:scale-110 transition duration-200" />
                   </span>
                 </div>
-                <div className="px-2 py-1">
-                  {(aboutData.userSkills ?? [])?.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full"
-                    >
-                      {skill.skill}
-                    </span>
+                <div className="flex items-center px-2 py-1 gap-4 overflow-x-scroll w-[100%] bg-[inherit] no-scroll mb-2">
+                  {(aboutData.userSkills ?? [])?.map((tag, index) => (
+                    <SecondaryTag name={tag.skill} key={index} className=" cursor-pointer" />
                   ))}
                 </div>
               </div>
@@ -175,14 +171,9 @@ const About = () => {
                     <EditIcon className="h-[22px] w-[22px] text-secondary cursor-pointer hover:scale-110 transition duration-200" />
                   </span>
                 </div>
-                <div className="px-2 py-1">
-                  {(aboutData.userSoftwares ?? [])?.map((software, index) => (
-                    <span
-                      key={index}
-                      className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full"
-                    >
-                      {software.software}
-                    </span>
+                <div className="flex items-center px-2 py-1 gap-4 overflow-x-scroll w-[100%] bg-[inherit] no-scroll mb-2">
+                  {(aboutData.userSoftwares ?? [])?.map((tag, index) => (
+                    <SecondaryTag name={tag.software} key={index} className=" cursor-pointer" />
                   ))}
                 </div>
               </div>

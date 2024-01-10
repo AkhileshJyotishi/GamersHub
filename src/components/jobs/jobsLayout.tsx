@@ -23,7 +23,6 @@ interface LayoutProps {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
   setjobs: React.Dispatch<React.SetStateAction<Job[] | null>>
-  // setJobs: React.Dispatch<React.SetStateAction<Job[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
 }
@@ -49,7 +48,6 @@ const Layout: React.FC<LayoutProps> = ({
   const [popup, setPopup] = useState<boolean>(false)
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   const [city, setCity] = useState<string[]>([])
-  // const [jobsMeta, setJobsMeta] = useState<any>()
 
   let sortBy: "payment-high-to-low" | "payment-low-to-high" | "" = ""
 

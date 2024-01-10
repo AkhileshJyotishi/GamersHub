@@ -68,7 +68,7 @@ interface BackendJob {
 interface JobInfo {
   id?: number
   jobType: string
-  description: string | null
+  description: string | nullonChange
   remote: boolean
   country?: string
   city?: string

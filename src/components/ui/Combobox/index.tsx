@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Fragment, useState } from "react"
+import React, { ChangeEvent, Fragment, useEffect, useState } from "react"
 import clsx from "clsx"
 import { PiWarningCircleFill } from "react-icons/pi"
 
@@ -122,12 +122,15 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   defaultSelected,
   className,
   errorMessage,
+  value,
 }) => {
-  const [selected, setSelected] = useState<Option>(
+  const [, setSelected] = useState<Option>(
     defaultSelected || (options && options.length > 0 ? options[0] : {})
   )
   const [query, setQuery] = useState<string>("")
-
+  const [val, setval] = useState<Option>(
+    defaultSelected || (options && options.length > 0 ? options[0] : {})
+  )
   const filteredOptions =
     query === ""
       ? options
@@ -138,19 +141,24 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
               .replace(/\s+/g, "")
               .includes(query.toLowerCase().replace(/\s+/g, ""))
         )
-
+  useEffect(() => {
+    if (value == "") {
+      setval({ label: "", value: "" })
+    }
+  }, [value])
   return (
     <div className={clsx("relative ring-0 w-full", className)}>
       <Combobox
-        value={selected}
+        value={val}
         onChange={(value) => {
           setSelected(value)
+          setval(value)
           onChange((value.value as string) || "")
         }}
       >
         <ComboboxWrapper
-          selected={selected}
-          onChange={setSelected}
+          selected={val}
+          onChange={setval}
           query={query}
           setQuery={setQuery}
           filteredOptions={filteredOptions || []}

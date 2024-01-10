@@ -37,7 +37,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   users = users?.data.creators
-  console.log(users)
   return {
     props: {
       users,

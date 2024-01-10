@@ -1,15 +1,15 @@
 import { GamesFilterProps } from "./games"
 
-interface Props {
-  jwt?: string
-  auth_user?: Allow
-  seo?: Allow
-  jobs?: Allow[]
-  jobsMeta?: Allow
-  defaultAndFilter?: Allow
-  defaultPageSize?: number
-  className: string
-}
+// interface Props {
+//   jwt?: string
+//   auth_user?: Allow
+//   seo?: Allow
+//   jobs?: Allow[]
+//   jobsMeta?: Allow
+//   defaultAndFilter?: Allow
+//   defaultPageSize?: number
+// className: string
+// }
 
 interface filterprops {
   // Function to clear the applied filters
@@ -28,6 +28,7 @@ interface filterprops {
   city?: string[]
   setCity?: React.Dispatch<React.SetStateAction<string[]>>
   loading?: boolean
+  className?: string
 }
 
 interface FilterDetail<SO = { label: string; value: string | boolean | number }> {
