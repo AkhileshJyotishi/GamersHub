@@ -58,11 +58,12 @@ router.get(
   userController.getAllCreatorsExceptUser
 )
 router.get('/creators/all', validate(userValidation.queryUsers), userController.getAllCreators)
-router.get('/keyword', auth(), userController.getKeywords)
-router.get('/skill', auth(), userController.getSkills)
-router.get('/software', auth(), userController.getSoftwares)
-router.get('/genre', auth(), userController.getGenre)
-router.get('/platform', auth(), userController.getPlatforms)
+router.get('/keyword', userController.getKeywords)
+router.get('/skill', userController.getSkills)
+router.get('/software', userController.getSoftwares)
+router.get('/genre', userController.getGenre)
+router.get('/platform', userController.getPlatforms)
+router.get('customGameTags', userController.getCustomGameTags)
 
 router.get('/allDetails', auth(), userController.getAllDetails)
 router.get('/otherDetails/:id', userController.getOtherDetails)

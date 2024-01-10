@@ -251,6 +251,33 @@ const getPlatforms = catchAsync(async (req, res) => {
   const platform = Platforms?.map((k: Allow) => k.name)
   sendResponse(res, httpStatus.OK, null, { platform }, 'Platforms fetched Successfully')
 })
+const getCustomGameTags = catchAsync(async (req, res) => {
+  const Platforms = await prisma.platform.findMany({
+    select: {
+      name: true
+    }
+  })
+  const platform = Platforms?.map((k: Allow) => k.name)
+  const Genres = await prisma.genre.findMany({
+    select: {
+      name: true
+    }
+  })
+  const genre = Genres?.map((k: Allow) => k.name)
+  const keywords = await prisma.keyword.findMany({
+    select: {
+      keyword: true
+    }
+  })
+  const tags = keywords?.map((k: Allow) => k.keyword)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { platform, genre, tags },
+    'Custom Tags fetched Successfully'
+  )
+})
 
 const getAllDetails = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -354,6 +381,7 @@ export default {
   getSoftwares,
   getGenre,
   getPlatforms,
+  getCustomGameTags,
   getAllDetails,
   getOtherDetails
 }
