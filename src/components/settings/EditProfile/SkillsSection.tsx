@@ -6,7 +6,7 @@ import Filter from "@/components/filter/mainfilter/filter"
 interface SkillsSectionProps {
   selectedTags?: string[]
   predefinedTagsAsSelectOptions?: { label: string; value: string }[]
-  onTagsChange: (tags: string[]) => void
+  onTagsChange: (tags: readonly string[]) => void
 }
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({

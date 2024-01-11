@@ -5,7 +5,7 @@ import Filter from "@/components/filter/mainfilter/filter"
 interface SoftwareSectionProps {
   selectedTags?: string[]
   predefinedTagsAsSelectOptions?: Allow[]
-  onTagsChange: (tags: string[]) => void
+  onTagsChange: (tags: readonly string[]) => void
 }
 
 const SoftwareSection: React.FC<SoftwareSectionProps> = ({
