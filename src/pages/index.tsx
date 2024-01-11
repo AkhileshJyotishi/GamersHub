@@ -7,9 +7,9 @@ import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import Img from "@/assets/image/profiles-slide-show.png"
-// import logo from "@/assets/image/logo-with-text.svg"
 import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
+import { ArticleProps, INews } from "@/interface/news"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
@@ -19,19 +19,19 @@ import TalentSection from "@/components/home/banner"
 import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
 import JobSection from "@/components/home/Jobs"
 import CloseIcon from "@/components/icons/closeIcon"
-import GeneralizedComponent from "@/components/news"
+import GeneralizedComponent from "@/components/news/NewsCard"
 import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 // {}: { users: IPostbackend[] }
-const HomePage = () => {
+const HomePage = ({ news }: { news: ArticleProps[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage, data } = router.query
   const { verifyMail, verifyModal, setVerifyMail, setVerifyModal } = useUserContext()
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
-
+    console.log(" newd ", news)
     // console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
@@ -74,56 +74,56 @@ const HomePage = () => {
     toast.success(res?.message)
   }
 
-  const sampleArticles = [
-    {
-      id: 1,
-      imgSrc: "https://picsum.photos/3400/2400",
-      imgAlt: "Image 1 Alt Text",
-      category: "Technology",
-      title: "Breaking News in Tech World",
-      link: "/breaking-news-in-tech-world",
-    },
-    {
-      id: 2,
-      imgSrc: "https://picsum.photos/3400/2400",
-      imgAlt: "Image 2 Alt Text",
-      category: "Science",
-      title: "Latest Scientific Discoveries",
-      link: "/latest-scientific-discoveries",
-    },
-    {
-      id: 3,
-      imgSrc: "https://picsum.photos/3400/2400",
-      imgAlt: "Image 3 Alt Text",
-      category: "Entertainment",
-      title: "Hollywood Blockbuster Releases",
-      link: "/hollywood-blockbuster-releases",
-    },
-    {
-      id: 4,
-      imgSrc: "https://picsum.photos/600/200",
-      imgAlt: "Image 3 Alt Text",
-      category: "Entertainment",
-      title: "Hollywood Blockbuster Releases",
-      link: "/hollywood-blockbuster-releases",
-    },
-    {
-      id: 5,
-      imgSrc: "https://picsum.photos/3400/2400",
-      imgAlt: "Image 3 Alt Text",
-      category: "Entertainment",
-      title: "Hollywood Blockbuster Releases",
-      link: "/hollywood-blockbuster-releases",
-    },
-    {
-      id: 6,
-      imgSrc: "https://picsum.photos/3400/2400",
-      imgAlt: "Image 3 Alt Text",
-      category: "Entertainment",
-      title: "Hollywood Blockbuster Releases",
-      link: "/hollywood-blockbuster-releases",
-    },
-  ]
+  // const sampleArticles = [
+  //   {
+  //     id: 1,
+  //     imgSrc: "https://picsum.photos/3400/2400",
+  //     imgAlt: "Image 1 Alt Text",
+  //     category: "Technology",
+  //     title: "Breaking News in Tech World",
+  //     link: "/breaking-news-in-tech-world",
+  //   },
+  //   {
+  //     id: 2,
+  //     imgSrc: "https://picsum.photos/3400/2400",
+  //     imgAlt: "Image 2 Alt Text",
+  //     category: "Science",
+  //     title: "Latest Scientific Discoveries",
+  //     link: "/latest-scientific-discoveries",
+  //   },
+  //   {
+  //     id: 3,
+  //     imgSrc: "https://picsum.photos/3400/2400",
+  //     imgAlt: "Image 3 Alt Text",
+  //     category: "Entertainment",
+  //     title: "Hollywood Blockbuster Releases",
+  //     link: "/hollywood-blockbuster-releases",
+  //   },
+  //   {
+  //     id: 4,
+  //     imgSrc: "https://picsum.photos/600/200",
+  //     imgAlt: "Image 3 Alt Text",
+  //     category: "Entertainment",
+  //     title: "Hollywood Blockbuster Releases",
+  //     link: "/hollywood-blockbuster-releases",
+  //   },
+  //   {
+  //     id: 5,
+  //     imgSrc: "https://picsum.photos/3400/2400",
+  //     imgAlt: "Image 3 Alt Text",
+  //     category: "Entertainment",
+  //     title: "Hollywood Blockbuster Releases",
+  //     link: "/hollywood-blockbuster-releases",
+  //   },
+  //   {
+  //     id: 6,
+  //     imgSrc: "https://picsum.photos/3400/2400",
+  //     imgAlt: "Image 3 Alt Text",
+  //     category: "Entertainment",
+  //     title: "Hollywood Blockbuster Releases",
+  //     link: "/hollywood-blockbuster-releases",
+  //   },
+  // ]
 
   return (
     <>
@@ -163,7 +163,6 @@ const HomePage = () => {
             Variant="flex flex-col items-start gap-[10px] text-[14px] "
           />
 
-          {/* Verify your Email */}
           <Button
             className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
             onClick={() => verifyEmail()}
@@ -198,7 +197,7 @@ const HomePage = () => {
             )
           })}
         </div> */}
-        <GeneralizedComponent articles={sampleArticles} />
+        <GeneralizedComponent articles={news} />
         {/* 
         <Button
           className="
@@ -219,13 +218,15 @@ export default HomePage
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let users
+  let news
+  news = await fetchWithoutAuthorization("/v1/news/", "GET")
   if (session) {
     users = await fetchData(`/v1/post/?skip=5`, session.user?.name as string, "GET")
   } else {
     users = await fetchWithoutAuthorization("/v1/post/", "GET")
   }
 
-  if (users?.error) {
+  if (users?.error || news?.error) {
     // toast.error(jobsDetails.message)
     // return {
     //   redirect: {
@@ -240,12 +241,35 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   users = users?.data?.posts
-  // console.log("home page ", users)
-  // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
+  // console.log("object ", news?.data)
+  news = news?.data.AllNews as INews[]
+  const res2: ArticleProps[] = CreateNewsFrontend(news)
 
+  if (session) {
+    return {
+      props: {
+        users,
+        news: res2,
+      },
+    }
+  }
   return {
     props: {
       users,
+      news: res2,
     },
   }
+}
+export const CreateNewsFrontend = (NewsArray: INews[]) => {
+  const res2: ArticleProps[] = NewsArray.map((Pnews) => {
+    return {
+      id: Pnews.id,
+      imgSrc: Pnews?.bannerImage,
+      imgAlt: "",
+      category: Pnews.category.title,
+      title: Pnews.title,
+      link: Pnews.subtitle,
+    }
+  })
+  return res2
 }

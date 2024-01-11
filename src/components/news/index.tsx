@@ -1,100 +1,199 @@
-import React, { FC } from "react"
-import cn from "classnames"
-import clsx from "clsx"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 
-import news from "./news.module.css"
-interface ArticleProps {
-  id: number
-  imgSrc: string
-  imgAlt: string
-  category: string
-  title: string
-  link: string
+// import { useSession } from "next-auth/react"
+import image from "@/assets/image/void.svg"
+import { ArticleProps } from "@/interface/news"
+import { useUserContext } from "@/providers/user-context"
+
+// import { fetchData } from "@/utils/functions"
+import SkeletonLoader from "@/components/ui/SkeletonLoader2"
+
+import { Article } from "./NewsCard"
+import Layout from "./newsLayout"
+
+type NewsPageProps = {
+  news: ArticleProps[]
+  // newsSuggestions?: JobSoftwareSuggestions
+}
+const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
+  const [activetab, setactivetab] = useState<string>("All")
+  const { userData, setIsLoginModalOpen } = useUserContext()
+  // const { data: session } = useSession()
+  const [AllNews, setNews] = useState<ArticleProps[] | null>(news)
+  const [myNews, setmyNews] = useState<ArticleProps[] | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  useEffect(() => {
+    if (activetab === "Saved" && userData === null) {
+      setIsLoginModalOpen(true)
+      setactivetab("All")
+    } else if (activetab === "My News Posts" && userData === null) {
+      setIsLoginModalOpen(true)
+      setactivetab("All")
+    }
+  }, [activetab])
+
+  // const myNews = async () => {
+  //   if (session) {
+  //     const data = await fetchData(
+  //       `/v1/news/user/${userData?.id}`,
+  //       session?.user?.name as string,
+  //       "GET"
+  //     )
+  //     if (data?.error) {
+  //       return
+  //     }
+  //     const sett = data?.data?.news?.map((news: INews[]) => FrontendCompatibleObject(INews))
+  //     setmyjobs([])
+  //   }
+  // }
+  // const onChange = (id: number) => {
+  //   setmyNews((prev) => {
+  //     const x = prev?.filter((news) => news.id !== id)
+  //     if (x) return x
+  //     else return null
+  //   })
+  // }
+  // const handleSavedSuccess = (id: number, state: string) => {
+  //   setjobs((prevJobs) => {
+  //     if (prevJobs) {
+  //       const updatedJobs = prevJobs.map((news) =>
+  //         news.id === id
+  //           ? {
+  //             ...news,
+  //             savedUsers:
+  //               state === "save"
+  //                 ? [...news.savedUsers, { id: userData?.id ?? 0 }]
+  //                 : job.savedUsers.filter((user) => user.id !== (userData?.id ?? 0)),
+  //           }
+  //           : job
+  //       )
+  //       return updatedJobs
+  //     }
+  //     return prevJobs
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   myjobs()
+  // }, [userData])
+  useEffect(() => {
+    setNews(news)
+  }, [activetab])
+  return (
+    <Layout
+      news={activetab === "My News Posts" ? myNews || [] : news}
+      activeTab={activetab}
+      setActiveTab={setactivetab}
+      setNews={activetab === "My News Posts" ? setmyNews || [] : setNews}
+      setLoading={setLoading}
+      loading={loading}
+      // jobSoftwareSuggestions={jobSoftwareSuggestions}
+    >
+      {activetab === "All" && (
+        <>
+          {news.length > 0 ? (
+            <>
+              <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+                {loading ? (
+                  <>
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                  </>
+                ) : (
+                  AllNews?.map((article) => (
+                    <>
+                      <Article
+                        id={article.id}
+                        title={article.title}
+                        category={article.category}
+                        key={article.id}
+                        // {...article}
+                        imgSrc={article.imgSrc}
+                        imgAlt={``}
+                        className="h-[200px]"
+                        link="error"
+                      />
+                    </>
+                  ))
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No News Yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {/* 
+      {activetab === "Saved" && (
+        <>
+          {AllNews?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
+            .length !== 0 ? (
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+              {loading ? (
+                <>
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                </>
+              ) : (
+                Alljobs?.filter((job) =>
+                  job.savedUsers.some((user) => user.id === userData?.id)
+                ).map((job, idx) => (
+                  <Card
+                    {...job}
+                    className=""
+                    key={idx}
+                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                  />
+                ))
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center w-full gap-20">
+              <h3 className="text-3xl font-bold">No news yet.</h3>
+              <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+            </div>
+          )}
+        </>
+      )}
+       */}
+      {/* {activetab === "My News Posts" && (
+        <>
+          {myNews && Array.from(myNews).length > 0 ? (
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+              {loading ? (
+                <>
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                </>
+              ) : (
+                myNews &&
+                myNews?.map((news, idx) => (
+                  // <Card {...job} className="" key={idx} onChange={onChange} />
+                ))
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col items-center w-full gap-20">
+                <h3 className="text-3xl font-bold">No news yet.</h3>
+                <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+              </div>
+            </>
+          )}
+        </>
+      )} */}
+    </Layout>
+  )
 }
 
-interface FeaturedListProps {
-  articles: ArticleProps[]
-}
-
-const Article: FC<ArticleProps & { className: string }> = ({
-  imgSrc,
-  category,
-  title,
-  link,
-  className,
-}) => (
-  <article className={cn("relative", className)}>
-    <div className="h-[inherit] relative flex flex-col mt-auto">
-      <Image fill alt={""} className="h-full bg-[#181818]" src={imgSrc} />
-
-      <span
-        id="blackOverlay"
-        className="hover:opacity-30 duration-200 absolute w-full h-full bg-[#000] opacity-20"
-      ></span>
-      <div className={clsx(" relative mt-auto p-2 ", news.background)}>
-        <div className="flex flex-row items-center gap-2 ">
-          <Link className="" href={`/${category.toLowerCase()}/`}>
-            {category}
-          </Link>
-        </div>
-        <h3 className="hover:text-secondary">
-          <Link
-            href={link}
-            className="md:text-[1.25rem] text-text font-[700] hover:text-secondary duration-200"
-            title={title}
-          >
-            {title}
-          </Link>
-        </h3>
-      </div>
-    </div>
-  </article>
-)
-
-const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
-  <>
-    {/* Primary Section */}
-    <section className={cn("col-start-1 col-span-4  h-fit p-2")}>
-      <div className={cn("relative h-[400px]")}>
-        {articles.slice(0, 1).map((article) => (
-          <Article
-            key={article.id}
-            {...article}
-            imgSrc={article.imgSrc}
-            imgAlt={``}
-            className={"h-[inherit]"}
-          />
-        ))}
-      </div>
-    </section>
-
-    {/* Secondary Section */}
-    <section className={cn("col-span-4 h-fit p-2")}>
-      <div className="flex flex-col sm:grid grid-cols-2 grid-rows-2 gap-4 md:h-[400px] ">
-        {articles.slice(1, 5).map((article) => (
-          <Article
-            key={article.id}
-            {...article}
-            imgSrc={article.imgSrc}
-            imgAlt={``}
-            className="h-[200px]"
-          />
-        ))}
-      </div>
-    </section>
-  </>
-)
-
-const GeneralizedComponent: FC<FeaturedListProps> = ({ articles }) => (
-  <>
-    <div className={cn("min-[1024px]:p-12 min-[1440px]:p-20 mx-auto h-fit")}>
-      <div className={cn("md:grid md:grid-cols-8 w-full gap-4 h-fit flex flex-col")}>
-        <FeaturedList articles={articles} />
-      </div>
-    </div>
-  </>
-)
-
-export default GeneralizedComponent
+export default NewsPage

@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react"
-import {
-  // City,
-  Country,
-} from "country-state-city"
-import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
-import { toast } from "react-toastify"
 
+// import { useRouter } from "next/router"
+// import { useSession } from "next-auth/react"
+// import { toast } from "react-toastify"
 import { FilterDetail } from "@/interface/filter"
-import { FrontendCompatibleObject } from "@/pages/jobs"
-import { useUserContext } from "@/providers/user-context"
-import { fetchData, fetchWithoutAuthorization, generateQueryParams } from "@/utils/functions"
+import { ArticleProps } from "@/interface/news"
 
-import PlusIcon from "@/components/icons/plus"
+// import { fetchData, generateQueryParams } from "@/utils/functions"
+// import PlusIcon from "@/components/icons/plus"
 import TabButtons from "@/components/tabbuttons"
 import Button from "@/components/ui/button"
 import Select from "@/components/ui/select"
@@ -20,37 +15,36 @@ import Select from "@/components/ui/select"
 import { BannerComponent, DesktopFilter, FilterMobileDialog } from "../filter"
 interface LayoutProps {
   children: React.ReactNode
-  jobs?: Job[]
+  news?: ArticleProps[]
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
-  setjobs: React.Dispatch<React.SetStateAction<Job[] | null>>
+  setNews: React.Dispatch<React.SetStateAction<ArticleProps[] | null>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
-  jobSoftwareSuggestions: JobSoftwareSuggestions
+  // jobSoftwareSuggestions?: JobSoftwareSuggestions
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
   setActiveTab,
   activeTab,
-  setjobs,
+  //ya   setNews,
   loading,
   setLoading,
-  jobs,
-  jobSoftwareSuggestions,
+  news,
+  // jobSoftwareSuggestions,
 }) => {
-  const router = useRouter()
-  const { data: session } = useSession()
-  const { userData } = useUserContext()
+  //   const router = useRouter()
+  //   const { data: session } = useSession()
   const initFilters = {
     expertise: [],
     remote: undefined,
     jobType: [],
     jobSoftwares: [],
   }
-  const [jobsFilters, setJobsFilters] = useState<JobFilterProps>(initFilters)
+  const [newsFilters, setNewsFilters] = useState<JobFilterProps>(initFilters)
   const [popup, setPopup] = useState<boolean>(false)
-  const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
+  const [country] = useState<{ label?: string; value?: string }[]>([{}])
   const [city, setCity] = useState<string[]>([])
   let sortBy: "payment-high-to-low" | "payment-low-to-high" | "" = ""
 
@@ -59,8 +53,8 @@ const Layout: React.FC<LayoutProps> = ({
     //   inputType: "text",
     //   title: "Add Roles",
     //   placeholder: "Eg : 3D, Voice over artist",
-    //   value: jobsFilters?.rolesNeeded,
-    //   onChange: (value) => setJobsFilters({ ...jobsFilters, rolesNeeded: value as string }),
+    //   value: newsFilters?.rolesNeeded,
+    //   onChange: (value) => setJobsFilters({ ...newsFilters, rolesNeeded: value as string }),
     //   className: "mt-2 bg-transparent rounded-md",
     // },
     {
@@ -71,8 +65,8 @@ const Layout: React.FC<LayoutProps> = ({
         { label: "Intermediate", value: "INTERMEDIATE" },
         { label: "Expert", value: "EXPERT" },
       ],
-      value: jobsFilters?.expertise,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, expertise: value as string[] }),
+      value: newsFilters?.expertise,
+      onChange: (value) => setNewsFilters({ ...newsFilters, expertise: value as string[] }),
     },
     {
       inputType: "radio",
@@ -81,8 +75,8 @@ const Layout: React.FC<LayoutProps> = ({
         { label: "Remote", value: true },
         { label: "On Site", value: false },
       ],
-      value: jobsFilters?.remote,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, remote: value as boolean }),
+      value: newsFilters?.remote,
+      onChange: (value) => setNewsFilters({ ...newsFilters, remote: value as boolean }),
     },
     {
       inputType: "checkbox",
@@ -92,98 +86,85 @@ const Layout: React.FC<LayoutProps> = ({
         { label: "Freelance", value: "FREELANCE" },
         { label: "Collab Job", value: "COLLAB" },
       ],
-      value: jobsFilters?.jobType,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, jobType: value as string[] }),
+      value: newsFilters?.jobType,
+      onChange: (value) => setNewsFilters({ ...newsFilters, jobType: value as string[] }),
     },
     {
       inputType: "tags",
       title: "Add Software",
       placeholder: "Eg : Blender , Illustrator",
-      value: jobsFilters?.jobSoftwares,
-      onTagsChange: (value) => setJobsFilters({ ...jobsFilters, jobSoftwares: value as string[] }),
+      value: newsFilters?.jobSoftwares,
+      onTagsChange: (value) => setNewsFilters({ ...newsFilters, jobSoftwares: value as string[] }),
       // className: "mt-2 bg-transparent rounded-md",
-      selectOptions: [
-        ...(jobSoftwareSuggestions.software ?? []).map((s) => ({
-          label: s,
-          value: s,
-        })),
-      ],
+      // selectOptions: [
+      //     ...(jobSoftwareSuggestions.software ?? []).map((s) => ({
+      //         label: s,
+      //         value: s,
+      //     })),
+      // ],
       // initialtags:
     },
   ]
 
-  const searchWithFilters = async () => {
-    const jobsFilterParams = generateQueryParams(jobsFilters)
-    setLoading(true)
-    let x
-    if (activeTab == "My Job Posts") {
-      x = await fetchWithoutAuthorization(`v1/job/user/${userData?.id}?${jobsFilterParams}`, "GET")
-    } else {
-      x = await fetchWithoutAuthorization(`v1/job/?${jobsFilterParams}`, "GET")
-    }
+  // const searchWithFilters = async () => {
+  //     const jobsFilterParams = generateQueryParams(newsFilters)
+  //     setLoading(true)
+  //     const x = await fetchData(`/v1/job?${jobsFilterParams}`, session?.user?.name as string, "GET")
+  //     setLoading(false)
+  //     toast.dismiss()
+  //     if (x?.error) {
+  //         toast.error(x.message)
+  //     } else {
+  //         const filt = x?.data.jobs.map((mp: BackendJob) => FrontendCompatibleObject(mp))
+  //         setjobs(filt)
+  //     }
+  // }
+  // const clearFilters = async () => {
+  //     setNewsFilters(initFilters)
+  //     setjobs(jobs ?? [])
+  //     // setActiveTab()
+  // }
 
-    if (session) {
-      x = await fetchData(`/v1/job?${jobsFilterParams}`, session?.user?.name as string, "GET")
-    }
-    setLoading(false)
-    toast.dismiss()
-    if (x?.error) {
-      toast.error(x.message)
-    } else {
-      const filt = x?.data.jobs.map((mp: BackendJob) => FrontendCompatibleObject(mp))
-      setjobs(filt)
-    }
-  }
-  const clearFilters = async () => {
-    setJobsFilters(initFilters)
-    setjobs(jobs ?? [])
-    // setActiveTab()
-  }
-  useEffect(() => {
-    const country = Country.getAllCountries()
-
-    const countryList = country?.map((country) => {
-      return {
-        label: country?.name,
-        value: country?.name,
-      }
-    })
-    setCountry(countryList)
-  }, [])
   useEffect(() => {
     setLoading(false)
-    setJobsFilters(initFilters)
+    setNewsFilters(initFilters)
   }, [activeTab])
 
   return (
     <>
       <BannerComponent
         className={"w-[100%] py-[52px] text-center bg-user_interface_3 mx-auto"}
-        bannerText={<>Find Your Dream Career : Browse Our Job Openings</>}
+        bannerText={<>Find News : Some DATA</>}
         bannerTitle={
           <>
-            Find the <span className="text-secondary"> best jobs</span> in the industry
+            {/* TODO */}
+            Sample Info
+            {/* Find the <span className="text-secondary"> best jobs</span> in the industry */}
           </>
         }
       />
-      <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
-        <div className="flex flex-col items-center justify-between sm:flex-row ">
+      {/* // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black" */}
+
+      <div className="mt-[45px] sm:px-[60px] w-[100vw] mx-auto items-center ">
+        <div className="flex flex-col items-center  sm:flex-row bg-user_interface_3 rounded-xl">
           <TabButtons
-            tabNames={["All", "Saved", "My Job Posts"]}
+            tabNames={["All", ...(news?.map((n) => n.category) ?? [])]}
             setActiveTab={setActiveTab}
             activeTab={activeTab}
+            className="flex-nowrap overflow-x-scroll no-scrollbar"
+            seperator={false}
           />
-          {session && (
-            <Button
-              onClick={() => {
-                router.push(`/user/profile/portfolio/CreateJob`)
-              }}
-              className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"
-            >
-              <span className="text-sm">Post job </span>
-              <PlusIcon className="w-6 h-4 sm:h-6" />
-            </Button>
-          )}
+          {/* {session && (
+                        <Button
+                            onClick={() => {
+                                router.push(`/user/profile/portfolio/CreateJob`)
+                            }}
+                            className="flex flex-row items-center justify-center w-[80%] mt-5 md:w-fit h-fit sm:mt-0 bg-secondary py-[10px] px-[25px] rounded-xl"
+                        >
+                            <span className="text-sm">Post job </span>
+                            <PlusIcon className="w-6 h-4 sm:h-6" />
+                        </Button>
+                    )} */}
         </div>
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">
@@ -243,20 +224,20 @@ const Layout: React.FC<LayoutProps> = ({
           className={"hidden md:flex"}
           loading={loading}
           key={1}
-          clearFilters={clearFilters}
-          Filters={jobsFilters}
-          searchWithFilters={searchWithFilters}
-          setFilters={setJobsFilters}
+          clearFilters={() => {}}
+          Filters={newsFilters}
+          searchWithFilters={() => {}}
+          setFilters={setNewsFilters}
           FilterArray={FilterArray}
           country={country}
           city={city}
           setCity={setCity}
         />
         <FilterMobileDialog
-          clearFilters={clearFilters}
-          Filters={jobsFilters}
-          searchWithFilters={searchWithFilters}
-          setFilters={setJobsFilters}
+          clearFilters={() => {}}
+          Filters={newsFilters}
+          searchWithFilters={() => {}}
+          setFilters={setNewsFilters}
           popup={popup}
           setPopup={setPopup}
           FilterArray={FilterArray}

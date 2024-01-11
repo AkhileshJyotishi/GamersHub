@@ -9,14 +9,23 @@ export default function TabButtons({
   tabNames,
   setActiveTab,
   activeTab,
+  className,
+  seperator = true,
 }: {
   tabNames: Array<string>
   setActiveTab?: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
+  className?: string
+  seperator?: boolean
 }) {
   return (
     <>
-      <div className="flex flex-row flex-wrap justify-between w-full p-2 text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20">
+      <div
+        className={clsx(
+          "flex flex-row flex-wrap justify-between w-full p-2 text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20",
+          className
+        )}
+      >
         {tabNames?.map((tabName, index) => {
           return (
             <>
@@ -32,7 +41,9 @@ export default function TabButtons({
               >
                 {tabName}
               </Button>
-              {index === 1 && <span className="bg-secondary w-[2px] h-[2rem] mx-5 my-auto"></span>}
+              {seperator && index === 1 && (
+                <span className="bg-secondary w-[2px] h-[2rem] mx-5 my-auto"></span>
+              )}
             </>
           )
         })}

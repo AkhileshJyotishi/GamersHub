@@ -33,6 +33,10 @@ const nextConfig = {
         hostname: "img.freepik.com",
       },
       {
+        protocol: "https",
+        hostname: "i.pinimg.com",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
       },

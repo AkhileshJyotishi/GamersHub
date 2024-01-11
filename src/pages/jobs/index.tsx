@@ -36,7 +36,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
   }
   const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
-  console.log("res2?.data jobs", res2?.data)
 
   if (res2?.error) {
     return {
