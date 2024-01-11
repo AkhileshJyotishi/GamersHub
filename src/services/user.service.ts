@@ -954,14 +954,64 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
   })
   return userDetails
 }
+interface QueryUsers {
+  country?: string
+  userSkills?: string[]
+  userSoftwares?: string[]
+}
 /**
  * Get Creators except user
  * @param {ObjectId} userId
  * @returns {Promise<object>}
  */
-const getAllCreatorsExceptUser = async (userId: number): Promise<object | null> => {
+const getAllCreatorsExceptUser = async (
+  userId: number,
+  filter: QueryUsers
+): Promise<object | null> => {
+  const { country, userSkills, userSoftwares } = filter
+
   const userDetails = prisma.user.findMany({
     where: {
+      AND: [
+        country
+          ? {
+              userDetails: {
+                country: {
+                  equals: country,
+                  mode: 'insensitive'
+                }
+              }
+            }
+          : {},
+        userSkills
+          ? {
+              userDetails: {
+                userSkills: {
+                  some: {
+                    skill: {
+                      in: userSkills,
+                      mode: 'insensitive'
+                    }
+                  }
+                }
+              }
+            }
+          : {},
+        userSoftwares
+          ? {
+              userDetails: {
+                userSoftwares: {
+                  some: {
+                    software: {
+                      in: userSoftwares,
+                      mode: 'insensitive'
+                    }
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       NOT: {
         id: userId
       }
@@ -996,8 +1046,53 @@ const getAllCreatorsExceptUser = async (userId: number): Promise<object | null> 
  * Get Creators
  * @returns {Promise<object>}
  */
-const getAllCreators = async (): Promise<object | null> => {
+const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
+  const { country, userSkills, userSoftwares } = filter
+
   const userDetails = prisma.user.findMany({
+    where: {
+      AND: [
+        userSkills
+          ? {
+              userDetails: {
+                userSkills: {
+                  some: {
+                    skill: {
+                      in: userSkills,
+                      mode: 'insensitive'
+                    }
+                  }
+                }
+              }
+            }
+          : {},
+        country
+          ? {
+              userDetails: {
+                country: {
+                  equals: country,
+                  mode: 'insensitive'
+                }
+              }
+            }
+          : {},
+        userSoftwares
+          ? {
+              userDetails: {
+                userSoftwares: {
+                  some: {
+                    software: {
+                      in: userSoftwares,
+                      mode: 'insensitive'
+                    }
+                  }
+                }
+              }
+            }
+          : {}
+      ]
+    },
+
     select: {
       id: true,
       username: true,

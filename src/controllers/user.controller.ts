@@ -251,6 +251,54 @@ const getPlatforms = catchAsync(async (req, res) => {
   const platform = Platforms?.map((k: Allow) => k.name)
   sendResponse(res, httpStatus.OK, null, { platform }, 'Platforms fetched Successfully')
 })
+const getCustomGameTags = catchAsync(async (req, res) => {
+  const Platforms = await prisma.platform.findMany({
+    select: {
+      name: true
+    }
+  })
+  const platform = Platforms?.map((k: Allow) => k.name)
+  const Genres = await prisma.genre.findMany({
+    select: {
+      name: true
+    }
+  })
+  const genre = Genres?.map((k: Allow) => k.name)
+  const keywords = await prisma.keyword.findMany({
+    select: {
+      keyword: true
+    }
+  })
+  const tags = keywords?.map((k: Allow) => k.keyword)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { platform, genre, tags },
+    'Custom Game Tags fetched Successfully'
+  )
+})
+const getCustomCreatorsTags = catchAsync(async (req, res) => {
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills?.map((k: Allow) => k.skill)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares?.map((k: Allow) => k.software)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software },
+    'Custom Creators Tags fetched Successfully'
+  )
+})
 
 const getAllDetails = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -290,11 +338,13 @@ const getCustomDetails = catchAsync(async (req, res) => {
 })
 const getAllCreatorsExceptUser = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
-  const creators = await userService.getAllCreatorsExceptUser(userId)
+  const filter = req.query
+  const creators = await userService.getAllCreatorsExceptUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
 })
 const getAllCreators = catchAsync(async (req, res) => {
-  const creators = await userService.getAllCreators()
+  const filter = req.query
+  const creators = await userService.getAllCreators(filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators fetched Successfully')
 })
 const getOtherDetails = catchAsync(async (req, res) => {
@@ -352,6 +402,8 @@ export default {
   getSoftwares,
   getGenre,
   getPlatforms,
+  getCustomGameTags,
+  getCustomCreatorsTags,
   getAllDetails,
   getOtherDetails
 }

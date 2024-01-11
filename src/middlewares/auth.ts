@@ -30,7 +30,12 @@ const verifyCallback =
     }
     resolve()
   }
-
+/**
+ * Authenticates the user based on the required rights.
+ *
+ * @param {...string} requiredRights - The required rights for the user.
+ * @returns {Promise<void>} - A promise that resolves if the user is authenticated and has the required rights, or rejects with an error if authentication fails or the user does not have the required rights.
+ */
 const auth =
   (...requiredRights: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {

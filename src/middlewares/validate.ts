@@ -4,7 +4,12 @@ import Joi from 'joi'
 
 import ApiError from '../utils/api-error'
 import pick from '../utils/pick'
-
+/**
+ * Validates the request against the provided schema.
+ *
+ * @param {object} schema - The schema to validate against.
+ * @returns {Function} - Express middleware function.
+ */
 const validate = (schema: object) => (req: Request, res: Response, next: NextFunction) => {
   const validSchema = pick(schema, ['params', 'query', 'body'])
   const obj = pick(req, Object.keys(validSchema))

@@ -5,7 +5,8 @@ import { sendResponse } from '../utils/response'
 
 const getUserGames = catchAsync(async (req, res) => {
   const userId = parseInt(req.params.id)
-  const userGames = await gameService.getUserGames(userId)
+  const filter = req.query
+  const userGames = await gameService.getUserGames(userId, filter)
   sendResponse(res, httpStatus.OK, null, { games: userGames }, 'User Games fetched Successfully')
 })
 
@@ -23,7 +24,8 @@ const deleteUserGames = catchAsync(async (req, res) => {
 })
 
 const getAllGames = catchAsync(async (req, res) => {
-  const Games = await gameService.getAllGames()
+  const filter = req.query
+  const Games = await gameService.getAllGames(filter)
   sendResponse(res, httpStatus.OK, null, { games: Games }, 'Games fetched Successfully')
 })
 
@@ -63,7 +65,8 @@ const toggleSaveGame = catchAsync(async (req, res) => {
 
 const getAllGameExceptCurrentUser = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
-  const games = await gameService.getAllGamesExceptCurrentUser(userId)
+  const filter = req.query
+  const games = await gameService.getAllGamesExceptCurrentUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { games }, 'Others Games fetched Successfully')
 })
 

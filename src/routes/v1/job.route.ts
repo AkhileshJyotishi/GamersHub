@@ -6,13 +6,19 @@ import { jobValidation } from '../../validations'
 
 const router = express.Router()
 
-router.get('/', jobController.getAllJobs)
+router.get('/', validate(jobValidation.queryJobs), jobController.getAllJobs)
+
 router
   .route('/user')
   .post(auth(), validate(jobValidation.createJob), jobController.createUserJob)
   .delete(auth(), jobController.deleteUserJobs)
 
-router.get('/others', auth(), jobController.getAllJobsExceptCurrentUser)
+router.get(
+  '/others',
+  auth(),
+  validate(jobValidation.queryJobs),
+  jobController.getAllJobsExceptCurrentUser
+)
 
 router.get('/user/saved', auth(), jobController.getSavedJobs)
 router.post(
@@ -39,7 +45,7 @@ router
   .patch(auth(), validate(jobValidation.updateApplication), jobController.updateApplicationById)
   .delete(auth(), validate(jobValidation.idValidation), jobController.deleteApplicationById)
 
-router.get('/user/:id', validate(jobValidation.idValidation), jobController.getUserJobs)
+router.get('/user/:id', validate(jobValidation.myJobsValidation), jobController.getUserJobs)
 router
   .route('/:id')
   .get(validate(jobValidation.idValidation), jobController.getJobById)

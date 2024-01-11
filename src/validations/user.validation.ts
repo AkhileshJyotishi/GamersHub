@@ -19,6 +19,13 @@ const getUsers = {
     page: Joi.number().integer()
   })
 }
+const queryUsers = {
+  query: Joi.object().keys({
+    country: Joi.string(),
+    userSkills: Joi.array().items(Joi.string()),
+    userSoftwares: Joi.array().items(Joi.string())
+  })
+}
 
 const updateUser = {
   params: Joi.object().keys({
@@ -159,6 +166,7 @@ export default {
   createUser,
   getUsers,
   updateUser,
+  queryUsers,
   createSocials,
   updateSocials,
   createEducation,

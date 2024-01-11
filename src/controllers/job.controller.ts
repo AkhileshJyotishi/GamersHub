@@ -5,7 +5,8 @@ import { sendResponse } from '../utils/response'
 
 const getUserJobs = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
-  const userJobs = await jobService.getUserJobs(id)
+  const filter = req.query
+  const userJobs = await jobService.getUserJobs(id, filter)
   sendResponse(res, httpStatus.OK, null, { jobs: userJobs }, 'User Jobs fetched Successfully')
 })
 
@@ -23,7 +24,8 @@ const deleteUserJobs = catchAsync(async (req, res) => {
 })
 
 const getAllJobs = catchAsync(async (req, res) => {
-  const Jobs = await jobService.getAllJobs()
+  const filter = req.query
+  const Jobs = await jobService.getAllJobs(filter)
   sendResponse(res, httpStatus.OK, null, { jobs: Jobs }, 'Jobs fetched Successfully')
 })
 
@@ -132,8 +134,9 @@ const toggleSaveJob = catchAsync(async (req, res) => {
 })
 
 const getAllJobsExceptCurrentUser = catchAsync(async (req, res) => {
+  const filter = req.query
   const userId = res.locals.user.id
-  const jobs = await jobService.getAllJobsExceptCurrentUser(userId)
+  const jobs = await jobService.getAllJobsExceptCurrentUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { jobs }, 'Others Jobs fetched Successfully')
 })
 

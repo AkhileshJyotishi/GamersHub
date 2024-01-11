@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
-import { Job, JobApplication } from '@prisma/client'
+import { Expertise, Job, JobApplication, JobType } from '@prisma/client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 /**
@@ -10,9 +10,49 @@ declare type Allow<T = any> = T | null
  * @returns {Promise<Job[]>}
  */
 
-const getUserJobs = async (userId: number): Promise<Job[]> => {
+const getUserJobs = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
   const user = await prisma.user.findUnique({
     where: {
+      jobs: {
+        some: {
+          AND: [
+            expertise
+              ? {
+                  expertise: {
+                    in: expertise
+                  }
+                }
+              : {},
+            jobType
+              ? {
+                  jobType: {
+                    in: jobType
+                  }
+                }
+              : {},
+            remote
+              ? {
+                  remote: {
+                    equals: remote
+                  }
+                }
+              : {},
+            jobSoftwares
+              ? {
+                  jobSoftwares: {
+                    some: {
+                      software: {
+                        in: jobSoftwares,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {}
+          ]
+        }
+      },
       id: userId
     },
     select: {
@@ -139,8 +179,46 @@ const deleteUserJobs = async (userId: number): Promise<void> => {
  * @returns {Promise<Job[]>}
  */
 
-const getAllJobs = async (): Promise<Job[]> => {
+const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
   const jobs = await prisma.job.findMany({
+    where: {
+      AND: [
+        expertise
+          ? {
+              expertise: {
+                in: expertise
+              }
+            }
+          : {},
+        jobType
+          ? {
+              jobType: {
+                in: jobType
+              }
+            }
+          : {},
+        remote
+          ? {
+              remote: {
+                equals: remote
+              }
+            }
+          : {},
+        jobSoftwares
+          ? {
+              jobSoftwares: {
+                some: {
+                  software: {
+                    in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ]
+    },
     include: {
       jobApplications: {
         select: {
@@ -597,9 +675,51 @@ const toggleSaveJob = async (userId: number, id: number): Promise<string> => {
  * @returns {Promise<Job[]>}
  */
 
-const getAllJobsExceptCurrentUser = async (userId: number): Promise<Job[]> => {
+interface QueryJobs {
+  expertise?: Expertise[]
+  jobType?: JobType[]
+  remote?: boolean
+  jobSoftwares?: string[]
+}
+const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
   const jobs = await prisma.job.findMany({
     where: {
+      AND: [
+        expertise
+          ? {
+              expertise: {
+                in: expertise
+              }
+            }
+          : {},
+        jobType
+          ? {
+              jobType: {
+                in: jobType
+              }
+            }
+          : {},
+        remote
+          ? {
+              remote: {
+                equals: remote
+              }
+            }
+          : {},
+        jobSoftwares
+          ? {
+              jobSoftwares: {
+                some: {
+                  software: {
+                    in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       NOT: {
         userId
       }
