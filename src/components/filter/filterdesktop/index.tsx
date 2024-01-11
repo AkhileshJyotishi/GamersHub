@@ -1,17 +1,18 @@
 import clsx from "clsx"
 
-import { filterprops, Props } from "@/interface/filter"
+import { filterprops } from "@/interface/filter"
 
 import Button from "@/components/ui/button"
 
 import Filter from "../mainfilter/filter"
 // import Filter from '../../components/filter/filter';
 
-const DesktpFilter: React.FC<filterprops & Props> = ({
+const DesktpFilter: React.FC<filterprops> = ({
   clearFilters,
   className,
   searchWithFilters,
   FilterArray,
+  loading,
 }) => {
   return (
     <div
@@ -39,12 +40,17 @@ const DesktpFilter: React.FC<filterprops & Props> = ({
             selectOptions={filter.selectOptions}
             className={filter.className}
             Variant="flex flex-col items-start gap-[10px] text-[14px]"
+            onTagsChange={filter.onTagsChange}
+            initialtags={filter.initialtags}
           />
         ))}
 
         <Button
           onClick={searchWithFilters}
-          className="center w-full mt-5 md:w-full h-fit sm:mt-0 bg-secondary py-[10px] px-[20px] rounded-xl"
+          className={clsx(
+            "center w-full mt-5 md:w-full h-fit sm:mt-0 bg-secondary py-[10px] px-[20px] rounded-xl disabled:cursor-not-allowed"
+          )}
+          disabled={loading}
         >
           Apply
         </Button>

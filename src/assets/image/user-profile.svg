@@ -1,3 +1,7 @@
+<!-- <svg xmlns="http://www.w3.org/2000/svg"   width="100%" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;"  xml:space="preserve"><path fill="#000"  d="M50,2.02C23.61,2.02,2.02,23.61,2.02,50S23.61,97.98,50,97.98S97.98,76.39,97.98,50S76.39,2.02,50,2.02z M50,16.41  c8.16,0,14.4,6.24,14.4,14.4S58.16,45.2,50,45.2s-14.4-6.24-14.4-14.4S41.84,16.41,50,16.41z M50,84.55  c-12,0-22.55-6.24-28.79-15.35c0-9.6,19.19-14.87,28.79-14.87s28.79,5.28,28.79,14.87C72.55,78.31,62,84.55,50,84.55z"/></svg> -->
+
+<!-- 
+
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="100%" viewBox="0 0 600 600" enable-background="new 0 0 600 600" xml:space="preserve">
 <path fill="#000000" opacity="1.000000" stroke="none" 
@@ -45,4 +49,17 @@ M309.342651,213.575195
 	C226.788574,249.498108 255.117813,218.164902 292.972198,213.744812 
 	C298.216888,213.132401 303.584564,213.573212 309.342651,213.575195 
 z"/>
+</svg> -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="#000000" d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"/><circle fill="#000000" cx="12" cy="10" r="3"/><circle  cx="12" cy="12" r="10"/></svg>  -->
+
+<svg width="800px"  height="800px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <title>user</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="invisible_box" data-name="invisible box">
+      <rect width="48" height="48" fill="#292F34"/>
+    </g>
+    <g id="icons_Q2" data-name="icons Q2">
+      <path d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,8a8,8,0,1,1-8,8A8,8,0,0,1,24,10Zm0,32a18.2,18.2,0,0,1-12.2-4.8A26.4,26.4,0,0,1,24,34a26.4,26.4,0,0,1,12.2,3.2A18.2,18.2,0,0,1,24,42Z"/>
+    </g>
+  </g>
 </svg>

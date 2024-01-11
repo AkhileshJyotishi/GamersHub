@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 import image from "@/assets/image/void.svg"
+import { FrontendCompatibleObject } from "@/pages/jobs"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import Card from "@/components/jobs/jobsCard"
@@ -13,29 +14,7 @@ import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const Jobs = () => {
   const session = useSession()
-  const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
-    const salary =
-      backendJob.paymentValue != 0
-        ? `${backendJob.paymentValue} ${backendJob.paymentType}`
-        : `${backendJob.paymentType}`
 
-    return {
-      id: backendJob.id,
-      title: backendJob.title,
-      desc: backendJob.description,
-      date: backendJob.publishDate, // Replace with the relevant date field from the backend
-      salary, // Adjust based on your backend structure
-      type: backendJob.jobType,
-      remote: backendJob.remote,
-      location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
-      href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
-      // chips: backendJob.jobSoftwares,
-      savedUsers: backendJob.savedUsers,
-      userId: backendJob.userId,
-      banner: backendJob.banner,
-      profileImage: backendJob?.user?.profileImage,
-    }
-  }
   const router = useRouter()
   const [jobDetails, setjobDetails] = useState<BackendJob[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -71,12 +50,12 @@ const Jobs = () => {
       <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
         {/* sdfsdfsdf */}
         {jobDetails.length > 0 ? (
-          jobDetails?.map((job) => {
+          jobDetails?.map((job, idx) => {
             // console.log("job upload  ", job)
             const x = FrontendCompatibleObject(job)
             return (
               <>
-                <Card {...x} className="" />
+                <Card {...x} className="" key={idx} />
               </>
             )
           })

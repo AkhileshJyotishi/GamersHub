@@ -36,6 +36,16 @@ interface User {
   profileImage: string
   socials: Isocials
 }
+/**
+ * Renders the profile page layout, including the profile card, banner image, profile accordion, and tabs for different sections of the profile.
+ * Handles the creation and editing of albums.
+ *
+ * @param children - React node representing the content of the profile page.
+ * @param page - React JSX element representing the content of the profile page.
+ * @param id - Number representing the user ID.
+ *
+ * @returns The rendered profile page layout with the profile card, banner image, profile accordion, and tabs for different sections of the profile.
+ */
 const ProfileLayout = ({
   children,
 }: {
@@ -45,17 +55,18 @@ const ProfileLayout = ({
 }) => {
   const session = useSession()
   const router = useRouter()
-  const params = useParams()
 
   const { userData, isCreateAlbumOpen, setisCreateAlbumOpen, newAlbum, setnewAlbum } =
     useUserContext()
 
   const [loading, setLoading] = useState<boolean>(true)
+  const [createAlbum, setCreateAlbum] = useState<boolean>(false)
   const [data, setData] = useState<User | null>(null)
   const param = useParams()
 
   useEffect(() => {
-    if (userData?.id) {
+    // userData?.id
+    if (router.query.user) {
       const loaddata = async () => {
         if (router.query.user) {
           const users = await fetchWithoutAuthorization(
@@ -65,7 +76,10 @@ const ProfileLayout = ({
           if (users?.error) {
             router.replace(`/?emessage=Please Authenticate`)
           } else {
+            // console.log("router ",)
+            const x = router.pathname.split("/")
             setData(users?.data?.user)
+            setActiveTab(x[x.length - 1])
           }
         }
       }
@@ -74,7 +88,12 @@ const ProfileLayout = ({
       })
     }
   }, [param, router.query, userData?.id, router])
-  const tabs = ["posts", "albums", "jobs", "about"]
+  const tabs = [
+    // { name: "posts", href: "posts" },
+    { name: "Portfolio", href: "albums" },
+    { name: "Jobs", href: "jobs" },
+    { name: "About", href: "about" },
+  ]
   const [activeTab, setActiveTab] = useState<string>("albums")
 
   const Tab = () => {
@@ -84,12 +103,12 @@ const ProfileLayout = ({
           <div
             className={clsx(
               `sm:min-w-[80px]  rounded-xl active:current cursor-pointer ${
-                activeTab == tab && "bg-user_interface_4"
+                activeTab == tab.href && "bg-user_interface_4"
               } `
             )}
             onClick={() => {
-              setActiveTab(tab)
-              router.push(`/${data?.id}/profile/${tab}`)
+              setActiveTab(tab.href)
+              router.push(`/${data?.id}/profile/${tab.href}`)
             }}
           >
             <div
@@ -97,7 +116,7 @@ const ProfileLayout = ({
               className={clsx(` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
             bg-white text-light outline-none focus:outline-none capitalize`)}
             >
-              {tab}
+              {tab.name}
             </div>
           </div>
         </>
@@ -106,9 +125,14 @@ const ProfileLayout = ({
   }
 
   const handlecreateAlbum = async () => {
+    setCreateAlbum(true)
+    toast.dismiss()
+    if (newAlbum.title == "") {
+      toast.error("Please fill the title")
+      setCreateAlbum(false)
+      return
+    }
     const formdata = new FormData()
-    // console.log(newAlbum)
-    // return
     if (newAlbum.isEdit) {
       toast.dismiss()
 
@@ -174,6 +198,7 @@ const ProfileLayout = ({
           keywords: newAlbum.AlbumKeywords,
         }
       )
+      toast.dismiss()
       if (albumData?.error) {
         toast.error(albumData.message)
       } else {
@@ -189,6 +214,7 @@ const ProfileLayout = ({
         toast.success(albumData?.message)
       }
     }
+    setCreateAlbum(false)
     // console.log(albumData)
   }
 
@@ -244,6 +270,7 @@ const ProfileLayout = ({
                 onTagsChange={(tags) =>
                   setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
                 }
+                value={newAlbum.AlbumKeywords}
                 className={"bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
                 initialtags={newAlbum.AlbumKeywords}
@@ -264,10 +291,11 @@ const ProfileLayout = ({
                 fullScreen={false}
               />
               <Button
+                disabled={createAlbum}
                 onClick={() => handlecreateAlbum()}
                 className="border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl w-[40%] mx-auto mt-1"
               >
-                {newAlbum.isEdit ? "Edit Album" : "Create Album"}
+                {createAlbum ? "Uploading..." : newAlbum.isEdit ? "Edit Album" : "Create Album"}
               </Button>
             </div>
           </Modal>
@@ -278,52 +306,12 @@ const ProfileLayout = ({
               bannerImage={data?.bannerImage || ""}
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
-            <div className="flex flex-wrap justify-center w-full gap-3 lg:justify-end">
-              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
-                <Button
-                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    setnewAlbum({
-                      title: "",
-                      banner: null,
-                      AlbumKeywords: [],
-                      isEdit: false,
-                    })
-                    setisCreateAlbumOpen(true)
-                  }}
-                >
-                  New Album
-                </Button>
-              )}
-              {session && params?.user && userData?.id === parseInt(params?.user as string) && (
-                <Button
-                  className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
-                  onClick={() => {
-                    router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
-                  }}
-                >
-                  New Post
-                </Button>
-              )}
-            </div>
+
             <div className="backdrop-blur-sm sm:bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
               <Tab />
             </div>
             <div className="w-full">{children}</div>
           </div>
-          {/* <div
-            onClick={() => {
-              handleAlbumEdit({
-                AlbumKeywords: ["heavytest2"],
-                banner:
-                  "https://gch-dev-public.s3.eu-central-003.backblazeb2.com/uploads/yashAgarwal/portfolio/1703370588861_aaaaa.png",
-                id: 10,
-                title: "test 32",
-              })
-            }}
-          >
-            testing
-          </div> */}
         </div>
       </>
     )

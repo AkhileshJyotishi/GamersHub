@@ -42,6 +42,7 @@ const Card: React.FC<GamesCardProps> = ({
     }
 
     const data = await fetchData(`/v1/game/like/${id}`, session?.user?.name as string, method)
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -52,6 +53,7 @@ const Card: React.FC<GamesCardProps> = ({
 
   const savePost = async () => {
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {

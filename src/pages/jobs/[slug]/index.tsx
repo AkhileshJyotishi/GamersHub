@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   // }
 
   let profileData = await fetchData(`/v1/job/${slug}`, session?.user?.name as string, "GET")
-
+  toast.dismiss()
   if (profileData?.error) {
     toast.error(profileData?.message)
   } else {

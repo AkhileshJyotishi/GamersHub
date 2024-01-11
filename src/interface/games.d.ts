@@ -1,12 +1,11 @@
 import { StaticImageData } from "next/image"
 
 interface GamesFilterProps {
-  searchText: string
-  tags: string
-  platform: string
-  genre: string
-  developerType: string
-  gameMode: string
+  tags: string[]
+  platforms: string[]
+  genre: string[]
+  developerType: string[]
+  gameMode: string[]
 }
 
 interface Platform {
@@ -64,20 +63,30 @@ interface Games {
     id: number
   }[]
   userId: number
+  tags: Tag[]
+  distributionPlatforms: DistributionPlatform[]
+  platforms: Platform[]
+  genre: Genre[]
 }
 interface GameInfo {
   title: string
   description: object | null
   banner: File | null | string
-  platforms: string[]
-  genre: string[]
+  platforms: readonly string[]
+  genre: readonly string[]
   gameMode: string
   developerName: string
   developerType: string
   // developerId?: number | null
-  distributionPlatforms: string[]
-  tags: string[] | null
+  distributionPlatforms: readonly string[]
+  tags: readonly string[] | null
   // publisherName: string;
   releaseDate: string
   gameAssets: File[] | null | string[]
+}
+
+interface CustomGameTags {
+  platform: string[]
+  genre: string[]
+  tags: string[]
 }

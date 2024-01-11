@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
@@ -38,6 +38,8 @@ const EducationSection: React.FC<EducationSectionProps> = ({
 }) => {
   const { data: session } = useSession()
   const { userData } = useUserContext()
+  const [updateEdu, setUpdateEdu] = useState<boolean>(false)
+  const [removeEdu, setRemoveEdu] = useState<boolean>(false)
   const router = useRouter()
   return (
     <>
@@ -62,6 +64,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                   selectOptions={field.selectOptions}
                   className={field.className || ""}
                   Variant="flex-col w-full flex"
+                  errorMessage={field.errorMessage}
                 />
               </div>
             </>
@@ -69,10 +72,12 @@ const EducationSection: React.FC<EducationSectionProps> = ({
           <div className="flex justify-between w-full">
             <Button
               id={String(filterdetailarray.id)}
+              disabled={updateEdu}
               className={
                 "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
               }
               onClick={async () => {
+                setUpdateEdu(true)
                 const edu = await updateUserEducation(
                   filterdetailarray.id,
                   education,
@@ -82,25 +87,29 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 if (!edu?.error) {
                   router.push(`${userData?.id}/profile/about`)
                 }
+                setUpdateEdu(false)
               }}
             >
-              Update
+              {updateEdu ? "Updating" : "Update"}
             </Button>
 
             {/* <Button className={"bg-[#00000085] p-3 rounded-xl text-secondary min-w-[115px] text-center"} onClick={() => onAddEducation()}>Add Education</Button> */}
             {
               <Button
+                disabled={removeEdu}
                 className="px-[12px] py-[6px] border-red-500  border-[0.01px] flex items-center mt-6 rounded-xl"
-                onClick={() =>
-                  removeUserEducation(
+                onClick={async () => {
+                  setRemoveEdu(true)
+                  await removeUserEducation(
                     filterdetailarray.id,
                     setEducation,
                     idx,
                     session?.user?.name as string
                   )
-                }
+                  setRemoveEdu(false)
+                }}
               >
-                Remove Education
+                {removeEdu ? "Removing" : "Remove"}
               </Button>
             }
           </div>

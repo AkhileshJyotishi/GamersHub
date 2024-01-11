@@ -41,7 +41,7 @@ const Filter: React.FC<FilterDetail> = ({
   element,
   // hidden
 }) => {
-  const handleCheckboxChange = (newValue: string) => {
+  const handleCheckboxChange = (newValue: string[]) => {
     if (onChange) {
       onChange(newValue)
     }
@@ -51,26 +51,21 @@ const Filter: React.FC<FilterDetail> = ({
       onChange(newValue)
     }
   }
-  const handleSelectChange = (newValue: string) => {
-    // setsetectedselect(newValue)
+  const handleSelectChange = (newValue: string | string[]) => {
     if (onChange) {
       onChange(newValue)
     }
   }
-  // Handle tags input change
-  const handleTagsChange = (tags: string[]) => {
+  const handleTagsChange = (tags: readonly string[]) => {
     if (onTagsChange) {
       onTagsChange(tags)
-      // console.log(tags)
     }
-    // onChange(tags);
   }
   const handleFileChange = (files: File) => {
     if (onChange) {
       onChange(files)
     }
   }
-  // console.log("selectOptions  ", selectOptions)
   return (
     <div className={clsx(Variant, "")}>
       <label className="font-medium" htmlFor={title}>
@@ -109,7 +104,7 @@ const Filter: React.FC<FilterDetail> = ({
       {inputType === "checkbox" && (
         <>
           <CheckboxFilter
-            value={value as string}
+            values={value as string[]}
             onChange={handleCheckboxChange}
             options={selectOptions}
             errorMessage={errorMessage}
@@ -169,6 +164,8 @@ const Filter: React.FC<FilterDetail> = ({
         <TagsInput
           onTagsChange={handleTagsChange}
           id={title}
+          value={((value || []) ?? []) as string[]}
+          placeholder={placeholder}
           predefinedTags={selectOptions?.map((option) => option.value as string) || []}
           initialtags={initialtags}
           errorMessage={errorMessage}

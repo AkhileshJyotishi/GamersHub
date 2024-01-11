@@ -13,6 +13,7 @@ interface FileInputProps {
 import React, { useRef, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
+import { PiWarningCircleFill } from "react-icons/pi"
 
 import { shimmer, toBase64 } from "@/utils/functions"
 
@@ -80,7 +81,7 @@ const FileFilter: React.FC<FileInputProps> = ({
               >
                 <label htmlFor="asset-upload" className="cursor-pointer w-fit">
                   {" "}
-                  <Button className="p-2 pointer-events-none bg-secondary rounded-xl">
+                  <Button className="p-2 pointer-events-none bg-secondary rounded-md">
                     {" "}
                     Browse Files
                   </Button>
@@ -147,7 +148,7 @@ const FileFilter: React.FC<FileInputProps> = ({
 
         {fullscreenImage != null && (
           <div
-            className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center w-screen h-screen p-4 bg-black bg-opacity-20 backdrop-blur-lg"
+            className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center p-4 bg-black bg-opacity-20 backdrop-blur-lg"
             style={{ zIndex: 9999 }}
           >
             <div
@@ -175,10 +176,11 @@ const FileFilter: React.FC<FileInputProps> = ({
         )}
 
         {errorMessage ? (
-          <span className=" p-1 text-accent_red  font-[10px]">{errorMessage}</span>
-        ) : (
-          <></>
-        )}
+          <span className="self-start flex gap-1 p-1 text-accent_red text-[12px] items-center">
+            <PiWarningCircleFill />
+            <div>{errorMessage}</div>
+          </span>
+        ) : null}
       </div>
     </>
   )

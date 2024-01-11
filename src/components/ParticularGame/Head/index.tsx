@@ -59,6 +59,7 @@ const GamePageHeader: React.FC<GamePageHeaderProps> = ({
       session?.user?.name as string,
       "POST"
     )
+    toast.dismiss()
     if (res?.error) {
       toast.error(res.message)
     } else {

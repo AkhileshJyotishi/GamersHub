@@ -28,6 +28,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   if (session) {
     albums = await fetchWithoutAuthorization(`/v1/album/user/${query.user}`, "GET")
     // console.log()
+  } else {
+    return {
+      redirect: {
+        destination: `/?emessage=Please Authenticate`,
+        permanent: false,
+      },
+    }
   }
 
   if (albums?.error) {

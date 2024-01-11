@@ -1,11 +1,17 @@
 // import { BannerComponent } from '@/components/filter/filterbanner'
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 import { FilterDetail } from "@/interface/filter"
-import { Games, GamesFilterProps } from "@/interface/games"
+import { BackendGame, Games, GamesFilterProps } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
+import {
+  convertToGamesInterface,
+  fetchWithoutAuthorization,
+  generateQueryParams,
+} from "@/utils/functions"
 
 import BannerComponent from "@/components/filter/filterbanner"
 import PlusIcon from "@/components/icons/plus"
@@ -16,66 +22,73 @@ import { DesktopFilter, FilterMobileDialog } from "../filter"
 
 interface gamesLayoutProps {
   children: React.ReactNode
-  games: Games[]
-  setGames: React.Dispatch<React.SetStateAction<Games[]>>
+  games: Games[] | null
+  setGames: React.Dispatch<React.SetStateAction<Games[] | null>>
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  loading?: boolean
+  gamePlatformsSuggestions: string[]
+  genresSuggestions: string[]
+  tagSuggestions: string[]
 }
-const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab }) => {
+const Layout: React.FC<gamesLayoutProps> = ({
+  children,
+  setActiveTab,
+  activeTab,
+  games,
+  setGames,
+  setLoading,
+  loading,
+  gamePlatformsSuggestions,
+  genresSuggestions,
+  tagSuggestions,
+}) => {
   const router = useRouter()
   const [popup, setPopup] = useState<boolean>(false)
   const { setIsLoginModalOpen, userData } = useUserContext()
   const { data: session } = useSession()
+  const initFilters = {
+    tags: [],
+    platforms: [],
+    genre: [],
+    developerType: [],
+    gameMode: [],
+  }
   const clearFilters = () => {
-    setGamesFilter({
-      searchText: "",
-      tags: "",
-      platform: "",
-      genre: "",
-      developerType: "",
-      gameMode: "",
-    })
+    setGamesFilter(initFilters)
+    setGames(games)
   }
 
-  const [gamePlatformsSuggestions] = useState<string[]>([])
-  const [genresSuggestions] = useState<string[]>([])
-
-  const [gamesFilters, setGamesFilter] = useState<GamesFilterProps>({
-    searchText: "",
-    tags: "",
-    platform: "",
-    genre: "",
-    developerType: "",
-    gameMode: "",
-  })
+  const [gamesFilters, setGamesFilter] = useState<GamesFilterProps>(initFilters)
 
   const filterArray2: FilterDetail[] = [
     {
-      inputType: "select",
+      inputType: "tags",
       title: "Platforms",
-      value: gamesFilters.platform,
-      onChange: (value) => setGamesFilter({ ...gamesFilters, platform: value as string }),
+      value: gamesFilters.platforms,
+      onTagsChange: (value) => setGamesFilter({ ...gamesFilters, platforms: value as string[] }),
       selectOptions: [
+        // {
+        //   label: "Select platform",
+        //   value: "",
+        // },
         ...(gamePlatformsSuggestions ?? []).map((s) => ({
           label: s,
           value: s,
         })),
-        {
-          label: "Select platform",
-          value: "",
-        },
       ],
     },
     {
-      inputType: "select",
+      inputType: "tags",
       title: "Genre",
       value: gamesFilters.genre,
-      onChange: (value) => setGamesFilter({ ...gamesFilters, genre: value as string }),
+      onTagsChange: (value) => setGamesFilter({ ...gamesFilters, genre: value as string[] }),
       selectOptions: [
-        {
-          label: "Select genre",
-          value: "",
-        },
+        // {
+        //   label: "Select genre",
+        //   value: "",
+        // },
         ...(genresSuggestions ?? []).map((s) => ({
           label: s,
           value: s,
@@ -83,15 +96,11 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
       ],
     },
     {
-      inputType: "select",
+      inputType: "checkbox",
       title: "Developer Type",
       value: gamesFilters.developerType,
-      onChange: (value) => setGamesFilter({ ...gamesFilters, developerType: value as string }),
+      onChange: (value) => setGamesFilter({ ...gamesFilters, developerType: value as string[] }),
       selectOptions: [
-        {
-          label: "Select Developer Type",
-          value: "",
-        },
         {
           label: "Indie",
           value: "indie",
@@ -107,40 +116,64 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
       ],
     },
     {
-      inputType: "select",
+      inputType: "checkbox",
       title: "Game Mode",
       value: gamesFilters.gameMode,
-      onChange: (value) => setGamesFilter({ ...gamesFilters, gameMode: value as string }),
+      onChange: (value) => setGamesFilter({ ...gamesFilters, gameMode: value as string[] }),
       selectOptions: [
-        {
-          label: "Select mode",
-          value: "",
-        },
+        // {
+        //   label: "Select mode",
+        //   value: "",
+        // },
         {
           label: "Single Player",
-          value: "single-player",
+          value: "singlePlayer",
         },
         {
           label: "Multi Player",
-          value: "multi-player",
+          value: "multiPlayer",
         },
       ],
     },
     {
-      inputType: "text",
-      title: "Tags",
+      inputType: "tags",
+      title: "Softwares...",
       value: gamesFilters.tags,
-      onChange: (value) => setGamesFilter({ ...gamesFilters, tags: value as string }),
+      onTagsChange: (value) => setGamesFilter({ ...gamesFilters, tags: value as string[] }),
       placeholder: "Eg: Valorant, 3D",
       className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...tagSuggestions.map((suggestion) => ({ label: suggestion, value: suggestion })),
+      ],
     },
   ]
 
-  // const searchWithFilters = async () => {
-  //   try {
-  //   } catch (error) { }
-  // }
+  const searchWithFilters = async () => {
+    const gamesFiltersParams = generateQueryParams(gamesFilters)
+    setLoading(true)
+    let x
+    if (activeTab == "My Games") {
+      x = await fetchWithoutAuthorization(
+        `v1/game/user/${userData?.id}?${gamesFiltersParams}`,
+        "GET"
+      )
+    } else {
+      x = await fetchWithoutAuthorization(`v1/game/?${gamesFiltersParams}`, "GET")
+    }
 
+    setLoading(false)
+    toast.dismiss()
+    if (x?.error) {
+      toast.error(x.message)
+    } else {
+      const filt = x?.data.games.map((mp: BackendGame) => convertToGamesInterface(mp))
+      setGames(filt)
+    }
+  }
+  useEffect(() => {
+    setLoading(false)
+    setGamesFilter(initFilters)
+  }, [activeTab])
   return (
     <>
       <BannerComponent
@@ -214,6 +247,8 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
           Filters={gamesFilters}
           setFilters={setGamesFilter}
           FilterArray={filterArray2}
+          searchWithFilters={searchWithFilters}
+          loading={loading}
         />
         <FilterMobileDialog
           clearFilters={clearFilters}
@@ -222,6 +257,8 @@ const Layout: React.FC<gamesLayoutProps> = ({ children, setActiveTab, activeTab 
           popup={popup}
           setPopup={setPopup}
           FilterArray={filterArray2}
+          searchWithFilters={searchWithFilters}
+          loading={loading}
         />
         {children}
       </div>

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
@@ -18,7 +18,7 @@ interface ProfileSectionProps {
     city: string | null | undefined
     userSkills: IuserSkill[] | string[] | undefined
     userSoftwares: IuserSoftware[] | undefined | string[]
-    profileImage: string | undefined
+    profileImage: string | undefined | File
   }
   onFieldChange?: (key: string, value: string) => void
   profileArray: FilterDetail[]
@@ -33,6 +33,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   isProfileDataFilled,
   setProfileFilled,
 }) => {
+  const [manageProfile, setManageProfile] = useState<boolean>(false)
   const { data: session } = useSession()
   const router = useRouter()
   const { userData } = useUserContext()
@@ -55,16 +56,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               Variant={"flex-col  w-full flex "}
               initialtags={filter.initialtags}
               onTagsChange={filter.onTagsChange}
+              errorMessage={filter.errorMessage}
+              dimensionsImage={filter.dimensionsImage}
             />
           </div>
         </>
       ))}
       <div className="flex justify-between w-full">
         <Button
+          disabled={manageProfile}
           className={
             "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
           }
           onClick={async () => {
+            setManageProfile(true)
             let method = "POST"
             if (isProfileDataFilled) {
               method = "PATCH"
@@ -78,9 +83,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             if (!x?.error) {
               router.push(`${userData?.id}/profile/about`)
             }
+            setManageProfile(false)
           }}
         >
-          {isProfileDataFilled ? "Update" : "Upload"}
+          {manageProfile ? "modifying..." : isProfileDataFilled ? "Update" : "Upload"}
         </Button>
       </div>
     </>

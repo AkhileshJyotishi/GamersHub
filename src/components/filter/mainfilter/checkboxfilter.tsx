@@ -6,18 +6,24 @@ import { PiWarningCircleFill } from "react-icons/pi"
 import CheckBox from "@/components/ui/checkbox2"
 
 interface CheckboxFilterProps {
-  value: string
-  onChange: (value: string) => void
+  values: string[]
+  onChange: (value: string[]) => void
   options?: { label?: string; value?: string | boolean | number }[]
   errorMessage?: string | null
 }
 
 const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
-  value,
+  values,
   onChange,
   options,
   errorMessage,
 }) => {
+  const handleCheckboxChange = (value: string) => {
+    const updatedValues = values.includes(value)
+      ? values.filter((v) => v !== value)
+      : [...values, value]
+    onChange(updatedValues)
+  }
   return (
     <>
       <div className="flex flex-col items-start gap-y-[18px]">
@@ -25,8 +31,8 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
           <>
             <span key={index} className="flex flex-row flex-wrap items-center gap-x-2">
               <CheckBox
-                checked={value === option?.value}
-                onChange={() => onChange(option?.value as string)}
+                checked={values.includes(option?.value as string)}
+                onChange={() => handleCheckboxChange(option?.value as string)}
               />
               <span className="text-[14px] break-all">{option?.label}</span>
             </span>
@@ -38,9 +44,7 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
           <PiWarningCircleFill />
           <div>{errorMessage}</div>
         </span>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </>
   )
 }

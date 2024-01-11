@@ -2,6 +2,7 @@ import { NextPage } from "next"
 import type { AppProps } from "next/app"
 import { SessionProvider } from "next-auth/react"
 import NextNProgress from "nextjs-progressbar"
+import { ErrorBoundary } from "react-error-boundary"
 
 import Layout from "@/components/layout"
 
@@ -35,9 +36,21 @@ interface RootLayoutProps extends Omit<AppProps, "Component" | "router"> {
 
 const RootLayout: NextPage<RootLayoutProps> = ({ Component, pageProps }) => {
   if (Component.getLayout) {
-    return Component.getLayout(<Component {...pageProps} />)
+    return (
+      <>
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          {Component.getLayout(<Component {...pageProps} />)}
+        </ErrorBoundary>
+      </>
+    )
   } else {
-    return <Component {...pageProps} />
+    return (
+      <>
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <Component {...pageProps} />
+        </ErrorBoundary>
+      </>
+    )
   }
 }
 

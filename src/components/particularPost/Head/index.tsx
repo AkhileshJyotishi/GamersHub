@@ -64,6 +64,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
       session?.user?.name as string,
       "POST"
     )
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -137,7 +138,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, u
                       key={Math.random() * 100}
                     />
                   }
-                  <div className="w-[80%] mx-auto  p-2 my-2 mt-4  text-text border-[0.1px] rounded border-secondary overflow-x-scroll">
+                  <div className="w-[80%] mx-auto  p-1 my-2 mt-4  text-text border-[0.1px] rounded border-secondary overflow-x-scroll no-scrollbar">
                     {window.location.href}
                   </div>
                 </>

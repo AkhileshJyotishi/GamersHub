@@ -65,10 +65,11 @@ const sections: FooterSection[] = [
     ],
   },
   {
-    title: "Comapny",
+    title: "Company",
     links: [
       { href: "/privacy-policy", text: "Privacy Policy", target: "_self" },
       { href: "/terms-and-conditions", text: "Terms of Service", target: "_self" },
+      { href: "/GPDR", text: "GPDR policy", target: "_self" },
     ],
   },
   {
@@ -146,7 +147,7 @@ const Footer: React.FC = () => {
         <div className="py-8 bg-primary/10">
           <div className="container mx-auto">
             <p className="text-base text-center text-body-color ">
-              COPYRIGHT © 2023 <span className="text-secondary">Game Creators</span>{" "}
+              COPYRIGHT © 2023 <span className="text-secondary">GameCreators.io</span>{" "}
               <br className="md:hidden" />
               All Rights Reserved
             </p>

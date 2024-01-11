@@ -33,6 +33,7 @@ const Drawer: React.FC<DrawerProps> = ({
         ${isOpen ? "opacity-100 translate-x-0" : "delay-500 opacity-0 translate-x-full"}
         transition-opacity duration-500 backdrop-blur-lg
       `}
+      style={{ zIndex: 100000 }}
     >
       <section
         className={`
@@ -41,14 +42,14 @@ const Drawer: React.FC<DrawerProps> = ({
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <article className="relative w-screen  pb-10 flex flex-col space-y-6 overflow-y-scroll h-full justify-center">
-          {header && <header className="p-4 font-bold text-lg">{header}</header>}
+        <article className="relative flex flex-col justify-center w-screen h-full pb-10 space-y-6 overflow-y-scroll">
+          {header && <header className="p-4 text-lg font-bold">{header}</header>}
           <div
             onClick={() => {
               setIsDrawerOpen(false)
               setTap(!tap)
             }}
-            className="absolute top-4 right-7 cursor-pointer"
+            className="absolute cursor-pointer top-4 right-7"
           >
             <IoMdClose className="h-7 w-7" />
           </div>

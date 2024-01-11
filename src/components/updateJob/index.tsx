@@ -55,8 +55,10 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     if (aboutRecuiter) {
       jobInfo.aboutRecruiter = JSON.parse(aboutRecuiter)
     }
-    localStorage.removeItem("noval__content1")
-    localStorage.removeItem("noval__content2")
+    localStorage.setItem("noval__content1", "")
+    localStorage.setItem("noval__content2", "")
+    // localStorage.removeItem("noval__content1")
+    // localStorage.removeItem("noval__content2")
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
@@ -86,6 +88,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
       "PATCH",
       jobInfo
     )
+    toast.dismiss()
     if (data?.error) {
       setLoading(false)
 
@@ -102,7 +105,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob}>
       {/* Render the filterDetails here */}
       <>
-        <div className="flex flex-col w-full gap-4">
+        <div className="flex flex-col w-[100vw] gap-4 md:max-w-[59vw] lg:max-w-[67vw]">
           <>
             <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 

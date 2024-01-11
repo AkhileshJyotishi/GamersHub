@@ -11,6 +11,7 @@ import { fetchData } from "@/utils/functions"
 
 import DeleteIcon from "@/components/icons/deleteIcon"
 import EditIcon from "@/components/icons/editIcon"
+import { SecondaryTag } from "@/components/ui/badges"
 
 interface CardProps {
   imageSrc: string
@@ -77,14 +78,9 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
         </span>
         {/* <p className="text-base text-gray-700">{description}</p> */}
       </div>
-      <div className="px-6 pb-2">
+      <div className="flex items-center px-2 py-1 gap-1 overflow-x-scroll w-[100%] bg-[inherit] no-scroll mb-2">
         {tags?.map((tag, index) => (
-          <span
-            key={index}
-            className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full"
-          >
-            {tag.keyword}
-          </span>
+          <SecondaryTag name={tag.keyword} key={index} className=" cursor-pointer" />
         ))}
       </div>
       {userId === userData?.id && (

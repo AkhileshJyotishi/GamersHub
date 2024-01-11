@@ -14,7 +14,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
   //   let bgImage = creator?.banner?.url;
   const router = useRouter()
   return (
-    <article className="flex flex-col bg-user_interface_2 rounded-[10px] p-[10px] sm:min-w-[200px] gap-[2px] w-full max-w-[450px]">
+    <article className="flex flex-col bg-user_interface_2 rounded-[10px] p-[10px] sm:min-w-[200px] gap-[2px] w-full max-w-[450px] ">
       <div className="flex flex-col items-center rounded-t-[10px] h-[140px] relative ">
         <Image
           height={500}
@@ -39,7 +39,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
 
       <div className="flex flex-col items-center mt-[40px]">
         <h3
-          className="transition duration-200 cursor-pointer text-lghover:text-secondary"
+          className="transition duration-300 cursor-pointer text-lg hover:text-secondary"
           onClick={() => router.push(`/${id}/profile/albums`)}
         >
           {username ?? "Guest"}

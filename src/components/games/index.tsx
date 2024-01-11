@@ -1,48 +1,52 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
 
 import image from "@/assets/image/void.svg"
-import { BackendGame, Games } from "@/interface/games"
+import { BackendGame, CustomGameTags, Games } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData, shimmer, toBase64 } from "@/utils/functions"
+import { convertToGamesInterface, fetchData } from "@/utils/functions"
+
+import SkeletonLoader from "../ui/SkeletonLoader2"
 
 import Card from "./anotherCard"
 import Layout from "./gamesLayout"
 
-// {} // gamesDetails
-// : {
-//   gamesDetails: BackendGame[]
-// }
-const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
-  function convertToGamesInterface(backendGame: BackendGame): Games {
-    const { id, banner, user, title, savedUsers, userId } = backendGame
+const renderNoGamesMessage = () => (
+  <div className="flex flex-col items-center w-full gap-20">
+    <h3 className="text-3xl font-bold">No games yet.</h3>
+    <Image width={2060} height={2060} alt="" className="w-[200px]" src={image} />
+  </div>
+)
 
-    // Assuming you want to use the profileImage property if available, otherwise fallback to a default value
-    const profileImage = user?.profileImage || ""
-
-    // Create the simplified Games object
-    const gamesInterface: Games = {
-      id,
-      banner,
-      username: user?.username || "Unknown User",
-      title,
-      cover: profileImage,
-      savedUsers,
-      userId,
-    }
-
-    return gamesInterface
-  }
-  const games2 = gameDetails?.map((game) => {
-    return convertToGamesInterface(game)
-  })
-  // convertToGamesInterface(parsedgamesDetails)
-  const [games, setGames] = useState<Games[]>(games2)
+const GamesPage = ({
+  gameDetails,
+  customGameTags,
+}: {
+  gameDetails: BackendGame[]
+  customGameTags: CustomGameTags
+}) => {
+  const games2 = useMemo(
+    () =>
+      gameDetails?.map((game) => {
+        return convertToGamesInterface(game)
+      }),
+    []
+  )
+  const [games, setGames] = useState<Games[] | null>(games2)
   const [activetab, setactivetab] = useState<string>("All")
+  const [loading, setLoading] = useState<boolean>(false)
+  const [myjob, setmyjobs] = useState<Games[] | null>(null)
+  // let temptagsuggestions = [...(games?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? [])]
+  // let tempgamePlatformsSuggestions = [...(games?.flatMap((game) => game.platforms.map((x) => x.name)) ?? [])]
+  // let tempgenresSuggestions = [...(games?.flatMap((game) => game.genre.map((x) => x.name)) ?? [])]
+
+  // const [gamePlatformsSuggestions, setgamePlatformsSuggestions] = useState<string[]>(tempgamePlatformsSuggestions)
+  // const [genresSuggestions, setgenresSuggestions] = useState<string[]>(tempgenresSuggestions)
+  // const [tagSuggestions, settagSuggestions] = useState<string[]>(temptagsuggestions)
+
   const { userData, setIsLoginModalOpen } = useUserContext()
   const { data: session } = useSession()
-  const [myjob, setmyjobs] = useState<Games[] | null>(null)
 
   const mygames = async () => {
     if (session) {
@@ -51,13 +55,11 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
         session?.user?.name as string,
         "GET"
       )
-      // console.log("myjobposts     ", data)
       const sett = data?.data?.games?.map((game: BackendGame) => convertToGamesInterface(game))
       setmyjobs(sett)
     }
   }
   const onChange = (id: number) => {
-    // const updatedJobs = jobs.filter(job => );
     setmyjobs((prev) => {
       const x = prev?.filter((job) => job.id !== id)
       if (x) return x
@@ -78,7 +80,25 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       setactivetab("All")
     }
   }, [activetab])
-
+  // useEffect(() => {
+  //   setgamePlatformsSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.platforms.map((x) => x.name)) ?? []),
+  //   ])
+  //   setgenresSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.genre.map((x) => x.name)) ?? []),
+  //   ])
+  //   settagSuggestions((prev) => [
+  //     ...prev,
+  //     ...(myjob?.flatMap((game) => game.tags.map((x) => x.keyword)) ?? []),
+  //   ])
+  //   return () => {
+  //     settagSuggestions(temptagsuggestions)
+  //     setgamePlatformsSuggestions(tempgamePlatformsSuggestions)
+  //     setgenresSuggestions(tempgenresSuggestions)
+  //   }
+  // }, [myjob])
   const handleSavedSuccess = (id: number, state: string) => {
     setGames((prevGames) => {
       if (prevGames) {
@@ -98,43 +118,46 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
       return prevGames
     })
   }
-
+  useEffect(() => {
+    setGames(games2)
+  }, [activetab])
   return (
-    <Layout games={games} setGames={setGames} setActiveTab={setactivetab} activeTab={activetab}>
+    <Layout
+      games={activetab === "My Games" ? myjob || [] : games2}
+      setGames={activetab === "My Games" ? setmyjobs : setGames}
+      setActiveTab={setactivetab}
+      activeTab={activetab}
+      loading={loading}
+      setLoading={setLoading}
+      gamePlatformsSuggestions={customGameTags.platform}
+      genresSuggestions={customGameTags.genre}
+      tagSuggestions={customGameTags.tags}
+    >
       {activetab === "All" && (
         <>
-          {games.length > 0 ? (
+          {games && games?.length > 0 ? (
             <>
-              {/* <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 xl:grid-cols-3"> */}
               <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
-                {games?.map((game, idx) => (
-                  <Card
-                    {...game}
-                    className="w-[100%] max-w-[380px] h-[310px]"
-                    key={idx}
-                    onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
-                  />
-                ))}
+                {loading ? (
+                  <>
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                  </>
+                ) : (
+                  games?.map((game, idx) => (
+                    <Card
+                      {...game}
+                      className="w-[100%] max-w-[380px] h-[320px]"
+                      key={idx}
+                      onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                    />
+                  ))
+                )}
               </div>
             </>
           ) : (
-            <>
-              {
-                <>
-                  <div className="flex flex-col items-center w-full gap-20">
-                    <h3 className="text-3xl font-bold">No games yet.</h3>
-                    <Image
-                      width={2060}
-                      height={2060}
-                      alt={""}
-                      className="w-[200px]"
-                      src={image}
-                      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-                    />
-                  </div>
-                </>
-              }
-            </>
+            renderNoGamesMessage()
           )}
         </>
       )}
@@ -143,68 +166,57 @@ const GamesPage = ({ gameDetails }: { gameDetails: BackendGame[] }) => {
           {games?.filter((game) => game.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
             <>
-              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {games
-                  ?.filter((game) => game.savedUsers.some((user) => user.id === userData?.id))
-                  .map((game, idx) => (
-                    <Card
-                      {...game}
-                      className="w-[100%] max-w-[380px] h-[310px]"
-                      key={idx}
-                      onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
-                    />
-                  ))}
+              <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
+                {loading ? (
+                  <>
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                    <SkeletonLoader />
+                  </>
+                ) : (
+                  games
+                    ?.filter((game) => game.savedUsers.some((user) => user.id === userData?.id))
+                    .map((game, idx) => (
+                      <Card
+                        {...game}
+                        className="w-[100%] max-w-[380px] h-[320px]"
+                        key={idx}
+                        onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
+                      />
+                    ))
+                )}
               </div>
             </>
           ) : (
-            <>
-              {
-                <>
-                  <div className="flex flex-col items-center w-full gap-20">
-                    <h3 className="text-3xl font-bold">No Games yet.</h3>
-                    <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
-                  </div>
-                </>
-              }
-            </>
+            renderNoGamesMessage()
           )}
         </>
       )}
       {activetab === "My Games" && (
         <>
-          <>
-            {myjob && Array.from(myjob).length > 0 ? (
-              // <div className="grid grid-cols-1 gap-3 p-4 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-[100%]">
-              <div className="w-[100%] grid min-[500px]:w-[80%] grid-cols-1 gap-6 p-2 justify-items-center min-[650px]:w-[70%] lg:grid-cols-2 2xl:grid-cols-3">
-                {myjob &&
-                  myjob?.map((job, idx) => (
-                    <Card
-                      {...job}
-                      className="w-[100%] max-w-[380px] h-[310px]"
-                      key={idx}
-                      onChange={onChange}
-                    />
-                  ))}
-              </div>
-            ) : (
-              <>
-                {
-                  <>
-                    <div className="flex flex-col items-center w-full gap-20">
-                      <h3 className="text-3xl font-bold">No games yet.</h3>
-                      <Image
-                        width={2060}
-                        height={2060}
-                        alt={""}
-                        className="w-[200px]"
-                        src={image}
-                      />
-                    </div>
-                  </>
-                }
-              </>
-            )}
-          </>
+          {myjob && Array.from(myjob).length > 0 ? (
+            <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
+              {loading ? (
+                <>
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
+                </>
+              ) : (
+                myjob &&
+                myjob?.map((job, idx) => (
+                  <Card
+                    {...job}
+                    className="w-[100%] max-w-[380px] h-[320px]"
+                    key={idx}
+                    onChange={onChange}
+                  />
+                ))
+              )}
+            </div>
+          ) : (
+            renderNoGamesMessage()
+          )}
         </>
       )}
     </Layout>

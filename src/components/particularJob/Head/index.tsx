@@ -57,9 +57,10 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   const { data: session } = useSession()
   const { userData } = useUserContext()
   const [isJobSaved, setIsJobSaved] = useState(savedUsers.some((user) => user.id === userData?.id))
-
+  const { setIsLoginModalOpen } = useUserContext()
   const saveJob = async (jobId: number) => {
     const res = await fetchData(`/v1/job/user/save/${jobId}`, session?.user?.name as string, "POST")
+    toast.dismiss()
     if (res?.error) {
       toast.error(res.message)
     } else {
@@ -101,7 +102,9 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
         <div className="flex mt-3 gap-x-4 ">
           <Button
             className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl gap-2"
-            onClick={() => saveJob(jobId)}
+            onClick={() => {
+              !session ? setIsLoginModalOpen(true) : saveJob(jobId)
+            }}
           >
             <SaveIcon className="w-5 h-5 fill-text" fill="" />
             {isJobSaved ? "Unsave Job" : "Save Job"}

@@ -1,14 +1,13 @@
 // import { BannerComponent } from '@/components/filter/filterbanner'
 import React, { useEffect, useState } from "react"
 import { Country } from "country-state-city"
-import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 import { FilterDetail } from "@/interface/filter"
-import { useUserContext } from "@/providers/user-context"
+import { fetchData, fetchWithoutAuthorization, generateQueryParams } from "@/utils/functions"
 
 import BannerComponent from "@/components/filter/filterbanner"
-import PlusIcon from "@/components/icons/plus"
 import Button from "@/components/ui/button"
 
 import { DesktopFilter, FilterMobileDialog } from "../filter"
@@ -17,56 +16,64 @@ interface creatorLayoutProps {
   children: React.ReactNode
   creators: Creator[]
   setCreators: React.Dispatch<React.SetStateAction<Creator[]>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  loading?: boolean
+  customCreatorsTags: ICustomCreatorsTags
 }
-const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
-  const router = useRouter()
+const Layout: React.FC<creatorLayoutProps> = ({
+  children,
+  creators,
+  setCreators,
+  setLoading,
+  loading,
+  customCreatorsTags,
+}) => {
   const [popup, setPopup] = useState<boolean>(false)
-  const { userData, setIsLoginModalOpen } = useUserContext()
-  const { data: session } = useSession()
+  const session = useSession()
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
-  const [city, setCity] = useState<string[]>([])
-  const clearFilters = () => {
-    setCreatorsFilter({
-      searchText: "",
-      skills: "",
-      softwares: "",
-      country: "",
-      city: "",
-    })
-    // defaultJobs ||
-    // setJobs([]);
-    // setJobsMeta("defaultJobsMeta");
-  }
+  // const [city, setCity] = useState<string[]>([])
 
   const [creatorsFilters, setCreatorsFilter] = useState<CreatorsFilterProps>({
-    searchText: "",
-    skills: "",
-    softwares: "",
+    userSkills: [],
+    userSoftwares: [],
     country: "",
-    city: "",
   })
 
   const filterArray2: FilterDetail[] = [
     {
-      inputType: "text",
+      inputType: "tags",
       title: "Skills of professionals",
-      placeholder: "3D sfx voice over",
-      value: creatorsFilters?.skills,
-      onChange: (value) => setCreatorsFilter({ ...creatorsFilters, skills: value as string }),
+      placeholder: "3D, sfx cityvoice over",
+      value: creatorsFilters?.userSkills,
+      onTagsChange: (value) =>
+        setCreatorsFilter({ ...creatorsFilters, userSkills: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(customCreatorsTags.skill ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
     {
-      inputType: "text",
+      inputType: "tags",
       title: "Software",
       placeholder: "Blender audacity etc ",
-      value: creatorsFilters?.softwares,
-      onChange: (value) => setCreatorsFilter({ ...creatorsFilters, softwares: value as string }),
+      value: creatorsFilters?.userSoftwares,
+      onTagsChange: (value) =>
+        setCreatorsFilter({ ...creatorsFilters, userSoftwares: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(customCreatorsTags.software ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
 
     {
       inputType: "select",
-      title: "Location of professional",
+      title: "Location of Professional",
       placeholder: "Select a Country",
       value: creatorsFilters?.country,
       onChange: (value) =>
@@ -78,10 +85,36 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
       selectOptions: country,
     },
   ]
-  // const searchWithFilters = async () => {
-  //   try {
-  //   } catch (error) {}
-  // }
+  const searchWithFilters = async () => {
+    const CreatorFilterParams = generateQueryParams(creatorsFilters)
+    setLoading(true)
+    let x
+    if (session) {
+      x = await fetchData(
+        `/v1/users/creators?${CreatorFilterParams}`,
+        session.data?.user?.name as string,
+        "GET"
+      )
+    } else {
+      x = await fetchWithoutAuthorization(`/v1/users/creators/all?${CreatorFilterParams}`, "GET")
+    }
+    setLoading(false)
+    toast.dismiss()
+    if (x?.error) {
+      toast.error(x.message)
+    } else {
+      // const filt = x?.data.creators.map((mp: Creator) => FrontendCompatibleObject(mp))
+      setCreators(x?.data.creators)
+    }
+  }
+  const clearFilters = () => {
+    setCreatorsFilter({
+      userSkills: [],
+      userSoftwares: [],
+      country: "",
+    })
+    setCreators(creators)
+  }
 
   useEffect(() => {
     const country = Country.getAllCountries()
@@ -94,6 +127,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
     })
     setCountry(countryList)
   }, [])
+
   return (
     <>
       <BannerComponent
@@ -112,7 +146,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
       />
 
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
-        <div className="flex flex-col items-center justify-between sm:flex-row">
+        {/* <div className="flex flex-col items-center justify-between sm:flex-row">
           {
             <Button
               onClick={() => {
@@ -129,7 +163,7 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
               <PlusIcon className="w-6 h-4 sm:h-6" />
             </Button>
           }
-        </div>
+        </div> */}
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">
         <Button
@@ -161,26 +195,24 @@ const Layout: React.FC<creatorLayoutProps> = ({ children }) => {
           key={1}
           clearFilters={clearFilters}
           Filters={creatorsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setCreatorsFilter}
           FilterArray={filterArray2}
           country={country}
           setCountry={setCountry}
-          city={city}
-          setCity={setCity}
+          loading={loading}
         />
         <FilterMobileDialog
           clearFilters={clearFilters}
           Filters={creatorsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setCreatorsFilter}
           popup={popup}
           setPopup={setPopup}
           FilterArray={filterArray2}
           country={country}
           setCountry={setCountry}
-          city={city}
-          setCity={setCity}
+          loading={loading}
         />
         {children}
       </div>

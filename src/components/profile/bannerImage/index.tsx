@@ -15,7 +15,7 @@ import Button from "@/components/ui/button"
 type albumType = {
   title: string
   banner: File | null | string
-  AlbumKeywords: string[]
+  AlbumKeywords: readonly string[]
   isEdit: boolean
 }
 const BannerImage = ({
@@ -44,6 +44,7 @@ const BannerImage = ({
       "POST",
       formdata
     )
+    toast.dismiss()
     if (isuploaded?.error) {
       toast.error(isuploaded.error)
       return
@@ -56,6 +57,7 @@ const BannerImage = ({
         bannerImage: isuploaded?.data.image.Location,
       }
     )
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -199,12 +201,11 @@ const BannerImage = ({
                 )}
               </>
             </div>
-
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
-            <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
           </div>
         )}
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
+        <div className="absolute z-10 w-full h-full bg-gradient-to-b from-[#00000001] to-background "></div>
       </div>
     </div>
   )

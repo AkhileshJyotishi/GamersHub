@@ -40,12 +40,12 @@ interface JobCardProps {
 }
 
 const UserImage = ({ href }: { href: string | null }) => (
-  <div className="my-auto mx-auto">
+  <div className="mx-auto my-auto">
     <Image
       width={100}
       height={100}
       alt={""}
-      className="w-10 h-10 border-[0.1px] rounded-full "
+      className="w-10 h-10  rounded-full "
       src={href || defaultUserImage}
       priority
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
@@ -54,7 +54,7 @@ const UserImage = ({ href }: { href: string | null }) => (
 )
 
 const UserInfo = ({ title, location }: { title: string; location: string }) => (
-  <div className="flex flex-col justify-center gap-1 text-center mx-auto truncate">
+  <div className="flex flex-col justify-center gap-1 mx-auto text-center truncate">
     <div className="font-serif font-bold text-[16px] mx-auto md:mx-0 max-w-[212px] truncate">
       {title?.[0]?.toUpperCase() + title?.slice(1)}
     </div>
@@ -157,7 +157,6 @@ const Card: React.FC<JobCardProps> = ({
   const { setmodalData } = useModalContext()
   const router = useRouter()
   const [saved, setSaved] = useState<boolean>(false)
-  console.log(profileImage)
   // console.log(saved)
   useEffect(() => {
     if (savedUsers?.length) {
@@ -167,6 +166,7 @@ const Card: React.FC<JobCardProps> = ({
 
   const savePost = async (id: number) => {
     const data = await fetchData(`/v1/job/user/save/${id}`, session?.user?.name as string, "POST")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -183,6 +183,7 @@ const Card: React.FC<JobCardProps> = ({
     toast.info("Removing the Job...")
     handleClose()
     const data = await fetchData(`/v1/job/${id}`, session?.user?.name as string, "DELETE")
+    toast.dismiss()
     if (data?.error) {
       toast.error(data.message)
     } else {
@@ -219,7 +220,7 @@ const Card: React.FC<JobCardProps> = ({
         <div className="">
           <div className="flex flex-col justify-center gap-1">
             {/* <div className="flex flex-row flex-wrap justify-between "> */}
-            <div className="flex gap-2 flex-wrap w-full p-1 md:gap-3 md:p-3">
+            <div className="flex flex-wrap w-full gap-2 p-1 md:gap-3 md:p-3">
               <UserImage href={profileImage} />
               <div className="w-[80%] flex gap-2 justify-between flex-wrap mx-auto">
                 <UserInfo title={title} location={location} />
@@ -227,7 +228,7 @@ const Card: React.FC<JobCardProps> = ({
                 {userData?.id !== userId ? (
                   <>
                     <div
-                      className={clsx("flex items-center  cursor-pointer mx-auto")}
+                      className={clsx("flex items-center  cursor-pointer ml-auto")}
                       onClick={(e) => {
                         e.stopPropagation()
                         savePost(id)
@@ -251,7 +252,7 @@ const Card: React.FC<JobCardProps> = ({
                 ) : (
                   <>
                     <div
-                      className={clsx("flex items-center mx-auto")}
+                      className={clsx("flex items-center ml-auto")}
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -284,7 +285,7 @@ const Card: React.FC<JobCardProps> = ({
             <AdditionalDetails type={type} chips={chips!} />
           </div>
         </div>
-        <Link className="flex items-center text-secondary group px-4 py-2" href={href}>
+        <Link className="flex items-center px-4 py-2 text-secondary group" href={href}>
           Know More
           <Image
             width={2060}

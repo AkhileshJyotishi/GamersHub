@@ -5,8 +5,12 @@ import {
 } from "country-state-city"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 import { FilterDetail } from "@/interface/filter"
+import { FrontendCompatibleObject } from "@/pages/jobs"
+import { useUserContext } from "@/providers/user-context"
+import { fetchData, fetchWithoutAuthorization, generateQueryParams } from "@/utils/functions"
 
 import PlusIcon from "@/components/icons/plus"
 import TabButtons from "@/components/tabbuttons"
@@ -19,81 +23,63 @@ interface LayoutProps {
   jobs?: Job[]
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
-  // setJobs: React.Dispatch<React.SetStateAction<Job[]>>
+  setjobs: React.Dispatch<React.SetStateAction<Job[] | null>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  loading?: boolean
+  jobSoftwareSuggestions: JobSoftwareSuggestions
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
   setActiveTab,
   activeTab,
-  //  setJobs,
-  // jobs
+  setjobs,
+  loading,
+  setLoading,
+  jobs,
+  jobSoftwareSuggestions,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
-  const [jobsFilters, setJobsFilters] = useState<JobFilterProps>({
-    // searchText: "",
-    rolesNeeded: "",
-    softwareSkills: "",
-    expertise: "",
+  const { userData } = useUserContext()
+  const initFilters = {
+    expertise: [],
     remote: undefined,
-    country: "",
-    city: "",
-    type: "",
-    postedOn: "",
-    hasPrice: false,
-  })
+    jobType: [],
+    jobSoftwares: [],
+  }
+  const [jobsFilters, setJobsFilters] = useState<JobFilterProps>(initFilters)
   const [popup, setPopup] = useState<boolean>(false)
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   const [city, setCity] = useState<string[]>([])
-
-  // const [jobsMeta, setJobsMeta] = useState<any>()
-
   let sortBy: "payment-high-to-low" | "payment-low-to-high" | "" = ""
-  // const clearFilters = () => {
-  //   setJobsFilters({
-  //     // searchText: "",
-  //     softwareSkills: "",
-  //     rolesNeeded: "",
-  //     expertise: "",
-  //     hasPrice: false,
-  //     city: "",
-  //     country: "",
-  //     remote: undefined,
-  //     postedOn: "",
-  //     type: "",
-  //   })
-  //   // defaultJobs ||
-  //   setJobs([])
-  //   setJobsMeta("defaultJobsMeta")
-  // }
 
   const FilterArray: FilterDetail[] = [
-    {
-      inputType: "text",
-      title: "Add Roles",
-      placeholder: "Eg : 3D, Voice over artist",
-      value: jobsFilters?.rolesNeeded,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, rolesNeeded: value as string }),
-      className: "mt-2 bg-transparent rounded-md",
-    },
+    // {
+    //   inputType: "text",
+    //   title: "Add Roles",
+    //   placeholder: "Eg : 3D, Voice over artist",
+    //   value: jobsFilters?.rolesNeeded,
+    //   onChange: (value) => setJobsFilters({ ...jobsFilters, rolesNeeded: value as string }),
+    //   className: "mt-2 bg-transparent rounded-md",
+    // },
     {
       inputType: "checkbox",
       title: "Level of Expertise",
       selectOptions: [
-        { label: "Entry Level", value: "entry-level" },
-        { label: "Intermediate", value: "intermediate" },
-        { label: "Expert", value: "expert" },
+        { label: "Entry Level", value: "ENTRY" },
+        { label: "Intermediate", value: "INTERMEDIATE" },
+        { label: "Expert", value: "EXPERT" },
       ],
       value: jobsFilters?.expertise,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, expertise: value as string }),
+      onChange: (value) => setJobsFilters({ ...jobsFilters, expertise: value as string[] }),
     },
     {
       inputType: "radio",
       title: "Location",
       selectOptions: [
-        { label: "Remote", value: false },
-        { label: "On Site", value: true },
+        { label: "Remote", value: true },
+        { label: "On Site", value: false },
       ],
       value: jobsFilters?.remote,
       onChange: (value) => setJobsFilters({ ...jobsFilters, remote: value as boolean }),
@@ -102,23 +88,57 @@ const Layout: React.FC<LayoutProps> = ({
       inputType: "checkbox",
       title: "Job Type",
       selectOptions: [
-        { label: "Full Time", value: "full-time" },
-        { label: "Freelance", value: "freelance" },
-        { label: "Collab Job", value: "collab" },
+        { label: "Full Time", value: "FULL_TIME" },
+        { label: "Freelance", value: "FREELANCE" },
+        { label: "Collab Job", value: "COLLAB" },
       ],
-      value: jobsFilters?.type,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, type: value as string }),
+      value: jobsFilters?.jobType,
+      onChange: (value) => setJobsFilters({ ...jobsFilters, jobType: value as string[] }),
     },
     {
-      inputType: "text",
+      inputType: "tags",
       title: "Add Software",
       placeholder: "Eg : Blender , Illustrator",
-      value: jobsFilters?.softwareSkills,
-      onChange: (value) => setJobsFilters({ ...jobsFilters, softwareSkills: value as string }),
-      className: "mt-2 bg-transparent rounded-md",
+      value: jobsFilters?.jobSoftwares,
+      onTagsChange: (value) => setJobsFilters({ ...jobsFilters, jobSoftwares: value as string[] }),
+      // className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(jobSoftwareSuggestions.software ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+      // initialtags:
     },
   ]
 
+  const searchWithFilters = async () => {
+    const jobsFilterParams = generateQueryParams(jobsFilters)
+    setLoading(true)
+    let x
+    if (activeTab == "My Job Posts") {
+      x = await fetchWithoutAuthorization(`v1/job/user/${userData?.id}?${jobsFilterParams}`, "GET")
+    } else {
+      x = await fetchWithoutAuthorization(`v1/job/?${jobsFilterParams}`, "GET")
+    }
+
+    if (session) {
+      x = await fetchData(`/v1/job?${jobsFilterParams}`, session?.user?.name as string, "GET")
+    }
+    setLoading(false)
+    toast.dismiss()
+    if (x?.error) {
+      toast.error(x.message)
+    } else {
+      const filt = x?.data.jobs.map((mp: BackendJob) => FrontendCompatibleObject(mp))
+      setjobs(filt)
+    }
+  }
+  const clearFilters = async () => {
+    setJobsFilters(initFilters)
+    setjobs(jobs ?? [])
+    // setActiveTab()
+  }
   useEffect(() => {
     const country = Country.getAllCountries()
 
@@ -130,6 +150,10 @@ const Layout: React.FC<LayoutProps> = ({
     })
     setCountry(countryList)
   }, [])
+  useEffect(() => {
+    setLoading(false)
+    setJobsFilters(initFilters)
+  }, [activeTab])
 
   return (
     <>
@@ -166,6 +190,7 @@ const Layout: React.FC<LayoutProps> = ({
         <Button
           onClick={() => {
             setPopup(!popup)
+            // setInProp()
           }}
           className="flex gap-2 px-3 m-auto border-2 border-green-900 text-secondary rounded-3xl md:hidden"
         >
@@ -213,13 +238,14 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto">
+      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto  3xl:p-48 ">
         <DesktopFilter
           className={"hidden md:flex"}
+          loading={loading}
           key={1}
-          // clearFilters={clearFilters}
+          clearFilters={clearFilters}
           Filters={jobsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setJobsFilters}
           FilterArray={FilterArray}
           country={country}
@@ -227,9 +253,9 @@ const Layout: React.FC<LayoutProps> = ({
           setCity={setCity}
         />
         <FilterMobileDialog
-          // clearFilters={clearFilters}
+          clearFilters={clearFilters}
           Filters={jobsFilters}
-          // searchWithFilters={searchWithFilters}
+          searchWithFilters={searchWithFilters}
           setFilters={setJobsFilters}
           popup={popup}
           setPopup={setPopup}

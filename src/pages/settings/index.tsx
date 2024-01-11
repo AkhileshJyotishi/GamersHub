@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     session?.user?.name as string,
     "GET"
   )
-
+  toast.dismiss()
   if (settingsDetails?.error) {
     toast.error(settingsDetails?.message)
   } else {

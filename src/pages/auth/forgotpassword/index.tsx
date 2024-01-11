@@ -27,6 +27,7 @@ const Forgotpassword = () => {
       email: formValues.email,
     })
     // console.log(data?.error)
+    toast.dismiss()
     if (data?.error) {
       toast.error((data?.error?.response?.data?.message || "Request failed") ?? "Request failed")
     } else {

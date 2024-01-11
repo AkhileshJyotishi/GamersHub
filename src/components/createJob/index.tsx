@@ -17,7 +17,32 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
     return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
   },
 })
-
+/**
+ * React functional component for creating and uploading a job to the server.
+ * Uses hooks and components from Next.js and React libraries.
+ * Renders a form with input fields and an editor component for job description and recruiter information.
+ * Handles the job upload process, including fetching data and uploading files.
+ * Displays toast messages to indicate the success or failure of the upload process.
+ *
+ * Example Usage:
+ * <CreateJob />
+ *
+ * Inputs: None
+ *
+ * Flow:
+ * 1. Initializes hooks and state variables.
+ * 2. Defines initial job information with default values.
+ * 3. Defines the uploadJob function to handle the job upload process.
+ * 4. When the form is submitted, calls the uploadJob function.
+ * 5. Sets the loading state to true.
+ * 6. Retrieves job details and recruiter information from local storage.
+ * 7. Uploads the job banner image to the server using the fetchFile function.
+ * 8. Sends the job data to the server using the fetchData function.
+ * 9. If the upload is successful, displays a success toast message and redirects to the jobs page.
+ * 10. If there is an error during the upload process, displays an error toast message.
+ *
+ * Outputs: None
+ */
 const CreateJob: React.FC = () => {
   const { data: session } = useSession()
   const router = useRouter()
@@ -44,25 +69,32 @@ const CreateJob: React.FC = () => {
 
   const [jobInfo, setJobInfo] = useState<Omit<JobInfo, "userId">>(initialJobInfo)
 
+  /**
+   * Uploads a job to the server.
+   * Retrieves the job details and about the recruiter information from the local storage,
+   * prepares the data to be sent to the server, and makes an API call to upload the job.
+   * Handles any errors that occur during the upload process and displays appropriate toast messages.
+   * Updates the loading state and redirects the user to the jobs page.
+   */
   const uploadJob = async () => {
-    // console.log("job uploading")
     setLoading(true)
 
     const storedContent = localStorage.getItem("noval__content2")
     const aboutRecuiter = localStorage.getItem("noval__content1")
-    // console.log("stored_contnetn ", storedContent)
-    // console.log("aboutrecuiter ", aboutRecuiter)
+
     if (storedContent) {
       jobInfo.jobDetails = JSON.parse(storedContent)
     }
     if (aboutRecuiter) {
       jobInfo.aboutRecruiter = JSON.parse(aboutRecuiter)
     }
-    localStorage.removeItem("noval__content1")
-    localStorage.removeItem("noval__content2")
+    localStorage.setItem("noval__content1", "")
+    localStorage.setItem("noval__content2", "")
+
     const formdata = new FormData()
     formdata.append("file", jobInfo.banner as Blob)
     formdata.append("type", "jobs")
+
     if (jobInfo.banner && typeof jobInfo.banner == "object") {
       const isuploaded = await fetchFile(
         "/v1/upload/file",
@@ -71,39 +103,34 @@ const CreateJob: React.FC = () => {
         formdata
       )
       if (isuploaded?.error) {
-        // toast.info(isuploaded?.message)
         setLoading(false)
         return
       }
-      // console.log(isuploaded?.data)
-      // return;
       jobInfo.banner = isuploaded?.data.image.Location
     } else {
       jobInfo.banner = ""
     }
-    // console.log("jobInfo.banner ", jobInfo.banner)
+
     jobInfo.publishDate = new Date().toISOString()
 
     const data = await fetchData("/v1/job/user", session?.user?.name as string, "POST", jobInfo)
     if (data?.error) {
       setLoading(false)
+      toast.dismiss()
 
       toast.error(data?.message)
       return
     }
     toast.dismiss()
-
     toast.success(data?.message)
     setLoading(false)
-
-    // handleLoadChange()
     router.push("/jobs")
   }
 
   return (
     <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob}>
       {/* Render the filterDetails here */}
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex flex-col w-[100vw] gap-4 md:max-w-[59vw] lg:max-w-[67vw]">
         <>
           <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
 
@@ -115,7 +142,7 @@ const CreateJob: React.FC = () => {
               title={""}
               placeholder={"Enter the description"}
               value={jobInfo.description}
-              className="bg-transparent border-none rounded-md border-transparent"
+              className="bg-transparent border-transparent border-none rounded-md"
               onChange={(value) =>
                 setJobInfo((prev) => ({ ...prev, description: value as string }))
               }
@@ -125,7 +152,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] font-semibold">Skills and requirements</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
+            className={"bg-user_interface_2 w-full rounded-xl md:min-h-[40vh] "}
             editable={true}
             storageKey="noval__content2"
             defaultValue={{}}
@@ -135,7 +162,7 @@ const CreateJob: React.FC = () => {
         <>
           <h1 className="text-[22px] mt-4 font-semibold">About the Recruiter</h1>
           <Editor
-            className={"bg-user_interface_2 w-full rounded-xl md:h-[40vh] md:overflow-y-scroll"}
+            className={"bg-user_interface_2 w-full rounded-xl md:min-h-[40vh] "}
             editable={true}
             storageKey="noval__content1"
             defaultValue={{}}

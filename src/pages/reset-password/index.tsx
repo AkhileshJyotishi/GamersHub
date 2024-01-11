@@ -43,6 +43,7 @@ const ResetPassword = () => {
     const data = await fetchWithoutAuthorization(`v1/auth/reset-password?token=${token}`, "POST", {
       password: formValues.password,
     })
+    toast.dismiss()
     if (data?.error) {
       toast.error((data?.error?.response?.data?.message || "Request failed") ?? "Request failed")
     } else {

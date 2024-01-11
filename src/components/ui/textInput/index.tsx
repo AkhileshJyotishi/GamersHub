@@ -11,7 +11,42 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAre
   id?: string
   errorMessage?: string | null
 }
-
+/**
+ * TextInput component
+ *
+ * A reusable input component for text and textarea fields in a React application.
+ *
+ * @component
+ * @example
+ * <TextInput
+ *   value={value}
+ *   onChange={handleChange}
+ *   placeholder="Enter text"
+ *   type="text"
+ *   name="text-input"
+ *   className="custom-class"
+ *   element="input"
+ *   id="text-input"
+ *   errorMessage="Invalid input"
+ * />
+ *
+ * @param {object} props - The component props
+ * @param {function} props.onChange - The change event handler for the input field
+ * @param {string} props.placeholder - The placeholder text for the input field
+ * @param {string} props.type - The type of the input field
+ * @param {string} props.value - The value of the input field
+ * @param {string} props.name - The name of the input field
+ * @param {string} props.className - The additional CSS class for the input field
+ * @param {string} props.element - The type of the input element (input or textarea)
+ * @param {string} props.id - The ID of the input field
+ * @param {string} props.errorMessage - The error message to display for invalid input
+ * @param {function} props.onKeyUp - The key up event handler for the input field
+ * @param {function} props.onKeyPress - The key press event handler for the input field
+ * @param {function} props.onBlur - The blur event handler for the input field
+ * @param {string} props.pattern - The pattern attribute for input validation
+ * @param {function} props.onInvalid - The invalid event handler for the input field
+ * @returns {JSX.Element} The rendered TextInput component
+ */
 const TextInput: React.FC<Props> = ({
   onChange,
   placeholder,
@@ -27,16 +62,12 @@ const TextInput: React.FC<Props> = ({
   onBlur,
   pattern,
   onInvalid,
-}: Props) => {
+}: Props): JSX.Element => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
     if (element === "textarea" && textAreaRef.current) {
-      // We need to reset the height momentarily to get the correct scrollHeight for the textarea
       textAreaRef.current.style.height = "0px"
       const scrollHeight = textAreaRef.current.scrollHeight
-
-      // We then set the height directly, outside of the render loop
-      // Trying to set this with state or a ref will product an incorrect value.
       textAreaRef.current.style.height = scrollHeight + "px"
     }
   }, [textAreaRef.current, value])
@@ -88,9 +119,7 @@ const TextInput: React.FC<Props> = ({
           <PiWarningCircleFill />
           <div>{errorMessage}</div>
         </span>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </div>
   )
 }
