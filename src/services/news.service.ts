@@ -167,6 +167,86 @@ const getAllNewsCategory = async (): Promise<NewsCategory[]> => {
  *
  * @returns {Promise<Pick<News, 'id'>[]>} A promise that resolves to an array of news articles, each containing only the 'id' property.
  */
+const getUserNews = async (userId: number): Promise<Partial<News>[]> => {
+  const AllNews = await prisma.news.findMany({
+    where: {
+      userId
+    },
+    select: {
+      id: true,
+      category: {
+        select: {
+          id: true,
+          description: true,
+          title: true
+        }
+      },
+      bannerImage: true,
+      isPublished: true,
+      userId: true,
+      title: true,
+      subtitle: true,
+      publishedAt: true,
+      isSaved: true,
+      content: true,
+      categoryId: true,
+      publisher: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      }
+    }
+  })
+  return AllNews
+}
+
+/**
+ * Retrieves all news articles from the database.
+ *
+ * @returns {Promise<Pick<News, 'id'>[]>} A promise that resolves to an array of news articles, each containing only the 'id' property.
+ */
+const getAllNewsExceptCurrentUser = async (userId: number): Promise<Partial<News>[]> => {
+  const AllNews = await prisma.news.findMany({
+    where: {
+      NOT: {
+        userId
+      }
+    },
+    select: {
+      id: true,
+      category: {
+        select: {
+          id: true,
+          description: true,
+          title: true
+        }
+      },
+      bannerImage: true,
+      isPublished: true,
+      userId: true,
+      title: true,
+      subtitle: true,
+      publishedAt: true,
+      isSaved: true,
+      content: true,
+      categoryId: true,
+      publisher: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      }
+    }
+  })
+  return AllNews
+}
+
+/**
+ * Retrieves all news articles from the database.
+ *
+ * @returns {Promise<Pick<News, 'id'>[]>} A promise that resolves to an array of news articles, each containing only the 'id' property.
+ */
 const getAllNews = async (): Promise<Partial<News>[]> => {
   const AllNews = await prisma.news.findMany({
     select: {
@@ -197,6 +277,7 @@ const getAllNews = async (): Promise<Partial<News>[]> => {
   })
   return AllNews
 }
+
 /**
  * @function getNewsById
  * @description
@@ -305,5 +386,7 @@ export default {
   getAllNews,
   getNewsById,
   deleteNews,
+  getAllNewsExceptCurrentUser,
+  getUserNews,
   updateNewsById
 }

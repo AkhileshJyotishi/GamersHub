@@ -27,7 +27,7 @@ router.post(
   gameController.toggleSaveGame
 )
 
-router.get('/user/:id', validate(gameValidation.idValidation), gameController.getUserGames)
+router.get('/user/:id', validate(gameValidation.myGamesValidation), gameController.getUserGames)
 router
   .route('/:id')
   .get(validate(gameValidation.idValidation), gameController.getGameById)

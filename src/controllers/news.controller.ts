@@ -129,6 +129,18 @@ const getAllNews = catchAsync(async (req, res) => {
   sendResponse(res, httpStatus.OK, null, { AllNews }, 'News fetched Successfully')
 })
 
+const getAllNewsExceptCurrentUser = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const allNews = await newsService.getAllNewsExceptCurrentUser(userId)
+  sendResponse(res, httpStatus.OK, null, { allNews }, 'News fetched Successfully')
+})
+
+const getUserNews = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const allNews = await newsService.getUserNews(userId)
+  sendResponse(res, httpStatus.OK, null, { allNews }, 'News fetched Successfully')
+})
+
 /**
  * @function addNews
  * @async
@@ -154,5 +166,7 @@ export default {
   updateNewsCategoryById,
   getNewsById,
   getCategoryById,
-  getAllNewsCategory
+  getAllNewsCategory,
+  getAllNewsExceptCurrentUser,
+  getUserNews
 }

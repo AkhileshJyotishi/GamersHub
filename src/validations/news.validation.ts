@@ -42,7 +42,7 @@ const updateNewsValidation = {
       title: Joi.string().min(1).optional(),
       subtitle: Joi.string().allow('').optional(),
       content: Joi.object().optional(),
-      bannerImage: Joi.string().optional(),
+      bannerImage: Joi.string().allow('').optional(),
       isSaved: Joi.bool().optional(),
       isPublished: Joi.bool().optional(),
       publishedAt: Joi.date().iso().allow('').optional()

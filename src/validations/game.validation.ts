@@ -7,6 +7,16 @@ const idParamsValidation = Joi.object().keys({
 const idValidation = {
   params: idParamsValidation
 }
+const myGamesValidation = {
+  params: idParamsValidation,
+  query: Joi.object().keys({
+    developerType: Joi.array().items(Joi.string().valid('indie', 'studio', 'collaboration')),
+    gameMode: Joi.array().items(Joi.string().valid('singlePlayer', 'multiPlayer')),
+    tags: Joi.array().items(Joi.string()),
+    genre: Joi.array().items(Joi.string()),
+    platforms: Joi.array().items(Joi.string())
+  })
+}
 
 const queryGame = {
   query: Joi.object().keys({
@@ -59,5 +69,6 @@ export default {
   idValidation,
   queryGame,
   createGame,
-  updateGame
+  updateGame,
+  myGamesValidation
 }

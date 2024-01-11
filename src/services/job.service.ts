@@ -10,9 +10,49 @@ declare type Allow<T = any> = T | null
  * @returns {Promise<Job[]>}
  */
 
-const getUserJobs = async (userId: number): Promise<Job[]> => {
+const getUserJobs = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
+  const { expertise, jobType, remote, jobSoftwares } = filter
   const user = await prisma.user.findUnique({
     where: {
+      jobs: {
+        some: {
+          AND: [
+            expertise
+              ? {
+                  expertise: {
+                    in: expertise
+                  }
+                }
+              : {},
+            jobType
+              ? {
+                  jobType: {
+                    in: jobType
+                  }
+                }
+              : {},
+            remote
+              ? {
+                  remote: {
+                    equals: remote
+                  }
+                }
+              : {},
+            jobSoftwares
+              ? {
+                  jobSoftwares: {
+                    some: {
+                      software: {
+                        in: jobSoftwares,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {}
+          ]
+        }
+      },
       id: userId
     },
     select: {

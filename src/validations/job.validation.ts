@@ -35,6 +35,15 @@ const createJob = {
 const idValidation = {
   params: idParamsValidation
 }
+const myJobsValidation = {
+  params: idParamsValidation,
+  query: Joi.object().keys({
+    expertise: Joi.array().items(Joi.string().valid('ENTRY', 'EXPERT', 'INTERMEDIATE')),
+    jobType: Joi.array().items(Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB')),
+    remote: Joi.boolean(),
+    jobSoftwares: Joi.array().items(Joi.string())
+  })
+}
 
 const updateJob = {
   params: idParamsValidation,
@@ -79,6 +88,7 @@ export default {
   idValidation,
   queryJobs,
   createJob,
+  myJobsValidation,
   updateJob,
   createApplication,
   updateApplication

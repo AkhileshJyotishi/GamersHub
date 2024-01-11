@@ -104,6 +104,20 @@ router
  */
 router.get('/', newsController.getAllNews)
 
+router.get(
+  '/others',
+  auth(),
+  validate(newsValidation.paramsValidation),
+  newsController.getAllNewsExceptCurrentUser
+)
+
+router.get(
+  '/user/:id',
+  auth(),
+  validate(newsValidation.paramsValidation),
+  newsController.getUserNews
+)
+
 /**
  * @function addNewsRoute
  * @async

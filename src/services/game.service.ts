@@ -7,12 +7,72 @@ declare type Allow<T = any> = T | null
 /**
  * Get All Games of a user
  * @param {ObjectId} userId
+ * @param {QueryGames} filter
  * @returns {Promise<Game[]>}
  */
 
-const getUserGames = async (userId: number): Promise<Game[] | []> => {
+const getUserGames = async (userId: number, filter: QueryGames): Promise<Game[] | []> => {
+  const { developerType, gameMode, genre, platforms, tags } = filter
   const user = await prisma.user.findUnique({
     where: {
+      games: {
+        some: {
+          AND: [
+            developerType
+              ? {
+                  developer: {
+                    developerType: {
+                      in: developerType
+                    }
+                  }
+                }
+              : {},
+            gameMode
+              ? {
+                  gameMode: {
+                    in: gameMode
+                  }
+                }
+              : {},
+            genre
+              ? {
+                  genre: {
+                    some: {
+                      name: {
+                        in: genre,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {},
+            platforms
+              ? {
+                  platforms: {
+                    some: {
+                      name: {
+                        in: platforms,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {},
+            tags
+              ? {
+                  tags: {
+                    some: {
+                      keyword: {
+                        in: tags,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {}
+          ]
+        }
+      },
       id: userId
     },
     select: {

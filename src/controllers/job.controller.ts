@@ -5,7 +5,8 @@ import { sendResponse } from '../utils/response'
 
 const getUserJobs = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
-  const userJobs = await jobService.getUserJobs(id)
+  const filter = req.query
+  const userJobs = await jobService.getUserJobs(id, filter)
   sendResponse(res, httpStatus.OK, null, { jobs: userJobs }, 'User Jobs fetched Successfully')
 })
 
