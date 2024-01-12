@@ -75,15 +75,16 @@ const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
     {/* Secondary Section */}
     <section className={cn("col-span-4 h-fit p-2")}>
       <div className="flex flex-col sm:grid grid-cols-2 grid-rows-2 gap-4 md:h-[400px] ">
-        {articles.slice(1, 5).map((article) => (
-          <Article
-            key={article.id}
-            {...article}
-            // imgSrc={article.imgSrc}
-            // imgAlt={``}
-            className="h-[200px]"
-          />
-        ))}
+        {articles &&
+          (articles?.slice(1, 5) ?? []).map((article) => (
+            <Article
+              key={article.id}
+              {...article}
+              // imgSrc={article.imgSrc}
+              // imgAlt={``}
+              className="h-[200px]"
+            />
+          ))}
       </div>
     </section>
   </>
