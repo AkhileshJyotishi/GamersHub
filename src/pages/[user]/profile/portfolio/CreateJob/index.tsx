@@ -1,17 +1,52 @@
 import React from "react"
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
+import { signOut } from "next-auth/react"
+
+import { getSession } from "@/lib/auth"
+import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreateJob from "@/components/createJob"
 
-const index = () => {
+const index = ({ jobSoftwareSuggestions }: { jobSoftwareSuggestions: JobSoftwareSuggestions }) => {
   return (
     <>
       <Head>
         <title>GameCreators | CreateJob</title>
       </Head>
-      <CreateJob />
+      <CreateJob jobSoftwareSuggestions={jobSoftwareSuggestions} />
     </>
   )
 }
 
 export default index
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
+  if (!session) {
+    signOut()
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+  const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
+
+  if (res2?.error) {
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
+  }
+  const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
+
+  return {
+    props: {
+      jobSoftwareSuggestions,
+    },
+  }
+}

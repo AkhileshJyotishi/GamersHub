@@ -9,13 +9,15 @@ import ChevronUpDownIcon from "@/components/icons/updown"
 
 interface ComboboxInputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
 }
 
-const ComboboxInput: React.FC<ComboboxInputProps> = ({ onChange }) => (
+const ComboboxInput: React.FC<ComboboxInputProps> = ({ onChange, placeholder }) => (
   <Combobox.Input
     className="w-full py-2 pl-3 pr-10 text-sm leading-5 border border-none text-text focus:ring-0 bg-user_interface_3 border-user_interface_4"
     displayValue={(option: Option) => option?.label ?? ""}
     onChange={onChange}
+    placeholder={placeholder}
   />
 )
 
@@ -91,11 +93,17 @@ interface ComboboxWrapperProps {
   query: string
   setQuery: React.Dispatch<React.SetStateAction<string>>
   filteredOptions: Option[]
+  placeholder?: string
 }
 
-const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({ query, setQuery, filteredOptions }) => (
+const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({
+  query,
+  setQuery,
+  filteredOptions,
+  placeholder,
+}) => (
   <div className="w-full overflow-hidden text-left rounded-lg shadow-md cursor-default ring-0 bg-user_interface_3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-    <ComboboxInput onChange={(event) => setQuery(event.target.value)} />
+    <ComboboxInput onChange={(event) => setQuery(event.target.value)} placeholder={placeholder} />
     <ComboboxButton />
     <ComboboxOptions filteredOptions={filteredOptions} query={query} setQuery={setQuery} />
   </div>
@@ -108,7 +116,7 @@ interface Option {
 interface CustomComboboxProps {
   value: string | boolean | number
   onChange: (value: string) => void
-
+  placeholder?: string
   options?: Option[]
   defaultSelected?: Option
   className?: string
@@ -122,6 +130,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   defaultSelected,
   className,
   errorMessage,
+  placeholder,
   value,
 }) => {
   const [, setSelected] = useState<Option>(
@@ -162,6 +171,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
           query={query}
           setQuery={setQuery}
           filteredOptions={filteredOptions || []}
+          placeholder={placeholder}
         />
         {errorMessage ? (
           <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">

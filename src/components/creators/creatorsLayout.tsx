@@ -1,6 +1,7 @@
 // import { BannerComponent } from '@/components/filter/filterbanner'
 import React, { useEffect, useState } from "react"
 import { Country } from "country-state-city"
+import _ from "lodash"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -32,18 +33,18 @@ const Layout: React.FC<creatorLayoutProps> = ({
   const session = useSession()
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   // const [city, setCity] = useState<string[]>([])
-
-  const [creatorsFilters, setCreatorsFilter] = useState<CreatorsFilterProps>({
+  const initFilters = {
     userSkills: [],
     userSoftwares: [],
     country: "",
-  })
+  }
+  const [creatorsFilters, setCreatorsFilter] = useState<CreatorsFilterProps>(initFilters)
 
   const filterArray2: FilterDetail[] = [
     {
       inputType: "tags",
       title: "Skills of professionals",
-      placeholder: "3D, sfx cityvoice over",
+      placeholder: "3D, sfx city ,Voice Over",
       value: creatorsFilters?.userSkills,
       onTagsChange: (value) =>
         setCreatorsFilter({ ...creatorsFilters, userSkills: value as string[] }),
@@ -58,7 +59,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
     {
       inputType: "tags",
       title: "Software",
-      placeholder: "Blender audacity etc ",
+      placeholder: "Blender, audacity etc ",
       value: creatorsFilters?.userSoftwares,
       onTagsChange: (value) =>
         setCreatorsFilter({ ...creatorsFilters, userSoftwares: value as string[] }),
@@ -86,6 +87,11 @@ const Layout: React.FC<creatorLayoutProps> = ({
     },
   ]
   const searchWithFilters = async () => {
+    if (_.isEqual(initFilters, creatorsFilters)) {
+      toast.dismiss()
+      toast.info("Same search Or empty Search")
+      return
+    }
     const CreatorFilterParams = generateQueryParams(creatorsFilters)
     setLoading(true)
     let x
@@ -108,11 +114,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
     }
   }
   const clearFilters = () => {
-    setCreatorsFilter({
-      userSkills: [],
-      userSoftwares: [],
-      country: "",
-    })
+    setCreatorsFilter(initFilters)
     setCreators(creators)
   }
 

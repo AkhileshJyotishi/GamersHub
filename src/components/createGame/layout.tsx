@@ -3,7 +3,7 @@ import clsx from "clsx"
 import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
-import { GameInfo } from "@/interface/games"
+import { CustomGameTags, GameInfo } from "@/interface/games"
 import {
   validateFileArrayField,
   validateFileField,
@@ -27,6 +27,7 @@ interface LayoutProps {
   setoldAssets?: React.Dispatch<React.SetStateAction<string[]>>
   oldAssets?: string[]
   isUpdate: boolean
+  customGameTags: CustomGameTags
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -37,6 +38,7 @@ const Layout: React.FC<LayoutProps> = ({
   setoldAssets,
   oldAssets,
   isUpdate,
+  customGameTags,
 }) => {
   const handleOldAssets = (remainingOldAssets: string[]) => {
     setoldAssets && setoldAssets(remainingOldAssets)
@@ -64,6 +66,7 @@ const Layout: React.FC<LayoutProps> = ({
     height: null,
     width: null,
   })
+
   const handleInputChange = useCallback(
     async <K extends keyof GameInfo>(
       field: K,
@@ -124,7 +127,7 @@ const Layout: React.FC<LayoutProps> = ({
     {
       title: "Supported Platforms",
       inputType: "tags",
-      placeholder: "platform",
+      placeholder: "Xbox, Play Station, etc",
       value: gameInfo.platforms,
       onTagsChange: (tags) =>
         handleInputChange("platforms", tags, validateStringArrayField, {
@@ -133,12 +136,18 @@ const Layout: React.FC<LayoutProps> = ({
         }),
       initialtags: gameInfo.platforms,
       errorMessage: errors.platforms,
+      selectOptions: [
+        ...(customGameTags.platform ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
 
     {
       title: "Genre",
       inputType: "tags",
-      placeholder: "genres...",
+      placeholder: "Adventure, Action ,etc",
       value: gameInfo.genre,
       onTagsChange: (tags) =>
         handleInputChange("genre", tags, validateStringArrayField, {
@@ -147,15 +156,21 @@ const Layout: React.FC<LayoutProps> = ({
         }),
       initialtags: gameInfo.genre,
       errorMessage: errors.genre,
+      selectOptions: [
+        ...(customGameTags.genre ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
     {
       title: "Mode",
       inputType: "select",
       selectOptions: [
-        {
-          label: "Select Game Mode",
-          value: "",
-        },
+        // {
+        //   label: "Select Game Mode",
+        //   value: "",
+        // },
         {
           label: "single player",
           value: "singlePlayer",
@@ -169,12 +184,13 @@ const Layout: React.FC<LayoutProps> = ({
       onChange: (value) =>
         handleInputChange("gameMode", value as string, validateStringField, { required: true }),
       errorMessage: errors.gameMode,
+      placeholder: "Select Game Mode",
     },
 
     {
       title: "Developer Name",
       inputType: "text",
-      placeholder: "developer name",
+      placeholder: "Developer Name",
       value: gameInfo.developerName,
       onChange: (value) =>
         handleInputChange("developerName", value as string, validateStringField, {
@@ -211,7 +227,7 @@ const Layout: React.FC<LayoutProps> = ({
           required: true,
         }),
       errorMessage: errors.developerType,
-
+      placeholder: "Enter Developer Type",
       // setGameInfo((prevState) => ({
       //   ...prevState,
       //   developerType: value as string,
@@ -220,7 +236,7 @@ const Layout: React.FC<LayoutProps> = ({
     {
       title: "Distribution platforms",
       inputType: "tags",
-      placeholder: "distribution platforms...",
+      placeholder: "Windows, Linux, FreeBSD etc",
       value: gameInfo.distributionPlatforms,
       onTagsChange: (value) =>
         handleInputChange("distributionPlatforms", value, validateStringArrayField, {
@@ -233,7 +249,7 @@ const Layout: React.FC<LayoutProps> = ({
     {
       title: "Tags",
       inputType: "tags",
-      placeholder: "Action, Shooting",
+      placeholder: "Action, Shooting etc",
       value: gameInfo.tags,
       onTagsChange: (tags) =>
         handleInputChange("tags", tags, validateStringArrayField, {
@@ -242,6 +258,12 @@ const Layout: React.FC<LayoutProps> = ({
         }),
       errorMessage: errors.tags,
       initialtags: gameInfo.tags || [],
+      selectOptions: [
+        ...(customGameTags.tags ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
 
     {
@@ -260,8 +282,6 @@ const Layout: React.FC<LayoutProps> = ({
   // const shadeVariant =
   //   " left-0 right-0 top-0  bg-gradient-to-b to-transparent from- group-hover:from-token-surface-primary dark:from-[#000]"
   const handleGameUpload = async () => {
-    // Validate all fields
-
     let flg = true
     const validationPromises = Object.entries(gameInfo).map(async ([field, value]) => {
       let validationFunction: (x: Allow, y: Allow) => string | Promise<string>
@@ -337,9 +357,7 @@ const Layout: React.FC<LayoutProps> = ({
     // Define validation parameters for each field
     const validationParams: Record<string, ValidationParams> = {
       banner: { required: true, fileMaxSize: 1024 * 1024 },
-      description: {
-        /* add your validation params here */
-      },
+      description: {},
       developerName: { required: true, maxLength: 60 },
       developerType: { required: true },
       distributionPlatforms: { required: true, maxLength: 10 },
@@ -347,9 +365,7 @@ const Layout: React.FC<LayoutProps> = ({
       gameMode: { required: true },
       genre: { required: true, maxLength: 10 },
       platforms: { required: true, maxLength: 10 },
-      releaseDate: {
-        /* add your validation params here */
-      },
+      releaseDate: {},
       tags: { required: true, maxLength: 10 },
       title: { required: true, maxLength: 60 },
     }
