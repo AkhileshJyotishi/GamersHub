@@ -17,6 +17,9 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
     return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
   },
 })
+interface CreateJobProps {
+  jobSoftwareSuggestions?: JobSoftwareSuggestions
+}
 /**
  * React functional component for creating and uploading a job to the server.
  * Uses hooks and components from Next.js and React libraries.
@@ -43,7 +46,8 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
  *
  * Outputs: None
  */
-const CreateJob: React.FC = () => {
+
+const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions }) => {
   const { data: session } = useSession()
   const router = useRouter()
   const { setLoading } = useUserContext()
@@ -128,7 +132,12 @@ const CreateJob: React.FC = () => {
   }
 
   return (
-    <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob}>
+    <Layout
+      jobInfo={jobInfo}
+      setJobInfo={setJobInfo}
+      uploadJob={uploadJob}
+      jobSoftwareSuggestions={jobSoftwareSuggestions}
+    >
       {/* Render the filterDetails here */}
       <div className="flex flex-col w-[100vw] gap-4 md:max-w-[59vw] lg:max-w-[67vw]">
         <>

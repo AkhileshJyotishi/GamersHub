@@ -88,18 +88,10 @@ const FilterMobileDialog: React.FC<FilterMobileDialogProps> = ({
                   <div className="flex flex-row flex-wrap justify-between">
                     <Button
                       onClick={() => {
-                        setPopup(false)
-                      }}
-                      className="p-2 bg-secondary rounded-xl"
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      onClick={() => {
                         searchWithFilters!()
                         setPopup(false)
                       }}
-                      className="p-2 bg-secondary rounded-xl"
+                      className="p-2 bg-secondary rounded-xl w-full"
                     >
                       Apply
                     </Button>

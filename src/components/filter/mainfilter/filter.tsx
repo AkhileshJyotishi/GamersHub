@@ -131,6 +131,7 @@ const Filter: React.FC<FilterDetail> = ({
             options={selectOptions}
             errorMessage={errorMessage}
             defaultSelected={(selectOptions ?? [])?.filter((item) => item.value == value)[0] ?? []}
+            placeholder={placeholder}
           />
           {/* <SelectFilter
             onChange={handleSelectChange}

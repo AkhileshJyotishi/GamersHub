@@ -59,15 +59,16 @@ const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
     {/* Primary Section */}
     <section className={cn("col-start-1 col-span-4  h-fit p-2")}>
       <div className={cn("relative h-[400px]")}>
-        {articles.slice(0, 1).map((article) => (
-          <Article
-            key={article.id}
-            {...article}
-            // imgSrc={article.imgSrc}
-            // imgAlt={``}
-            className={"h-[inherit]"}
-          />
-        ))}
+        {articles &&
+          (articles?.slice(0, 1) ?? []).map((article) => (
+            <Article
+              key={article.id}
+              {...article}
+              // imgSrc={article.imgSrc}
+              // imgAlt={``}
+              className={"h-[inherit]"}
+            />
+          ))}
       </div>
     </section>
 

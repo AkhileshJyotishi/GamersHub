@@ -22,9 +22,16 @@ interface LayoutProps {
   jobInfo: Omit<JobInfo, "userId">
   setJobInfo: React.Dispatch<React.SetStateAction<Omit<JobInfo, "userId">>>
   uploadJob: () => Promise<void>
+  jobSoftwareSuggestions?: JobSoftwareSuggestions
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJob }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  setJobInfo,
+  jobInfo,
+  uploadJob,
+  jobSoftwareSuggestions,
+}) => {
   const country = Country.getAllCountries()
 
   const countryList = country?.map((country) => {
@@ -191,7 +198,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Title",
       inputType: "text",
-      placeholder: "title...",
+      placeholder: "Enter a Title...",
       value: jobInfo.title,
       onChange: (value) =>
         handleInputChange("title", value as string, validateStringField, {
@@ -210,10 +217,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         handleInputChange("jobType", value as string, validateStringField, { required: true }),
 
       selectOptions: [
-        {
-          label: "Select Job Type",
-          value: "",
-        },
+        // {
+        //   label: "Select Job Type",
+        //   value: "",
+        // },
         {
           label: "Freelance",
           value: "FREELANCE",
@@ -252,7 +259,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "Country",
       inputType: "select",
       onChange: (value) => handleInputChange("country", value as string, validateStringField, {}),
-
+      placeholder: "Enter a Country",
       selectOptions: [{ label: "--Select a Country--", value: "" }, ...countryList],
       value: jobInfo.country || "",
       hidden: jobInfo.remote,
@@ -263,10 +270,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "City",
       inputType: "select",
       value: jobInfo.city as string,
-
+      placeholder: "Enter a City",
       onChange: (value) => handleInputChange("city", value as string, validateStringField, {}),
 
-      selectOptions: [{ label: "--Select a City--", value: "" }, ...city],
+      selectOptions: city,
       hidden: jobInfo.remote,
       errorMessage: errors.city,
     },
@@ -276,6 +283,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
 
       onChange: (value) =>
         handleInputChange("paymentType", value as string, validateStringField, { required: true }),
+      placeholder: "Expected Payment",
 
       selectOptions: [
         {
@@ -309,6 +317,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           minValue: 0,
         })
       },
+      placeholder: "Select Expertise",
 
       className: "bg-transparent rounded-md",
       errorMessage: errors.paymentValue,
@@ -336,10 +345,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         handleInputChange("expertise", value as string, validateStringField, { required: true }),
       // setJobInfo((prevState) => ({ ...prevState, expertise: value as string })),
       selectOptions: [
-        {
-          label: "Select Expertise",
-          value: "",
-        },
+        // {
+        //   label: "Select Expertise",
+        //   value: "",
+        // },
         {
           label: "Entry Level",
           value: "ENTRY",
@@ -353,6 +362,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           value: "EXPERT",
         },
       ],
+      placeholder: "Enter Expertise",
+
       errorMessage: errors.expertise,
     },
 
@@ -365,8 +376,13 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           maxLength: 10,
         }),
       value: jobInfo.jobSoftwares || [],
-
-      placeholder: "softwares",
+      selectOptions: [
+        ...((jobSoftwareSuggestions && jobSoftwareSuggestions.software) ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+      placeholder: "Blender, Unreal Engine, ",
       errorMessage: errors.jobSoftwares,
     },
   ]

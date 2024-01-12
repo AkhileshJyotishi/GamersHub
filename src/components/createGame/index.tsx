@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
-import { BackendGame, GameInfo } from "@/interface/games"
+import { BackendGame, CustomGameTags, GameInfo } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
@@ -20,7 +20,13 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 // import { Editor } from "novel";
 
-const CreateGame = ({ game }: { game?: BackendGame }) => {
+const CreateGame = ({
+  game,
+  customGameTags,
+}: {
+  game?: BackendGame
+  customGameTags: CustomGameTags
+}) => {
   // console.log("latest error", game)
   const path = usePathname()
   const router = useRouter()
@@ -172,6 +178,7 @@ const CreateGame = ({ game }: { game?: BackendGame }) => {
       oldAssets={oldAssets}
       setoldAssets={setoldAssets}
       isUpdate={isUpdate}
+      customGameTags={customGameTags}
     >
       {/* Render the filterDetails here */}
       <>
