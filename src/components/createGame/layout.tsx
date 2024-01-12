@@ -27,7 +27,7 @@ interface LayoutProps {
   setoldAssets?: React.Dispatch<React.SetStateAction<string[]>>
   oldAssets?: string[]
   isUpdate: boolean
-  customGameTags: CustomGameTags
+  customGameTags?: CustomGameTags
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -137,7 +137,7 @@ const Layout: React.FC<LayoutProps> = ({
       initialtags: gameInfo.platforms,
       errorMessage: errors.platforms,
       selectOptions: [
-        ...(customGameTags.platform ?? []).map((s) => ({
+        ...(customGameTags?.platform ?? []).map((s) => ({
           label: s,
           value: s,
         })),
@@ -157,7 +157,7 @@ const Layout: React.FC<LayoutProps> = ({
       initialtags: gameInfo.genre,
       errorMessage: errors.genre,
       selectOptions: [
-        ...(customGameTags.genre ?? []).map((s) => ({
+        ...(customGameTags?.genre ?? []).map((s) => ({
           label: s,
           value: s,
         })),
@@ -259,7 +259,7 @@ const Layout: React.FC<LayoutProps> = ({
       errorMessage: errors.tags,
       initialtags: gameInfo.tags || [],
       selectOptions: [
-        ...(customGameTags.tags ?? []).map((s) => ({
+        ...(customGameTags?.tags ?? []).map((s) => ({
           label: s,
           value: s,
         })),

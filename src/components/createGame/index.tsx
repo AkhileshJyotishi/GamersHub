@@ -25,7 +25,7 @@ const CreateGame = ({
   customGameTags,
 }: {
   game?: BackendGame
-  customGameTags: CustomGameTags
+  customGameTags?: CustomGameTags
 }) => {
   // console.log("latest error", game)
   const path = usePathname()
