@@ -27,8 +27,8 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
   console.log("gamesection ", GameData.description)
 
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
-    <div className="bg-background flex flex-col items-start rounded-xl gap-[12px] p-3 flex-wrap">
-      <h3 className="mb-2 font-medium text-[18px]">{title}</h3>
+    <div className="flex flex-col items-start rounded-xl gap-[6px] p-2 flex-wrap">
+      <h3 className="mb-1 font-medium ">{title}</h3>
       <div className="flex flex-wrap w-full gap-2">{render(data)}</div>
     </div>
   )

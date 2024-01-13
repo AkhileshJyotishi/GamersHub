@@ -94,8 +94,8 @@ const sections: Section[] = [
 ]
 
 const SectionRenderer: React.FC<Section & { data: jobdataprop }> = ({ title, data, render }) => (
-  <div className=" flex flex-col items-start rounded-xl gap-[12px] p-1 flex-wrap ">
-    <h3 className="mb-2 font-medium text-[18px]">{title}</h3>
+  <div className=" flex flex-col items-start rounded-xl gap-[8px] p-1 flex-wrap ">
+    <h3 className="mb-1 font-medium">{title}</h3>
     <div className="flex flex-wrap w-full gap-2">{render(data)}</div>
   </div>
 )

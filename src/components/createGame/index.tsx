@@ -114,8 +114,14 @@ const CreateGame = ({
     gameInfo.releaseDate = new Date().toISOString()
     const formdata2 = new FormData()
 
+    let uploadKey: string
+    if (gameInfo.gameAssets && !!gameInfo.gameAssets.length && gameInfo.gameAssets.length == 1) {
+      uploadKey = "file"
+    } else {
+      uploadKey = "files"
+    }
     gameInfo.gameAssets?.map((game) => {
-      formdata2.append("files", game as Blob)
+      formdata2.append(uploadKey, game as Blob)
     })
     formdata2.append("type", "games")
     const newArray: string[] = []
@@ -124,24 +130,48 @@ const CreateGame = ({
       gameInfo.gameAssets.every((asset) => typeof asset === "object") &&
       gameInfo.gameAssets?.length > 0
     ) {
-      const multiisuploaded = await fetchFile(
-        "/v1/upload/multiple",
-        session?.data?.user?.name as string,
-        "POST",
-        formdata2
-      )
-      if (multiisuploaded?.error) {
-        toast.dismiss()
+      let route
+      if (gameInfo.gameAssets.length == 1) {
+        route = "/v1/upload/file"
+        const multiisuploaded = await fetchFile(
+          route,
+          session?.data?.user?.name as string,
+          "POST",
+          formdata2
+        )
+        if (multiisuploaded?.error) {
+          toast.dismiss()
 
-        toast.error("Error uploading assets")
-        setLoading(false)
-        return
+          toast.error("Error uploading assets")
+          setLoading(false)
+          return
+        } else {
+          gameInfo.gameAssets = []
+          // console.log(multiisuploaded?.data.image[0])
+          console.log("multiisuploaded?.data.image.Location", multiisuploaded?.data.image.Location)
+          newArray.push(multiisuploaded?.data.image.Location)
+        }
       } else {
-        gameInfo.gameAssets = []
-        // console.log(multiisuploaded?.data.image[0])
-        gameInfo.gameAssets = multiisuploaded?.data?.image?.map((loc: Allow) => {
-          newArray.push(loc.Location)
-        })
+        route = "/v1/upload/multiple"
+        const multiisuploaded = await fetchFile(
+          route,
+          session?.data?.user?.name as string,
+          "POST",
+          formdata2
+        )
+        if (multiisuploaded?.error) {
+          toast.dismiss()
+
+          toast.error("Error uploading assets")
+          setLoading(false)
+          return
+        } else {
+          gameInfo.gameAssets = []
+          // console.log(multiisuploaded?.data.image[0])
+          gameInfo.gameAssets = multiisuploaded?.data?.image?.map((loc: Allow) => {
+            newArray.push(loc.Location)
+          })
+        }
       }
     } else {
       gameInfo.gameAssets = []

@@ -20,10 +20,7 @@ export const Article: FC<ArticleProps & { className: string }> = ({
   link,
   className,
 }) => {
-  console.log(category)
-  useEffect(() => {
-    console.log("category ", category)
-  }, [])
+  useEffect(() => {}, [])
   return (
     <article className={cn("relative", className)}>
       <div className="h-[inherit] relative flex flex-col mt-auto">

@@ -118,8 +118,8 @@ const SocialCard: React.FC<CardProps> = ({
             className="object-cover w-6 h-6 rounded-full"
             src={cover || defaultUserImage}
             alt={""}
-            width={100}
-            height={100}
+            width={400}
+            height={400}
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />
           <div className="ml-2 ">
@@ -197,8 +197,8 @@ const SocialCard: React.FC<CardProps> = ({
             src={banner || defaultbannerImage}
             alt=""
             // blurDataURL={defaultbannerImage}
-            width={400}
-            height={100}
+            width={500}
+            height={400}
             className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />

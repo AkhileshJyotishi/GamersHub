@@ -71,9 +71,9 @@ const Carousel = ({ GameAssets }: { GameAssets: string[] }) => {
                     <Image
                       src={item}
                       alt={""}
-                      height={500}
-                      width={500}
-                      className={clsx(carousel["img"], "md:h-[700px] h-[300px]")}
+                      height={1200}
+                      width={1200}
+                      className={clsx(carousel["img"], "h-fit md:max-h-[700px] max-h-[300px]")}
                       priority
                       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                     />
