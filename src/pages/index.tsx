@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 import Img from "@/assets/image/profiles-slide-show.png"
 import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
-import { ArticleProps, INews } from "@/interface/news"
+import { ArticleProps, INews, INewsCategory } from "@/interface/news"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
@@ -24,7 +24,7 @@ import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 // {}: { users: IPostbackend[] }
-const HomePage = ({ news }: { news: ArticleProps[] }) => {
+const HomePage = ({ allCategory }: { allCategory: INewsCategory[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage, data } = router.query
@@ -218,7 +218,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let users
   let news
-  news = await fetchWithoutAuthorization("/v1/news/", "GET")
+  news = await fetchWithoutAuthorization("/v1/category/all", "GET")
   if (session) {
     users = await fetchData(`/v1/post/?skip=5`, session.user?.name as string, "GET")
   } else {
@@ -240,21 +240,20 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   users = users?.data?.posts
-  news = news?.data.AllNews as INews[]
-  const res2: ArticleProps[] = CreateNewsFrontend(news)
+  const allCategory: INewsCategory[] = news?.data?.categories ?? []
 
   if (session) {
     return {
       props: {
         users,
-        news: res2,
+        allCategory,
       },
     }
   }
   return {
     props: {
       users,
-      news: res2,
+      allCategory,
     },
   }
 }
@@ -262,11 +261,10 @@ export const CreateNewsFrontend = (NewsArray: INews[]) => {
   const res2: ArticleProps[] = (NewsArray ?? []).map((Pnews) => {
     return {
       id: Pnews.id,
-      imgSrc: Pnews?.bannerImage,
+      imgSrc: Pnews?.bannerImage ??"",
       imgAlt: "",
-      category: Pnews.category.title,
       title: Pnews.title,
-      link: Pnews.subtitle,
+      link: Pnews.subtitle ??"",
     }
   })
   return res2

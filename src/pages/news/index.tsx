@@ -2,7 +2,7 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 
-import { ArticleProps, INews } from "@/interface/news"
+import { ArticleProps, INews, INewsCategory } from "@/interface/news"
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
@@ -12,10 +12,10 @@ import { CreateNewsFrontend } from ".."
 
 // type jobsDetails=
 const Jobs = ({
-  news,
+  parsedCategoriesDetails,
   //   jobSoftwareSuggestions,
 }: {
-  news: ArticleProps[]
+  parsedCategoriesDetails: INewsCategory[]
   //   jobSoftwareSuggestions: JobSoftwareSuggestions
 }) => {
   return (
@@ -24,7 +24,7 @@ const Jobs = ({
         <title>GameCreators | News</title>
       </Head>
 
-      <NewsPage news={news} />
+      <NewsPage parsedCategoriesDetails={parsedCategoriesDetails} />
     </>
   )
 }
@@ -35,9 +35,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let newsDetails
   if (!session) {
-    newsDetails = await fetchWithoutAuthorization(`/v1/news`, "GET")
+    newsDetails = await fetchWithoutAuthorization(`/v1/news/category/all`, "GET")
   } else {
-    newsDetails = await fetchData(`/v1/news/others`, session.user?.name as string, "GET")
+    newsDetails = await fetchData(`/v1/news/category/all`, session.user?.name as string, "GET")
   }
   //   const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
 
@@ -57,13 +57,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
-  console.log("newsDetails ", newsDetails)
-  const parsedNewsDetails: INews[] = newsDetails?.data.AllNews
+  const parsedCategoriesDetails: INewsCategory[] = newsDetails?.data
   //   const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
-  const news: ArticleProps[] = CreateNewsFrontend(parsedNewsDetails)
+  // const news: ArticleProps[] = CreateNewsFrontend(parsedNewsDetails)
   return {
     props: {
-      news,
+      parsedCategoriesDetails,
       //   jobSoftwareSuggestions,
     },
   }

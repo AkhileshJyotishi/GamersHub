@@ -58,10 +58,10 @@ const FilterMobileDialog: React.FC<FilterMobileDialogProps> = ({
                   setPopup(false)
                 }}
                 displayWithoutContainer
-                containerClass="flex w-full sm:justify-center"
+                containerClass="flex sm:justify-center"
               >
                 <div
-                  className={`flex flex-col px-[12px] py-[10px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-5/6 gap-[20px] gap-y-4 `}
+                  className={`flex flex-col px-[12px] py-[10px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full h-full overflow-y-scroll gap-[20px] gap-y-4 `}
                 >
                   <div className="flex flex-row flex-wrap items-baseline justify-between">
                     <span className="text-[22px] font-bold">Filters</span>

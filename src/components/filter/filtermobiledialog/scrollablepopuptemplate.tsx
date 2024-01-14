@@ -16,16 +16,16 @@ export function ScrollablePopupTemplate({
   return (
     <>
       <div
-        className="fixed inset-0 z-50 bg-[#000] cursor-pointer opacity-70 backdrop-blur"
+        className="fixed z-50 top-0 bottom-0 left-0 right-0 h-full w-full bg-[#000] cursor-pointer opacity-70 backdrop-blur"
         onClick={onClose}
       ></div>
 
-      <div className="fixed z-[90] inset-0  flex flex-col items-center justify-center overflow-x-hidden   w-full mx-auto  h-fit top-[30%]">
+      <div className="fixed z-[90] top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-start overflow-x-hidden my-auto w-[75%] mx-auto h-fit max-h-[85vh] ">
         {/* Container */}
 
         {displayWithoutContainer ? (
           <div
-            className={"w-full flex items-center justify-center h-fit " + (containerClass ?? "")}
+            className={"w-full flex items-center justify-center h-full " + (containerClass ?? "")}
           >
             {children}
           </div>

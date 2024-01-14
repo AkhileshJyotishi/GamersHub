@@ -3,8 +3,9 @@ import Image from "next/image"
 
 // import { useSession } from "next-auth/react"
 import image from "@/assets/image/void.svg"
-import { ArticleProps } from "@/interface/news"
+import { ArticleProps, INewsCategory } from "@/interface/news"
 import { useUserContext } from "@/providers/user-context"
+import defaultbannerImage from "@/assets/image/user-banner.png"
 
 // import { fetchData } from "@/utils/functions"
 import SkeletonLoader from "@/components/ui/SkeletonLoader2"
@@ -13,15 +14,15 @@ import { Article } from "./NewsCard"
 import Layout from "./newsLayout"
 
 type NewsPageProps = {
-  news: ArticleProps[]
+  parsedCategoriesDetails: INewsCategory[]
   // newsSuggestions?: JobSoftwareSuggestions
 }
-const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
-  const [activetab, setactivetab] = useState<string>("All")
+const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
+  const [activetab, setactivetab] = useState<INewsCategory["title"]>("All")
   const { userData, setIsLoginModalOpen } = useUserContext()
   // const { data: session } = useSession()
-  const [AllNews, setNews] = useState<ArticleProps[] | null>(news)
-  const [myNews, setmyNews] = useState<ArticleProps[] | null>(null)
+  const [AllCategory, setAllCategory] = useState<INewsCategory[] | null>(parsedCategoriesDetails)
+  // const [myNews, setmyNews] = useState<INewsCategory[] | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
     if (activetab === "Saved" && userData === null) {
@@ -77,22 +78,25 @@ const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
   // useEffect(() => {
   //   myjobs()
   // }, [userData])
-  useEffect(() => {
-    setNews(news)
-  }, [activetab])
+  // #risky
+  // useEffect(() => {
+  //   setAllCategory(parsedCategoriesDetails)
+  // }, [activetab])
   return (
     <Layout
-      news={activetab === "My News Posts" ? myNews || [] : news}
+      // activetab === "My News Posts" ? myNews || [] :
+      AllCategory={AllCategory || []}
       activeTab={activetab}
       setActiveTab={setactivetab}
-      setNews={activetab === "My News Posts" ? setmyNews || [] : setNews}
+      // activetab === "My News Posts" ? setmyNews || [] :
+      setAllCategory={setAllCategory}
       setLoading={setLoading}
       loading={loading}
       // jobSoftwareSuggestions={jobSoftwareSuggestions}
     >
       {activetab === "All" && (
         <>
-          {news.length > 0 ? (
+          {AllCategory && AllCategory?.length > 0 ? (
             <>
               <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
                 {loading ? (
@@ -102,21 +106,23 @@ const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
                     <SkeletonLoader />
                   </>
                 ) : (
-                  AllNews?.map((article) => (
-                    <>
-                      <Article
-                        id={article.id}
-                        title={article.title}
-                        category={article.category}
-                        key={article.id}
-                        // {...article}
-                        imgSrc={article.imgSrc}
-                        imgAlt={``}
-                        className=""
-                        link="error"
-                      />
-                    </>
-                  ))
+                  AllCategory?.map((cat) => {
+                    return (
+                      <>
+                        <Article
+                          id={article.id}
+                          title={article.title}
+                          category={article.category}
+                          key={article.id}
+                          // {...article}
+                          imgSrc={article.imgSrc}
+                          imgAlt={``}
+                          className=""
+                          link="error"
+                        />
+                      </>
+                    )
+                  })
                 )}
               </div>
             </>
@@ -130,11 +136,24 @@ const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
           )}
         </>
       )}
-
+      {AllCategory &&
+        AllCategory.find((x) => x.title === activetab)?.news?.map((article) => {
+          return (
+            <Article
+              id={article.id}
+              title={article.title}
+              key={article.id}
+              imgSrc={article.bannerImage ?? defaultbannerImage}
+              imgAlt={``}
+              className=""
+              link={`/news/${article.id}`}
+            />
+          )
+        })}
       {/* 
       {activetab === "Saved" && (
         <>
-          {AllNews?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
+          {AllCategory?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
             <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
               {loading ? (
