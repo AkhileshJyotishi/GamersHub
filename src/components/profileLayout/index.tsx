@@ -62,6 +62,7 @@ const ProfileLayout = ({
   const [loading, setLoading] = useState<boolean>(true)
   const [createAlbum, setCreateAlbum] = useState<boolean>(false)
   const [data, setData] = useState<User | null>(null)
+  const [initialKeywords, setInitialKeywords] = useState<string[]>([])
   const param = useParams()
 
   useEffect(() => {
@@ -73,11 +74,14 @@ const ProfileLayout = ({
             `/v1/users/customDetails/${router.query.user}`,
             "GET"
           )
+          // const data = await fetchWithoutAuthorization("/v1/users/keyword","GET")
+
           if (users?.error) {
             router.replace(`/?emessage=Please Authenticate`)
           } else {
             // console.log("router ",)
             const x = router.pathname.split("/")
+            setInitialKeywords(users?.data?.tags)
             setData(users?.data?.user)
             setActiveTab(x[x.length - 1])
           }
@@ -234,7 +238,7 @@ const ProfileLayout = ({
         <Head>
           <title>Profile | {data?.username}</title>
         </Head>
-        <div className="flex flex-col gap-5 p-5 lg:flex-row">
+        <div className="flex flex-col gap-5 p-2 sm:p-3 md:p-4 lg:p-5 lg:flex-row">
           <ProfileCard className="hidden lg:block" currentUser={data} />
           <Modal
             isOpen={isCreateAlbumOpen}
@@ -252,13 +256,11 @@ const ProfileLayout = ({
                 key={"album"}
                 inputType={"text"}
                 title={"Album name"}
-                placeholder={""}
+                placeholder={"Enter Album Name"}
                 value={newAlbum.title}
                 onChange={(value) =>
                   setnewAlbum((prevState) => ({ ...prevState, title: value as string }))
                 }
-                // selectOptions={filter.selectOptions}
-                // onTagsChange={filter.onTagsChange}
                 className={"bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
               />
@@ -266,12 +268,13 @@ const ProfileLayout = ({
                 key={"album"}
                 inputType={"tags"}
                 title={"Album keywords"}
-                placeholder={""}
+                placeholder={"Enter Keywords"}
                 onTagsChange={(tags) =>
                   setnewAlbum((prevState) => ({ ...prevState, AlbumKeywords: tags }))
                 }
+                selectOptions={initialKeywords.map((i) => ({ label: i, value: i }))}
                 value={newAlbum.AlbumKeywords}
-                className={"bg-transparent rounded-md"}
+                className={"w-full bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
                 initialtags={newAlbum.AlbumKeywords}
               />
@@ -286,7 +289,7 @@ const ProfileLayout = ({
                 onChange={(value) =>
                   setnewAlbum((prevState) => ({ ...prevState, banner: value as File }))
                 }
-                // className={"bg-transparent rounded-md"}
+                className={"bg-transparent rounded-md"}
                 Variant="flex flex-col items-start gap-[10px] text-[14px] "
                 fullScreen={false}
               />

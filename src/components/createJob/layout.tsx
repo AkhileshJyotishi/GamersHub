@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import { Errors, FilterDetail } from "@/interface/filter"
 import {
   validateBooleanField,
-  validateFileField,
+  // validateFileField,
   validateNumberField,
   validateStringArrayField,
   validateStringField,
@@ -152,13 +152,13 @@ const Layout: React.FC<LayoutProps> = ({
           }))
           break
 
-        case "banner": {
-          validationFunction = validateFileField
-          const y = await validationFunction(value, validationParams)
-          flg === true && y === "" ? (flg = true) : (flg = false)
-          setErrors((prev) => ({ ...prev, [field]: y }))
-          break
-        }
+        // case "banner": {
+        //   validationFunction = validateFileField
+        //   const y = await validationFunction(value, validationParams)
+        //   flg === true && y === "" ? (flg = true) : (flg = false)
+        //   setErrors((prev) => ({ ...prev, [field]: y }))
+        //   break
+        // }
         case "remote": {
           validationFunction = validateBooleanField
           const z = await validationFunction(value, validationParams)
@@ -322,20 +322,20 @@ const Layout: React.FC<LayoutProps> = ({
       className: "bg-transparent rounded-md",
       errorMessage: errors.paymentValue,
     },
-    {
-      inputType: "file",
-      title: "Job Cover",
-      accept: "image/*",
-      multiple: false,
-      value: null,
-      onChange: (value) =>
-        handleInputChange("banner", value as File, validateFileField, {
-          required: true,
-          fileMaxSize: 1024 * 1024,
-        }),
-      className: "",
-      errorMessage: errors.banner,
-    },
+    // {
+    //   inputType: "file",
+    //   title: "Job Cover",
+    //   accept: "image/*",
+    //   multiple: false,
+    //   value: null,
+    //   onChange: (value) =>
+    //     handleInputChange("banner", value as File, validateFileField, {
+    //       required: true,
+    //       fileMaxSize: 1024 * 1024,
+    //     }),
+    //   className: "",
+    //   errorMessage: errors.banner,
+    // },
 
     {
       title: "Level of Expertise",
@@ -382,7 +382,7 @@ const Layout: React.FC<LayoutProps> = ({
           value: s,
         })),
       ],
-      placeholder: "Blender, Unreal Engine, ",
+      placeholder: "Blender, Unreal Engine etc. ",
       errorMessage: errors.jobSoftwares,
     },
   ]

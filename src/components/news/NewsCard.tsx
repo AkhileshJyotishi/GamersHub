@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { FC } from "react"
 import cn from "classnames"
 import clsx from "clsx"
 import Image from "next/image"
@@ -20,32 +20,37 @@ export const Article: FC<ArticleProps & { className: string }> = ({
   link,
   className,
 }) => {
-  useEffect(() => {}, [])
   return (
-    <article className={cn("relative", className)}>
-      <div className="h-[inherit] relative flex flex-col mt-auto">
-        <Image fill alt={""} className="h-full bg-[#181818]" src={imgSrc || defaultbannerImage} />
+    <article className={cn("h-fit", className)}>
+      <div className=" relative flex flex-col mt-auto">
+        <Image
+          height={1200}
+          width={800}
+          alt={""}
+          className="absolute h-full bg-[#181818] min-h-[312px] object-cover"
+          src={imgSrc || defaultbannerImage}
+        />
+      </div>
 
-        <span
+      {/* <span
           id="blackOverlay"
           className="hover:opacity-30 duration-200 absolute w-full h-full bg-[#000] opacity-20"
-        ></span>
-        <div className={clsx(" relative mt-auto p-2 ", news.background)}>
-          <div className="flex flex-row items-center gap-2 ">
-            <Link className="" href={`/${category.toLowerCase()}/`}>
-              {category}
-            </Link>
-          </div>
-          <h3 className="hover:text-secondary">
-            <Link
-              href={link ?? ""}
-              className="md:text-[1.25rem] text-text font-[700] hover:text-secondary duration-200"
-              title={title}
-            >
-              {title}
-            </Link>
-          </h3>
+        ></span> */}
+      <div className={clsx(" relative mt-auto p-2 ", news.background)}>
+        <div className="flex flex-row items-center gap-2 ">
+          <Link className="" href={`/${category.toLowerCase()}/`}>
+            {category}
+          </Link>
         </div>
+        <h3 className="hover:text-secondary">
+          <Link
+            href={link ?? ""}
+            className="md:text-[1.25rem] text-text font-[700] hover:text-secondary duration-200"
+            title={title}
+          >
+            {title}
+          </Link>
+        </h3>
       </div>
     </article>
   )

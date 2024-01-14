@@ -174,7 +174,12 @@ const Albums = () => {
               <Button
                 className="bg-secondary w-[90%] min-[400px]:w-auto py-[10px] px-[30px] font-medium rounded-xl"
                 onClick={() => {
-                  router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
+                  if (albumDetails.length > 0)
+                    router.push(`/${userData?.id}/profile/portfolio/CreatePost`)
+                  else {
+                    toast.info("First Create An Album")
+                    setisCreateAlbumOpen(true)
+                  }
                 }}
               >
                 New Post

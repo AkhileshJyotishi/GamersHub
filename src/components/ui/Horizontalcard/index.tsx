@@ -69,7 +69,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
       />
       <div className="px-6 py-2">
         <span
-          className="p-1 mb-2 text-xl font-bold cursor-pointer hover:text-green-600"
+          className="p-1 mb-2 text-xl font-bold cursor-pointer hover:text-green-600 duration-200 capitalize"
           onClick={() => {
             router.push(`/${userData?.id}/profile/albums/${id}`)
           }}

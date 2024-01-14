@@ -236,7 +236,7 @@ const Layout: React.FC<LayoutProps> = ({
     {
       title: "Distribution platforms",
       inputType: "tags",
-      placeholder: "Windows, Linux, FreeBSD etc",
+      placeholder: "Windows, Linux etc",
       value: gameInfo.distributionPlatforms,
       onTagsChange: (value) =>
         handleInputChange("distributionPlatforms", value, validateStringArrayField, {
@@ -245,6 +245,12 @@ const Layout: React.FC<LayoutProps> = ({
         }),
       errorMessage: errors.distributionPlatforms,
       initialtags: gameInfo.distributionPlatforms,
+      selectOptions: [
+        ...(customGameTags?.platform ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
     {
       title: "Tags",

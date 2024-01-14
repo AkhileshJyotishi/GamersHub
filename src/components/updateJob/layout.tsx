@@ -330,20 +330,20 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       className: "bg-transparent rounded-md",
       errorMessage: errors.paymentValue,
     },
-    {
-      inputType: "file",
-      title: "Job Cover",
-      accept: "image/*",
-      multiple: false,
-      value: jobInfo.banner as string,
-      onChange: (value) =>
-        handleInputChange("banner", value as File, validateFileField, {
-          required: true,
-          fileMaxSize: 1024 * 1024,
-        }),
-      className: "",
-      errorMessage: errors.banner,
-    },
+    // {
+    //   inputType: "file",
+    //   title: "Job Cover",
+    //   accept: "image/*",
+    //   multiple: false,
+    //   value: jobInfo.banner as string,
+    //   onChange: (value) =>
+    //     handleInputChange("banner", value as File, validateFileField, {
+    //       required: true,
+    //       fileMaxSize: 1024 * 1024,
+    //     }),
+    //   className: "",
+    //   errorMessage: errors.banner,
+    // },
     // {
     //   title: "Roles Needed*",
     //   inputType: "tags",

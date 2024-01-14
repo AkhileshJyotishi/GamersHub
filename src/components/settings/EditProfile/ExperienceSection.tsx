@@ -33,7 +33,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   setExperience,
   // onaddExperience,
   // handleExperienceChange,
-  // initialExperience,
+  initialExperience,
 }) => {
   const { data: session } = useSession()
   const router = useRouter()
@@ -83,7 +83,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 const exp = await updateUserExperience(
                   filterdetailarray.id,
                   experience,
-                  session?.user?.name as string
+                  session?.user?.name as string,
+                  initialExperience
                 )
                 if (!exp?.error) {
                   router.push(`${userData?.id}/profile/about`)

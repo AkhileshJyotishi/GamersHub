@@ -19,7 +19,15 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 // import { Editor } from "novel";
 
-const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend }) => {
+const CreatePortfolio = ({
+  albums,
+  post,
+  keywords,
+}: {
+  albums: Allow
+  post?: IPostbackend
+  keywords?: string[]
+}) => {
   const { data: session } = useSession()
   const router = useRouter()
   const path = usePathname()
@@ -58,9 +66,20 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
 
   const uploadPost = async () => {
     setLoading(true)
-    filtersState.content = JSON.parse(
-      localStorage.getItem(isUpdate ? "noval_content_update" : "noval_content") ?? ""
-    )
+    console.log(localStorage.getItem("noval_content"))
+    let novelContent
+    if (isUpdate) {
+      novelContent = "noval_content_update"
+    } else {
+      novelContent = "noval_content"
+    }
+    if (localStorage.getItem(novelContent)) {
+      filtersState.content = JSON.parse(
+        localStorage.getItem(isUpdate ? "noval_content_update" : "noval_content") ?? ""
+      )
+    } else {
+      filtersState.content = {}
+    }
     const formdata = new FormData()
     formdata.append("file", filtersState.banner as string)
     formdata.append("type", "portfolio")
@@ -121,6 +140,7 @@ const CreatePortfolio = ({ albums, post }: { albums: Allow; post?: IPostbackend 
       uploadPost={uploadPost}
       albums={albums}
       isUpdate={isUpdate}
+      keywords={keywords}
     >
       {/* Render the filterDetails here */}
       <div className="flex flex-col md:max-w-[59vw] w-full gap-4 lg:max-w-[69vw]">

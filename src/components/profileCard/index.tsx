@@ -85,9 +85,10 @@ export default function ProfileCard({
             className="w-[150px] h-[150px] rounded-full border-2 border-light"
             alt={""}
           />
-          <p className="text-2xl font-semibold text-center break-words ">
+
+          <div className="text-2xl font-semibold text-center break-words capitalize">
             {currentUser?.username || "User"}
-          </p>
+          </div>
           {/* <h3 className="break-all text-dull">{currentUser?.occupation}</h3> */}
           {currentUser?.userDetails?.country && currentUser?.userDetails?.city && (
             <span className="flex flex-row flex-wrap items-center justify-center gap-2 break-words">

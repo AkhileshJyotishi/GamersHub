@@ -191,7 +191,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
           <div className="mt-[10px] ">Filters</div>
         </Button>
       </div>
-      <div className="flex gap-4 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto ">
+      <div className="flex md:gap-4 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto ">
         <DesktopFilter
           className={"hidden md:flex"}
           key={1}

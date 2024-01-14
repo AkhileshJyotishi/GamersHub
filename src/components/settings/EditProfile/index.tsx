@@ -474,7 +474,7 @@ const EditProfilePage = ({
       inputType: "select",
       value: profileData.country,
       onChange: (value) => handleFieldChange("country", value as string),
-      selectOptions: [{ label: "", value: "" }, ...countryList],
+      selectOptions: countryList,
       errorMessage: fieldErrors.country,
     },
     {
@@ -483,7 +483,7 @@ const EditProfilePage = ({
       value: profileData.city,
       onChange: (value) => handleFieldChange("city", value as string),
       className: "bg-transparent rounded-md",
-      selectOptions: [{ label: "", value: "" }, ...city],
+      selectOptions: city,
       errorMessage: fieldErrors.city,
     },
     {
@@ -492,6 +492,7 @@ const EditProfilePage = ({
       placeholder: "3D modeller, 2D modeller ,voice artist....",
       initialtags: initialskillstags,
       onTagsChange: (value) => handleFieldChange("userSkills", value as string[]),
+      value: profileData.userSkills,
       selectOptions: predefinedTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
       errorMessage: fieldErrors.userSkills,
@@ -502,6 +503,8 @@ const EditProfilePage = ({
       placeholder: "Blender, Unreal Engine, Photoshop...",
       initialtags: initialsoftwaretags,
       onTagsChange: (value) => handleFieldChange("userSoftwares", value as string[]),
+      value: profileData.userSoftwares,
+
       selectOptions: predefinedSoftwareTagsAsSelectOptions,
       Variant: "flex-col w-full flex",
       errorMessage: fieldErrors.userSoftwares,

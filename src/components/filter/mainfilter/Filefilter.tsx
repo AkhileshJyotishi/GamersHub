@@ -77,7 +77,7 @@ const FileFilter: React.FC<FileInputProps> = ({
             <>
               <div
                 className="p-5 text-[14px] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dotted border-[0.1px]  border-gray-500 rounded-xl space-x-2 w-full"
-                style={{ zIndex: 18 }}
+                // style={{ zIndex: 17 }}
               >
                 <label htmlFor="asset-upload" className="cursor-pointer w-fit">
                   {" "}

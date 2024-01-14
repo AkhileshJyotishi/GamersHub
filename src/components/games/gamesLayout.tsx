@@ -67,7 +67,9 @@ const Layout: React.FC<gamesLayoutProps> = ({
       inputType: "tags",
       title: "Platforms",
       value: gamesFilters.platforms,
-      onTagsChange: (value) => setGamesFilter({ ...gamesFilters, platforms: value as string[] }),
+      onTagsChange: (value) =>
+        setGamesFilter((prev) => ({ ...prev, platforms: value as string[] })),
+      placeholder: "Ex:Linux, Windows..",
       selectOptions: [
         // {
         //   label: "Select platform",
@@ -82,7 +84,9 @@ const Layout: React.FC<gamesLayoutProps> = ({
     {
       inputType: "tags",
       title: "Genre",
+      placeholder: "Ex:Horror, Racing..",
       value: gamesFilters.genre,
+
       onTagsChange: (value) => setGamesFilter({ ...gamesFilters, genre: value as string[] }),
       selectOptions: [
         // {

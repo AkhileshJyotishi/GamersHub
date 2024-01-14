@@ -137,7 +137,7 @@ const GamesPage = ({
         <>
           {games && games?.length > 0 ? (
             <>
-              <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid w-full min-[600px]:grid-cols-2 md:grid-cols-1 gap-3 p-4 md:p-0 justify-items-center min-[950px]:grid-cols-2 min-[1150px]:grid-cols-3">
                 {loading ? (
                   <>
                     <SkeletonLoader />
@@ -148,7 +148,7 @@ const GamesPage = ({
                   games?.map((game, idx) => (
                     <Card
                       {...game}
-                      className="w-[100%] max-w-[380px] h-[320px]"
+                      className="w-[100%]  h-[320px]"
                       key={idx}
                       onsavedSuccess={(id, state) => handleSavedSuccess(id, state)}
                     />

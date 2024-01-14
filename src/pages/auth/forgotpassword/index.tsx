@@ -51,7 +51,6 @@ const Forgotpassword = () => {
               <TextInput
                 type="email"
                 onChange={handleChange}
-                // className="bg-[#101014] mt-2"
                 className="mt-2 tracking-wider bg-transparent rounded-md"
                 value={formValues.email}
                 name="email"

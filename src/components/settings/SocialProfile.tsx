@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+import lodash from "lodash"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -30,7 +31,7 @@ type EditProfileProps = {
   socialsprops: Isocials
 }
 const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }) => {
-  // console.log("session ", socialsprops)
+  console.log("session ", socialsprops)
   const { data: session } = useSession()
   const [addOnWeb, setAddOnWeb] = useState<Isocials>({
     ...socialsprops,
@@ -100,14 +101,9 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
       toast.error("Please enter valid urls before updating social links.")
       return
     }
-
-    const hasDataChanged = Object.keys(addOnWeb).some(
-      (key) => addOnWeb[key as keyof Isocials] !== socialsprops[key as keyof Isocials]
-    )
-    // delete addOnWeb.id;
-    // delete addOnWeb.userId;
-
-    if (hasDataChanged) {
+    if (!lodash.isEqual(addOnWeb, socialsprops)) {
+      console.log(addOnWeb)
+      console.log(socialsprops)
       toast.info("Uploading Profiles... ")
       const changeSocials = await fetchData(
         `/v1/users/socials`,
@@ -122,6 +118,8 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
       } else {
         toast.success(changeSocials?.message)
       }
+    } else {
+      toast.info("Please update data to Upload it")
     }
   }
   const handleInputChange = (
@@ -133,10 +131,11 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
         if (isValidURL(e.target.value)) {
           setErrors((prev) => ({ ...prev, [platform]: "" }))
         } else {
-          setErrors((prev) => ({ ...prev, [platform]: "*enter a valid url" }))
+          e.target.value != "" &&
+            setErrors((prev) => ({ ...prev, [platform]: "*enter a valid url" }))
         }
     }
-    setAddOnWeb({ ...addOnWeb, [platform]: e.target.value })
+    setAddOnWeb((prev) => ({ ...prev, [platform]: e.target.value }))
   }
 
   return (
@@ -168,7 +167,7 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
           }
           onClick={() => updateSocials()}
         >
-          upload
+          Upload
         </Button>
       </div>
     </div>

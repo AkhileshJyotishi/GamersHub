@@ -112,7 +112,7 @@ const SocialCard: React.FC<CardProps> = ({
 
   return (
     <div className={clsx("p-1 bg-user_interface_2 rounded-xl", className)}>
-      <div className="max-w-md bg-white rounded-sm">
+      <div className="  rounded-sm">
         <div className="flex items-center px-2 py-2">
           <Image
             className="object-cover w-6 h-6 rounded-full"
@@ -197,8 +197,8 @@ const SocialCard: React.FC<CardProps> = ({
             src={banner || defaultbannerImage}
             alt=""
             // blurDataURL={defaultbannerImage}
-            width={500}
-            height={400}
+            width={1000}
+            height={1000}
             className="w-[100%] object-cover rounded-lg h-[100%] border-[1px] border-user_interface_4 "
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           />

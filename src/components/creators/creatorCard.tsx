@@ -14,7 +14,7 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
   //   let bgImage = creator?.banner?.url;
   const router = useRouter()
   return (
-    <article className="flex flex-col bg-user_interface_2 rounded-[10px] p-[10px] sm:min-w-[200px] gap-[2px] w-full max-w-[450px] ">
+    <article className="flex flex-col bg-user_interface_2 rounded-[10px] p-[10px] sm:min-w-[200px] gap-[2px] w-full  h-fit">
       <div className="flex flex-col items-center rounded-t-[10px] h-[140px] relative ">
         <Image
           height={500}
@@ -63,12 +63,8 @@ const Card: React.FC<Creator> = ({ id, username, userDetails, bannerImage, profi
         <div className="flex flex-col items-start gap-1.5 p-3 min-h-[100px]">
           <h3 className="text-lg">Bio</h3>
           {userDetails?.userBio ? (
-            <>
-              <p className="line-clamp-3">{userDetails?.userBio}</p>
-            </>
-          ) : (
-            <>...</>
-          )}
+            <div className=" line-clamp-3 w-full  break-all">{userDetails?.userBio}</div>
+          ) : null}
         </div>
       }
 

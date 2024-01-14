@@ -28,7 +28,9 @@ const Editor = ({
         const parentDiv = document.getElementById("slash-command")
         if (parentDiv) {
           const firstChild = parentDiv.childNodes[0]
+          const secondChild = parentDiv.childNodes[1]
           parentDiv.removeChild(firstChild)
+          parentDiv.removeChild(secondChild)
         }
       }
     }

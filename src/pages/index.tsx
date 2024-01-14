@@ -31,7 +31,6 @@ const HomePage = ({ news }: { news: ArticleProps[] }) => {
   const { verifyMail, verifyModal, setVerifyMail, setVerifyModal } = useUserContext()
   useEffect(() => {
     // console.log("thse post are to  be mapped  ", users)
-    console.log(" newd ", news)
     // console.log("router ", router.query)
     if (logout && logout === "true") {
       // toast("Force logging out")
@@ -241,7 +240,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   users = users?.data?.posts
-  // console.log("object ", news?.data)
   news = news?.data.AllNews as INews[]
   const res2: ArticleProps[] = CreateNewsFrontend(news)
 
@@ -261,7 +259,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 export const CreateNewsFrontend = (NewsArray: INews[]) => {
-  const res2: ArticleProps[] = NewsArray.map((Pnews) => {
+  const res2: ArticleProps[] = (NewsArray ?? []).map((Pnews) => {
     return {
       id: Pnews.id,
       imgSrc: Pnews?.bannerImage,

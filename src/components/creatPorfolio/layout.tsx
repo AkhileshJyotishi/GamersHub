@@ -36,6 +36,7 @@ interface LayoutProps {
   uploadPost: () => void
   albums: Allow
   isUpdate?: boolean
+  keywords?: string[]
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -45,8 +46,9 @@ const Layout: React.FC<LayoutProps> = ({
   uploadPost,
   albums,
   isUpdate,
+  keywords,
 }) => {
-  let albumsselectoptions = [{ label: "select an album", value: "" }]
+  let albumsselectoptions: Allow = []
   const [dimensions] = useState<{
     height: number | null
     width: number | null
@@ -96,7 +98,7 @@ const Layout: React.FC<LayoutProps> = ({
     {
       inputType: "text",
       title: "Title",
-      placeholder: "title",
+      placeholder: "Enter Post Title",
       value: filtersState?.title,
       onChange: (value) =>
         handleInputChange("title", value as string, validateStringField, {
@@ -116,14 +118,17 @@ const Layout: React.FC<LayoutProps> = ({
           maxLength: 10,
         })
       },
-      placeholder: " keywords..",
+      placeholder: "Ex Work, Fun..",
+      selectOptions: (keywords ?? [])?.map((i) => ({ label: i, value: i })),
       errorMessage: errors.postKeywords,
       initialtags: filtersState?.postKeywords,
+      value: filtersState.postKeywords,
     },
     {
       inputType: "select",
       title: "Album Selection",
       selectOptions: albumsselectoptions,
+      placeholder: "Select an album",
       value: filtersState.albumId,
       onChange: (value) =>
         handleInputChange("albumId", Number(value) as number, validateNumberField, {

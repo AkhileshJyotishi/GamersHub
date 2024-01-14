@@ -43,7 +43,7 @@ const sections: FooterSection[] = [
   {
     title: "Support",
     links: [
-      { href: "/", text: "Contact us", target: "_self" },
+      { href: "/help", text: "Contact us", target: "_self" },
       { href: "/help", text: "FAQ", target: "_self" },
     ],
   },

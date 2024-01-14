@@ -46,7 +46,7 @@ const CreatorsPage = ({
         customCreatorsTags={customCreatorsTags}
       >
         {creators.length > 0 ? (
-          <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center  lg:grid-cols-3">
+          <div className="grid w-full grid-cols-1 gap-[20px ] md:gap-3 p-4 md:p-2 justify-items-center min-[1000px]:grid-cols-2  min-[1400px]:grid-cols-3 min-[2000px]:grid-cols-4">
             {creators?.map((sampleCreator, idx) => <Card {...sampleCreator} key={idx} />)}
           </div>
         ) : (

@@ -88,7 +88,7 @@ export default function ProfileAccordion({
               />
             </div>
             <div className="flex justify-center text-xl font-bold text-center">
-              <span>{currentUser?.username}</span>
+              <span className="capitalize">{currentUser?.username}</span>
             </div>
             {/* <span className="text-[14px] text-dull "> artist</span> */}
           </div>
@@ -183,9 +183,9 @@ export default function ProfileAccordion({
           {/* ==== On the web ==== */}
           {currentUser?.socials && (
             <div className="flex flex-col w-full mt-10">
-              <div className="flex flex-wrap justify-center mt-5 gap-7">
+              <div className="flex  flex-col flex-wrap justify-center mt-2  gap-7">
                 <h3 className="mx-auto mb-4 font-semibold">ON THE WEB</h3>
-                <div className="flex flex-wrap justify-center gap-8 mt-5">
+                <div className="flex flex-wrap justify-center gap-8 mt-2 ">
                   {currentUser?.socials?.facebook && (
                     <Link
                       title="Facebook"

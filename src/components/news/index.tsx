@@ -112,7 +112,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ news }) => {
                         // {...article}
                         imgSrc={article.imgSrc}
                         imgAlt={``}
-                        className="h-[200px]"
+                        className=""
                         link="error"
                       />
                     </>

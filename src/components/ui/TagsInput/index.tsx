@@ -159,6 +159,11 @@ const TagsInput: React.FC<TagsInputProps> = ({
                 color: "white",
               },
             }),
+            menuList: (styles) => ({
+              ...styles,
+              backgroundColor: "black",
+              zIndex: 18,
+            }),
           }}
           theme={(theme) => ({
             ...theme,

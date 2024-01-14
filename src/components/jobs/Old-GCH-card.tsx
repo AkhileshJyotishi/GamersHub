@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
+import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { dateToTimeAgo, fetchData } from "@/utils/functions"
@@ -23,6 +24,7 @@ interface JobCardProps {
   salary: string
   type: string
   banner: string | null
+  username: string
   location: string
   remote: boolean
   href: string
@@ -171,43 +173,54 @@ const JobTitle: React.FC<JobTitleProps> = ({
 
 interface JobProfileProps {
   profileImage: string
+  username: string
   title: string
   id: number
   location: string
 }
 
-const JobProfile: React.FC<JobProfileProps> = ({ profileImage, id, location, title }) => {
+const JobProfile: React.FC<JobProfileProps> = ({ profileImage, id, username }) => {
   const router = useRouter()
   return (
-    <div className="flex flex-row gap-3 mt-[50px]">
+    <div className="flex flex-row gap-3 mt-[50px] flex-wrap">
       <div
         onClick={(e) => {
           e.stopPropagation()
           router.push(`${id}/profile/albums`)
         }}
       >
-        {profileImage ? (
+        {
           <Image
             alt={""}
-            src={profileImage}
+            src={
+              profileImage
+                ? profileImage !== ""
+                  ? profileImage
+                  : defaultUserImage
+                : defaultUserImage
+            }
             width={40}
             height={40}
             className="w-[46px] h-[46px] rounded-full"
           />
-        ) : (
-          <div className="w-[46px] h-[46px] rounded-full bg-gray-400/50" />
-        )}
+        }
       </div>
       <div className="flex flex-col items-start gap-1">
-        <Link href={`/${id}/profile/albums`} className="font-medium text-[14px]">
-          {title ?? "Guest"}
-        </Link>
-        {location.trim().length > 1 && (
+        <span
+          onClick={(e) => {
+            e.stopPropagation()
+            router.push(`/${id}/profile/albums`)
+          }}
+          className="font-medium text-[14px] my-auto"
+        >
+          {username ?? "Guest"}
+        </span>
+        {/* {location.trim().length > 1 && (
           <span className="flex flex-row items-center gap-2">
             <MapPinIcon className="text-user_interface_6 w-4 h-4" />
             <span className="text-[12px] text-user_interface_6 font-medium">{location}</span>
           </span>
-        )}
+        )} */}
       </div>
     </div>
   )
@@ -230,22 +243,24 @@ interface JobDetailsProps {
   type: string
 }
 
-const JobDetails: React.FC<JobDetailsProps> = ({ jobLocation, location, type }) => (
-  <div className="flex self-end flex-row w-full flex-wrap mt-10 gap-[20px]">
-    <span className="flex flex-row items-center gap-1">
-      {jobLocation.remote ? (
-        <WifiIcon className="text-secondary_2 w-[18px] h-[18px]" />
-      ) : (
-        <MapPinIcon className="text-secondary_2 w-[18px] h-[18px]" />
-      )}
-      <span>{jobLocation.remote ? "Remote" : location}</span>
-    </span>
-    <span className="flex flex-row items-center gap-1">
-      <BriefcaseIcon className="text-secondary_2 w-[18px] h-[18px]" />
-      <span>{type}</span>
-    </span>
-  </div>
-)
+const JobDetails: React.FC<JobDetailsProps> = ({ jobLocation, location, type }) => {
+  return (
+    <div className="flex self-end flex-row w-full flex-wrap mt-10 gap-[20px]">
+      <span className="flex flex-row items-center gap-2">
+        {jobLocation.remote ? (
+          <WifiIcon className="text-secondary_2 w-[18px] h-[18px]" />
+        ) : (
+          <MapPinIcon className="text-secondary_2 w-[18px] h-[18px]" />
+        )}
+        <span>{jobLocation.remote ? "Remote" : location}</span>
+      </span>
+      <span className="flex flex-row items-center gap-1">
+        <BriefcaseIcon className="text-secondary_2 w-[18px] h-[18px]" />
+        <span>{type.split("_").join(" ")}</span>
+      </span>
+    </div>
+  )
+}
 
 interface JobPostedProps {
   createdAt: string
@@ -260,10 +275,10 @@ const JobPosted: React.FC<JobPostedProps> = ({ createdAt }) => (
     </div>
   </div>
 )
-const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) => {
+const AdditionalDetails = ({ chips }: { type: string; chips?: string[] }) => {
   return (
     <div className="flex flex-wrap gap-3 p-3">
-      <div className="flex flex-wrap gap-2">
+      {/* <div className="flex flex-wrap gap-2">
         <span className="flex items-center ">
           <div className="flex items-center justify-center px-2 py-1 m-1 font-medium border rounded-full cursor-pointer hover:border-secondary">
             <div className="text-xs font-normal leading-none max-w-full flex-initial p-[2px]">
@@ -271,7 +286,7 @@ const AdditionalDetails = ({ type, chips }: { type: string; chips?: string[] }) 
             </div>
           </div>
         </span>
-      </div>
+      </div> */}
       {chips &&
         chips?.map((chip, index) => (
           <div key={index} className="flex flex-wrap items-center cursor-pointer ">
@@ -297,6 +312,8 @@ const DynamicJobCard: React.FC<JobCardProps> = ({
   title,
   href,
   id,
+  remote,
+  username,
   savedUsers,
   profileImage,
   onsavedSuccess,
@@ -307,7 +324,10 @@ const DynamicJobCard: React.FC<JobCardProps> = ({
   return (
     <article
       className={`flex w-full cursor-pointer flex-col items-start rounded-lg md:rounded-[17px] py-[25px] px-4 md:px-[36px] bg-user_interface_2 h-fit ${className}`}
-      onClick={() => router.push(href)}
+      onClick={(e) => {
+        e.stopPropagation()
+        router.push(href)
+      }}
     >
       <JobTitle
         title={title}
@@ -324,9 +344,10 @@ const DynamicJobCard: React.FC<JobCardProps> = ({
         profileImage={profileImage}
         title={title}
         key={"profile"}
+        username={username}
       />
       <JobDescription description={desc || ""} />
-      <JobDetails jobLocation={{ remote: true }} location={location} type={type} />
+      <JobDetails jobLocation={{ remote }} location={location} type={type} />
       <AdditionalDetails type={type} chips={chips} key={"Additional Details "} />
       <JobPosted createdAt={date || ""} />
     </article>

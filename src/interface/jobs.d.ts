@@ -21,7 +21,7 @@ interface Job {
   }[]
   userId: number
   remote: boolean
-
+  username: string
   profileImage: string
 }
 interface IjobsDetails {}
@@ -31,7 +31,7 @@ interface JobSoftwareSuggestions {
 interface BackendJob {
   id: number
   slug: string
-  banner: string | null
+  // banner: string | null
   publishDate: string | null
   title: string
   description: string | null
@@ -58,6 +58,7 @@ interface BackendJob {
   user: {
     username: string
     profileImage: string
+    bannerImage: string | null
   }
   jobApplications: {
     id: number

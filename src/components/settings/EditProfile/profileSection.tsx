@@ -1,6 +1,8 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
+import _ from "lodash"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 // import Filter from '../filter/mainfilter/filter';
 import { FilterDetail } from "@/interface/filter"
@@ -33,6 +35,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   isProfileDataFilled,
   setProfileFilled,
 }) => {
+  const initProfile = useMemo(() => profileData, [])
   const [manageProfile, setManageProfile] = useState<boolean>(false)
   const { data: session } = useSession()
   const router = useRouter()
@@ -66,27 +69,32 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
         <Button
           disabled={manageProfile}
           className={
-            "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl"
+            "px-[12px] py-[6px] border-green-500  border-[0.01px] flex items-center mt-6 rounded-xl "
           }
           onClick={async () => {
-            setManageProfile(true)
-            let method = "POST"
-            if (isProfileDataFilled) {
-              method = "PATCH"
+            if (_.isEqual(initProfile, profileData)) {
+              toast.info("please Update Information to upload")
+              return
+            } else {
+              setManageProfile(true)
+              let method = "POST"
+              if (isProfileDataFilled) {
+                method = "PATCH"
+              }
+              const x = await uploadProfileData(
+                profileData,
+                session?.user?.name as string,
+                method,
+                setProfileFilled
+              )
+              if (!x?.error) {
+                router.push(`${userData?.id}/profile/about`)
+              }
+              setManageProfile(false)
             }
-            const x = await uploadProfileData(
-              profileData,
-              session?.user?.name as string,
-              method,
-              setProfileFilled
-            )
-            if (!x?.error) {
-              router.push(`${userData?.id}/profile/about`)
-            }
-            setManageProfile(false)
           }}
         >
-          {manageProfile ? "modifying..." : isProfileDataFilled ? "Update" : "Upload"}
+          {manageProfile ? "Modifying..." : isProfileDataFilled ? "Update" : "Upload"}
         </Button>
       </div>
     </>

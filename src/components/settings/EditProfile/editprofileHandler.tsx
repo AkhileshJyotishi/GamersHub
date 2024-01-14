@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { NextRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -17,17 +18,7 @@ export const uploadUserEducation = async (
     description: "",
   }
 ) => {
-  // const token = useSession().data?.user?.name as string
-  // const session = await getSession(req as NextApiRequest, res as NextApiResponse)
-
-  const hasDataChanged =
-    userEducation.university !== initialUserEducation.university ||
-    userEducation.degree !== initialUserEducation.degree ||
-    userEducation.startingDate !== initialUserEducation.startingDate ||
-    userEducation.endingDate !== initialUserEducation.endingDate ||
-    userEducation.description !== initialUserEducation.description
-
-  if (!hasDataChanged) {
+  if (_.isEqual(userEducation, initialUserEducation)) {
     toast.info("Fill the credentials")
     return
   }
@@ -65,28 +56,14 @@ export const updateUserEducation = async (
   token: string
 ) => {
   const educationToUpdate = findEducationToUpdate(education, userId)
-  // const initialeducationtoupdate = findEducationToUpdate(initialEducation, userId)
-  // console.log(initialEducation)
-  // const token = useSession().data?.user?.name as string
-
   if (!educationToUpdate) {
     toast.info("Some error occured , please retry")
     return
+  } else if (_.isEqual(initialEducation, educationToUpdate)) {
+    toast.info("Please Update Some information to Upload")
+    return
   }
 
-  // const hasDataChanged =
-  //   educationToUpdate.university !== initialeducationtoupdate?.university ||
-  //   educationToUpdate.degree !== initialeducationtoupdate?.degree ||
-  //   educationToUpdate.startingDate !== initialeducationtoupdate?.startingDate ||
-  //   educationToUpdate.endingDate !== initialeducationtoupdate?.endingDate ||
-  //   educationToUpdate.description !== initialeducationtoupdate?.description
-
-  // if (!hasDataChanged) {
-  //     toast.info("No changes made to education details.");
-  //     return;
-  // }
-
-  // Send a request to update the education details
   delete educationToUpdate.id
   toast.dismiss()
   toast.info("Updating Education Info...")
@@ -182,12 +159,11 @@ const findExperienceToUpdate = (
 export const updateUserExperience = async (
   userId: number | undefined,
   experience: IuserExperience[],
-  token: string
-
-  // initialExperience: IuserExperience[] | undefined
+  token: string,
+  initialExperience: IuserExperience[] | undefined
 ) => {
   const experienceToUpdate = findExperienceToUpdate(experience, userId)
-  // const initialexperiencetoupdate = findExperienceToUpdate(initialExperience, userId)
+  const initialexperiencetoupdate = findExperienceToUpdate(initialExperience, userId)
   // console.log(initialExperience)
   // const token = useSession().data?.user?.name as string
 
@@ -195,28 +171,16 @@ export const updateUserExperience = async (
     toast.info("Some error occured , please retry")
     return
   }
-
-  // const hasDataChanged =
-  //   experienceToUpdate.company !== initialexperiencetoupdate?.company ||
-  //   experienceToUpdate.description !== initialexperiencetoupdate?.description
-  // experienceToUpdate.endingDate !== initialexperiencetoupdate?.endingDate ||
-  //   experienceToUpdate.startingDate !== initialexperiencetoupdate?.startingDate ||
-  //   experienceToUpdate.presentWorking !== initialexperiencetoupdate?.presentWorking ||
-  //   experienceToUpdate.role !== initialexperiencetoupdate?.role
-
-  // if (!hasDataChanged) {
-  //     toast.info("No changes made to experience details.");
-  //     return;
-  // }
-
-  // Send a request to update the experience details
+  if (_.isEqual(experienceToUpdate, initialexperiencetoupdate)) {
+    toast.info("please Update Data to Upload")
+  }
   delete experienceToUpdate.id
   toast.info("Updating Your Experiences...")
 
   const response = await fetchData(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}v1/users/experience/${userId}`,
     token,
-    "PATCH", // Use PATCH to update existing experience
+    "PATCH",
     experienceToUpdate
   )
   toast.dismiss()
@@ -243,17 +207,7 @@ export const uploadUserExperience = async (
     presentWorking: false,
   }
 ) => {
-  // const token = useSession().data?.user?.name as string
-
-  const hasDataChanged =
-    userExperience.company !== initialUserExperience?.company ||
-    userExperience.description !== initialUserExperience?.description
-  userExperience.endingDate !== initialUserExperience?.endingDate ||
-    userExperience.startingDate !== initialUserExperience?.startingDate ||
-    userExperience.presentWorking !== initialUserExperience?.presentWorking ||
-    userExperience.role !== initialUserExperience?.role
-
-  if (!hasDataChanged) {
+  if (_.isEqual(userExperience, initialUserExperience)) {
     toast.info("Fill the credentials")
     return
   }
@@ -303,10 +257,8 @@ export const uploadProfileData = async (
   setProfileFilled: Allow
 ) => {
   const formdata = new FormData()
-  // console.log(newAlbum)
-  // return
-  toast.info("Uploading Your Profile...")
 
+  toast.info("Uploading Your Profile...")
   if (profileData?.profileImage && typeof profileData?.profileImage == "object") {
     formdata.append("file", profileData?.profileImage as File)
     formdata.append("type", "user")

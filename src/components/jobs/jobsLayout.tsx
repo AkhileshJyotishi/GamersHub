@@ -238,7 +238,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto  3xl:p-48 ">
+      <div className="flex md:gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto  3xl:p-48 ">
         <DesktopFilter
           className={"hidden md:flex"}
           loading={loading}

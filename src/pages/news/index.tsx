@@ -57,10 +57,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
+  console.log("newsDetails ", newsDetails)
   const parsedNewsDetails: INews[] = newsDetails?.data.AllNews
   //   const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
   const news: ArticleProps[] = CreateNewsFrontend(parsedNewsDetails)
-  console.log("how its going", news)
   return {
     props: {
       news,
