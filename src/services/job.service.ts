@@ -96,7 +96,6 @@ interface jobBody {
   remote: boolean
   paymentType: 'FIXED' | 'HOURLY' | 'NEGOTIABLE'
   jobType: 'FREELANCE' | 'FULL_TIME' | 'COLLAB'
-  banner?: string | null
   publishDate?: string | null
   jobDetails?: object
   aboutRecruiter?: object
@@ -273,7 +272,8 @@ const getJobById = async (id: number): Promise<Job | object> => {
       user: {
         select: {
           username: true,
-          profileImage: true
+          profileImage: true,
+          bannerImage: true
         }
       },
       jobApplications: {

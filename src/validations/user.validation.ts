@@ -43,13 +43,13 @@ const updateUser = {
 const createSocials = {
   body: Joi.object()
     .keys({
-      twitter: Joi.string().optional().allow(null),
-      facebook: Joi.string().optional().allow(null),
-      linkedin: Joi.string().optional().allow(null),
-      youtube: Joi.string().optional().allow(null),
-      github: Joi.string().optional().allow(null),
-      portfolio: Joi.string().optional().allow(null),
-      artstation: Joi.string().optional().allow(null)
+      twitter: Joi.string().optional().allow(''),
+      facebook: Joi.string().optional().allow(''),
+      linkedin: Joi.string().optional().allow(''),
+      youtube: Joi.string().optional().allow(''),
+      github: Joi.string().optional().allow(''),
+      portfolio: Joi.string().optional().allow(''),
+      artstation: Joi.string().optional().allow('')
     })
     .min(1)
 }
@@ -57,13 +57,13 @@ const createSocials = {
 const updateSocials = {
   body: Joi.object()
     .keys({
-      twitter: Joi.string().optional().allow(null),
-      facebook: Joi.string().optional().allow(null),
-      linkedin: Joi.string().optional().allow(null),
-      youtube: Joi.string().optional().allow(null),
-      github: Joi.string().optional().allow(null),
-      portfolio: Joi.string().optional().allow(null),
-      artstation: Joi.string().optional().allow(null)
+      twitter: Joi.string().optional().allow(''),
+      facebook: Joi.string().optional().allow(''),
+      linkedin: Joi.string().optional().allow(''),
+      youtube: Joi.string().optional().allow(''),
+      github: Joi.string().optional().allow(''),
+      portfolio: Joi.string().optional().allow(''),
+      artstation: Joi.string().optional().allow('')
     })
     .min(1)
 }
