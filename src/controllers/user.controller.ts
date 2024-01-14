@@ -328,11 +328,17 @@ const getAllDetails = catchAsync(async (req, res) => {
 const getCustomDetails = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id as string)
   const customDetails = await userService.getCustomDetails(id)
+  const keywords = await prisma.keyword.findMany({
+    select: {
+      keyword: true
+    }
+  })
+  const tags = keywords?.map((k: Allow) => k.keyword)
   sendResponse(
     res,
     httpStatus.OK,
     null,
-    { user: customDetails },
+    { user: customDetails, tags },
     'User Details fetched Successfully'
   )
 })
