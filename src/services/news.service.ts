@@ -1,5 +1,7 @@
 import prisma from '../client'
 import { NewsCategory, News } from '@prisma/client'
+import ApiError from '../utils/api-error'
+import httpStatus from 'http-status'
 
 interface addNewsCategoryProps {
   title: string
@@ -42,8 +44,18 @@ interface updateNewsProps {
  * @returns
  * A Promise that resolves to the created NewsCategory object.
  */
-const addNewsCategory = async (data: addNewsCategoryProps): Promise<NewsCategory> =>
-  await prisma.newsCategory.create({ data })
+const addNewsCategory = async (data: addNewsCategoryProps): Promise<NewsCategory | void> => {
+  const title = data.title
+  const category = await prisma.newsCategory.findFirst({
+    where: {
+      title
+    }
+  })
+  if (category) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Category already exists.')
+  }
+  return await prisma.newsCategory.create({ data })
+}
 /**
  * @function addNews
  * @description
@@ -376,6 +388,45 @@ const deleteNews = async (id: number): Promise<void> => {
   })
 }
 
+const getLatestNews = async (): Promise<Partial<News>[]> => {
+  const AllNews = await prisma.news.findMany({
+    where: {
+      publishedAt: {
+        lte: new Date()
+      }
+    },
+    select: {
+      id: true,
+      category: {
+        select: {
+          id: true,
+          description: true,
+          title: true
+        }
+      },
+      bannerImage: true,
+      isPublished: true,
+      userId: true,
+      title: true,
+      subtitle: true,
+      publishedAt: true,
+      isSaved: true,
+      content: true,
+      categoryId: true,
+      publisher: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      }
+    },
+    orderBy: {
+      publishedAt: 'desc'
+    }
+  })
+  return AllNews
+}
+
 export default {
   addNewsCategory,
   getAllNewsCategory,
@@ -388,5 +439,6 @@ export default {
   deleteNews,
   getAllNewsExceptCurrentUser,
   getUserNews,
-  updateNewsById
+  updateNewsById,
+  getLatestNews
 }

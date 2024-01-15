@@ -155,7 +155,10 @@ const addNews = catchAsync(async (req, res) => {
   const question = await newsService.addNews(data, userId)
   sendResponse(res, httpStatus.OK, null, { question }, 'News added Successfully')
 })
-
+const getLatestNews = catchAsync(async (req, res) => {
+  const LatestNews = await newsService.getLatestNews()
+  sendResponse(res, httpStatus.OK, null, { LatestNews }, 'News fetched Successfully')
+})
 export default {
   addNewsCategory,
   addNews,
@@ -168,5 +171,6 @@ export default {
   getCategoryById,
   getAllNewsCategory,
   getAllNewsExceptCurrentUser,
-  getUserNews
+  getUserNews,
+  getLatestNews
 }

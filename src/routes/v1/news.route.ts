@@ -118,6 +118,8 @@ router.get(
   newsController.getUserNews
 )
 
+router.get('/latest', newsController.getLatestNews)
+
 /**
  * @function addNewsRoute
  * @async
@@ -160,6 +162,7 @@ router
     validate(newsValidation.updateNewsValidation),
     newsController.updateNewsById
   )
+
   /**
    * @function deleteNewsRoute
    * @async
