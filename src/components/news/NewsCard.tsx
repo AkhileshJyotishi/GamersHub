@@ -38,7 +38,7 @@ export const Article: FC<ArticleProps & { className: string }> = ({
         ></span> */}
       <div className={clsx(" relative mt-auto p-2 ", news.background)}>
         <div className="flex flex-row items-center gap-2 ">
-          <Link className="" href={`/${category.toLowerCase()}/`}>
+          <Link className="" href={`/${category?.toLowerCase()}/`}>
             {category}
           </Link>
         </div>

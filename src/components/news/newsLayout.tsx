@@ -1,4 +1,4 @@
-import React, { useEffect} from "react"
+import React, { useEffect } from "react"
 
 // import { useRouter } from "next/router"
 // import { useSession } from "next-auth/react"
@@ -12,7 +12,7 @@ import TabButtons from "@/components/tabbuttons"
 // import Button from "@/components/ui/button"
 import Select from "@/components/ui/select"
 
-import { BannerComponent,  } from "../filter"
+import { BannerComponent } from "../filter"
 // import NewsCategory from "./NewsCategory"
 interface LayoutProps {
   children: React.ReactNode
@@ -146,7 +146,7 @@ const Layout: React.FC<LayoutProps> = ({
       />
       {/* // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black" */}
       {/* <div className="mt-[45px] sm:px-[60px] w-[100vw] mx-auto items-center "> */}
-      <div className="mt-[45px] sm:px-[60px] w-[90vw] mx-auto flex justify-center items-center bg-user_interface_3 rounded-xl">
+      <div className="mt-[45px]  w-[90vw] mx-auto flex  items-center bg-user_interface_3 rounded-xl">
         <TabButtons
           tabNames={["All", ...(AllCategory?.map((n) => n.title) ?? [])]}
           setActiveTab={setActiveTab}
@@ -168,7 +168,6 @@ const Layout: React.FC<LayoutProps> = ({
       </div>
       {/* </div> */}
       <div className="mt-[45px] sm:px-[60px] w-[80%] sm:w-full mx-auto flex items-center flex-wrap gap-5">
-        
         <div className="flex flex-col items-start md:flex-row md:items-center md:gap-6">
           <span className="hidden font-medium md:block">Sort by </span>
           <div className=" md:mt-0">
@@ -197,9 +196,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto 3xl:p-48 ">
-        {children}
-      </div>
+      <div className="flex gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto 3xl:p-48 ">{children}</div>
     </>
   )
 }

@@ -1,4 +1,5 @@
-import { useState, useRef, MutableRefObject } from "react"
+import { useRef, useState } from "react"
+
 import a from "./news.module.css"
 const data = {
   description: "A list of fruits.",
@@ -54,7 +55,7 @@ const Tag = ({ data }: Allow) => {
 }
 
 export default function NewsCategory() {
-  let scrl: Allow = useRef(null)
+  const scrl: Allow = useRef(null)
   const [scrollX, setscrollX] = useState(0)
   const [scrolEnd, setscrolEnd] = useState(false)
 

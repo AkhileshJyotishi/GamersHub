@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react"
 import clsx from "clsx"
-import a from "./tab.module.css"
+import { FaArrowAltCircleLeft } from "react-icons/fa"
+import { FaArrowAltCircleRight } from "react-icons/fa"
+
 // import Button from "../common/Button";
 // import { useRouter } from "next/navigation"
-import Button from "../ui/button"
+import a from "./tab.module.css"
 
 export default function TabButtons({
   tabNames,
   setActiveTab,
-  activeTab,
+  // activeTab,
   className,
   seperator = true,
 }: {
@@ -18,7 +20,7 @@ export default function TabButtons({
   className?: string
   seperator?: boolean
 }) {
-  let scrollref = useRef<HTMLUListElement>(null)
+  const scrollref = useRef<HTMLUListElement>(null)
   const [scrollX, setscrollX] = useState<number>(0)
   const [scrolEnd, setscrolEnd] = useState<boolean>(false)
   //Slide click
@@ -55,13 +57,13 @@ export default function TabButtons({
     <>
       <div
         className={clsx(
-          "flex flex-row justify-between w-full p-2 text-xs whitespace-nowrap sm:text-sm sm:w-auto md:gap-15 lg:gap-20",
+          "flex flex-row  w-full p-2 text-xs whitespace-nowrap sm:text-sm  md:gap-15 lg:gap-20",
           className
         )}
       >
         {scrollX !== 0 && (
           <button className={a.button} onClick={() => slide(-50)}>
-            L
+            <FaArrowAltCircleLeft />
           </button>
         )}
         <ul ref={scrollref} onScroll={scrollCheck} className={clsx(a.App, "no-scrollbar")}>
@@ -88,9 +90,14 @@ export default function TabButtons({
             )
           })}
         </ul>
-        {!scrolEnd && (
+        {/* {!scrolEnd && (
           <button className={a.button} onClick={() => slide(+50)}>
-            R
+            <FaArrowAltCircleRight />
+          </button>
+        )} */}
+        {!scrolEnd && tabNames.length > 10 && (
+          <button className={a.button} onClick={() => slide(50)}>
+            <FaArrowAltCircleRight />
           </button>
         )}
       </div>

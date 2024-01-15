@@ -4,7 +4,7 @@ interface INewsCategory {
   id: number
   title: string
   description?: string
-  news?: INews[]
+  News?: INews[]
 }
 
 interface INews {
@@ -23,6 +23,7 @@ interface INews {
 export interface ArticleProps {
   id: number
   imgSrc: string | StaticImageData
+  category?: string
   imgAlt: string
   title: string
   link: string

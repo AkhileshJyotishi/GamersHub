@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 import Img from "@/assets/image/profiles-slide-show.png"
 import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
-import { ArticleProps, INews, INewsCategory } from "@/interface/news"
+import { ArticleProps, INews } from "@/interface/news"
 import { getSession } from "@/lib/auth"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
@@ -24,7 +24,7 @@ import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 // {}: { users: IPostbackend[] }
-const HomePage = ({ allCategory }: { allCategory: INewsCategory[] }) => {
+const HomePage = ({ News }: { News: ArticleProps[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage, data } = router.query
@@ -72,57 +72,6 @@ const HomePage = ({ allCategory }: { allCategory: INewsCategory[] }) => {
     }
     toast.success(res?.message)
   }
-
-  // const sampleArticles = [
-  //   {
-  //     id: 1,
-  //     imgSrc: "https://picsum.photos/3400/2400",
-  //     imgAlt: "Image 1 Alt Text",
-  //     category: "Technology",
-  //     title: "Breaking News in Tech World",
-  //     link: "/breaking-news-in-tech-world",
-  //   },
-  //   {
-  //     id: 2,
-  //     imgSrc: "https://picsum.photos/3400/2400",
-  //     imgAlt: "Image 2 Alt Text",
-  //     category: "Science",
-  //     title: "Latest Scientific Discoveries",
-  //     link: "/latest-scientific-discoveries",
-  //   },
-  //   {
-  //     id: 3,
-  //     imgSrc: "https://picsum.photos/3400/2400",
-  //     imgAlt: "Image 3 Alt Text",
-  //     category: "Entertainment",
-  //     title: "Hollywood Blockbuster Releases",
-  //     link: "/hollywood-blockbuster-releases",
-  //   },
-  //   {
-  //     id: 4,
-  //     imgSrc: "https://picsum.photos/600/200",
-  //     imgAlt: "Image 3 Alt Text",
-  //     category: "Entertainment",
-  //     title: "Hollywood Blockbuster Releases",
-  //     link: "/hollywood-blockbuster-releases",
-  //   },
-  //   {
-  //     id: 5,
-  //     imgSrc: "https://picsum.photos/3400/2400",
-  //     imgAlt: "Image 3 Alt Text",
-  //     category: "Entertainment",
-  //     title: "Hollywood Blockbuster Releases",
-  //     link: "/hollywood-blockbuster-releases",
-  //   },
-  //   {
-  //     id: 6,
-  //     imgSrc: "https://picsum.photos/3400/2400",
-  //     imgAlt: "Image 3 Alt Text",
-  //     category: "Entertainment",
-  //     title: "Hollywood Blockbuster Releases",
-  //     link: "/hollywood-blockbuster-releases",
-  //   },
-  // ]
 
   return (
     <>
@@ -196,7 +145,7 @@ const HomePage = ({ allCategory }: { allCategory: INewsCategory[] }) => {
             )
           })}
         </div> */}
-        <GeneralizedComponent articles={news} />
+        <GeneralizedComponent articles={News} />
         {/* 
         <Button
           className="
@@ -217,8 +166,7 @@ export default HomePage
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession(req as NextApiRequest, res as NextApiResponse)
   let users
-  let news
-  news = await fetchWithoutAuthorization("/v1/category/all", "GET")
+  const news = await fetchWithoutAuthorization("/v1/news/latest", "GET")
   if (session) {
     users = await fetchData(`/v1/post/?skip=5`, session.user?.name as string, "GET")
   } else {
@@ -236,24 +184,26 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
       props: {
         users: [],
+        news: [],
       },
     }
   }
   users = users?.data?.posts
-  const allCategory: INewsCategory[] = news?.data?.categories ?? []
+  console.log("news?.data", news?.data)
+  const News: ArticleProps[] = CreateNewsFrontend(news?.data?.LatestNews ?? [])
 
   if (session) {
     return {
       props: {
         users,
-        allCategory,
+        News,
       },
     }
   }
   return {
     props: {
       users,
-      allCategory,
+      News,
     },
   }
 }
@@ -261,10 +211,10 @@ export const CreateNewsFrontend = (NewsArray: INews[]) => {
   const res2: ArticleProps[] = (NewsArray ?? []).map((Pnews) => {
     return {
       id: Pnews.id,
-      imgSrc: Pnews?.bannerImage ??"",
+      imgSrc: Pnews?.bannerImage ?? "",
       imgAlt: "",
       title: Pnews.title,
-      link: Pnews.subtitle ??"",
+      link: Pnews.subtitle ?? "",
     }
   })
   return res2

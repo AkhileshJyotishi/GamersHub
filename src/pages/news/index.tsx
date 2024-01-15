@@ -2,13 +2,11 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 
-import { ArticleProps, INews, INewsCategory } from "@/interface/news"
+import { INewsCategory } from "@/interface/news"
 import { getSession } from "@/lib/auth"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import NewsPage from "@/components/news"
-
-import { CreateNewsFrontend } from ".."
 
 // type jobsDetails=
 const Jobs = ({
@@ -57,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
-  const parsedCategoriesDetails: INewsCategory[] = newsDetails?.data
+  const parsedCategoriesDetails: INewsCategory[] = newsDetails?.data.categories
   //   const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
   // const news: ArticleProps[] = CreateNewsFrontend(parsedNewsDetails)
   return {
