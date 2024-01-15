@@ -2,61 +2,80 @@ import React, { FC } from "react"
 import cn from "classnames"
 import clsx from "clsx"
 import Image from "next/image"
-import Link from "next/link"
+import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { ArticleProps } from "@/interface/news"
+
+import NewsCarousel from "./NewsCarousel"
 
 import news from "./news.module.css"
 
 interface FeaturedListProps {
   articles: ArticleProps[]
+  activetab?: string
 }
 
-export const Article: FC<ArticleProps & { className: string }> = ({
+export const Article: FC<ArticleProps & { className: string; activetab?: string }> = ({
   imgSrc,
+  id,
   category,
+  subtitle,
   title,
-  link,
+  // link,
   className,
+  activetab,
 }) => {
+  const router = useRouter()
   return (
-    <article className={cn("h-fit", className)}>
-      <div className=" relative flex flex-col mt-auto">
+    <article
+      className={cn("relative cursor-pointer group rounded-xl overflow-hidden w-full", className)}
+      onClick={() => router.push(`/news/${id}`)}
+    >
+      <div className={clsx("h-[inherit] w-[inherit] relative flex flex-col mt-auto")}>
         <Image
-          height={1200}
-          width={800}
+          height={900}
+          width={900}
           alt={""}
-          className="absolute h-full bg-[#181818] min-h-[312px] object-cover"
+          className={clsx(
+            "absolute group-hover:scale-105 h-full w-full transition-all bg-[#181818]  hover:scale-50",
+            news.background
+          )}
           src={imgSrc || defaultbannerImage}
         />
-      </div>
 
-      {/* <span
+        <span
           id="blackOverlay"
-          className="hover:opacity-30 duration-200 absolute w-full h-full bg-[#000] opacity-20"
-        ></span> */}
-      <div className={clsx(" relative mt-auto p-2 ", news.background)}>
-        <div className="flex flex-row items-center gap-2 ">
-          <Link className="" href={`/${category?.toLowerCase()}/`}>
-            {category}
-          </Link>
+          className="group-hover:block hidden duration-200 absolute w-full h-full bg-[#000] opacity-20"
+        ></span>
+        <span className={clsx("absolute w-full h-full", news.background)}></span>
+        <div className={clsx(" relative flex flex-col h-full p-3 w-full")}>
+          <div className=" w-fit mb-auto px-2 py-1 rounded-[50rem] bg-[#000000b3] text-[#e6e6ea] backdrop-blur-[25px] overflow-hidden text-ellipsis max-w-[200px]">
+            {category?.title ?? activetab}
+          </div>
+          <h3 className="">
+            <div
+              className="text-[1.25rem] font-serif text-[#fff] font-[700] break-words drop-shadow-[0_2px_2px_rgba(0,0,0,0.6)] line-clamp-2 my-1 mx-0 text-ellipsis"
+              title={title}
+            >
+              {title}
+            </div>
+          </h3>
+          <h5 className="">
+            <div
+              className="text-[1rem] text-[#96969a] font-[700] line-clamp-1 text-ellipsis"
+              title={title}
+            >
+              {subtitle}
+            </div>
+          </h5>
         </div>
-        <h3 className="hover:text-secondary">
-          <Link
-            href={link ?? ""}
-            className="md:text-[1.25rem] text-text font-[700] hover:text-secondary duration-200"
-            title={title}
-          >
-            {title}
-          </Link>
-        </h3>
       </div>
     </article>
   )
 }
 
-const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
+const FeaturedList: FC<FeaturedListProps> = ({ articles, activetab }) => (
   <>
     {/* Primary Section */}
     <section className={cn("col-start-1 col-span-4  h-fit p-2")}>
@@ -65,7 +84,9 @@ const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
           (articles?.slice(0, 1) ?? []).map((article) => (
             <Article
               key={article.id}
+              activetab={activetab}
               {...article}
+              // subtitle="sd"
               // imgSrc={article.imgSrc}
               // imgAlt={``}
               className={"h-[inherit]"}
@@ -81,6 +102,7 @@ const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
           (articles?.slice(1, 5) ?? []).map((article) => (
             <Article
               key={article.id}
+              activetab={activetab}
               {...article}
               // imgSrc={article.imgSrc}
               // imgAlt={``}
@@ -92,13 +114,14 @@ const FeaturedList: FC<FeaturedListProps> = ({ articles }) => (
   </>
 )
 
-const GeneralizedComponent: FC<FeaturedListProps> = ({ articles }) => (
+const GeneralizedComponent: FC<FeaturedListProps> = ({ articles, activetab }) => (
   <>
-    <div className={cn("min-[1024px]:p-12 min-[1440px]:p-20 mx-auto h-fit")}>
-      <div className={cn("md:grid md:grid-cols-8 w-full gap-4 h-fit flex flex-col")}>
-        <FeaturedList articles={articles} />
+    <div className={cn("min-[1024px]:p-12 min-[1440px]:p-20 mx-auto h-fit hidden sm:block")}>
+      <div className={cn("min-[1024px]:grid md:grid-cols-8 w-full gap-4 h-fit sm:flex flex-col ")}>
+        <FeaturedList articles={articles} activetab={activetab} />
       </div>
     </div>
+    <NewsCarousel articles={articles} />
   </>
 )
 

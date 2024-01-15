@@ -58,7 +58,7 @@ const CustomCard: React.FC<CardProps> = ({ imageSrc, title, id, tags, className,
   }
   return (
     <div
-      className={`relative max-w-sm rounded overflow-hidden shadow-lg bg-user_interface_2 ${className}`}
+      className={`mx-auto md:mx-0 relative max-w-sm rounded overflow-hidden shadow-lg bg-user_interface_2 ${className}`}
     >
       <Image
         className="h-40 max-w-sm"

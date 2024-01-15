@@ -11,6 +11,7 @@ import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
 import { ArticleProps, INews } from "@/interface/news"
 import { getSession } from "@/lib/auth"
+// import ProfileCard from "@/pages/dev/storybook/profile-card"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
@@ -24,7 +25,7 @@ import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
 // {}: { users: IPostbackend[] }
-const HomePage = ({ News }: { News: ArticleProps[] }) => {
+const HomePage = ({ News }: { users: Allow; News: ArticleProps[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
   const { logout, verify, message, emessage, data } = router.query
@@ -124,19 +125,20 @@ const HomePage = ({ News }: { News: ArticleProps[] }) => {
       <div className="relative top-0">
         <OverlayContent />
 
-        {/* <div className="flex flex-wrap justify-center gap-16 mt-10 text-center mx-14">
+        {!!News.length && <GeneralizedComponent articles={News} />}
+        {/* `<div className="flex flex-wrap justify-center gap-16 mt-10 text-center ">
           {users?.map((data, index) => {
             return (
-              <Card
+              <ProfileCard
                 key={index}
                 username={data.user.username}
                 userId={data.userId}
                 userProfilePhoto={data.user.profileImage}
-                coverPhoto={data.banner}
+                bannerImage={data.banner}
                 matureContent={data.matureContent}
                 // location={data.location}
                 // views={data.views}
-                className="w-[60vw] sm:w-[280px] lg:w-[300px] h-[350px]"
+                className="w-[100%] sm:w-[280px] lg:w-[300px] h-[350px]"
                 id={data.id}
                 title={data.title}
                 likedPost={data?.postLikes?.likedUsers.map((like) => like) ?? []}
@@ -144,8 +146,7 @@ const HomePage = ({ News }: { News: ArticleProps[] }) => {
               />
             )
           })}
-        </div> */}
-        <GeneralizedComponent articles={News} />
+        </div>` */}
         {/* 
         <Button
           className="
@@ -184,12 +185,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
       props: {
         users: [],
-        news: [],
+        News: [],
       },
     }
   }
   users = users?.data?.posts
-  console.log("news?.data", news?.data)
   const News: ArticleProps[] = CreateNewsFrontend(news?.data?.LatestNews ?? [])
 
   if (session) {
@@ -213,8 +213,10 @@ export const CreateNewsFrontend = (NewsArray: INews[]) => {
       id: Pnews.id,
       imgSrc: Pnews?.bannerImage ?? "",
       imgAlt: "",
+      category: Pnews.category,
       title: Pnews.title,
-      link: Pnews.subtitle ?? "",
+      subtitle: Pnews.subtitle ?? "",
+      link: "",
     }
   })
   return res2

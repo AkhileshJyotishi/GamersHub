@@ -195,7 +195,7 @@ const Albums = () => {
             />
           </div>
         </div>
-        <div className="grid w-[90%] mx-auto my-4  p-4 md:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 gap-[20px]">
+        <div className="grid sm:w-[90%] sm:mx-auto my-4  sm:p-4  md:grid-cols-2 xl:grid-cols-3  gap-[20px]">
           {!posts && (
             <>
               {albumDetails.length > 0 ? (

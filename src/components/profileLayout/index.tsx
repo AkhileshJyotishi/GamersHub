@@ -116,7 +116,6 @@ const ProfileLayout = ({
             }}
           >
             <div
-              // href="#"
               className={clsx(` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
             bg-white text-light outline-none focus:outline-none capitalize`)}
             >
@@ -238,7 +237,8 @@ const ProfileLayout = ({
         <Head>
           <title>Profile | {data?.username}</title>
         </Head>
-        <div className="flex flex-col gap-5 p-2 sm:p-3 md:p-4 lg:p-5 lg:flex-row">
+        {/* flex flex-col gap-5 p-2 sm:p-3 md:p-4 lg:p-5 lg:flex-row */}
+        <div className="lg:grid  lg:grid-cols-[25vw,75vw] xl:grid-cols-[20vw,80vw] gap-5 p-2 sm:p-3 lg:p-5 ">
           <ProfileCard className="hidden lg:block" currentUser={data} />
           <Modal
             isOpen={isCreateAlbumOpen}
@@ -310,9 +310,10 @@ const ProfileLayout = ({
             />
             <ProfileAccordion className=" lg:hidden" currentUser={data} />
 
-            <div className="backdrop-blur-sm sm:bg-[#00000060] w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
+            <div className="backdrop-blur-sm sm:bg-[#00000060] w-[90%] text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3 lg:sticky top-[61px] mt-[20px] ">
               <Tab />
             </div>
+
             <div className="w-full">{children}</div>
           </div>
         </div>

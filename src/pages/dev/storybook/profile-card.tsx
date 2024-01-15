@@ -50,7 +50,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   savedPost,
   id,
   userId,
-  // className,
+  className,
   username,
   userProfilePhoto,
   title,
@@ -103,9 +103,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }, [savedPost, likePost])
 
   return (
-    <div className="group w-full h-full bg-user_interface_1 sm:min-w-[360px] max-w-sm !aspect-square py-2 flex flex-col gap-2">
+    <div
+      className={clsx(
+        "group w-full h-fit bg-user_interface_1   !aspect-[3/2] py-2 flex flex-col gap-2",
+        className
+      )}
+    >
       <div className="flex justify-between items-start px-4">
-        <div className="center gap-4">
+        <div className="center gap-4 w-full">
           <Image
             alt=""
             height={200}
@@ -116,9 +121,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               router.push(`/${userId}/profile/albums`)
             }}
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <div
-              className="block capitalize text-lg font-semibold line-clamp-1 w-[218px] text-ellipsis whitespace-nowrap overflow-hidden hover:text-secondary duration-200 cursor-pointer"
+              className="block capitalize text-lg font-semibold line-clamp-1 md:max-w-[225px] text-ellipsis whitespace-nowrap overflow-hidden hover:text-secondary duration-200 cursor-pointer"
               onClick={() => {
                 router.push(`/posts/${id}`)
               }}
@@ -126,7 +131,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               {title}
             </div>
             <div
-              className="text-sm opacity-70 line-clamp-1 w-[218px] text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer  duration-200"
+              className="text-sm opacity-70 line-clamp-1 md:max-w-[225px] truncate whitespace-nowrap overflow-hidden cursor-pointer  duration-200"
               onClick={() => {
                 router.push(`/${userId}/profile/albums`)
               }}
@@ -154,10 +159,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           className="h-[280px] w-full group-hover:scale-110 transition-all duration-300"
         />
       </div>
-      <div className="flex justify-between items-center gap-4 px-4">
+      <div className="flex justify-between items-center gap-2 md:gap-4 px-4">
         {/* {userId !== userData?.id && ( */}
         <>
-          <div className="center gap-4">
+          <div className="center gap-1 md:gap-4">
             <div className="w-min center gap-2 cursor-pointer">
               {liked ? (
                 <FaRegStar
@@ -207,9 +212,13 @@ interface DropDownActionButtonProps {
     onClick: () => void
     className?: string
   }>
+  className?: string
 }
 
-const DropDownActionButton: React.FC<DropDownActionButtonProps> = ({ actions }) => {
+export const DropDownActionButton: React.FC<DropDownActionButtonProps> = ({
+  actions,
+  className,
+}) => {
   const [openActionDropdown, setOpenActionDropdown] = useState(false)
 
   useEffect(() => {
@@ -238,7 +247,7 @@ const DropDownActionButton: React.FC<DropDownActionButtonProps> = ({ actions }) 
   return (
     <div
       onMouseLeave={() => setOpenActionDropdown(false)}
-      className="relative group flex flex-col items-end"
+      className={clsx("relative group flex flex-col items-end", className)}
     >
       <button
         id="dropdownButton"

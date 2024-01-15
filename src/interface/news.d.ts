@@ -18,12 +18,14 @@ interface INews {
   isPublished?: boolean
   userId?: number
   publisher: Partial<Iuser>
+  category: Omit<INewsCategory, "News">
 }
 
 export interface ArticleProps {
   id: number
   imgSrc: string | StaticImageData
-  category?: string
+  subtitle?: string
+  category?: Omit<INewsCategory, "News">
   imgAlt: string
   title: string
   link: string
