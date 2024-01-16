@@ -53,8 +53,8 @@ const getCategoryById = catchAsync(async (req, res) => {
 
 const getNewsById = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
-  const helpQuestion = await newsService.getNewsById(id)
-  sendResponse(res, httpStatus.OK, null, { helpQuestion }, 'News fetched Successfully')
+  const news = await newsService.getNewsById(id)
+  sendResponse(res, httpStatus.OK, null, { news }, 'News fetched Successfully')
 })
 
 /**
@@ -85,8 +85,8 @@ const updateNewsById = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
   const userId = res.locals.user.id
   const data = req.body
-  const updatedQuestion = await newsService.updateNewsById(id, data, userId)
-  sendResponse(res, httpStatus.OK, null, { updatedQuestion }, 'News updated Successfully')
+  const updatedNews = await newsService.updateNewsById(id, data, userId)
+  sendResponse(res, httpStatus.OK, null, { updatedNews }, 'News updated Successfully')
 })
 
 /**
@@ -152,8 +152,8 @@ const getUserNews = catchAsync(async (req, res) => {
 const addNews = catchAsync(async (req, res) => {
   const data = req.body
   const userId = res.locals.user.id
-  const question = await newsService.addNews(data, userId)
-  sendResponse(res, httpStatus.OK, null, { question }, 'News added Successfully')
+  const news = await newsService.addNews(data, userId)
+  sendResponse(res, httpStatus.OK, null, { news }, 'News added Successfully')
 })
 const getLatestNews = catchAsync(async (req, res) => {
   const LatestNews = await newsService.getLatestNews()

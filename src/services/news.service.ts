@@ -311,7 +311,9 @@ const getNewsById = async (id: number): Promise<Pick<News, 'id'> | object> => {
       bannerImage: true,
       category: {
         select: {
-          id: true
+          id: true,
+          title: true,
+          description: true
         }
       },
 
