@@ -256,7 +256,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ jobLocation, location, type }) 
       </span>
       <span className="flex flex-row items-center gap-1">
         <BriefcaseIcon className="text-secondary_2 w-[18px] h-[18px]" />
-        <span>{type.split("_").join(" ")}</span>
+        <span>{type}</span>
       </span>
     </div>
   )

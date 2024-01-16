@@ -69,9 +69,8 @@ export const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     backendJob.paymentValue != 0
       ? `${backendJob.paymentValue} ${backendJob.paymentType}`
       : `${backendJob.paymentType}`
-  console.log("backendJob.remote ", backendJob.remote)
   return {
-    id: backendJob.id,
+    id: backendJob?.id,
     title: backendJob.title,
     desc: backendJob.description,
     remote: backendJob.remote,
@@ -79,14 +78,14 @@ export const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     // levelOfExpertise:backendJob.expertise,
     // Replace with the relevant date field from the backend
     salary, // Adjust based on your backend structure
-    type: backendJob.jobType,
-    location: `${backendJob.country}, ${backendJob.city}`, // Adjust based on your backend structure
-    href: `/jobs/${backendJob.id}`, // Adjust based on your backend structure
+    type: backendJob?.jobType,
+    location: `${backendJob?.country}, ${backendJob?.city}`, // Adjust based on your backend structure
+    href: `/jobs/${backendJob?.id}`, // Adjust based on your backend structure
     // chips: backendJob.jobSoftwares,
-    savedUsers: backendJob.savedUsers,
-    banner: backendJob.user.bannerImage ?? "",
+    savedUsers: backendJob?.savedUsers,
+    banner: backendJob?.user?.bannerImage ?? "",
     profileImage: backendJob?.user?.profileImage ?? "",
-    userId: backendJob.userId,
-    username: backendJob.user.username,
+    userId: backendJob?.userId,
+    username: backendJob?.user?.username,
   }
 }

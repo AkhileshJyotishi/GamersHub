@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 import { FaArrowAltCircleLeft } from "react-icons/fa"
 import { FaArrowAltCircleRight } from "react-icons/fa"
@@ -10,15 +10,17 @@ import a from "./tab.module.css"
 export default function TabButtons({
   tabNames,
   setActiveTab,
-  // activeTab,
+  activeTab,
   className,
   seperator = true,
+  tabColors,
 }: {
   tabNames: Array<string>
   setActiveTab?: React.Dispatch<React.SetStateAction<string>>
-  activeTab: string
+  activeTab?: string
   className?: string
   seperator?: boolean
+  tabColors?: string
 }) {
   const scrollref = useRef<HTMLUListElement>(null)
   const [scrollX, setscrollX] = useState<number>(0)
@@ -53,6 +55,9 @@ export default function TabButtons({
       }
     }
   }
+  useEffect(() => {
+    scrollCheck()
+  }, [])
   return (
     <>
       <div
@@ -79,7 +84,11 @@ export default function TabButtons({
                   //   "px-[12px] sm:px-[25px] py-[10px] rounded-xl m-5",
                   //   activeTab === tabName && "bg-secondary"
                   // )}
-                  className={a.li}
+                  className={clsx(
+                    a.li,
+                    tabColors,
+                    activeTab && activeTab === tabName && " !bg-user_interface_3 !p-3 rounded-lg"
+                  )}
                 >
                   {tabName}
                 </li>
@@ -95,7 +104,7 @@ export default function TabButtons({
             <FaArrowAltCircleRight />
           </button>
         )} */}
-        {!scrolEnd && tabNames.length > 10 && (
+        {!scrolEnd && (
           <button className={a.button} onClick={() => slide(50)}>
             <FaArrowAltCircleRight />
           </button>

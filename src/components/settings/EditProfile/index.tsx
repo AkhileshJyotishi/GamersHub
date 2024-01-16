@@ -17,6 +17,41 @@ import ExperienceSection from "./ExperienceSection"
 import ProfileSection from "./profileSection"
 // import dynamic from "next/dynamic"
 // const { City, Country }=dynamic(import("country-state-city").then())
+
+export const Tab = ({
+  tabs,
+  activeTab,
+  setactiveTab,
+}: {
+  tabs: string[]
+  setactiveTab: React.Dispatch<React.SetStateAction<string>>
+  activeTab: string
+}) => {
+  return tabs?.map((tab) => {
+    return (
+      <>
+        <div
+          className={clsx("sm:min-w-[80px] active:current cursor-pointer")}
+          // href={`/${data?.id}/profile/${tab}`}
+          onClick={() => setactiveTab(tab)}
+        >
+          <div
+            // href="#"
+            className={clsx(
+              ` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
+          bg-white
+            text-light outline-none focus:outline-none   `,
+              activeTab === tab && "text-secondary"
+            )}
+          >
+            {tab}
+          </div>
+        </div>
+      </>
+    )
+  })
+}
+
 const EditProfilePage = ({
   profileDetails,
   allSkills,
@@ -752,32 +787,6 @@ const EditProfilePage = ({
   ])
   const tabs = ["Profile", "Experience", "Education"]
 
-  const Tab = () => {
-    return tabs?.map((tab) => {
-      return (
-        <>
-          <div
-            className={clsx("sm:min-w-[80px] active:current cursor-pointer")}
-            // href={`/${data?.id}/profile/${tab}`}
-            onClick={() => setactiveTab(tab)}
-          >
-            <div
-              // href="#"
-              className={clsx(
-                ` inline-block   p-2 active:text-secondary  active:bg-[#00000090]
-            bg-white
-              text-light outline-none focus:outline-none   `,
-                activeTab === tab && "text-secondary"
-              )}
-            >
-              {tab}
-            </div>
-          </div>
-        </>
-      )
-    })
-  }
-
   const [manageExperience, setManageExperience] = useState<boolean>(false)
   const [manageEducation, setManageEducation] = useState<boolean>(false)
   const router = useRouter()
@@ -793,7 +802,7 @@ const EditProfilePage = ({
   return (
     <>
       <div className="bg-user_interface_1 w-[90%] sm:w-[90%]  text-sm font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3  mt-[20px] ">
-        <Tab />
+        <Tab tabs={tabs} activeTab={activeTab} setactiveTab={setactiveTab} />
       </div>
       <div className="flex p-3 gap-y-6 w-full md:w-[80%] lg:w-[60%] mx-auto flex-wrap justify-evenly mt-4">
         {activeTab == "Profile" && (

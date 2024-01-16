@@ -105,7 +105,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div
       className={clsx(
-        "group w-full h-fit bg-user_interface_1   !aspect-[3/2] py-2 flex flex-col gap-2",
+        // !aspect-[3/2]
+        "group w-full h-fit bg-user_interface_1    py-2 flex flex-col gap-2",
         className
       )}
     >
