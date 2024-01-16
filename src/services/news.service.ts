@@ -168,6 +168,11 @@ const getAllNewsCategory = async (): Promise<NewsCategory[]> => {
           subtitle: true,
           title: true,
           userId: true
+        },
+        where: {
+          publishedAt: {
+            lte: new Date()
+          }
         }
       }
     }
@@ -223,6 +228,9 @@ const getAllNewsExceptCurrentUser = async (userId: number): Promise<Partial<News
     where: {
       NOT: {
         userId
+      },
+      publishedAt: {
+        lte: new Date()
       }
     },
     select: {
@@ -261,6 +269,11 @@ const getAllNewsExceptCurrentUser = async (userId: number): Promise<Partial<News
  */
 const getAllNews = async (): Promise<Partial<News>[]> => {
   const AllNews = await prisma.news.findMany({
+    where: {
+      publishedAt: {
+        lte: new Date()
+      }
+    },
     select: {
       id: true,
       category: {

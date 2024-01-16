@@ -1119,7 +1119,179 @@ const getAllCreators = async (filter: QueryUsers): Promise<object | null> => {
   })
   return userDetails
 }
+const getHomeDetails = async (userId: number): Promise<Allow> => {
+  const LatestNews = await prisma.news.findMany({
+    where: {
+      publishedAt: {
+        lte: new Date()
+      }
+    },
+    select: {
+      id: true,
+      category: {
+        select: {
+          id: true,
+          description: true,
+          title: true
+        }
+      },
+      bannerImage: true,
+      isPublished: true,
+      userId: true,
+      title: true,
+      subtitle: true,
+      publishedAt: true,
+      isSaved: true,
+      content: true,
+      categoryId: true,
+      publisher: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      }
+    },
+    orderBy: {
+      publishedAt: 'desc'
+    },
+    take: 8
+  })
 
+  const postsExplore = await prisma.post.findMany({
+    where: {
+      userId: {
+        not: {
+          equals: userId
+        }
+      }
+    },
+    include: {
+      savedUsers: {
+        select: {
+          id: true
+        }
+      },
+      postLikes: {
+        select: {
+          likedUsers: {
+            select: {
+              id: true
+            }
+          }
+        }
+      },
+      comments: {
+        select: {
+          comment: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
+    },
+    take: 8
+  })
+  const postsTrending = await prisma.post.findMany({
+    orderBy: {
+      postLikes: {
+        likedUsers: {
+          _count: 'desc'
+        }
+      }
+    },
+    include: {
+      postLikes: {
+        select: {
+          likedUsers: {
+            select: {
+              _count: true
+            }
+          }
+        }
+      },
+      comments: {
+        select: {
+          comment: true
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
+    },
+    take: 8
+  })
+  const postsFollowing = await prisma.post.findMany({
+    where: {
+      user: {
+        following_users: {
+          some: {
+            id: {
+              equals: userId
+            }
+          }
+        }
+      }
+    },
+    include: {
+      postLikes: {
+        select: {
+          likedUsers: {
+            select: {
+              _count: true
+            }
+          }
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
+    },
+    take: 8
+  })
+  const postsSaved = await prisma.post.findMany({
+    where: {
+      savedUsers: {
+        some: {
+          id: userId
+        }
+      }
+    },
+    include: {
+      postLikes: {
+        select: {
+          likedUsers: {
+            select: {
+              _count: true
+            }
+          }
+        }
+      },
+      user: {
+        select: {
+          profileImage: true,
+          username: true
+        }
+      }
+    },
+    take: 8
+  })
+  return {
+    LatestNews,
+    postsExplore,
+    postsTrending,
+    postsFollowing,
+    postsSaved
+  }
+}
 export default {
   createUser,
   createProviderUser,
@@ -1148,5 +1320,6 @@ export default {
   deleteUserDetailsByUserId,
   getCustomDetails,
   getAllCreatorsExceptUser,
-  getAllCreators
+  getAllCreators,
+  getHomeDetails
 }

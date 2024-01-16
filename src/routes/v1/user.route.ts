@@ -11,6 +11,8 @@ router
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers)
 
+router.get('/home/', auth(), userController.getHomeDetailsController)
+
 router
   .route('/socials')
   .get(auth(), userController.getSocials)
@@ -74,6 +76,7 @@ router
   .get(auth('getUsers'), userController.getUser)
   .patch(auth(), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), userController.deleteUser)
+
 export default router
 
 /**
