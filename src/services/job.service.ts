@@ -77,7 +77,8 @@ const getUserJobs = async (userId: number, filter: QueryJobs): Promise<Job[]> =>
           user: {
             select: {
               username: true,
-              profileImage: true
+              profileImage: true,
+              bannerImage: true
             }
           }
         }
@@ -233,7 +234,8 @@ const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
       user: {
         select: {
           username: true,
-          profileImage: true
+          profileImage: true,
+          bannerImage: true
         }
       },
       savedUsers: {
@@ -606,7 +608,8 @@ const getSavedJobs = async (userId: number): Promise<Job[]> => {
             select: {
               id: true,
               username: true,
-              profileImage: true
+              profileImage: true,
+              bannerImage: true
             }
           },
           jobApplications: {
@@ -733,7 +736,8 @@ const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): P
       user: {
         select: {
           username: true,
-          profileImage: true
+          profileImage: true,
+          bannerImage: true
         }
       },
       savedUsers: {
