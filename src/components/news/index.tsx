@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
 import { INewsCategory } from "@/interface/news"
@@ -12,6 +13,7 @@ type NewsPageProps = {
 }
 const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
   console.log("parser", parsedCategoriesDetails)
+  const router = useRouter()
   const [activetab, setactivetab] = useState<INewsCategory["title"]>("All")
   // const { userData, setIsLoginModalOpen } = useUserContext()
   const [AllCategory, setAllCategory] = useState<INewsCategory[] | null>(parsedCategoriesDetails)
@@ -26,6 +28,12 @@ const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
   //     setactivetab("All")
   //   }
   // }, [activetab])
+  useEffect(() => {
+    const tab = router.query?.tab
+    if (tab) {
+      setactivetab(tab as INewsCategory["title"])
+    }
+  }, [router.query])
 
   return (
     <Layout

@@ -9,13 +9,13 @@ interface INewsCategory {
 
 interface INews {
   id: number
-  title: string
-  subtitle?: string
-  content?: object
   bannerImage?: string
+  content?: object
   publishedAt: string
   isSaved?: boolean
   isPublished?: boolean
+  title: string
+  subtitle?: string
   userId?: number
   publisher: Partial<Iuser>
   category: Omit<INewsCategory, "News">
@@ -29,4 +29,25 @@ export interface ArticleProps {
   imgAlt: string
   title: string
   link: string
+}
+
+interface BackendNews {
+  id: number
+  bannerImage?: string
+  content?: object
+  publishedAt: string
+  isSaved?: boolean
+  isPublished?: boolean
+  title: string
+  subtitle?: string
+  userId?: number
+  publisher: {
+    username: string
+    profileImage?: string
+  }
+  category: {
+    id: number
+    title: string
+    description?: string
+  }
 }

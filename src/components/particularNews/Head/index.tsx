@@ -13,10 +13,10 @@ import EditIcon from "@/components/icons/editIcon"
 import ShareIcon from "@/components/icons/share"
 import Button from "@/components/ui/button"
 import Share from "@/components/ui/Share"
-interface NewsPageHeaderProps {
+interface JobPageHeaderProps {
   logoSrc: string | null
   title: string
-  newsId: number
+  postId: number
   userId: number
 }
 const UserImage = ({ href }: { href: string | StaticImageData }) => (
@@ -33,7 +33,7 @@ const UserInfo = ({ title }: { title: string }) => (
   </div>
 )
 
-const NewsPageHeader: React.FC<NewsPageHeaderProps> = ({ logoSrc, title, newsId, userId }) => {
+const JobPageHeader: React.FC<JobPageHeaderProps> = ({ logoSrc, title, postId, userId }) => {
   const router = useRouter()
   const { data: session } = useSession()
   const { userData } = useUserContext()
@@ -58,7 +58,7 @@ const NewsPageHeader: React.FC<NewsPageHeaderProps> = ({ logoSrc, title, newsId,
   //   }
   // }
 
-  const saveNews = async (postId: number) => {
+  const savePost = async (postId: number) => {
     const data = await fetchData(
       `/v1/post/user/save/${postId}`,
       session?.user?.name as string,
@@ -163,7 +163,7 @@ const NewsPageHeader: React.FC<NewsPageHeaderProps> = ({ logoSrc, title, newsId,
         <div className="flex mt-3 gap-x-4 ">
           <Button
             className="  border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl"
-            onClick={() => saveNews(newsId)}
+            onClick={() => savePost(postId)}
           >
             Save Post
           </Button>
@@ -175,7 +175,7 @@ const NewsPageHeader: React.FC<NewsPageHeaderProps> = ({ logoSrc, title, newsId,
         <>
           <Button
             className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl"
-            onClick={() => updatePost(newsId)}
+            onClick={() => updatePost(postId)}
           >
             <EditIcon className="w-5 h-5 text-user_interface_7" />
             Edit Post
@@ -186,4 +186,4 @@ const NewsPageHeader: React.FC<NewsPageHeaderProps> = ({ logoSrc, title, newsId,
   )
 }
 
-export default NewsPageHeader
+export default JobPageHeader

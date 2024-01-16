@@ -22,6 +22,7 @@ const NewsCarousel: React.FC<FeaturedListProps> = ({ articles }) => {
         showIndicators={false}
         useKeyboardArrows={true}
         autoPlay={true}
+        showThumbs={false}
         centerSlidePercentage={42}
         interval={2500}
       >
