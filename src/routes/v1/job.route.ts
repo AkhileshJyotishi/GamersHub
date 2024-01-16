@@ -19,7 +19,7 @@ router.get(
   validate(jobValidation.queryJobs),
   jobController.getAllJobsExceptCurrentUser
 )
-
+router.get('/latest', jobController.getLatestJobs)
 router.get('/user/saved', auth(), jobController.getSavedJobs)
 router.post(
   '/user/save/:id',

@@ -377,7 +377,11 @@ const getOtherDetails = catchAsync(async (req, res) => {
     'Other Details fetched Successfully'
   )
 })
-
+const getHomeDetailsController = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const homeDetails = await userService.getHomeDetails(userId)
+  sendResponse(res, httpStatus.OK, null, homeDetails, 'Other Details fetched Successfully')
+})
 export default {
   createUser,
   getUsers,
@@ -411,5 +415,6 @@ export default {
   getCustomGameTags,
   getCustomCreatorsTags,
   getAllDetails,
-  getOtherDetails
+  getOtherDetails,
+  getHomeDetailsController
 }

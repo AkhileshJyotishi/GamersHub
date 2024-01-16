@@ -29,6 +29,11 @@ const getAllJobs = catchAsync(async (req, res) => {
   sendResponse(res, httpStatus.OK, null, { jobs: Jobs }, 'Jobs fetched Successfully')
 })
 
+const getLatestJobs = catchAsync(async (req, res) => {
+  const Jobs = await jobService.getLatestJobs()
+  sendResponse(res, httpStatus.OK, null, { Latestjobs: Jobs }, 'Jobs fetched Successfully')
+})
+
 const getJobById = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
   const job = await jobService.getJobById(id)
@@ -156,5 +161,6 @@ export default {
   deleteApplicationById,
   getSavedJobs,
   toggleSaveJob,
-  getAllJobsExceptCurrentUser
+  getAllJobsExceptCurrentUser,
+  getLatestJobs
 }

@@ -246,6 +246,40 @@ const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
   return jobs
 }
 
+const getLatestJobs = async (): Promise<Job[]> => {
+  const jobs = await prisma.job.findMany({
+    orderBy: {
+      publishDate: 'desc'
+    },
+    include: {
+      jobApplications: {
+        select: {
+          id: true,
+          userId: true
+        }
+      },
+      jobSoftwares: {
+        select: {
+          software: true
+        }
+      },
+      user: {
+        select: {
+          username: true,
+          profileImage: true
+        }
+      },
+      savedUsers: {
+        select: {
+          id: true
+        }
+      }
+    },
+    take: 4
+  })
+  return jobs
+}
+
 /**
  * Get a particular Job
  * @param {ObjectId} id
@@ -768,5 +802,6 @@ export default {
   deleteJobApplicationById,
   getSavedJobs,
   toggleSaveJob,
-  getAllJobsExceptCurrentUser
+  getAllJobsExceptCurrentUser,
+  getLatestJobs
 }
