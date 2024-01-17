@@ -33,6 +33,19 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        swipe: {
+          "0%": {
+            transform: " translate(0)",
+          },
+          "100%": {
+            transform: "translate(-100%)",
+          },
+        },
+      },
+      animation: {
+        swipe: "swipe 1s ease-in-out infinite backwards",
+      },
       colors: {
         ...colors,
         current: "currentColor",

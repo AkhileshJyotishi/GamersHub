@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
-
+import scrollData from "@/data/imageScroll.json"
 import Img from "@/assets/image/profiles-slide-show.png"
 import logotextblackbg from "@/assets/image/text-black-bg.png"
 import RightSVG from "@/assets/svg/chevron-right.svg"
@@ -24,7 +24,9 @@ import GeneralizedComponent from "@/components/news/NewsCard"
 import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"
 import Modal from "@/components/ui/modal"
+import { Banner } from "@/components/horizontalScroll"
 // {}: { users: IPostbackend[] }
+
 const HomePage = ({ News }: { users: Allow; News: ArticleProps[] }) => {
   const router = useRouter()
   // const { data: session } = useSession()
@@ -124,6 +126,7 @@ const HomePage = ({ News }: { users: Allow; News: ArticleProps[] }) => {
       <OverlayBackground />
       <div className="relative top-0">
         <OverlayContent />
+        <Banner images={scrollData} speed={5000} />
 
         {!!News.length && <GeneralizedComponent articles={News} />}
         {/* `<div className="flex flex-wrap justify-center gap-16 mt-10 text-center ">
