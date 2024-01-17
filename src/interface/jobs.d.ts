@@ -31,7 +31,7 @@ interface JobSoftwareSuggestions {
 interface BackendJob {
   id: number
   slug: string
-  // banner: string | null
+  banner: string | null
   publishDate: string | null
   title: string
   description: string | null

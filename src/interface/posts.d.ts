@@ -43,3 +43,28 @@ interface IPostbackend {
     profileImage: string
   }
 }
+
+interface IHomePostResponse {
+  id: nubmer
+  userId: number
+  slug: string
+  title: string
+  description: string | null
+  banner: string
+  matureContent: boolean
+  content: object
+  albumId: number
+  postLikes: {
+    likedUsers: {
+      id: number
+    }[]
+  }
+  savedUsers: {
+    id: number
+  }[]
+  comments: string[]
+  user: {
+    username: string
+    profileImage: string
+  }
+}

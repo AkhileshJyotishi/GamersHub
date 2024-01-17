@@ -7,11 +7,11 @@ import { title } from "process"
 import { toast } from "react-toastify"
 
 import image from "@/assets/image/void.svg"
-import ProfileCard from "@/pages/dev/storybook/profile-card"
 import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
+import ProfileCard from "@/components/newPostCard"
 import ProfilePageLayout from "@/components/profileLayout"
 import Button from "@/components/ui/button"
 // import Card from "@/components/ui/card/card2"

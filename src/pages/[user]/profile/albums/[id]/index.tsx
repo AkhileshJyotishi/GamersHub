@@ -11,14 +11,13 @@ import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
 import image from "@/assets/image/void.svg"
 import { getSession } from "@/lib/auth"
-import ProfileCard from "@/pages/dev/storybook/profile-card"
 import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
+import ProfileCard from "@/components/newPostCard"
 import { UserImage, UserInfo } from "@/components/ParticularGame/Head"
 import Button from "@/components/ui/button"
-// import Card from "@/components/ui/card/card2"
 import Share from "@/components/ui/Share"
 
 const Index = ({

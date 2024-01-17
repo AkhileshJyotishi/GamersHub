@@ -41,9 +41,8 @@ const JobCard: React.FC<JobCardData> = ({ icon, title, description }) => (
 
 const JobSection: React.FC = () => (
   <section className="w-full flex flex-col py-24 px-[16px] md:px-[60px] bg-user_interface_2 my-[40px]">
-    <h4 className="font-bold text-[32px]">
-      Find Your Dream Career: Browse <br />
-      Our <span className="text-secondary">Job Openings</span>
+    <h4 className="font-bold text-[32px] mx-auto break-normal">
+      Find Your Dream Career: Browse Our <span className="text-secondary">Job Openings</span>
     </h4>
     <div className="flex flex-wrap justify-center gap-5 mt-10 text-center">
       {jobCards?.map((jobCard, index) => (

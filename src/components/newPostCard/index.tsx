@@ -105,7 +105,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div
       className={clsx(
-        "group w-full h-fit bg-user_interface_1   !aspect-[3/2] py-2 flex flex-col gap-2",
+        // !aspect-[3/2]
+        "group w-full h-fit bg-user_interface_1    py-2 flex flex-col gap-2",
         className
       )}
     >
@@ -297,22 +298,3 @@ export const DropDownActionButton: React.FC<DropDownActionButtonProps> = ({
 }
 
 export default ProfileCard
-
-{
-  /* <Card
-id={post.id}
-key={post.id}
-username={post.user.username}
-userProfilePhoto={post.user.profileImage}
-coverPhoto={post.banner}
-matureContent={post.matureContent}
-title={post.title}
-savedPost={post.savedUsers}
-likedPost={(post?.postLikes?.likedUsers ?? []).map((like) => like) ?? []}
-userId={post.userId}
-// location={data.location}
-// views={data.views}
-className="h-[350px] w-[100%] md:w-[300px] justify-self-center"
-imageWidth={400}
-/> */
-}

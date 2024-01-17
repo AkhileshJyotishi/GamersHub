@@ -1,6 +1,7 @@
 import React from "react"
-import styles from "./scroll.module.css"
 import Image from "next/image"
+
+import styles from "./scroll.module.css"
 const ScrollCard = ({ cover, headline }: { cover: string; headline: string }) => {
   return (
     <div className={"w-full max-w-[360px] sm:w-[205px] h-fit rounded-[10px] cursor-pointer "}>

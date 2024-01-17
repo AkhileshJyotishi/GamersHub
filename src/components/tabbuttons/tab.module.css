@@ -2,9 +2,10 @@
   display: flex;
   align-items: center;
   list-style: none;
-  max-width: 100%;
+  /* max-width: 100%; */
   overflow-x: scroll;
   scroll-behavior: smooth;
+  margin: auto;
 }
 
 .li {
@@ -12,8 +13,9 @@
   color: #fff;
   padding: 8px;
   border-radius: 4px;
-  margin: 0 4px;
+  margin: 0 10px;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .button {
