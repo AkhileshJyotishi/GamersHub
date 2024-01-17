@@ -178,7 +178,7 @@ export default function Navbar() {
       <ModalComponent />
       <nav
         className={clsx(
-          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] bg-background px-8 xl:pl-28",
+          "w-[100vw] flex flex-row items-center justify-between mx-auto py-[20px] sticky top-0 h-[62px] bg-background px-4 sm:px-8 xl:pl-28",
           !tap ? "z-20" : "z-0"
         )}
       >
@@ -220,6 +220,7 @@ export default function Navbar() {
           <NavbarLink label="Jobs" href="/jobs" />
           <NavbarLink label="Creators" href="/creator" />
           <NavbarLink label="Games" href="/games" />
+          <NavbarLink label="News" href="/news" />
           <NavbarLink label="About Us" href="/about-us" />
 
           {/* {session && <NavbarLink label="Profile" href={`/${userData?.id}/profile/albums`} />} */}

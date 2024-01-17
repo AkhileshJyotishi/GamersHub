@@ -15,7 +15,7 @@ import {
 
 import BannerComponent from "@/components/filter/filterbanner"
 import PlusIcon from "@/components/icons/plus"
-import TabButtons from "@/components/tabbuttons"
+import TabButtons from "@/components/NewtabButtons"
 import Button from "@/components/ui/button"
 
 import { DesktopFilter, FilterMobileDialog } from "../filter"

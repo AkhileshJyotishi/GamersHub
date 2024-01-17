@@ -24,7 +24,6 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
       return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
     },
   })
-  console.log("gamesection ", GameData.description)
 
   const SectionRenderer: React.FC<Section & { data: Gamedataprop }> = ({ title, data, render }) => (
     <div className="flex flex-col items-start rounded-xl gap-[6px] p-2 flex-wrap">

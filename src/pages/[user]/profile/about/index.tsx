@@ -50,11 +50,11 @@ const About = () => {
   } else {
     // aboutData?.userEducation![0].degree=""
     return (
-      <div className="w-[90%] mx-auto">
+      <div className="sm:w-[90%] mx-auto">
         {aboutData && (
           <div className="flex flex-col w-full items-start mt-[30px] gap-[10px] sm:gap-[20px]">
             {aboutData.userBio && (
-              <div className="flex flex-col items-start px-[10px] sm:px-[20px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
+              <div className="flex flex-col items-start px-[5px] sm:px-[10px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
                 <div className="w-full flex items-center justify-between gap-4">
                   <h1 className="px-2 py-1 font-semibold text-secondary">User Bio</h1>
                   <span
@@ -128,7 +128,7 @@ const About = () => {
               </div>
             )}
             {aboutData.userExperience && !!aboutData.userExperience.length && (
-              <div className="flex flex-col items-start px-[10px] sm:px-[20px] py-[10px] bg-user_interface_2 w-full rounded-[10px] gap-2">
+              <div className="flex flex-col items-start sm:px-[5px] md:px-[10px] py-[10px] bg-user_interface_2 w-full rounded-[10px] gap-2">
                 <div className="w-full flex items-center justify-between gap-4">
                   <h1 className="px-2 py-1 font-semibold text-secondary">Experience</h1>
                   <span
@@ -189,7 +189,7 @@ const About = () => {
               </div>
             )}
             {aboutData.userSkills && !!aboutData.userSkills.length && (
-              <div className="flex flex-col items-start px-[10px] sm:px-[20px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
+              <div className="flex flex-col items-start  sm:px-[5px] md:px-[10px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
                 <div className="w-full flex items-center justify-between gap-4">
                   <h1 className="px-2 py-1 font-semibold text-secondary">Skills</h1>
                   <span
@@ -208,7 +208,7 @@ const About = () => {
               </div>
             )}
             {aboutData.userSoftwares && !!aboutData.userSoftwares?.length && (
-              <div className="flex flex-col items-start px-[10px] sm:px-[20px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
+              <div className="flex flex-col items-start  sm:px-[5px] md:px-[10px] py-[10px] bg-user_interface_2 w-full rounded-[10px]">
                 <div className="w-full flex items-center justify-between gap-4">
                   <h1 className="px-2 py-1 font-semibold text-secondary">Softwares</h1>
                   <span

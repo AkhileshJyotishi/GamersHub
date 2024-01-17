@@ -17,7 +17,7 @@ interface FeaturedListProps {
 }
 
 export const Article: FC<ArticleProps & { className: string; activetab?: string }> = ({
-  imgSrc,
+  bannerImage,
   id,
   category,
   subtitle,
@@ -41,7 +41,7 @@ export const Article: FC<ArticleProps & { className: string; activetab?: string 
             "absolute group-hover:scale-105 h-full w-full transition-all bg-[#181818]  hover:scale-50",
             news.background
           )}
-          src={imgSrc || defaultbannerImage}
+          src={bannerImage || defaultbannerImage}
         />
 
         <span
@@ -75,48 +75,53 @@ export const Article: FC<ArticleProps & { className: string; activetab?: string 
   )
 }
 
-const FeaturedList: FC<FeaturedListProps> = ({ articles, activetab }) => (
-  <>
-    {/* Primary Section */}
-    <section className={cn("col-start-1 col-span-4  h-fit p-2")}>
-      <div className={cn("relative h-[400px]")}>
-        {articles &&
-          (articles?.slice(0, 1) ?? []).map((article) => (
-            <Article
-              key={article.id}
-              activetab={activetab}
-              {...article}
-              // subtitle="sd"
-              // imgSrc={article.imgSrc}
-              // imgAlt={``}
-              className={"h-[inherit]"}
-            />
-          ))}
-      </div>
-    </section>
+const FeaturedList: FC<FeaturedListProps> = ({ articles, activetab }) => {
+  return (
+    <>
+      <section className={cn("col-start-1 col-span-4  h-fit p-2")}>
+        <div className={cn("relative h-[400px]")}>
+          {articles &&
+            (articles?.slice(0, 1) ?? []).map((article) => (
+              <Article
+                key={article.id}
+                activetab={activetab}
+                {...article}
+                // subtitle="sd"
+                bannerImage={article.bannerImage}
+                // imgAlt={``}
+                className={"h-[inherit]"}
+              />
+            ))}
+        </div>
+      </section>
 
-    {/* Secondary Section */}
-    <section className={cn("col-span-4 h-fit p-2")}>
-      <div className="flex flex-col sm:grid grid-cols-2 grid-rows-2 gap-4 md:h-[400px] ">
-        {articles &&
-          (articles?.slice(1, 5) ?? []).map((article) => (
-            <Article
-              key={article.id}
-              activetab={activetab}
-              {...article}
-              // imgSrc={article.imgSrc}
-              // imgAlt={``}
-              className="h-[200px]"
-            />
-          ))}
-      </div>
-    </section>
-  </>
-)
+      {/* Secondary Section */}
+      <section className={cn("col-span-4 h-fit p-2")}>
+        <div className="flex flex-col sm:grid grid-cols-2 grid-rows-2 gap-4 md:h-[400px] ">
+          {articles &&
+            (articles?.slice(1, 5) ?? []).map((article) => (
+              <Article
+                key={article.id}
+                activetab={activetab}
+                {...article}
+                // imgSrc={article.imgSrc}
+                // imgAlt={``}
+                className="h-[200px]"
+              />
+            ))}
+        </div>
+      </section>
+    </>
+  )
+}
 
 const GeneralizedComponent: FC<FeaturedListProps> = ({ articles, activetab }) => (
   <>
-    <div className={cn("min-[1024px]:p-12 min-[1440px]:p-20 mx-auto h-fit hidden sm:block")}>
+    <div
+      className={cn(
+        "min-[1024px]:p-12 min-[1440px]:p-20 mx-auto h-fit hidden sm:block 2xl:max-w-[2200px]"
+      )}
+    >
       <div className={cn("min-[1024px]:grid md:grid-cols-8 w-full gap-4 h-fit sm:flex flex-col ")}>
         <FeaturedList articles={articles} activetab={activetab} />
       </div>

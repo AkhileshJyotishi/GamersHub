@@ -81,7 +81,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
       value: string
     }>
   ) => {
-    console.log("is it working ", val)
     const arr: string[] = val.map((v) => v.value)
     onTagsChange(arr)
   }

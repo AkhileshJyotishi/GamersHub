@@ -173,7 +173,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
           </div>
           <div className="flex flex-row items-center justify-between w-full gap-4 mt-5">
             <div className="h-[1.5px] w-full rounded-3xl bg-user_interface_3"></div>
-            <p className="text-[#505054]">Or </p>
+            <div className="text-[#505054]">Or </div>
             <div className="h-[1.5px] w-full round-3xl bg-user_interface_3"></div>
           </div>
           <div className="mt-6">

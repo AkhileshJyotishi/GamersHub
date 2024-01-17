@@ -163,7 +163,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <div className="flex justify-between items-center gap-2 md:gap-4 px-4">
         {/* {userId !== userData?.id && ( */}
         <>
-          <div className="center gap-1 md:gap-4">
+          <div className="center gap-3 md:gap-4">
             <div className="w-min center gap-2 cursor-pointer">
               {liked ? (
                 <FaRegStar

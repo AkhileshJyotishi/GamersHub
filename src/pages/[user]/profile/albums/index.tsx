@@ -195,9 +195,9 @@ const Albums = () => {
             />
           </div>
         </div>
-        <div className="grid sm:w-[90%] sm:mx-auto my-4  sm:p-4  md:grid-cols-2 xl:grid-cols-3  gap-[20px]">
-          {!posts && (
-            <>
+        {!posts && (
+          <>
+            <div className="grid sm:w-[90%] sm:mx-auto my-4  sm:p-4  sm:grid-cols-2 xl:grid-cols-3  gap-[20px] 3xl:grid-cols-4">
               {albumDetails.length > 0 ? (
                 albumDetails?.map((album, index) => (
                   <>
@@ -221,11 +221,13 @@ const Albums = () => {
                   </div>
                 </>
               )}
-            </>
-          )}
+            </div>
+          </>
+        )}
 
-          {posts && (
-            <>
+        {posts && (
+          <>
+            <div className="grid sm:w-[90%] sm:mx-auto my-4  sm:p-4  md:grid-cols-2 xl:grid-cols-3  gap-[20px] 3xl:grid-cols-4">
               {postsDetails.length > 0 ? (
                 postsDetails?.map((post) => (
                   <ProfileCard
@@ -303,9 +305,9 @@ const Albums = () => {
                   }
                 </>
               )}
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     )
   }

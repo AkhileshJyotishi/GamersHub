@@ -12,7 +12,6 @@ interface FeaturedListProps {
 }
 
 const NewsCarousel: React.FC<FeaturedListProps> = ({ articles }) => {
-  console.log(articles)
   return (
     <div className=" px-2 py-4 w-[95vw] mx-auto  sm:hidden">
       <Carousel

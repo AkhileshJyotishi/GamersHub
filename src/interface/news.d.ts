@@ -23,7 +23,7 @@ interface INews {
 
 export interface ArticleProps {
   id: number
-  imgSrc: string | StaticImageData
+  bannerImage: string | StaticImageData
   subtitle?: string
   category?: Omit<INewsCategory, "News">
   imgAlt: string

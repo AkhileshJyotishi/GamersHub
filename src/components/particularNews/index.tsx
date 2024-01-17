@@ -15,7 +15,6 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 
 const Particularpage = ({ newsData }: { newsData: BackendNews }) => {
   const router = useRouter()
-  console.log("newsData.bannerImage", newsData.bannerImage)
   if (!newsData) {
     return <div>Loading...</div>
   }
@@ -65,10 +64,10 @@ const Particularpage = ({ newsData }: { newsData: BackendNews }) => {
             </span>
             <span className="break-normal text-text_dull">
               -{" "}
-              {new Date(newsData.publishedAt).toLocaleDateString(undefined, {
+              {new Date(newsData.publishedAt as string).toLocaleDateString("en-US", {
+                day: "2-digit",
                 month: "long",
                 year: "numeric",
-                day: "numeric",
               })}
             </span>
           </p>

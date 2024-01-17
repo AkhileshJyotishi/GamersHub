@@ -14,6 +14,7 @@ export default function TabButtons({
   className,
   seperator = true,
   tabColors,
+  activeTabColor,
 }: {
   tabNames: Array<string>
   setActiveTab?: React.Dispatch<React.SetStateAction<string>>
@@ -21,6 +22,7 @@ export default function TabButtons({
   className?: string
   seperator?: boolean
   tabColors?: string
+  activeTabColor?: string
 }) {
   const scrollref = useRef<HTMLUListElement>(null)
   const [scrollX, setscrollX] = useState<number>(0)
@@ -87,7 +89,11 @@ export default function TabButtons({
                   className={clsx(
                     a.li,
                     tabColors,
-                    activeTab && activeTab === tabName && " !bg-user_interface_3 !p-3 rounded-lg"
+                    activeTabColor && activeTab && activeTab === tabName && "!bg-secondary",
+                    !activeTabColor &&
+                      activeTab &&
+                      activeTab === tabName &&
+                      " !bg-user_interface_3 !p-3 rounded-lg"
                   )}
                 >
                   {tabName}

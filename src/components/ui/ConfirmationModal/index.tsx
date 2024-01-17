@@ -38,7 +38,7 @@ const ModalComponent = () => {
                     {title}
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-text">{content}</p>
+                    <div className="text-sm text-text">{content}</div>
                   </div>
 
                   {modalData?.buttonText && (

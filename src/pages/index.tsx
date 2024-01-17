@@ -118,7 +118,7 @@ const HomePage = ({
 
         break
     }
-    return postsToRender.length > 0 ? (
+    return postsToRender?.length > 0 ? (
       (postsToRender as IHomePostResponse[]).map((data, index) => (
         <ProfileCard
           key={index}
@@ -198,7 +198,7 @@ const HomePage = ({
         <OverlayContent />
         <Banner images={scrollData} speed={5000} />
 
-        {!!news.length && <GeneralizedComponent articles={news} />}
+        {!!news?.length && <GeneralizedComponent articles={news} />}
 
         <div className=" flex flex-wrap flex-col mt-10 text-center w-[90%] mx-auto rounded-xl p-1 md:p-8">
           {/* <div className=" w-[90%] sm:w-fit font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3  mt-[20px] "> */}
@@ -240,7 +240,7 @@ const HomePage = ({
         <div className=" flex flex-wrap flex-col mt-10 text-center w-[90%] mx-auto rounded-xl p-1 md:p-8">
           {/* <div className=" w-[90%] sm:w-fit font-medium text-center  rounded-xl text-text  flex flex-col sm:flex-row dark:text-gray-400 mx-auto  bottom-[50px] justify-evenly left-0 right-0 z-10 p-3  mt-[20px] "> */}
           {/* <Tab tabs={HomeTabs} activeTab={activeTab} setactiveTab={setactiveTab} /> */}
-          {jobs && !!jobs.length && (
+          {jobs && !!jobs?.length && (
             <>
               <div className=" text-3xl sm:text-4xl font-[800] break-words p-4  tracking-wider">
                 Find your Dream <span className=" text-secondary">Career</span>
@@ -305,19 +305,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
   if (response?.error) {
     return {
-      redirect: {
-        destination: `/?emessage=${response?.message}`,
-        permanent: false,
-      },
+      notFound: true,
     }
   }
   // console.log("Jobs", jobs)
 
   const News: ArticleProps[] = CreateNewsFrontend(response?.data?.LatestNews ?? [])
-  const postsExplore: IHomePostResponse[] = response?.data.postsExplore
-  const postsTrending: IHomePostResponse[] = response?.data.postsTrending
-  const postsFollowing: IHomePostResponse[] = response?.data.postsFollowing
-  const postsSaved: IHomePostResponse[] = response?.data.postsSaved
+  const postsExplore: IHomePostResponse[] = response?.data.postsExplore ?? []
+  const postsTrending: IHomePostResponse[] = response?.data.postsTrending ?? []
+  const postsFollowing: IHomePostResponse[] = response?.data.postsFollowing ?? []
+  const postsSaved: IHomePostResponse[] = response?.data.postsSaved ?? []
   if (session) {
     return {
       props: {
@@ -341,7 +338,7 @@ export const CreateNewsFrontend = (NewsArray: INews[]) => {
   const res2: ArticleProps[] = (NewsArray ?? []).map((Pnews) => {
     return {
       id: Pnews.id,
-      imgSrc: Pnews?.bannerImage ?? "",
+      bannerImage: Pnews?.bannerImage ?? "",
       imgAlt: "",
       category: Pnews.category,
       title: Pnews.title,

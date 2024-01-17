@@ -38,7 +38,7 @@ const Button = ({
       {...properties}
     >
       {children && children}
-      {title && <p className={` ${textClassName}`}>{title}</p>}
+      {title && <div className={` ${textClassName}`}>{title}</div>}
     </button>
   )
 }

@@ -66,7 +66,6 @@ const CreatePortfolio = ({
 
   const uploadPost = async () => {
     setLoading(true)
-    console.log(localStorage.getItem("noval_content"))
     let novelContent
     if (isUpdate) {
       novelContent = "noval_content_update"

@@ -58,7 +58,7 @@ export default function ProfileSettingsCard({ className, userData, onClose }: Pr
   return (
     <>
       <div
-        className={`py-2 mt-2 sm:mt-0 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[2px] min-h-[500px] w-[310px] rounded-xl ${className}`}
+        className={`py-2 mt-2 sm:mt-0 shadow-glow bg-user_interface_2 border-[1px] border-solid border-user_interface_3 right-0 flex flex-col items-center px-[2px]  w-[310px] rounded-xl ${className}`}
         ref={cardRef}
       >
         {/* IMAGE */}

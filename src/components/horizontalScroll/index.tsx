@@ -19,18 +19,18 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ images }) => (
   <div className={clsx(scroll.inner, "rounded-md")}>
     <div className={clsx(scroll.wrapper)}>
-      <section className="flex gap-4" style={{ animation: "swipe 30s linear infinite " }}>
+      <section className="flex gap-4 animate-swipe">
         {images.map((image) => (
           <ScrollCard key={image.id} cover={image.image} headline={image.headline} />
         ))}
       </section>
-      <section className="flex gap-4" style={{ animation: "swipe 30s linear infinite " }}>
+      <section className="flex gap-4 animate-swipe">
         {images.map((image) => (
           // <div key={id}>
           <ScrollCard key={image.id} cover={image.image} headline={image.headline} />
         ))}
       </section>
-      <section className="flex gap-4" style={{ animation: "swipe 30s linear infinite " }}>
+      <section className="flex gap-4 animate-swipe">
         {images.map((image) => (
           <ScrollCard key={image.id} cover={image.image} headline={image.headline} />
         ))}

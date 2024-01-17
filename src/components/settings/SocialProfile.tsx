@@ -31,7 +31,6 @@ type EditProfileProps = {
   socialsprops: Isocials
 }
 const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }) => {
-  console.log("session ", socialsprops)
   const { data: session } = useSession()
   const [addOnWeb, setAddOnWeb] = useState<Isocials>({
     ...socialsprops,
@@ -102,8 +101,6 @@ const Socials: React.FC<EditProfileProps> = ({ title = "Socials", socialsprops }
       return
     }
     if (!lodash.isEqual(addOnWeb, socialsprops)) {
-      console.log(addOnWeb)
-      console.log(socialsprops)
       toast.info("Uploading Profiles... ")
       const changeSocials = await fetchData(
         `/v1/users/socials`,

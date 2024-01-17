@@ -13,7 +13,7 @@ import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization, generateQueryParams } from "@/utils/functions"
 
 import PlusIcon from "@/components/icons/plus"
-import TabButtons from "@/components/tabbuttons"
+import TabButtons from "@/components/NewtabButtons"
 import Button from "@/components/ui/button"
 import Select from "@/components/ui/select"
 

@@ -152,6 +152,8 @@ const Layout: React.FC<LayoutProps> = ({
           setActiveTab={setActiveTab}
           activeTab={activeTab}
           className="flex-nowrap relative overflow-x-scroll no-scrollbar"
+          tabColors="!bg-transparent "
+          activeTabColor="!bg-secondary"
           seperator={false}
         />
         {/* {session && (
@@ -196,7 +198,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-[250px]  lg:grid-cols-3 gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[100%] mx-auto 3xl:p-48 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-[250px]  lg:grid-cols-3 gap-4 p-2 sm:p-4 md:p-6 mt-3 w-[90%] mx-auto 3xl:p-48 ">
         {children}
       </div>
     </>

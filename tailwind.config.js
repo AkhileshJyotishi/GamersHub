@@ -44,7 +44,7 @@ module.exports = {
         },
       },
       animation: {
-        swipe: "swipe 1s ease-in-out infinite backwards",
+        swipe: "swipe 30s linear infinite backwards",
       },
       colors: {
         ...colors,

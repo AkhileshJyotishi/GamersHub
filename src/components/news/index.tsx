@@ -12,7 +12,6 @@ type NewsPageProps = {
   parsedCategoriesDetails: INewsCategory[]
 }
 const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
-  console.log("parser", parsedCategoriesDetails)
   const router = useRouter()
   const [activetab, setactivetab] = useState<INewsCategory["title"]>("All")
   // const { userData, setIsLoginModalOpen } = useUserContext()
@@ -49,7 +48,6 @@ const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
           {" "}
           {AllCategory &&
             AllCategory.map((cat) => {
-              console.log("cat ", cat)
               return cat.News?.map((article) => {
                 return (
                   <Article
@@ -59,7 +57,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
                     activetab={cat.title}
                     subtitle={article.subtitle}
                     // subtitle={}
-                    imgSrc={article.bannerImage ?? defaultbannerImage}
+                    bannerImage={article.bannerImage ?? defaultbannerImage}
                     imgAlt={``}
                     className="h-full"
                     link={`/news/${article.id}`}
@@ -81,7 +79,7 @@ const NewsPage: React.FC<NewsPageProps> = ({ parsedCategoriesDetails }) => {
                   category={article.category}
                   activetab={activetab}
                   subtitle={article.subtitle}
-                  imgSrc={article.bannerImage ?? defaultbannerImage}
+                  bannerImage={article.bannerImage ?? defaultbannerImage}
                   imgAlt={``}
                   className="h-full"
                   link={`/news/${article.id}`}

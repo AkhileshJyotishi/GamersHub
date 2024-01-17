@@ -148,7 +148,6 @@ const CreateGame = ({
         } else {
           gameInfo.gameAssets = []
           // console.log(multiisuploaded?.data.image[0])
-          console.log("multiisuploaded?.data.image.Location", multiisuploaded?.data.image.Location)
           newArray.push(multiisuploaded?.data.image.Location)
         }
       } else {

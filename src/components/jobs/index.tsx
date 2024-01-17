@@ -95,7 +95,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs, jobSoftwareSuggestions }) => 
         <>
           {jobs.length > 0 ? (
             <>
-              <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+              <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:grid-cols-1 md:gap-[20px] gap-[10px] w-full 3xl:grid-cols-4">
                 {loading ? (
                   <>
                     <SkeletonLoader />
@@ -129,7 +129,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs, jobSoftwareSuggestions }) => 
         <>
           {Alljobs?.filter((job) => job.savedUsers.some((user) => user.id === userData?.id))
             .length !== 0 ? (
-            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:grid-cols-1 md:gap-[20px] gap-[10px] w-full 3xl:grid-cols-4">
               {loading ? (
                 <>
                   <SkeletonLoader />
@@ -160,7 +160,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs, jobSoftwareSuggestions }) => 
       {activetab === "My Job Posts" && (
         <>
           {myjob && Array.from(myjob).length > 0 ? (
-            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:gap-[20px] gap-[10px] w-full">
+            <div className="grid  mx-auto my-4  p-2 md:p-4 lg:grid-cols-2 xl:grid-cols-3  sm:grid-cols-2 md:grid-cols-1 md:gap-[20px] gap-[10px] w-full 3xl:grid-cols-4">
               {loading ? (
                 <>
                   <SkeletonLoader />

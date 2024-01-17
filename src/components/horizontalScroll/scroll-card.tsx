@@ -4,7 +4,7 @@ import Image from "next/image"
 import styles from "./scroll.module.css"
 const ScrollCard = ({ cover, headline }: { cover: string; headline: string }) => {
   return (
-    <div className={"w-full max-w-[360px] sm:w-[205px] h-fit rounded-[10px] cursor-pointer "}>
+    <div className={" max-w-[360px] w-[205px] h-fit rounded-[10px] cursor-pointer "}>
       <div className={"rounded-[10px] w-full h-[200px] relative " + styles["card-image-container"]}>
         <span
           id="blackOverlay"
@@ -19,7 +19,7 @@ const ScrollCard = ({ cover, headline }: { cover: string; headline: string }) =>
             className="rounded-[10px] object-cover w-full h-full "
           />
         }
-        <div className="absolute mx-auto font-[700] border-[1px] border-text p-1 text-center bg-transparent rounded-[50rem] w-[80%] backdrop-blur-[4px] left-0 right-0 bottom-[6px]">
+        <div className="absolute mx-auto font-[700] border-[1px] border-text p-1 text-center bg-transparent rounded-[50rem] w-[80%]  left-0 right-0 bottom-[6px]">
           {headline}
         </div>
       </div>
