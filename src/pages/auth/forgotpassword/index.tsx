@@ -60,7 +60,7 @@ const Forgotpassword = () => {
           </div>
 
           <Button
-            className="px-[12px] py-[6px] border-[#323235] bg-secondary border-[0.01px] flex items-center mt-6 rounded-xl"
+            className="mt-6 transition-all  py-2 rounded-lg hover:opacity-90 flex px-4 sm:text-sm md:text-md bg-secondary"
             onClick={(e) => handleReset(e)}
           >
             Reset Password

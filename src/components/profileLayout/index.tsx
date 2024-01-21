@@ -238,7 +238,7 @@ const ProfileLayout = ({
           <title>Profile | {data?.username}</title>
         </Head>
         {/* flex flex-col gap-5 p-2 sm:p-3 md:p-4 lg:p-5 lg:flex-row */}
-        <div className="lg:grid  lg:grid-cols-[25vw,75vw] xl:grid-cols-[20vw,80vw] gap-5 p-2 sm:p-3 lg:p-5 ">
+        <div className="lg:grid  lg:grid-cols-[25%,75%] xl:grid-cols-[20%,80%] gap-5 p-2 sm:p-3 lg:p-5 ">
           <ProfileCard className="hidden lg:block" currentUser={data} />
           <Modal
             isOpen={isCreateAlbumOpen}
