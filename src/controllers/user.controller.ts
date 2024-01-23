@@ -214,6 +214,17 @@ const getKeywords = catchAsync(async (req, res) => {
   const Keyword = keywords?.map((k: Allow) => k.keyword)
   sendResponse(res, httpStatus.OK, null, { Keyword }, 'Keywords fetched Successfully')
 })
+
+const getJobRoles = catchAsync(async (req, res) => {
+  const jobRoles = await prisma.rolesNeeded.findMany({
+    select: {
+      role: true
+    }
+  })
+  const jobRole = (jobRoles ?? [])?.map((k: Allow) => k?.role)
+  sendResponse(res, httpStatus.OK, null, { jobRole }, 'Roles fetched Successfully')
+})
+
 const getSkills = catchAsync(async (req, res) => {
   const Skills = await prisma.skill.findMany({
     select: {
@@ -416,5 +427,6 @@ export default {
   getCustomCreatorsTags,
   getAllDetails,
   getOtherDetails,
-  getHomeDetailsController
+  getHomeDetailsController,
+  getJobRoles
 }

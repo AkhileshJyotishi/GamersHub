@@ -67,6 +67,17 @@ const getUserApplication = catchAsync(async (req, res) => {
     'User Applications fetched Successfully'
   )
 })
+const getJobApplication = catchAsync(async (req, res) => {
+  const jobId = parseInt(req.params.id)
+  const JobsApplications = await jobService.getJobApplication(jobId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applications: JobsApplications },
+    'Job Applications fetched Successfully'
+  )
+})
 
 const createApplication = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -77,7 +88,7 @@ const createApplication = catchAsync(async (req, res) => {
     httpStatus.CREATED,
     null,
     { jobApplication: userJobApplicatio },
-    'User Job Application Created Successfully'
+    'Job Applied Successfully'
   )
 })
 
@@ -161,6 +172,7 @@ export default {
   deleteApplicationById,
   getSavedJobs,
   toggleSaveJob,
+  getJobApplication,
   getAllJobsExceptCurrentUser,
   getLatestJobs
 }

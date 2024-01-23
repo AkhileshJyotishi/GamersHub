@@ -20,6 +20,7 @@ const createJob = {
     paymentType: Joi.string().valid('FIXED', 'HOURLY', 'NEGOTIABLE').required(),
     jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB').required(),
     description: Joi.string().allow('').optional(),
+    jobApplyUrl: Joi.string().allow('').optional(),
     publishDate: Joi.date().iso().allow('').optional(),
     jobDetails: Joi.object().allow({}).optional(),
     aboutRecruiter: Joi.object().allow({}).optional(),
@@ -27,7 +28,8 @@ const createJob = {
     city: Joi.string().allow('').optional(),
     paymentValue: Joi.number().optional(),
     expertise: Joi.string().valid('ENTRY', 'INTERMEDIATE', 'EXPERT').allow(null).optional(),
-    jobSoftwares: Joi.array().items(Joi.string()).optional()
+    jobSoftwares: Joi.array().items(Joi.string()).optional(),
+    rolesNeeded: Joi.array().items(Joi.string()).optional()
   })
 }
 
@@ -54,13 +56,15 @@ const updateJob = {
       jobType: Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB').optional(),
       publishDate: Joi.date().iso().allow('').optional(),
       jobDetails: Joi.object().allow({}).optional(),
+      jobApplyUrl: Joi.string().allow('').optional(),
       aboutRecruiter: Joi.object().allow({}).optional(),
       country: Joi.string().allow('').optional(),
       city: Joi.string().allow('').optional(),
       description: Joi.string().allow('').optional(),
       paymentValue: Joi.number().optional(),
       expertise: Joi.string().valid('ENTRY', 'INTERMEDIATE', 'EXPERT').allow(null).optional(),
-      jobSoftwares: Joi.array().items(Joi.string()).optional()
+      jobSoftwares: Joi.array().items(Joi.string()).optional(),
+      rolesNeeded: Joi.array().items(Joi.string()).optional()
     })
     .min(1)
 }
@@ -77,8 +81,19 @@ const updateApplication = {
 const createApplication = {
   body: Joi.object().keys({
     jobId: Joi.number().integer().required(),
+    rolesApplied: Joi.array().items(Joi.string()).optional(),
+    applyMethod: Joi.string().valid('MANUAL', 'GCH').optional(),
     resume: Joi.string().allow('').optional(),
-    motivationToApply: Joi.string().required()
+    motivationToApply: Joi.string().required(),
+    firstName: Joi.string().optional().min(1),
+    lastName: Joi.string().optional().allow(''),
+    email: Joi.string().email().optional(),
+    phone: Joi.string().optional().allow(''),
+    country: Joi.string().optional().allow(''),
+    city: Joi.string().optional().allow(''),
+    bio: Joi.string().optional().allow(''),
+    portfolio: Joi.string().optional().allow(''),
+    skills: Joi.array().items(Joi.string()).optional()
   })
 }
 
