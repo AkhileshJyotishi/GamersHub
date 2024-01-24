@@ -79,6 +79,18 @@ const getJobApplication = catchAsync(async (req, res) => {
   )
 })
 
+const getApplicantInfo = catchAsync(async (req, res) => {
+  const applicantInfoId = parseInt(req.params.id)
+  const ApplicantInfo = await jobService.getapplicantInfo(applicantInfoId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applicantInfo: ApplicantInfo },
+    'ApplicantInfo fetched Successfully'
+  )
+})
+
 const createApplication = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
   const applicationBody = req.body
@@ -174,5 +186,6 @@ export default {
   toggleSaveJob,
   getJobApplication,
   getAllJobsExceptCurrentUser,
-  getLatestJobs
+  getLatestJobs,
+  getApplicantInfo
 }

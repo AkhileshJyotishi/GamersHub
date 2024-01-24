@@ -1,7 +1,14 @@
 import httpStatus from 'http-status'
 import prisma from '../client'
 import ApiError from '../utils/api-error'
-import { ApplicationMethod, Expertise, Job, JobApplication, JobType } from '@prisma/client'
+import {
+  ApplicantInfo,
+  ApplicationMethod,
+  Expertise,
+  Job,
+  JobApplication,
+  JobType
+} from '@prisma/client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 /**
@@ -11,7 +18,7 @@ declare type Allow<T = any> = T | null
  */
 
 const getUserJobs = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
-  const { expertise, jobType, remote, jobSoftwares } = filter
+  const { expertise, jobType, remote, jobSoftwares, rolesNeeded } = filter
   const user = await prisma.user.findUnique({
     where: {
       jobs: {
@@ -44,6 +51,18 @@ const getUserJobs = async (userId: number, filter: QueryJobs): Promise<Job[]> =>
                     some: {
                       software: {
                         in: jobSoftwares,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              : {},
+            rolesNeeded
+              ? {
+                  rolesNeeded: {
+                    some: {
+                      role: {
+                        in: rolesNeeded,
                         mode: 'insensitive'
                       }
                     }
@@ -208,7 +227,7 @@ const deleteUserJobs = async (userId: number): Promise<void> => {
  */
 
 const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
-  const { expertise, jobType, remote, jobSoftwares } = filter
+  const { expertise, jobType, remote, jobSoftwares, rolesNeeded } = filter
   const jobs = await prisma.job.findMany({
     where: {
       AND: [
@@ -239,6 +258,18 @@ const getAllJobs = async (filter: QueryJobs): Promise<Job[]> => {
                 some: {
                   software: {
                     in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        rolesNeeded
+          ? {
+              rolesNeeded: {
+                some: {
+                  role: {
+                    in: rolesNeeded,
                     mode: 'insensitive'
                   }
                 }
@@ -354,6 +385,11 @@ const getJobById = async (id: number): Promise<Job | object> => {
             }
           },
           ApplicantInfo: true
+        }
+      },
+      rolesNeeded: {
+        select: {
+          role: true
         }
       }
     }
@@ -613,6 +649,7 @@ const getJobApplication = async (jobId: number): Promise<Partial<JobApplication>
       },
       ApplicantInfo: {
         select: {
+          id: true,
           city: true,
           country: true,
           firstName: true,
@@ -624,6 +661,42 @@ const getJobApplication = async (jobId: number): Promise<Partial<JobApplication>
     }
   })
   return userApplications || []
+}
+/**
+ * Get All Particular applicantInfo
+ * @param {ObjectId} applicantInfoId
+ * @returns {Promise<JobApplication[]>}
+ */
+
+const getapplicantInfo = async (applicantInfoId: number): Promise<Partial<ApplicantInfo>> => {
+  const ApplicantInfo = await prisma.applicantInfo.findUnique({
+    where: {
+      id: applicantInfoId
+    },
+    select: {
+      skills: true,
+      bio: true,
+      country: true,
+      city: true,
+      phone: true,
+      email: true,
+      id: true,
+      portfolio: true,
+      firstName: true,
+      lastName: true,
+      relatedJob: {
+        select: {
+          motivationToApply: true,
+          resume: true,
+          rolesApplied: true
+        }
+      }
+    }
+  })
+  if (!ApplicantInfo) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Applicant not found')
+  }
+  return ApplicantInfo
 }
 
 interface ApplicationBody {
@@ -908,9 +981,10 @@ interface QueryJobs {
   jobType?: JobType[]
   remote?: boolean
   jobSoftwares?: string[]
+  rolesNeeded?: string[]
 }
 const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): Promise<Job[]> => {
-  const { expertise, jobType, remote, jobSoftwares } = filter
+  const { expertise, jobType, remote, jobSoftwares, rolesNeeded } = filter
   const jobs = await prisma.job.findMany({
     where: {
       AND: [
@@ -941,6 +1015,18 @@ const getAllJobsExceptCurrentUser = async (userId: number, filter: QueryJobs): P
                 some: {
                   software: {
                     in: jobSoftwares,
+                    mode: 'insensitive'
+                  }
+                }
+              }
+            }
+          : {},
+        rolesNeeded
+          ? {
+              rolesNeeded: {
+                some: {
+                  role: {
+                    in: rolesNeeded,
                     mode: 'insensitive'
                   }
                 }
@@ -1000,5 +1086,6 @@ export default {
   toggleSaveJob,
   getAllJobsExceptCurrentUser,
   getLatestJobs,
-  getJobApplication
+  getJobApplication,
+  getapplicantInfo
 }

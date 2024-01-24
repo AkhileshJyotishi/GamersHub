@@ -9,7 +9,8 @@ const queryJobs = {
     expertise: Joi.array().items(Joi.string().valid('ENTRY', 'EXPERT', 'INTERMEDIATE')),
     jobType: Joi.array().items(Joi.string().valid('FREELANCE', 'FULL_TIME', 'COLLAB')),
     remote: Joi.boolean(),
-    jobSoftwares: Joi.array().items(Joi.string())
+    jobSoftwares: Joi.array().items(Joi.string()),
+    rolesNeeded: Joi.array().items(Joi.string())
   })
 }
 
