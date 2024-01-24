@@ -342,6 +342,9 @@ const getAllDetails = catchAsync(async (req, res) => {
 const getCustomDetails = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id as string)
   const customDetails = await userService.getCustomDetails(id)
+  if (!customDetails) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
   const keywords = await prisma.keyword.findMany({
     select: {
       keyword: true

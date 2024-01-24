@@ -13,7 +13,8 @@ declare type Allow<T = any> = T | null
 const getUserPosts = async (userId: number): Promise<Post[] | []> => {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       posts: {
@@ -92,7 +93,15 @@ interface postBody {
 
 const createUserPost = async (userId: number, postBody: postBody): Promise<Post> => {
   const { albumId, postKeywords, postSkills, ...newCreateBody } = postBody
-
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+      validUser: true
+    }
+  })
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
   if (albumId) {
     const album = await prisma.album.findUnique({
       where: {
@@ -177,7 +186,18 @@ const createUserPost = async (userId: number, postBody: postBody): Promise<Post>
  */
 
 const deleteUserPosts = async (userId: number): Promise<void> => {
-  if (!(await prisma.post.findMany({ where: { userId } })).length) {
+  if (
+    !(
+      await prisma.post.findMany({
+        where: {
+          userId,
+          user: {
+            validUser: true
+          }
+        }
+      })
+    ).length
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Posts not found')
   }
   await prisma.post.deleteMany({
@@ -202,6 +222,9 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
             id: userId
           }
         }
+      },
+      user: {
+        validUser: true
       }
     },
     include: {
@@ -260,6 +283,11 @@ const getLikedPosts = async (userId: number): Promise<Post[]> => {
 
 const getAllPosts = async (): Promise<Post[]> => {
   const posts = await prisma.post.findMany({
+    where: {
+      user: {
+        validUser: true
+      }
+    },
     include: {
       Album: {
         select: {
@@ -318,7 +346,10 @@ const getAllPosts = async (): Promise<Post[]> => {
 const getPostById = async (id: number): Promise<Post | object> => {
   const post = await prisma.post.findUnique({
     where: {
-      id
+      id,
+      user: {
+        validUser: true
+      }
     },
     include: {
       Album: {
@@ -389,7 +420,17 @@ const updatePostById = async (
   id: number,
   updatePostBody: postBody
 ): Promise<Post> => {
-  if (!(await prisma.post.findUnique({ where: { id, userId } }))) {
+  if (
+    !(await prisma.post.findUnique({
+      where: {
+        id,
+        userId,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Post not found')
   }
 
@@ -584,7 +625,16 @@ const updatePostById = async (
  */
 
 const deletePostById = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.post.findUnique({ where: { id } }))) {
+  if (
+    !(await prisma.post.findUnique({
+      where: {
+        id,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Post not found')
   }
   await prisma.post.delete({
@@ -603,7 +653,16 @@ const deletePostById = async (userId: number, id: number): Promise<void> => {
  */
 
 const likePostById = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.post.findUnique({ where: { id } }))) {
+  if (
+    !(await prisma.post.findUnique({
+      where: {
+        id,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Post not found')
   }
   await prisma.postLikes.upsert({
@@ -636,7 +695,16 @@ const likePostById = async (userId: number, id: number): Promise<void> => {
  */
 
 const dislikePostById = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.post.findUnique({ where: { id } }))) {
+  if (
+    !(await prisma.post.findUnique({
+      where: {
+        id,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Post not found')
   }
   if (!(await prisma.postLikes.findUnique({ where: { postId: id } }))) {
@@ -655,6 +723,7 @@ const dislikePostById = async (userId: number, id: number): Promise<void> => {
     }
   })
 }
+
 /**
  * Add post comment
  * @param {ObjectId} userId
@@ -664,7 +733,16 @@ const dislikePostById = async (userId: number, id: number): Promise<void> => {
  */
 
 const addPostComment = async (userId: number, id: number, comment: string): Promise<void> => {
-  if (!(await prisma.post.findUnique({ where: { id } }))) {
+  if (
+    !(await prisma.post.findUnique({
+      where: {
+        id,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Post not found')
   }
   await prisma.postComment.create({
@@ -684,7 +762,17 @@ const addPostComment = async (userId: number, id: number, comment: string): Prom
  */
 
 const deletePostComment = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.postComment.findUnique({ where: { id: id, userId } }))) {
+  if (
+    !(await prisma.postComment.findUnique({
+      where: {
+        id,
+        userId,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Comment not found')
   }
   await prisma.postComment.delete({
@@ -704,7 +792,10 @@ const deletePostComment = async (userId: number, id: number): Promise<void> => {
 const toggleSavePost = async (userId: number, id: number): Promise<string> => {
   const post = await prisma.post.findUnique({
     where: {
-      id
+      id,
+      user: {
+        validUser: true
+      }
     },
     include: {
       savedUsers: {
@@ -750,7 +841,8 @@ const toggleSavePost = async (userId: number, id: number): Promise<string> => {
 const getSavedPosts = async (userId: number): Promise<Post[]> => {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       savedPosts: {
@@ -816,6 +908,9 @@ const getAllPostExceptCurrentUser = async (userId: number): Promise<Post[]> => {
     where: {
       NOT: {
         userId
+      },
+      user: {
+        validUser: true
       }
     },
     include: {

@@ -919,7 +919,8 @@ const deleteUserDetailsByUserId = async (userId: number): Promise<void> => {
 const getCustomDetails = async (userId: number): Promise<object | null> => {
   const userDetails = prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       id: true,

@@ -416,7 +416,8 @@ const getJobById = async (id: number): Promise<Job | object> => {
         select: {
           username: true,
           profileImage: true,
-          bannerImage: true
+          bannerImage: true,
+          email: true
         }
       },
       jobApplications: {
@@ -758,7 +759,12 @@ const getapplicantInfo = async (applicantInfoId: number): Promise<Partial<Applic
         select: {
           motivationToApply: true,
           resume: true,
-          rolesApplied: true
+          rolesApplied: true,
+          user: {
+            select: {
+              profileImage: true
+            }
+          }
         }
       }
     }
