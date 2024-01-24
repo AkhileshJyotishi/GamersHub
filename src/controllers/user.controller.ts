@@ -4,11 +4,14 @@ import ApiError from '../utils/api-error'
 import catchAsync from '../utils/catch-async'
 import { userService } from '../services'
 import { sendResponse } from '../utils/response'
+import { validate } from 'deep-email-validator'
 import prisma from '../client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 const createUser = catchAsync(async (req, res) => {
   const { email, password, username, role } = req.body
+  const emailValid = await validate(email)
+  if (!emailValid.valid) throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Email InActive')
   const user = await userService.createUser(email, password, username, role)
   sendResponse(res, httpStatus.CREATED, null, { user }, 'User Created successfully')
 })
