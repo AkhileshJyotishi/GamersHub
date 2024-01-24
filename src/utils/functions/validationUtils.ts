@@ -1,3 +1,4 @@
+import { PhoneNumberUtil } from "google-libphonenumber"
 export interface ValidationParams {
   required?: boolean
   maxLength?: number
@@ -198,4 +199,25 @@ export const validateFileArrayField: ValidationFunction<File[]> = (value, params
   }
 
   return ""
+}
+
+export const validatePhoneField: ValidationFunction<string> = (value, params) => {
+  if (value === null) {
+    if (params?.required) {
+      return "*required"
+    }
+    return ""
+  }
+  if (params?.required && value.length === 0) {
+    return "*required"
+  }
+  if (value.length <= 10) {
+    return "*Invalid"
+  }
+  try {
+    const phoneUtil = PhoneNumberUtil.getInstance()
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(value)) ? "" : "*Invalid"
+  } catch (error) {
+    return ""
+  }
 }

@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { FaExternalLinkAlt } from "react-icons/fa"
 import { IoIosArrowBack } from "react-icons/io"
+import { VscMail } from "react-icons/vsc"
 import { toast } from "react-toastify"
 
+import logoblackbg from "@/assets/image/logo-black-bg.png"
 // import defaultbannerImage from "@/assets/image/user-banner.png"
 import defaultUserImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
-import { fetchData } from "@/utils/functions"
+import { fetchData, shimmer, toBase64 } from "@/utils/functions"
 
 import EditIcon from "@/components/icons/editIcon"
 import MapPinIcon from "@/components/icons/mappinicon"
 import SaveIcon from "@/components/icons/SaveIcon"
 import Button from "@/components/ui/button"
+import DynamicPopover from "@/components/ui/popover"
 
 interface JobPageHeaderProps {
   logoSrc: string | null
@@ -22,8 +26,10 @@ interface JobPageHeaderProps {
   userId: number
   remote: boolean
   savedUsers: { id: number }[]
-  // company: string;
-  // website: string;
+  setisApplyJobOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isApplyJobOpen: boolean
+  setisApplyJobGCHOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isApplyJobGCHOpen: boolean
   location: string
 }
 const UserImage = ({ href }: { href: string | StaticImageData }) => (
@@ -52,6 +58,8 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   remote,
   userId,
   savedUsers,
+  setisApplyJobOpen,
+  setisApplyJobGCHOpen,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -72,6 +80,62 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   useEffect(() => {
     setIsJobSaved(savedUsers.some((user) => user.id === userData?.id))
   }, [userData])
+  const popoverItems: {
+    name: string
+    description: string
+    hrefOrState: string | Setjob
+    applyWith?: "GCH" | "MANUAL"
+    icon: React.JSX.Element
+  }[] = [
+    {
+      name: "Apply with GameCreators",
+      description: "Easy application directly using your Gamecreators profile and portfolio",
+      hrefOrState: setisApplyJobGCHOpen,
+      applyWith: "GCH",
+      icon: (
+        <>
+          {" "}
+          <Image
+            src={logoblackbg}
+            width={60}
+            height={10}
+            alt=""
+            className="block xl:absolute w-[40px]"
+            priority
+            placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+          />
+        </>
+      ),
+    },
+    {
+      name: "Apply Directly",
+      description: "Apply manually by filling details and uploading resume",
+      hrefOrState: setisApplyJobOpen,
+      applyWith: "MANUAL",
+      icon: <div className=""></div>,
+    },
+    {
+      name: "Apply Through Link",
+      description: "",
+      hrefOrState: "##",
+      icon: (
+        <>
+          <FaExternalLinkAlt className="w-5 h-5" />
+        </>
+      ),
+    },
+    {
+      name: "Apply Through Mail",
+      description: "",
+      hrefOrState: "##",
+      icon: (
+        <>
+          <VscMail className="w-5 h-5" />
+        </>
+      ),
+    },
+  ]
+
   return (
     <div>
       <div className="p-4">
@@ -86,9 +150,6 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
           <UserInfo title={title[0].toUpperCase() + title.slice(1)} />
         </div>
         <div className="flex gap-[25px]"></div>
-        {/* <div className="flex items-center">
-                    <SaveIcon className="w-5 h-5" />
-                </div> */}
       </div>
       {!remote && (
         <div className="flex flex-wrap gap-3 p-2">
@@ -109,9 +170,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             <SaveIcon className="w-5 h-5 fill-text" fill="" />
             {isJobSaved ? "Unsave Job" : "Save Job"}
           </Button>
-          <Button className="  border-secondary hover:bg-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl">
-            Apply Now
-          </Button>
+          <DynamicPopover buttonText="Apply Now" items={popoverItems} />
         </div>
       ) : (
         <>

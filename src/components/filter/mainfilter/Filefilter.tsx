@@ -16,10 +16,16 @@ import Image from "next/image"
 import { PiWarningCircleFill } from "react-icons/pi"
 
 import { shimmer, toBase64 } from "@/utils/functions"
+import { Worker } from "@react-pdf-viewer/core"
+import { Icon, MinimalButton, Position, Tooltip, Viewer } from "@react-pdf-viewer/core"
+import { SpecialZoomLevel } from "@react-pdf-viewer/core"
+import { getFilePlugin, RenderDownloadProps } from "@react-pdf-viewer/get-file"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import FullscreenIcon from "@/components/icons/fullScreenIcon"
 import Button from "@/components/ui/button"
+
+import "@react-pdf-viewer/core/lib/styles/index.css"
 const FileFilter: React.FC<FileInputProps> = ({
   // id,
   accept,
@@ -32,16 +38,25 @@ const FileFilter: React.FC<FileInputProps> = ({
   fullScreen = true,
 }) => {
   const [filePreview, setFilePreview] = useState<string | null>(value || null)
-  const [, setFileType] = useState<string | null>(null)
+  const [fileType, setFileType] = useState<string | null>(null)
   const [fullscreenImage, setFullscreenImage] = useState<number | null>(null)
+
   const imageRef = useRef<HTMLImageElement | null>(null)
+  const getFilePluginInstance = getFilePlugin({
+    fileNameGenerator: (filePreview) => {
+      console.info(filePreview)
+      return "SampleName.pdf"
+    },
+  })
+  const { Download } = getFilePluginInstance
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     // console.log(file.type)
     onChange(file)
     setFilePreview(URL.createObjectURL(file))
+
     setFileType(file.type)
-    // Create an object URL to preview the selected file
   }
 
   const handleFullscreen = () => {
@@ -68,7 +83,7 @@ const FileFilter: React.FC<FileInputProps> = ({
           }
         }}
         className={clsx(
-          "  shadow-sm  w-full  flex flex-col  gap-4 relative",
+          "  shadow-sm  w-full  flex flex-col  gap-4 ",
           !filePreview ? "items-center justify-center" : "items-center justify-end"
         )}
       >
@@ -81,7 +96,7 @@ const FileFilter: React.FC<FileInputProps> = ({
               >
                 <label htmlFor="asset-upload" className="cursor-pointer w-fit">
                   {" "}
-                  <Button className="p-2 pointer-events-none bg-secondary rounded-md">
+                  <Button className="p-2 pointer-events-none bg-secondary rounded-md text-text">
                     {" "}
                     Browse Files
                   </Button>
@@ -125,17 +140,44 @@ const FileFilter: React.FC<FileInputProps> = ({
                   <div>drag and drop</div>
                 </div>
               </div>
-              <Image
-                src={filePreview}
-                alt="File Preview"
-                width="400"
-                height="400"
-                className="object-cover w-full h-full rounded-xl"
-                style={{ zIndex: 16 }}
-                ref={imageRef}
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              />
-              {fullScreen && (
+
+              {fileType === "application/pdf" ? (
+                <>
+                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                    <Viewer
+                      fileUrl={filePreview}
+                      plugins={[getFilePluginInstance]}
+                      defaultScale={SpecialZoomLevel.PageFit}
+                    />
+
+                    <Download>
+                      {(props: RenderDownloadProps) => (
+                        <Button
+                          className={
+                            "transition-all px-6 py-2 rounded-lg hover:opacity-90 flex  sm:text-sm md:text-md bg-secondary text-text"
+                          }
+                          onClick={props.onClick}
+                        >
+                          Download
+                        </Button>
+                      )}
+                    </Download>
+                  </Worker>
+                </>
+              ) : (
+                <Image
+                  src={filePreview}
+                  alt="File Preview"
+                  width="400"
+                  height="400"
+                  className="object-cover w-full h-full rounded-xl"
+                  style={{ zIndex: 16 }}
+                  ref={imageRef}
+                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                />
+              )}
+
+              {fileType !== "application/pdf" && fullScreen && (
                 <div className="absolute top-0 right-0 flex p-1 space-x-2">
                   <Button onClick={handleFullscreen}>
                     <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />

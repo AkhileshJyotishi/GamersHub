@@ -68,7 +68,7 @@ const TextInput: React.FC<Props> = ({
     if (element === "textarea" && textAreaRef.current) {
       textAreaRef.current.style.height = "0px"
       const scrollHeight = textAreaRef.current.scrollHeight
-      textAreaRef.current.style.height = scrollHeight + "px"
+      textAreaRef.current.style.height = `${Math.max(scrollHeight, 60)}px`
     }
   }, [textAreaRef.current, value])
 
@@ -103,7 +103,7 @@ const TextInput: React.FC<Props> = ({
           name={name}
           id={id}
           className={clsx(
-            ` w-full  border-[0.01px]  px-[12px] py-[9px] flex flex-row items-center focus:outline-none  focus-within:border-secondary ${className}`,
+            ` w-full  border-[0.01px] border-[#505054] px-[12px] py-[9px] flex flex-row items-center focus:outline-none  focus-within:border-secondary ${className}`,
             errorMessage ? "border-accent_red focus:border-accent_red focus:shadow-accent_red" : ""
           )}
           onKeyPress={onKeyPress}

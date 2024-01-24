@@ -11,16 +11,22 @@ import JobsPage from "@/components/jobs"
 const Jobs = ({
   jobs,
   jobSoftwareSuggestions,
+  jobRolesSuggestions,
 }: {
   jobs: Job[]
   jobSoftwareSuggestions: JobSoftwareSuggestions
+  jobRolesSuggestions: JobRolesSuggestions
 }) => {
   return (
     <>
       <Head>
         <title>GameCreators | Jobs</title>
       </Head>
-      <JobsPage jobs={jobs} jobSoftwareSuggestions={jobSoftwareSuggestions} />
+      <JobsPage
+        jobs={jobs}
+        jobSoftwareSuggestions={jobSoftwareSuggestions}
+        jobRolesSuggestions={jobRolesSuggestions}
+      />
     </>
   )
 }
@@ -36,6 +42,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     jobsDetails = await fetchData(`/v1/job/others`, session.user?.name as string, "GET")
   }
   const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
+  const res3 = await fetchWithoutAuthorization("/v1/users/jobRoles", "GET")
 
   if (res2?.error) {
     return {
@@ -53,14 +60,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     }
   }
+  if (res3?.error) {
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
+  }
   const parsedjobsDetails: BackendJob[] = jobsDetails?.data.jobs
   const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
-  const jobs: Job[] = parsedjobsDetails?.map((job) => FrontendCompatibleObject(job))
+  const jobRolesSuggestions: JobRolesSuggestions = res3?.data.jobRole
 
+  const jobs: Job[] = parsedjobsDetails?.map((job) => FrontendCompatibleObject(job))
   return {
     props: {
       jobs,
       jobSoftwareSuggestions,
+      jobRolesSuggestions,
     },
   }
 }
@@ -75,8 +92,8 @@ export const FrontendCompatibleObject = (backendJob: BackendJob): Job => {
     desc: backendJob.description,
     remote: backendJob.remote,
     date: backendJob.publishDate,
+    rolesNeeded: [],
     // levelOfExpertise:backendJob.expertise,
-    // Replace with the relevant date field from the backend
     salary, // Adjust based on your backend structure
     type: backendJob?.jobType,
     location: `${backendJob?.country}, ${backendJob?.city}`, // Adjust based on your backend structure

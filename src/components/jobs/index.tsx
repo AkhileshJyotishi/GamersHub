@@ -16,8 +16,13 @@ import Card from "./Old-GCH-card"
 type JobsPageProps = {
   jobs: Job[]
   jobSoftwareSuggestions: JobSoftwareSuggestions
+  jobRolesSuggestions: JobRolesSuggestions
 }
-const JobsPage: React.FC<JobsPageProps> = ({ jobs, jobSoftwareSuggestions }) => {
+const JobsPage: React.FC<JobsPageProps> = ({
+  jobs,
+  jobSoftwareSuggestions,
+  jobRolesSuggestions,
+}) => {
   const [activetab, setactivetab] = useState<string>("All")
   const { userData, setIsLoginModalOpen } = useUserContext()
   const { data: session } = useSession()
@@ -90,6 +95,7 @@ const JobsPage: React.FC<JobsPageProps> = ({ jobs, jobSoftwareSuggestions }) => 
       setLoading={setLoading}
       loading={loading}
       jobSoftwareSuggestions={jobSoftwareSuggestions}
+      jobRolesSuggestions={jobRolesSuggestions}
     >
       {activetab === "All" && (
         <>

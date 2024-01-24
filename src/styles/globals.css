@@ -44,9 +44,9 @@ body {
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none;
+    -ms-overflow-style: none !important;
     /* IE and Edge */
-    scrollbar-width: none;
+    scrollbar-width: none !important;
     /* Firefox */
   }
 }
@@ -241,4 +241,27 @@ body {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.go433304200:before,
+.go3842760039:before {
+  background-color: #00b87d !important;
+}
+
+@media screen and (max-width: 634px) {
+  .go2150698616:before {
+    bottom: -5.5rem !important;
+  }
+}
+@media screen and (max-width: 500px) {
+  .go2150698616:before {
+    bottom: -12px !important;
+  }
+}
+.go2150698616 {
+  min-width: 0px !important;
+}
+.react-international-phone-country-selector-dropdown__list-item--focused {
+  background-color: #161a1f !important;
+  color: #fff !important;
 }

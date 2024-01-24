@@ -14,7 +14,7 @@ interface ComboboxInputProps {
 
 const ComboboxInput: React.FC<ComboboxInputProps> = ({ onChange, placeholder }) => (
   <Combobox.Input
-    className="w-full py-2 pl-3 pr-10 text-sm leading-5 border border-none text-text focus:ring-0 bg-user_interface_3 border-user_interface_4"
+    className="w-full py-2 pl-3 pr-10 text-sm leading-5  border-[0.1px] text-text  bg-[#18181c]  focus:!ring-0  border-user_interface_4 focus:!border-secondary rounded-md "
     displayValue={(option: Option) => option?.label ?? ""}
     onChange={onChange}
     placeholder={placeholder}
@@ -102,7 +102,7 @@ const ComboboxWrapper: React.FC<ComboboxWrapperProps> = ({
   filteredOptions,
   placeholder,
 }) => (
-  <div className="w-full overflow-hidden text-left rounded-lg shadow-md cursor-default ring-0 bg-user_interface_3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+  <div className="w-full overflow-hidden text-left  cursor-default sm:text-sm">
     <ComboboxInput onChange={(event) => setQuery(event.target.value)} placeholder={placeholder} />
     <ComboboxButton />
     <ComboboxOptions filteredOptions={filteredOptions} query={query} setQuery={setQuery} />

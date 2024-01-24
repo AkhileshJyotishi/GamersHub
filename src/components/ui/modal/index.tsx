@@ -42,7 +42,7 @@ export default function Modal({ isOpen, onClose, children, className }: ModalPro
           >
             <div
               className={clsx(
-                "relative w-[600px] rounded-b-3xl rounded-t-3xl shadow-xl sm:max-w-screen-sm bg-[#202024]",
+                "relative  sm:w-[600px]  rounded-b-3xl rounded-t-3xl shadow-xl sm:max-w-screen-sm bg-[#202024] no-scrollbar no-scroll",
                 className
               )}
             >

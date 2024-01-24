@@ -3,6 +3,7 @@ interface JobFilterProps {
   remote: undefined | boolean
   jobType: string[]
   jobSoftwares: string[]
+  rolesNeeded: string[]
 }
 
 interface Job {
@@ -19,6 +20,7 @@ interface Job {
   savedUsers: {
     id: number
   }[]
+  rolesNeeded?: string[]
   userId: number
   remote: boolean
   username: string
@@ -28,6 +30,7 @@ interface IjobsDetails {}
 interface JobSoftwareSuggestions {
   software: string[]
 }
+type JobRolesSuggestions = string[]
 interface BackendJob {
   id: number
   slug: string
@@ -44,6 +47,9 @@ interface BackendJob {
   remote: boolean
   country: string
   city: string
+  rolesNeeded?: string[]
+  jobApplyUrl?: string | null
+  isExpired: boolean | null
   jobSoftwares: {
     software: string
   }[]
@@ -78,10 +84,11 @@ interface JobInfo {
   userId?: number
   paymentType: string
   paymentValue: number
-
-  banner: File | null | string
+  jobApplyUrl?: string
+  // banner: File | null | string
   expertise: string
   jobSoftwares: readonly string[]
+  rolesNeeded: readonly string[]
   title: string
   publishDate: string | null
   jobDetails: object | null
@@ -139,4 +146,25 @@ interface ApplicantInfo {
     rolesApplied: string[]
     resume: string
   }
+}
+
+interface ServerPlan {
+  name: string
+}
+type Setjob = React.Dispatch<React.SetStateAction<boolean>>
+interface IBasicInfo {
+  jobId: number
+  rolesApplied?: string[] | null
+  applyMethod?: "MANUAL" | "GCH" | null
+  resume?: string | null | File
+  motivationToApply: string | null
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  phone?: string | null
+  country?: string | null
+  city?: string | null
+  bio?: string | null
+  portfolio?: string | null
+  skills?: string[] | null
 }

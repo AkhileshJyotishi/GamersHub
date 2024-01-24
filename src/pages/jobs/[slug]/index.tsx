@@ -45,7 +45,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   // return resp.data;
 
   profileData = profileData?.data.job
-  // console.log("settings detaisls", profileData)
   return {
     props: {
       profileData,

@@ -27,6 +27,7 @@ interface LayoutProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
   jobSoftwareSuggestions: JobSoftwareSuggestions
+  jobRolesSuggestions: JobRolesSuggestions
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -38,6 +39,7 @@ const Layout: React.FC<LayoutProps> = ({
   setLoading,
   jobs,
   jobSoftwareSuggestions,
+  jobRolesSuggestions,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -47,6 +49,7 @@ const Layout: React.FC<LayoutProps> = ({
     remote: undefined,
     jobType: [],
     jobSoftwares: [],
+    rolesNeeded: [],
   }
   const [jobsFilters, setJobsFilters] = useState<JobFilterProps>(initFilters)
   const [popup, setPopup] = useState<boolean>(false)
@@ -108,7 +111,20 @@ const Layout: React.FC<LayoutProps> = ({
           value: s,
         })),
       ],
-      // initialtags:
+    },
+    {
+      inputType: "tags",
+      title: "Add Roles Needed",
+      placeholder: "Eg : designer,developer",
+      value: jobsFilters?.rolesNeeded,
+      onTagsChange: (value) => setJobsFilters({ ...jobsFilters, rolesNeeded: value as string[] }),
+      // className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(jobRolesSuggestions ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
     },
   ]
 

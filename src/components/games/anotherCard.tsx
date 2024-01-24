@@ -54,7 +54,7 @@ const SocialCard: React.FC<CardProps> = ({
   //   likes,
 }) => {
   const { data: session } = useSession()
-  const { userData,setIsLoginModalOpen } = useUserContext()
+  const { userData, setIsLoginModalOpen } = useUserContext()
   const { setmodalData } = useModalContext()
 
   // const isSaved
@@ -69,8 +69,8 @@ const SocialCard: React.FC<CardProps> = ({
   }, [savedUsers, userData])
 
   const savePost = async () => {
-    if(!session){
-setIsLoginModalOpen(true)
+    if (!session) {
+      setIsLoginModalOpen(true)
     }
     const data = await fetchData(`/v1/game/user/save/${id}`, session?.user?.name as string, "POST")
     if (data?.error) {
@@ -166,7 +166,7 @@ setIsLoginModalOpen(true)
             </div>
           ) : (
             <>
-              { userData?.id !== userId && (
+              {userData?.id !== userId && (
                 <div className="flex ml-auto cursor-pointer" onClick={() => savePost()}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

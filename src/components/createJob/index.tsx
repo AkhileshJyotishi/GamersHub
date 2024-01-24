@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import { useUserContext } from "@/providers/user-context"
-import { fetchData, fetchFile } from "@/utils/functions"
+import { fetchData } from "@/utils/functions"
 
 import Filter from "../filter/mainfilter/filter"
 
@@ -19,6 +19,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 })
 interface CreateJobProps {
   jobSoftwareSuggestions?: JobSoftwareSuggestions
+  jobRolesSuggestions?: JobRolesSuggestions
 }
 /**
  * React functional component for creating and uploading a job to the server.
@@ -47,14 +48,13 @@ interface CreateJobProps {
  * Outputs: None
  */
 
-const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions }) => {
+const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions, jobRolesSuggestions }) => {
   const { data: session } = useSession()
   const router = useRouter()
   const { setLoading } = useUserContext()
 
   const initialJobInfo: Omit<JobInfo, "userId"> = {
     title: "",
-    banner: null,
     publishDate: null,
     jobType: "",
     jobDetails: {},
@@ -67,7 +67,7 @@ const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions }) => {
 
     paymentType: "",
     paymentValue: 0,
-
+    rolesNeeded: [],
     jobSoftwares: [],
   }
 
@@ -95,25 +95,25 @@ const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions }) => {
     localStorage.setItem("noval__content1", "")
     localStorage.setItem("noval__content2", "")
 
-    const formdata = new FormData()
-    formdata.append("file", jobInfo.banner as Blob)
-    formdata.append("type", "jobs")
+    // const formdata = new FormData()
+    // formdata.append("file", jobInfo.banner as Blob)
+    // formdata.append("type", "jobs")
 
-    if (jobInfo.banner && typeof jobInfo.banner == "object") {
-      const isuploaded = await fetchFile(
-        "/v1/upload/file",
-        session?.user?.name as string,
-        "POST",
-        formdata
-      )
-      if (isuploaded?.error) {
-        setLoading(false)
-        return
-      }
-      jobInfo.banner = isuploaded?.data.image.Location
-    } else {
-      jobInfo.banner = ""
-    }
+    // if (jobInfo.banner && typeof jobInfo.banner == "object") {
+    //   const isuploaded = await fetchFile(
+    //     "/v1/upload/file",
+    //     session?.user?.name as string,
+    //     "POST",
+    //     formdata
+    //   )
+    //   if (isuploaded?.error) {
+    //     setLoading(false)
+    //     return
+    //   }
+    //   jobInfo.banner = isuploaded?.data.image.Location
+    // } else {
+    //   jobInfo.banner = ""
+    // }
 
     jobInfo.publishDate = new Date().toISOString()
 
@@ -137,6 +137,7 @@ const CreateJob: React.FC<CreateJobProps> = ({ jobSoftwareSuggestions }) => {
       setJobInfo={setJobInfo}
       uploadJob={uploadJob}
       jobSoftwareSuggestions={jobSoftwareSuggestions}
+      jobRolesSuggestions={jobRolesSuggestions}
     >
       {/* Render the filterDetails here */}
       <div className="flex flex-col w-[100vw] gap-4 md:max-w-[59vw] lg:max-w-[67vw]">

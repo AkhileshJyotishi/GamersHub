@@ -33,7 +33,16 @@ interface filterprops {
 
 interface FilterDetail<SO = { label: string; value: string | boolean | number }> {
   title: string
-  inputType: "text" | "checkbox" | "radio" | "select" | "date" | "tags" | "file" | "number"
+  inputType:
+    | "text"
+    | "checkbox"
+    | "radio"
+    | "select"
+    | "date"
+    | "tags"
+    | "file"
+    | "number"
+    | "phone"
   onTagsChange?: (tags: readonly string[]) => void
   placeholder?: string
   value?: string | boolean | Date | number | null | readonly string[]
