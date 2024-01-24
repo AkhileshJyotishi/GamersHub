@@ -88,3 +88,55 @@ interface JobInfo {
   userId: number
   aboutRecruiter: object | null
 }
+
+interface jobApplications {
+  applyMethod: "MANUAL" | "GCH"
+  id?: number
+  motivationToApply: string
+  rolesApplied: string[]
+  resume: string
+  job: {
+    title: string
+  }
+  user: {
+    id: number
+    username: string
+    profileImage?: string
+    bannerImage?: string
+    userDetails: {
+      country?: string
+      city?: string
+      userBio?: string
+      userSkills:{
+        skill:string
+      }[]
+    }
+  }
+  ApplicantInfo: {
+    id?:number
+    city: string
+    country: string
+    firstName: string
+    lastName: string
+    skills: string[]
+    bio: string
+  }
+}
+
+interface ApplicantInfo {
+  id?: number
+  city: string
+  country: string
+  firstName: string
+  lastName: string
+  skills: string[]
+  bio: string
+  phone: string
+  portfolio: string
+  email: string
+  relatedJob: {
+    motivationToApply: string
+    rolesApplied: string[]
+    resume: string
+  }
+}
