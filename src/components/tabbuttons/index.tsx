@@ -89,11 +89,12 @@ export default function TabButtons({
                   className={clsx(
                     a.li,
                     tabColors,
+                    "bg-user_interface_3",
                     activeTabColor && activeTab && activeTab === tabName && "!bg-secondary",
                     !activeTabColor &&
                       activeTab &&
                       activeTab === tabName &&
-                      " !bg-user_interface_3 !p-3 rounded-lg"
+                      " !bg-secondary !p-3 rounded-lg"
                   )}
                 >
                   {tabName}

@@ -7,6 +7,7 @@ import defaultProfileImage from "@/assets/image/user-profile.svg"
 import { shimmer, toBase64 } from "@/utils/functions"
 
 import MapPinIcon from "@/components/icons/mappinicon"
+
 import { SecondaryTag } from "../ui/badges"
 // import { SecondaryTag } from "@/components/ui/badges"
 
@@ -143,9 +144,9 @@ const Card: React.FC<jobResponseCard> = ({ jobApplication, mode }) => {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.333"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.333"
             d="M8.5 5.086v9.333M13.166 9.75L8.5 14.417 3.833 9.75"
           ></path>
         </svg>

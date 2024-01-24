@@ -116,13 +116,13 @@ interface jobApplications {
       country?: string
       city?: string
       userBio?: string
-      userSkills:{
-        skill:string
+      userSkills: {
+        skill: string
       }[]
     }
   }
   ApplicantInfo: {
-    id?:number
+    id?: number
     city: string
     country: string
     firstName: string
@@ -147,6 +147,9 @@ interface ApplicantInfo {
     motivationToApply: string
     rolesApplied: string[]
     resume: string
+    user: {
+      profileImage?: string
+    }
   }
 }
 

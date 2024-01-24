@@ -136,13 +136,12 @@ const Layout: React.FC<creatorLayoutProps> = ({
     <>
       <div className={"p-4 w-[100%] py-[52px] bg-user_interface_3 mx-auto"}>
         <div className=" text-[18px] px-4 text-user_interface_6 ">Job Responses</div>
-        <div className=" text-[34px] font-[700] px-4 text-text ">
-          {jobResponses[0].job.title}
-        </div>
+        <div className=" text-[34px] font-[700] px-4 text-text ">{jobResponses[0].job.title}</div>
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
           <TabButtons
+            seperator={false}
             tabNames={["Applied Manually", "Applied through GCH"]}
             setActiveTab={setActiveTab}
             activeTab={activeTab}

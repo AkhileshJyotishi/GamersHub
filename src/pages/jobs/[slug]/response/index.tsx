@@ -2,9 +2,11 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 import { toast } from "react-toastify"
-import { fetchWithoutAuthorization } from "@/utils/functions"
-import JobResponses from "@/components/jobResponses"
+
 import { getSession } from "@/lib/auth"
+import { fetchWithoutAuthorization } from "@/utils/functions"
+
+import JobResponses from "@/components/jobResponses"
 
 const index = ({
   jobApplicants,
