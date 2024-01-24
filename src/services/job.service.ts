@@ -139,7 +139,6 @@ interface jobBody {
 
 const createUserJob = async (userId: number, jobBody: jobBody): Promise<Job> => {
   const { jobSoftwares, rolesNeeded, ...newCreateBody } = jobBody
-
   const job = await prisma.job.create({
     data: {
       ...newCreateBody,
