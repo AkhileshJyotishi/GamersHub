@@ -313,6 +313,33 @@ const getCustomCreatorsTags = catchAsync(async (req, res) => {
     'Custom Creators Tags fetched Successfully'
   )
 })
+const getCustomJobResponseTags = catchAsync(async (req, res) => {
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills?.map((k: Allow) => k.skill)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares?.map((k: Allow) => k.software)
+  const roles = await prisma.rolesNeeded.findMany({
+    select: {
+      role: true
+    }
+  })
+  const rolesApplied = roles?.map((k: Allow) => k.role)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software, rolesApplied },
+    'Custom Job Response Tags fetched Successfully'
+  )
+})
 
 const getAllDetails = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -442,6 +469,7 @@ export default {
   getPlatforms,
   getCustomGameTags,
   getCustomCreatorsTags,
+  getCustomJobResponseTags,
   getAllDetails,
   getOtherDetails,
   getHomeDetailsController,

@@ -69,6 +69,7 @@ router.get('/platform', userController.getPlatforms)
 router.get('/jobRoles', userController.getJobRoles)
 router.get('/customGameTags', userController.getCustomGameTags)
 router.get('/customCreatorsTags', userController.getCustomCreatorsTags)
+router.get('/customJobResponseTags', userController.getCustomJobResponseTags)
 
 router.get('/allDetails', auth(), userController.getAllDetails)
 router.get('/otherDetails/:id', userController.getOtherDetails)

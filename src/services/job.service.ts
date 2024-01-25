@@ -678,15 +678,77 @@ const getUserApplications = async (userId: number): Promise<JobApplication[] | [
   return userApplications || []
 }
 
+interface QueryJobResponse {
+  country?: string
+  userSkills?: string[]
+  userSoftwares?: string[]
+  rolesApplied?: string[]
+}
 /**
  * Get All Particular Job Applications
  * @param {ObjectId} jobId
  * @returns {Promise<JobApplication[]>}
  */
 
-const getJobApplication = async (jobId: number): Promise<Partial<JobApplication>[] | []> => {
+const getJobApplication = async (
+  jobId: number,
+  filter: QueryJobResponse
+): Promise<Partial<JobApplication>[] | []> => {
+  const { country, rolesApplied, userSkills, userSoftwares } = filter
   const userApplications = await prisma.jobApplication.findMany({
     where: {
+      AND: [
+        country
+          ? {
+              user: {
+                userDetails: {
+                  country: {
+                    equals: country
+                  }
+                }
+              }
+            }
+          : {},
+        rolesApplied
+          ? {
+              rolesApplied: {
+                hasSome: rolesApplied
+              }
+            }
+          : {},
+        userSkills
+          ? {
+              user: {
+                userDetails: {
+                  userSkills: {
+                    some: {
+                      skill: {
+                        in: userSkills,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          : {},
+        userSoftwares
+          ? {
+              user: {
+                userDetails: {
+                  userSoftwares: {
+                    some: {
+                      software: {
+                        in: userSoftwares,
+                        mode: 'insensitive'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          : {}
+      ],
       jobId,
       user: {
         validUser: true

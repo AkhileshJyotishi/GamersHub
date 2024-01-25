@@ -2,6 +2,7 @@ import httpStatus from 'http-status'
 import catchAsync from '../utils/catch-async'
 import { jobService } from '../services'
 import { sendResponse } from '../utils/response'
+import prisma from '../client'
 
 const getUserJobs = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
@@ -68,13 +69,19 @@ const getUserApplication = catchAsync(async (req, res) => {
   )
 })
 const getJobApplication = catchAsync(async (req, res) => {
+  const filter = req.query
   const jobId = parseInt(req.params.id)
-  const JobsApplications = await jobService.getJobApplication(jobId)
+  const JobsApplications = await jobService.getJobApplication(jobId, filter)
+  const job = await prisma.job.findUnique({
+    where: {
+      id: jobId
+    }
+  })
   sendResponse(
     res,
     httpStatus.OK,
     null,
-    { applications: JobsApplications },
+    { applications: JobsApplications, title: job?.title ?? '' },
     'Job Applications fetched Successfully'
   )
 })

@@ -14,6 +14,20 @@ const queryJobs = {
   })
 }
 
+const queryJobResponses = {
+  query: Joi.object().keys({
+    country: Joi.string(),
+    userSkills: Joi.array().items(Joi.string()),
+    userSoftwares: Joi.array().items(Joi.string()),
+    rolesApplied: Joi.array().items(Joi.string())
+  })
+}
+
+const getJobResponseValidation = {
+  params: idParamsValidation,
+  query: queryJobResponses.query
+}
+
 const createJob = {
   body: Joi.object().keys({
     title: Joi.string().required(),
@@ -105,5 +119,6 @@ export default {
   myJobsValidation,
   updateJob,
   createApplication,
-  updateApplication
+  updateApplication,
+  getJobResponseValidation
 }

@@ -974,6 +974,7 @@ const getApplyDetails = async (userId: number): Promise<object | null> => {
         select: {
           city: true,
           country: true,
+          userBio: true,
           userSkills: {
             select: {
               skill: true
