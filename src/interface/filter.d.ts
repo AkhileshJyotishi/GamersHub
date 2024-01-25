@@ -20,6 +20,7 @@ interface filterprops {
     | React.Dispatch<React.SetStateAction<JobFilterProps>>
     | React.Dispatch<React.SetStateAction<CreatorsFilterProps>>
     | React.Dispatch<React.SetStateAction<GamesFilterProps>>
+    | React.Dispatch<React.SetStateAction<JObResponseFilterProps>>
   // CreatorsFilterProps
   FilterArray?: FilterDetail[]
   country?: { label?: string; value?: string }[]

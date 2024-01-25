@@ -10,20 +10,23 @@ import JobResponses from "@/components/jobResponses"
 
 const index = ({
   jobApplicants,
-  customCreatorsTags,
+  jobTitle,
+  customJobResponseTags,
 }: {
   jobApplicants: jobApplications[]
-  customCreatorsTags: ICustomCreatorsTags
+  jobTitle: string
+  customJobResponseTags: ICustomJobResponseTags
 }) => {
   return (
     <>
       <Head>
-        <title>
-          Job Responses |{" "}
-          {(jobApplicants && !!jobApplicants.length && jobApplicants[0].job.title) || ""}
-        </title>
+        <title>Job Responses | {jobTitle || ""}</title>
       </Head>
-      <JobResponses jobApplicants={jobApplicants} customCreatorsTags={customCreatorsTags} />
+      <JobResponses
+        jobTitle={jobTitle}
+        jobApplicants={jobApplicants}
+        customJobResponseTags={customJobResponseTags}
+      />
     </>
   )
 }
@@ -53,8 +56,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       },
     }
   }
-  console.log(response?.data)
-  const res2 = await fetchWithoutAuthorization("/v1/users/customCreatorsTags", "GET")
+  const res2 = await fetchWithoutAuthorization("/v1/users/customJobResponseTags", "GET")
   if (res2?.error) {
     return {
       redirect: {
@@ -63,12 +65,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       },
     }
   }
-  const customCreatorsTags: ICustomCreatorsTags = res2?.data
+  const customJobResponseTags: ICustomJobResponseTags = res2?.data
   const jobApplicants: jobApplications[] = response?.data.applications
+  const jobTitle: string = response?.data?.title
   return {
     props: {
       jobApplicants,
-      customCreatorsTags,
+      customJobResponseTags,
+      jobTitle,
     },
   }
 }

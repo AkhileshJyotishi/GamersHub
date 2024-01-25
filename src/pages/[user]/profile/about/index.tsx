@@ -24,15 +24,18 @@ const About = () => {
   useEffect(() => {
     // console.log("jwt  ", document.cookie.length)
     const loadData = async () => {
-      const data = await fetchWithoutAuthorization(
-        `/v1/users/otherDetails/${router.query.user}`,
-        "GET"
-      )
-      setLoading(false)
-      if (data?.error) {
-        router.push(`/?emessage=Please authenticate`)
-      } else {
-        setAboutData(data?.data?.details)
+      if (router.query.user) {
+        const data = await fetchWithoutAuthorization(
+          `/v1/users/otherDetails/${router.query.user}`,
+          "GET"
+        )
+        setLoading(false)
+        if (data?.error) {
+          // router.push(`/?emessage=Please authenticate`)
+          router.replace(`/?emessage=Something Went wrong`)
+        } else {
+          setAboutData(data?.data?.details)
+        }
       }
     }
     loadData()
@@ -48,7 +51,6 @@ const About = () => {
       </>
     )
   } else {
-    // aboutData?.userEducation![0].degree=""
     return (
       <div className="sm:w-[90%] mx-auto">
         {aboutData && (

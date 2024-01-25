@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { Country } from "country-state-city"
 import _ from "lodash"
+import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -15,46 +16,51 @@ import TabButtons from "../NewtabButtons"
 
 interface creatorLayoutProps {
   children: React.ReactNode
+  jobTitle: string
   jobResponses: jobApplications[]
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
   setJobResponses: React.Dispatch<React.SetStateAction<jobApplications[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   loading?: boolean
-  customCreatorsTags: ICustomCreatorsTags
+  customJobResponseTags: ICustomJobResponseTags
 }
 const Layout: React.FC<creatorLayoutProps> = ({
   children,
   setActiveTab,
   activeTab,
+  jobTitle,
   jobResponses,
   setJobResponses,
   setLoading,
   loading,
-  customCreatorsTags,
+  customJobResponseTags,
 }) => {
   const [popup, setPopup] = useState<boolean>(false)
   const session = useSession()
+  const router = useRouter()
+  console.log(router.query)
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   // const [city, setCity] = useState<string[]>([])
   const initFilters = {
     userSkills: [],
     userSoftwares: [],
     country: "",
+    rolesApplied: [],
   }
-  const [creatorsFilters, setCreatorsFilter] = useState<CreatorsFilterProps>(initFilters)
+  const [jobResponseFilters, setjobResponseFilters] = useState<JObResponseFilterProps>(initFilters)
 
   const filterArray2: FilterDetail[] = [
     {
       inputType: "tags",
       title: "Skills of professionals",
       placeholder: "3D, sfx city ,Voice Over",
-      value: creatorsFilters?.userSkills,
+      value: jobResponseFilters?.userSkills,
       onTagsChange: (value) =>
-        setCreatorsFilter({ ...creatorsFilters, userSkills: value as string[] }),
+        setjobResponseFilters({ ...jobResponseFilters, userSkills: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
       selectOptions: [
-        ...(customCreatorsTags.skill ?? []).map((s) => ({
+        ...(customJobResponseTags.skill ?? []).map((s) => ({
           label: s,
           value: s,
         })),
@@ -64,12 +70,12 @@ const Layout: React.FC<creatorLayoutProps> = ({
       inputType: "tags",
       title: "Software",
       placeholder: "Blender, audacity etc ",
-      value: creatorsFilters?.userSoftwares,
+      value: jobResponseFilters?.userSoftwares,
       onTagsChange: (value) =>
-        setCreatorsFilter({ ...creatorsFilters, userSoftwares: value as string[] }),
+        setjobResponseFilters({ ...jobResponseFilters, userSoftwares: value as string[] }),
       className: "mt-2 bg-transparent rounded-md",
       selectOptions: [
-        ...(customCreatorsTags.software ?? []).map((s) => ({
+        ...(customJobResponseTags.software ?? []).map((s) => ({
           label: s,
           value: s,
         })),
@@ -80,28 +86,43 @@ const Layout: React.FC<creatorLayoutProps> = ({
       inputType: "select",
       title: "Location of Professional",
       placeholder: "Select a Country",
-      value: creatorsFilters?.country,
+      value: jobResponseFilters?.country,
       onChange: (value) =>
-        setCreatorsFilter({
-          ...creatorsFilters,
+        setjobResponseFilters({
+          ...jobResponseFilters,
           country: value as string,
         }),
       className: "",
       selectOptions: country,
     },
+    {
+      inputType: "tags",
+      title: "Roles Applied",
+      placeholder: "Eg. Designer etc ",
+      value: jobResponseFilters?.rolesApplied,
+      onTagsChange: (value) =>
+        setjobResponseFilters({ ...jobResponseFilters, rolesApplied: value as string[] }),
+      className: "mt-2 bg-transparent rounded-md",
+      selectOptions: [
+        ...(customJobResponseTags.rolesApplied ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+    },
   ]
   const searchWithFilters = async () => {
-    if (_.isEqual(initFilters, creatorsFilters)) {
+    if (_.isEqual(initFilters, jobResponseFilters)) {
       toast.dismiss()
       toast.info("Same search Or empty Search")
       return
     }
-    const CreatorFilterParams = generateQueryParams(creatorsFilters)
+    const JobResponseFilterParams = generateQueryParams(jobResponseFilters)
     setLoading(true)
     let x
     if (session) {
       x = await fetchData(
-        `/v1/users/creators?${CreatorFilterParams}`,
+        `/v1/job/jobApplications/${router.query.slug}?${JobResponseFilterParams}`,
         session.data?.user?.name as string,
         "GET"
       )
@@ -116,7 +137,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
     }
   }
   const clearFilters = () => {
-    setCreatorsFilter(initFilters)
+    setjobResponseFilters(initFilters)
     setJobResponses(jobResponses)
   }
 
@@ -136,7 +157,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
     <>
       <div className={"p-4 w-[100%] py-[52px] bg-user_interface_3 mx-auto"}>
         <div className=" text-[18px] px-4 text-user_interface_6 ">Job Responses</div>
-        <div className=" text-[34px] font-[700] px-4 text-text ">{jobResponses[0].job.title}</div>
+        <div className=" text-[34px] font-[700] px-4 text-text ">{jobTitle}</div>
       </div>
       <div className="mt-[45px] sm:px-[60px] w-[100%] mx-auto items-center ">
         <div className="flex flex-col items-center justify-between sm:flex-row ">
@@ -178,9 +199,9 @@ const Layout: React.FC<creatorLayoutProps> = ({
           className={"hidden md:flex"}
           key={1}
           clearFilters={clearFilters}
-          Filters={creatorsFilters}
+          Filters={jobResponseFilters}
           searchWithFilters={searchWithFilters}
-          setFilters={setCreatorsFilter}
+          setFilters={setjobResponseFilters}
           FilterArray={filterArray2}
           country={country}
           setCountry={setCountry}
@@ -188,9 +209,9 @@ const Layout: React.FC<creatorLayoutProps> = ({
         />
         <FilterMobileDialog
           clearFilters={clearFilters}
-          Filters={creatorsFilters}
+          Filters={jobResponseFilters}
           searchWithFilters={searchWithFilters}
-          setFilters={setCreatorsFilter}
+          setFilters={setjobResponseFilters}
           popup={popup}
           setPopup={setPopup}
           FilterArray={filterArray2}

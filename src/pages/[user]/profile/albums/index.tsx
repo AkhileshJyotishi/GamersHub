@@ -33,36 +33,34 @@ const Albums = () => {
   const params = useParams()
 
   useEffect(() => {
-    if (session && !userData?.id) {
-      router.replace("/?emessage=Please Authenticate")
-      return
-    }
     const loadData = async () => {
-      const data = await fetchWithoutAuthorization(`/v1/album/user/${router.query.user}`, "GET")
-      setLoading(false)
-      toast.dismiss()
-      if (!data?.error) {
-        setalbumDetails(data?.data?.albums)
-      } else {
-        toast.error(data.message)
+      if (router.query.user) {
+        const data = await fetchWithoutAuthorization(`/v1/album/user/${router.query.user}`, "GET")
+        setLoading(false)
+        toast.dismiss()
+        if (!data?.error) {
+          setalbumDetails(data?.data?.albums)
+        } else {
+          // toast.error(data.message)
+          router.replace(`/?emessage=Something Went wrong`)
+        }
       }
     }
     loadData()
   }, [router])
 
   useEffect(() => {
-    if (!userData?.id) {
-      router.replace("/?emessage=Please Authenticate")
-      return
-    }
     const loadData = async () => {
-      const data = await fetchWithoutAuthorization(`/v1/post/user/${router.query.user}`, "GET")
-      // setLoading(false)
-      toast.dismiss()
-      if (!data?.error) {
-        setpostsDetails(data?.data?.posts || [])
-      } else {
-        toast.error(data.message)
+      if (router.query.user) {
+        const data = await fetchWithoutAuthorization(`/v1/post/user/${router.query.user}`, "GET")
+        // setLoading(false)
+        toast.dismiss()
+        if (!data?.error) {
+          setpostsDetails(data?.data?.posts || [])
+        } else {
+          // toast.error(data.message)
+          router.replace(`/?emessage=Something Went wrong`)
+        }
       }
     }
     loadData()

@@ -77,9 +77,8 @@ const ProfileLayout = ({
           // const data = await fetchWithoutAuthorization("/v1/users/keyword","GET")
 
           if (users?.error) {
-            router.replace(`/?emessage=Please Authenticate`)
+            router.replace(`/?emessage=Something Went wrong`)
           } else {
-            // console.log("router ",)
             const x = router.pathname.split("/")
             setInitialKeywords(users?.data?.tags)
             setData(users?.data?.user)

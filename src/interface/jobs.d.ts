@@ -153,6 +153,18 @@ interface ApplicantInfo {
   }
 }
 
+interface JObResponseFilterProps {
+  userSkills: readonly string[]
+  userSoftwares: readonly string[]
+  country?: string
+  rolesApplied: readonly string[]
+}
+interface ICustomJobResponseTags {
+  skill: string[]
+  software: string[]
+  rolesApplied: readonly string[]
+}
+
 interface ServerPlan {
   name: string
 }

@@ -11,10 +11,12 @@ import Layout from "./jobResponseLayout"
 
 const JobResponses = ({
   jobApplicants,
-  customCreatorsTags,
+  jobTitle,
+  customJobResponseTags,
 }: {
   jobApplicants: jobApplications[]
-  customCreatorsTags: ICustomCreatorsTags
+  jobTitle: string
+  customJobResponseTags: ICustomJobResponseTags
 }) => {
   const [activetab, setactivetab] = useState<string>("Applied Manually")
   const [jobResponses, setJobResponses] = useState<jobApplications[]>(jobApplicants)
@@ -27,13 +29,14 @@ const JobResponses = ({
     return (
       <>
         <Layout
+          jobTitle={jobTitle}
           activeTab={activetab}
           setActiveTab={setactivetab}
           jobResponses={jobResponses}
           setJobResponses={setJobResponses}
           setLoading={setLoading}
           loading={loading}
-          customCreatorsTags={customCreatorsTags}
+          customJobResponseTags={customJobResponseTags}
         >
           <div className="grid w-full grid-cols-1 gap-3 p-4 md:p-0 justify-items-center  lg:grid-cols-3">
             <SkeletonLoader />
@@ -46,13 +49,14 @@ const JobResponses = ({
   } else {
     return (
       <Layout
+        jobTitle={jobTitle}
         activeTab={activetab}
         setActiveTab={setactivetab}
         jobResponses={jobResponses}
         setJobResponses={setJobResponses}
         setLoading={setLoading}
         loading={loading}
-        customCreatorsTags={customCreatorsTags}
+        customJobResponseTags={customJobResponseTags}
       >
         {activetab == "Applied through GCH" && (
           <>
