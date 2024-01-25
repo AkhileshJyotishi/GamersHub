@@ -41,6 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   const { slug } = query
 
   const response = await fetchWithoutAuthorization(`/v1/job/jobApplications/${slug}`, "GET")
+
   toast.dismiss()
   if (response?.error) {
     return {
@@ -50,6 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       },
     }
   }
+  console.log(response?.data)
   const res2 = await fetchWithoutAuthorization("/v1/users/customCreatorsTags", "GET")
   if (res2?.error) {
     return {

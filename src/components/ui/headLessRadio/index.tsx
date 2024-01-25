@@ -26,7 +26,6 @@ const ServerPlanSelector: React.FC<ServerPlanSelectorProps> = ({
       }
     })
   }
-
   return (
     <div className="w-full px-4 py-4">
       <div className="mx-auto w-full ">

@@ -18,7 +18,7 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
   },
 })
 
-const UpdateJob = ({ job }: { job: JobInfo }) => {
+const UpdateJob = ({ job, jobRolesSuggestions, jobSoftwareSuggestions }: { job: JobInfo; jobSoftwareSuggestions?: JobSoftwareSuggestions; jobRolesSuggestions?: JobRolesSuggestions }) => {
   const session = useSession()
   const { setLoading } = useUserContext()
   const router = useRouter()
@@ -59,25 +59,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     localStorage.setItem("noval__content2", "")
     // localStorage.removeItem("noval__content1")
     // localStorage.removeItem("noval__content2")
-    const formdata = new FormData()
-    formdata.append("file", jobInfo.banner as Blob)
-    formdata.append("type", "jobs")
-    if (jobInfo.banner && typeof jobInfo.banner === "object") {
-      const isuploaded = await fetchFile(
-        "/v1/upload/file",
-        session?.data?.user?.name as string,
-        "POST",
-        formdata
-      )
-      if (isuploaded?.error) {
-        toast.info(isuploaded?.message)
-        setLoading(false)
-        return
-      }
-      // console.log(isuploaded?.data)
-      // return;
-      jobInfo.banner = isuploaded?.data.image.Location
-    }
+
     // console.log("jobInfo.banner ", jobInfo.banner)
     jobInfo.publishDate = new Date().toISOString()
     delete jobInfo.userId
@@ -102,9 +84,9 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
     router.push("/jobs")
   }
   return (
-    <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob}>
-      {/* Render the filterDetails here */}
-      <>
+    <Layout jobInfo={jobInfo} setJobInfo={setJobInfo} uploadJob={uploadJob} jobSoftwareSuggestions={jobSoftwareSuggestions}
+      jobRolesSuggestions={jobRolesSuggestions}>
+     
         <div className="flex flex-col w-[100vw] gap-4 md:max-w-[59vw] lg:max-w-[67vw]">
           <>
             <h1 className="text-[22px] mt-4 font-semibold">Description</h1>
@@ -143,7 +125,7 @@ const UpdateJob = ({ job }: { job: JobInfo }) => {
             />
           </>
         </div>
-      </>
+    
     </Layout>
   )
 }

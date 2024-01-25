@@ -47,7 +47,7 @@ interface BackendJob {
   remote: boolean
   country: string
   city: string
-  rolesNeeded?: string[]
+  rolesNeeded?: {role:string}[]
   jobApplyUrl?: string | null
   isExpired: boolean | null
   jobSoftwares: {
@@ -64,6 +64,7 @@ interface BackendJob {
   user: {
     username: string
     profileImage: string
+    email:string
     bannerImage: string | null
   }
   jobApplications: {
@@ -104,6 +105,7 @@ interface jobApplications {
   resume: string
   job: {
     title: string
+    id:number
   }
   user: {
     id: number
@@ -166,5 +168,31 @@ interface IBasicInfo {
   city?: string | null
   bio?: string | null
   portfolio?: string | null
-  skills?: string[] | null
+  skills?: readonly string[] | null
 }
+interface IinitJobApplication{
+  id:number,
+  username:string,
+  email:string,
+  phone:string|null;
+  userDetails:{
+    city:string|null;
+    country:string|null;
+    resume:string|null;
+    userSkills:{skill:string}[]|null
+    userBio:string|null
+  }
+  socials:{portfolio:string|null}
+
+}
+// {
+//   id: 1,
+//   username: 'akhilesh',
+//   email: 'akhileshjyotishi1729@gmail.com',
+//   userDetails: {
+//     city: 'Aflou',
+//     country: 'Algeria',
+//     userSkills: [ { skill: 'sdfds' } ]
+//   },
+//   socials: { portfolio: null }
+// }

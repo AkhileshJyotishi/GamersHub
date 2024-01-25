@@ -30,7 +30,11 @@ interface JobPageHeaderProps {
   isApplyJobOpen: boolean
   setisApplyJobGCHOpen: React.Dispatch<React.SetStateAction<boolean>>
   isApplyJobGCHOpen: boolean
-  location: string
+  location: string;
+  jobApplyUrl: string | null | undefined
+  rolesNeeded?: { role: string }[]
+  jobApplyEmail?: string
+
 }
 const UserImage = ({ href }: { href: string | StaticImageData }) => (
   <span className="my-auto">
@@ -60,6 +64,9 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   savedUsers,
   setisApplyJobOpen,
   setisApplyJobGCHOpen,
+  jobApplyUrl,
+  jobApplyEmail,
+  rolesNeeded
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -86,7 +93,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
     hrefOrState: string | Setjob
     applyWith?: "GCH" | "MANUAL"
     icon: React.JSX.Element
-  }[] = [
+  }[] = jobApplyUrl && jobApplyUrl !== null ? [
     {
       name: "Apply with GameCreators",
       description: "Easy application directly using your Gamecreators profile and portfolio",
@@ -94,7 +101,6 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
       applyWith: "GCH",
       icon: (
         <>
-          {" "}
           <Image
             src={logoblackbg}
             width={60}
@@ -127,14 +133,51 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
     {
       name: "Apply Through Mail",
       description: "",
-      hrefOrState: "##",
+      hrefOrState: jobApplyEmail ? `mailto:${jobApplyEmail}` : "#",
       icon: (
         <>
           <VscMail className="w-5 h-5" />
         </>
       ),
     },
-  ]
+  ] : [
+      {
+        name: "Apply with GameCreators",
+        description: "Easy application directly using your Gamecreators profile and portfolio",
+        hrefOrState: setisApplyJobGCHOpen,
+        applyWith: "GCH",
+        icon: (
+          <>
+            <Image
+              src={logoblackbg}
+              width={60}
+              height={10}
+              alt=""
+              className="block xl:absolute w-[40px]"
+              priority
+              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
+          </>
+        ),
+      },
+      {
+        name: "Apply Directly",
+        description: "Apply manually by filling details and uploading resume",
+        hrefOrState: setisApplyJobOpen,
+        applyWith: "MANUAL",
+        icon: <div className=""></div>,
+      },
+      {
+        name: "Apply Through Mail",
+        description: "",
+        hrefOrState: "##",
+        icon: (
+          <>
+            <VscMail className="w-5 h-5" />
+          </>
+        ),
+      },
+    ]
 
   return (
     <div>
@@ -162,7 +205,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
       {userData?.id !== userId ? (
         <div className="flex mt-3 gap-x-4 ">
           <Button
-            className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl gap-2"
+            className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2"
             onClick={() => {
               !session ? setIsLoginModalOpen(true) : saveJob(jobId)
             }}
@@ -170,10 +213,12 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             <SaveIcon className="w-5 h-5 fill-text" fill="" />
             {isJobSaved ? "Unsave Job" : "Save Job"}
           </Button>
-          <DynamicPopover buttonText="Apply Now" items={popoverItems} />
+          {session &&
+            <DynamicPopover buttonText="Apply Now" items={popoverItems} />
+          }
         </div>
       ) : (
-        <>
+        <div className="flex mt-3 gap-x-4 ">
           <Button
             className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl hover:bg-secondary"
             onClick={() => router.push(`/user/profile/portfolio/updateJob/${jobId}`)}
@@ -181,7 +226,13 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             <EditIcon className="w-5 h-5 text-user_interface_7" />
             Edit Job
           </Button>
-        </>
+          <Button
+            className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl hover:bg-secondary"
+            onClick={() => router.push(`/job/${jobId}/response`)}
+          >
+            View Responses
+          </Button>
+        </div>
       )}
     </div>
   )

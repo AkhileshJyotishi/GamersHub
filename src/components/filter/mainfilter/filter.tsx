@@ -13,16 +13,24 @@ import TagsInput from "@/components/ui/TagsInput"
 import TextInput from "@/components/ui/textInput"
 
 import CheckboxFilter from "./checkboxfilter"
-import FileFilter from "./Filefilter"
+// import FileFilter from "./Filefilter"
 import RadioFilter from "./radiofilter"
 
 import "react-international-phone/style.css"
 // import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
+import dynamic from "next/dynamic"
 // const DatePicker = dynamic(() => import("react-date-picker"), {
 //   ssr: false,
 // })
+const FileFilter = dynamic(() => import("./Filefilter"), {
+  ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[300px]"></div>
+  },
+})
+
 const Filter: React.FC<FilterDetail> = ({
   title,
   placeholder,

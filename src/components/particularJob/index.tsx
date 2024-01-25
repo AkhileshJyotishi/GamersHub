@@ -10,7 +10,7 @@ import Jobsection from "@/components/particularJob/Section"
 import ApplyJob from "../apply-job"
 import Modal from "../ui/modal"
 //  website locaation
-const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
+const Particularpage = ({ profileData,JobApplicationInfo }: { profileData: BackendJob,JobApplicationInfo:IBasicInfo }) => {
   if (!profileData) {
     return <div>Loading...</div> // or any other handling mechanism
   }
@@ -42,6 +42,8 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
             jobId={profileData.id}
             title={profileData.title}
             collabJob={profileData.jobType === "COLLAB"}
+            rolesNeeded={profileData.rolesNeeded}
+            applyMethod={"MANUAL"}
           />
         </div>
       </Modal>
@@ -56,6 +58,9 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
             jobId={profileData.id}
             title={profileData.title}
             collabJob={profileData.jobType === "COLLAB"}
+            rolesNeeded={profileData.rolesNeeded}
+            applyMethod={"GCH"}
+            JobApplicationInfo={JobApplicationInfo}
           />
         </div>
       </Modal>
@@ -96,6 +101,9 @@ const Particularpage = ({ profileData }: { profileData: BackendJob }) => {
           isApplyJobOpen={isApplyJobOpen}
           setisApplyJobGCHOpen={setisApplyJobGCHOpen}
           isApplyJobGCHOpen={isApplyJobGCHOpen}
+          rolesNeeded={profileData.rolesNeeded}
+          jobApplyUrl={profileData.jobApplyUrl}
+          jobApplyEmail={profileData.user.email || "##"}
         />
         <Jobsection jobData={profileDataJobSection} />
       </div>

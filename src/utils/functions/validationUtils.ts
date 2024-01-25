@@ -221,3 +221,66 @@ export const validatePhoneField: ValidationFunction<string> = (value, params) =>
     return ""
   }
 }
+export const validateEmailField: ValidationFunction<string> = (value, params) => {
+  if (value === null) {
+    if (params?.required) {
+      return "*required";
+    }
+    return "";
+  }
+
+  if (params?.required && value.trim().length === 0) {
+    return "*required";
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(value)) {
+    return "Invalid email format";
+  }
+
+  return "";
+};
+
+export const validatePdfField: ValidationFunction<File> = async (value, params) => {
+  if (value === null) {
+    if (params?.required) {
+      return "*required";
+    }
+    return "";
+  }
+
+  const maxSizeInBytes = params?.fileMaxSize ?? 5 * 1024 * 1024; // 5MB if not provided
+  const acceptedTypes = ['application/pdf'];
+
+  if (value.size > maxSizeInBytes) {
+    return `File size must be less than ${maxSizeInBytes / (1024 * 1024)}MB`;
+  }
+
+  if (!acceptedTypes.includes(value.type)) {
+    return "Invalid file type. Please upload a PDF file.";
+  }
+
+  return "";
+};
+export const validateURLField: ValidationFunction<string> = (value, params) => {
+  if (value === null) {
+    if (params?.required) {
+      return "*required";
+    }
+    return "";
+  }
+
+  if (params?.required && value.trim().length === 0) {
+    return "*required";
+  }
+
+  try {
+    const url = new URL(value);
+    // Additional checks if needed
+  } catch (error) {
+    return "Invalid URL format";
+  }
+
+  return "";
+};

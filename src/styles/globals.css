@@ -265,3 +265,7 @@ body {
   background-color: #161a1f !important;
   color: #fff !important;
 }
+
+.rpv-core__viewer.rpv-core__viewer--light{
+overflow-y: hidden;
+}

@@ -40,7 +40,6 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   const { data: session } = useSession()
   const router = useRouter()
   const { userData } = useUserContext()
-  // console.log(profileArray)
   return (
     <>
       {profileArray?.map((filter, index) => (
@@ -57,6 +56,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               selectOptions={filter.selectOptions}
               className={` ${filter.className || ""}`}
               Variant={"flex-col  w-full flex "}
+              accept={filter.accept}
               initialtags={filter.initialtags}
               onTagsChange={filter.onTagsChange}
               errorMessage={filter.errorMessage}

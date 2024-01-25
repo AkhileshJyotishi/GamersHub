@@ -53,7 +53,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       city,
       paymentType,
       paymentValue,
-      banner,
       expertise,
       jobSoftwares,
       title,
@@ -62,6 +61,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       userId,
       aboutRecruiter,
       description,
+      jobApplyUrl,
+      rolesNeeded
     } = backendJob
 
     // jobSoftwares=
@@ -73,7 +74,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       city: city || "", // Adjust based on your needs
       paymentType,
       paymentValue,
-      banner,
       expertise,
       jobSoftwares: jobSoftwares?.map((software) => software.software),
       title,
@@ -82,6 +82,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       userId: userId,
       aboutRecruiter,
       description,
+      rolesNeeded:rolesNeeded?.map(role=>role.role)??[],
+      jobApplyUrl:jobApplyUrl?? ""
     }
   }
 

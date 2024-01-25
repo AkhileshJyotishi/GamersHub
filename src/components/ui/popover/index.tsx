@@ -105,8 +105,7 @@ const DynamicPopover: React.FC<DynamicPopoverProps> = ({ items, buttonText }) =>
     {() => (
       <>
         <Popover.Button
-          className={`
-              group inline-flex items-center  bg-secondary  text-base  hover:text-text     hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[30px] font-medium rounded-xl gap-2`}
+          className={`group inline-flex items-center  bg-secondary  text-base  hover:text-text     hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2`}
         >
           <span>{buttonText}</span>
         </Popover.Button>

@@ -228,7 +228,7 @@ export default function Navbar() {
           {userSession && <NavbarLink label="Assets" href="/help" />}
         </div>
 
-        <div className="relative flex items-center gap-2 mb-1 xl:gap-12 ">
+        <div className="relative flex items-center gap-4 mb-1 xl:gap-12 ">
           <div className="">
             {session ? (
               <LoggedInUserButtons userSession={session} userData={userData} />
@@ -241,24 +241,24 @@ export default function Navbar() {
             )}
           </div>
           <Button
-            className="z-40 flex flex-col gap-1 mt-1 cursor-pointer xl:hidden"
+            className="z-40 flex flex-col gap-[0.48rem] cursor-pointer xl:hidden"
             onClick={() => {
               setIsDrawerOpen(true)
               setTap(!tap)
             }}
           >
             <div
-              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
                 tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
               } duration-[0.5s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
                 tap ? "opacity-0" : "opacity-100"
               } duration-[1s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
                 tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
               } duration-[1s] ease-out`}
             ></div>

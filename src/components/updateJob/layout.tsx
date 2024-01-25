@@ -22,9 +22,11 @@ interface LayoutProps {
   jobInfo: JobInfo
   setJobInfo: React.Dispatch<React.SetStateAction<JobInfo>>
   uploadJob: () => Promise<void>
+  jobSoftwareSuggestions?: JobSoftwareSuggestions
+  jobRolesSuggestions?: JobRolesSuggestions
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJob }) => {
+const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJob,jobRolesSuggestions,jobSoftwareSuggestions }) => {
   const country = Country.getAllCountries()
 
   const countryList = country?.map((country) => {
@@ -86,14 +88,12 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         } else {
           setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        if (field !== "banner") {
+        // if (field !== "banner") {
           if (field === "country") {
             handleCityOptions(codemapping[value as string])
           }
           setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
-        } else {
-          setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
-        }
+        // } 
       } catch (error) {
         console.error("Async validation error:", error)
       }
@@ -108,13 +108,15 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     city: "",
     paymentType: "",
     paymentValue: "",
-    banner: "",
     expertise: "",
     aboutRecruiter: "",
     description: "",
     jobDetails: "",
     jobSoftwares: "",
     publishDate: "",
+    jobApplyUrl:"",
+    rolesNeeded:"",
+
     // userId:""
   })
 
@@ -142,14 +144,14 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           }))
           break
 
-        case "banner": {
-          validationFunction = validateFileField
-          const y = await validationFunction(value, validationParams)
-          flg === true && y === "" ? (flg = true) : (flg = false)
+        // case "banner": {
+        //   validationFunction = validateFileField
+        //   const y = await validationFunction(value, validationParams)
+        //   flg === true && y === "" ? (flg = true) : (flg = false)
 
-          setErrors((prev) => ({ ...prev, [field]: y }))
-          break
-        }
+        //   setErrors((prev) => ({ ...prev, [field]: y }))
+        //   break
+        // }
         case "remote": {
           validationFunction = validateBooleanField
           const z = await validationFunction(value, validationParams)
@@ -208,7 +210,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     {
       title: "Title",
       inputType: "text",
-      placeholder: "title...",
+      placeholder: "Enter a Title...",
       value: jobInfo.title,
       onChange: (value) =>
         handleInputChange("title", value as string, validateStringField, {
@@ -219,6 +221,18 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       errorMessage: errors.title,
     },
     {
+      title: "Application Url (if any)",
+      inputType: "text",
+      placeholder: "https://xyz.com",
+      value: jobInfo.jobApplyUrl,
+      onChange: (value) =>
+        handleInputChange("jobApplyUrl", value as string, validateStringField, {
+          maxLength: 30,
+        }),
+      className: "bg-transparent rounded-md",
+      errorMessage: errors.jobApplyUrl,
+    },
+    {
       title: "Job Type",
       inputType: "select",
       placeholder: "Select Job Type",
@@ -227,10 +241,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         handleInputChange("jobType", value as string, validateStringField, { required: true }),
 
       selectOptions: [
-        {
-          label: "Select Job Type",
-          value: "",
-        },
+        // {
+        //   label: "Select Job Type",
+        //   value: "",
+        // },
         {
           label: "Freelance",
           value: "FREELANCE",
@@ -246,6 +260,24 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       ],
       className: "bg-transparent rounded-md",
       errorMessage: errors.jobType,
+    },
+    {
+      title: "Roles needed",
+      inputType: "tags",
+      onTagsChange: (value) =>
+        handleInputChange("rolesNeeded", value as string[], validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
+      value: jobInfo.rolesNeeded || [],
+      selectOptions: [
+        ...((jobRolesSuggestions && jobRolesSuggestions) ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+      placeholder: "Freelancer, Designer etc. ",
+      errorMessage: errors.rolesNeeded,
     },
     {
       title: "Job Location *",
@@ -269,7 +301,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "Country",
       inputType: "select",
       onChange: (value) => handleInputChange("country", value as string, validateStringField, {}),
-
+      placeholder: "Enter a Country",
       selectOptions: [{ label: "--Select a Country--", value: "" }, ...countryList],
       value: jobInfo.country || "",
       hidden: jobInfo.remote,
@@ -280,10 +312,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
       title: "City",
       inputType: "select",
       value: jobInfo.city as string,
-
+      placeholder: "Enter a City",
       onChange: (value) => handleInputChange("city", value as string, validateStringField, {}),
 
-      selectOptions: [{ label: "--Select a City--", value: "" }, ...city],
+      selectOptions: city,
       hidden: jobInfo.remote,
       errorMessage: errors.city,
     },
@@ -293,6 +325,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
 
       onChange: (value) =>
         handleInputChange("paymentType", value as string, validateStringField, { required: true }),
+      placeholder: "Expected Payment",
 
       selectOptions: [
         {
@@ -326,6 +359,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           minValue: 0,
         })
       },
+      placeholder: "Select Expertise",
 
       className: "bg-transparent rounded-md",
       errorMessage: errors.paymentValue,
@@ -335,7 +369,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     //   title: "Job Cover",
     //   accept: "image/*",
     //   multiple: false,
-    //   value: jobInfo.banner as string,
+    //   value: null,
     //   onChange: (value) =>
     //     handleInputChange("banner", value as File, validateFileField, {
     //       required: true,
@@ -344,14 +378,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     //   className: "",
     //   errorMessage: errors.banner,
     // },
-    // {
-    //   title: "Roles Needed*",
-    //   inputType: "tags",
-    //   onTagsChange: (tags) => setJobInfo((prevState) => ({ ...prevState, rolesNeeded: tags })),
-    //   placeholder: "roles needed",
-    //   // onChange: (value) =>setJobInfo({ ...jobInfo, rolesNeeded: jobInfo.rolesNeeded }),
-    //   // value: roleNeedInput,
-    // },
+
     {
       title: "Level of Expertise",
       inputType: "select",
@@ -360,10 +387,10 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
         handleInputChange("expertise", value as string, validateStringField, { required: true }),
       // setJobInfo((prevState) => ({ ...prevState, expertise: value as string })),
       selectOptions: [
-        {
-          label: "Select Expertise",
-          value: "",
-        },
+        // {
+        //   label: "Select Expertise",
+        //   value: "",
+        // },
         {
           label: "Entry Level",
           value: "ENTRY",
@@ -377,6 +404,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           value: "EXPERT",
         },
       ],
+      placeholder: "Enter Expertise",
+
       errorMessage: errors.expertise,
     },
 
@@ -388,8 +417,14 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           required: true,
           maxLength: 10,
         }),
-      initialtags: jobInfo.jobSoftwares,
-      placeholder: "softwares",
+      value: jobInfo.jobSoftwares || [],
+      selectOptions: [
+        ...((jobSoftwareSuggestions && jobSoftwareSuggestions.software) ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+      placeholder: "Blender, Unreal Engine etc. ",
       errorMessage: errors.jobSoftwares,
     },
   ]

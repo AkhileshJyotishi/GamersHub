@@ -124,7 +124,7 @@ const Card: React.FC<jobResponseCard> = ({ jobApplication, mode }) => {
         onClick={() => {
           let x
           if (jobApplication.applyMethod == "MANUAL") {
-            x = `/jobs/response/${jobApplication?.ApplicantInfo?.id}`
+            x = `/jobs/${jobApplication.job.id}/job-response/${jobApplication?.ApplicantInfo?.id}`
           } else {
             x = `/${jobApplication?.user?.id}/profile/albums`
           }

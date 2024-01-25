@@ -1,32 +1,39 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { City, Country } from "country-state-city"
 
 import { Errors, FilterDetail } from "@/interface/filter"
 import {
-  validateFileField,
+  validateEmailField,
+  // validateFileField,
+  validatePdfField,
   validatePhoneField,
+  validateStringArrayField,
   validateStringField,
+  validateURLField,
   ValidationFunction,
   ValidationParams,
 } from "@/utils/functions/validationUtils"
 
 import Filter from "../filter/mainfilter/filter"
+import Button from "../ui/button"
+import { toast } from "react-toastify"
 
 const StepThree = ({
   BasicInfo,
   setBasicInfo,
+  onSubmit
 }: {
   BasicInfo: IBasicInfo
   setBasicInfo: React.Dispatch<React.SetStateAction<IBasicInfo>>
+  onSubmit: () => Promise<void>
 }) => {
-  const country = Country.getAllCountries()
-
-  const countryList = country?.map((country) => {
+  const country =useMemo(()=>Country.getAllCountries(),[])
+  const countryList =useMemo(()=>country?.map((country) => {
     return {
       label: country?.name,
       value: country?.name,
     }
-  })
+  }),[])
   const initialcitylist = [{ label: "", value: "" }]
 
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
@@ -55,7 +62,7 @@ const StepThree = ({
   })
   const handleCityOptions = (isoCode: string) => {
     const city = City.getCitiesOfCountry(isoCode)
-    const cityList = city?.map((city1) => {
+    const cityList = city?.filter((city,idx)=>idx<=2000).map((city1) => {
       return {
         label: city1?.name,
         value: city1?.name,
@@ -82,7 +89,6 @@ const StepThree = ({
           if (field === "country") {
             handleCityOptions(codemapping[value as string])
           }
-          console.log(field, " ", value)
           setBasicInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
         } else {
           setBasicInfo((prevState) => ({ ...prevState, [field]: value as File }))
@@ -102,7 +108,7 @@ const StepThree = ({
       value: BasicInfo.firstName || "",
       onChange: (value) =>
         handleInputChange("firstName", value as string, validateStringField, {
-          maxValue: 60,
+          maxLength: 60,
           required: true,
         }),
       className: "bg-transparent rounded-md",
@@ -115,7 +121,7 @@ const StepThree = ({
       value: BasicInfo.lastName || "",
       onChange: (value) =>
         handleInputChange("lastName", value as string, validateStringField, {
-          maxValue: 60,
+          maxLength: 60,
           required: true,
         }),
       className: "bg-transparent rounded-md",
@@ -127,8 +133,7 @@ const StepThree = ({
       placeholder: "Eg: rockstar@gmail.com",
       value: BasicInfo.email || null,
       onChange: (value) =>
-        handleInputChange("email", value as string, validateStringField, {
-          maxValue: 60,
+        handleInputChange("email", value as string, validateEmailField, {
           required: true,
         }),
       className: "bg-transparent rounded-md ",
@@ -149,7 +154,7 @@ const StepThree = ({
       title: "Country",
       inputType: "select",
       onChange: (value) => handleInputChange("country", value as string, validateStringField, {}),
-
+placeholder:"Select a Country",
       selectOptions: countryList,
       value: BasicInfo.country || "",
       errorMessage: errors.country,
@@ -158,15 +163,118 @@ const StepThree = ({
     {
       title: "City",
       inputType: "select",
-      value: BasicInfo.city as string,
+      value: BasicInfo.city || "",
+      placeholder:"Select a City",
 
       onChange: (value) => handleInputChange("city", value as string, validateStringField, {}),
 
       selectOptions: city,
       errorMessage: errors.city,
     },
-  ]
 
+  ]
+  const applyJobHandler = async () => {
+    let flg = true
+
+    const validationPromises = Object.entries(BasicInfo).map(async ([field, value]) => {
+      let validationFunction: (x: Allow, y: Allow) => string | Promise<string>
+      const validationParams = getValidationParamsForField(field)
+      switch (field) {
+        case "firstName":
+        case "lastName":
+        case "country":
+        case "city":
+        case "bio":
+        case "motivationToApply":
+          validationFunction = validateStringField
+          flg === true && validationFunction(value, validationParams) === ""
+            ? (flg = true)
+            : (flg = false)
+
+          setErrors((prev) => ({
+            ...prev,
+            [field]: validationFunction(value as string, validationParams),
+          }))
+          break
+        case "email":
+          validationFunction = validateEmailField
+          const z = await validationFunction(value, validationParams)
+          flg === true && z === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: z }))
+          break
+
+        case "portfolio":
+          validationFunction = validateURLField
+          const p = await validationFunction(value, validationParams)
+          flg === true && p === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: p }))
+          break
+
+        case "phone":
+          validationFunction = validatePhoneField
+          const x = await validationFunction(value, validationParams)
+          flg === true && x === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: x }))
+          break
+
+        case "skills": {
+          validationFunction = validateStringArrayField
+          const w = await validationFunction(value, validationParams)
+          flg === true && w === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: w }))
+          break
+        }
+        case "rolesNeeded": {
+          validationFunction = validateStringArrayField
+          const w = await validationFunction(value, validationParams)
+          flg === true && w === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: w }))
+          break
+        }
+
+        case "resume": {
+          validationFunction = validatePdfField
+          const a = await validationFunction(value, validationParams)
+          flg === true && a === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: a }))
+          break
+        }
+
+        default:
+          break
+      }
+    })
+    await Promise.all(validationPromises)
+    if (flg) {
+      await onSubmit()
+    } else {
+      toast.dismiss()
+      toast.info("Please fill the details Correctly")
+    }
+  }
+  const getValidationParamsForField = (field: string): ValidationParams => {
+    // Define validation parameters for each field
+    const validationParams: Record<string, ValidationParams> = {
+      motivationToApply:  { required: true, maxLength: 200 },
+      rolesApplied: {required:true},
+      applyMethod:{required: true},
+      bio: { required: true, maxLength: 200 },
+      email: {required:true},
+      firstName: { required: true, maxLength: 60, },
+      lastName: { required: true, maxLength: 60 },
+      phone: { required: true},
+      portfolio: { required: true },
+      resume:  { required: true, fileMaxSize: 5*1024 * 1024 },
+      skills: { required: true, maxLength: 10 },
+      country: {},
+      city: {},
+    }
+
+    return validationParams[field] || {}
+  }
+useEffect(()=>{
+  handleCityOptions(codemapping[BasicInfo.country as string])
+},[])
   return (
     <>
       <div className="flex p-3 gap-y-2 w-full  mx-auto flex-wrap justify-evenly mt-4">
@@ -184,17 +292,37 @@ const StepThree = ({
               element={field.element}
               Variant="flex-col w-full flex"
               errorMessage={field.errorMessage}
+              onTagsChange={field.onTagsChange}
             />
           </div>
         ))}
+        <div className="flex items-center p-2 md:gap-8 w-full mt-[8px] flex-col">
+          <Filter
+            title="Skills"
+            inputType="tags"
+            placeholder="E.g. React , Next"
+            onTagsChange={(value) => {
+              handleInputChange("skills", value, validateStringArrayField, {
+                required: true,
+                maxLength: 10,
+              })
+            }}
+            value={BasicInfo.skills as string[]}
+
+            Variant="flex-col w-full flex"
+            className="bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center"
+            errorMessage={errors.skills}
+          />
+        </div>
         <div className="flex items-center p-2 md:gap-2 w-full mt-[8px] flex-col">
+
           <Filter
             title="Bio"
             inputType="text"
             value={BasicInfo.bio as string}
             onChange={(value) =>
               handleInputChange("bio", value as string, validateStringField, {
-                maxValue: 200,
+                maxLength: 200,
                 required: true,
               })
             }
@@ -211,7 +339,7 @@ const StepThree = ({
             value={BasicInfo.motivationToApply as string}
             onChange={(value) =>
               handleInputChange("motivationToApply", value as string, validateStringField, {
-                maxValue: 200,
+                maxLength: 200,
                 required: true,
               })
             }
@@ -227,7 +355,7 @@ const StepThree = ({
             inputType="text"
             value={BasicInfo.portfolio as string}
             onChange={(value) =>
-              handleInputChange("portfolio", value as string, validateStringField, {
+              handleInputChange("portfolio", value as string, validateURLField, {
                 maxValue: 200,
                 required: true,
               })
@@ -240,23 +368,27 @@ const StepThree = ({
             *Do you have a Website/ Online portfolio that we can look at? (Copy and paste link)
           </div>
         </div>
+
         <div className="flex items-center p-2 md:gap-8 w-full mt-[8px] flex-col">
           <Filter
             title="Resume Upload (PDF format)"
             inputType="file"
             accept=".pdf"
-            value={BasicInfo.portfolio as string}
+            value={BasicInfo.resume as string}
             onChange={(value) =>
-              handleInputChange("resume", value as File, validateFileField, {
+              handleInputChange("resume", value as File, validatePdfField, {
                 required: true,
-                fileMaxSize: 1024 * 1024,
+                fileMaxSize: 4 * 1024 * 1024,
               })
             }
             Variant="flex-col w-full flex"
             className="bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center"
-            errorMessage={errors.portfolio}
+            errorMessage={errors.resume}
           />
         </div>
+        <Button className={"transition-all  p-2  bg-secondary hover:opacity-80  rounded-md text-text"} onClick={applyJobHandler}>
+          Submit Application
+        </Button>
       </div>
     </>
   )
