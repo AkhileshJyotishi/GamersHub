@@ -136,6 +136,7 @@ const createUserDetails = {
   body: Joi.object().keys({
     country: Joi.string().allow('').optional(),
     city: Joi.string().allow('').optional(),
+    resume: Joi.string().allow('').optional(),
     userBio: Joi.string().allow('').optional(),
     userSkills: Joi.array().items(Joi.string()).optional(),
     userSoftwares: Joi.array().items(Joi.string()).optional(),
@@ -148,6 +149,7 @@ const updateUserDetails = {
     .keys({
       country: Joi.string().allow('').optional(),
       city: Joi.string().allow('').optional(),
+      resume: Joi.string().allow('').optional(),
       userBio: Joi.string().allow('').optional(),
       userSkills: Joi.array().items(Joi.string()).optional(),
       userSoftwares: Joi.array().items(Joi.string()).optional(),

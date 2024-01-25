@@ -52,6 +52,7 @@ router.get(
   validate(userValidation.getCustomDetails),
   userController.getCustomDetails
 )
+router.get('/applyDetails', auth(), userController.getApplyDetails)
 
 router.get(
   '/creators',

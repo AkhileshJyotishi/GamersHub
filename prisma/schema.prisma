@@ -49,6 +49,7 @@ model UserDetails {
   country        String?
   city           String?
   userBio        String?          @db.Text
+  resume         String?
   userEducation  UserEducation[]
   userExperience UserExperience[]
   userSkills     Skill[]          @relation("SkillToUserDetails")

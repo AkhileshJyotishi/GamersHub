@@ -365,6 +365,17 @@ const getAllCreatorsExceptUser = catchAsync(async (req, res) => {
   const creators = await userService.getAllCreatorsExceptUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
 })
+const getApplyDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const applyDetails = await userService.getApplyDetails(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applyDetails },
+    'Applicant  Details fetched Successfully'
+  )
+})
 const getAllCreators = catchAsync(async (req, res) => {
   const filter = req.query
   const creators = await userService.getAllCreators(filter)
@@ -434,5 +445,6 @@ export default {
   getAllDetails,
   getOtherDetails,
   getHomeDetailsController,
-  getJobRoles
+  getJobRoles,
+  getApplyDetails
 }

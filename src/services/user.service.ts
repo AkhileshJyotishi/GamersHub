@@ -955,6 +955,41 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
   })
   return userDetails
 }
+/**
+ * Get applicant Details by userId
+ * @param {ObjectId} userId
+ * @returns {Promise<object>}
+ */
+const getApplyDetails = async (userId: number): Promise<object | null> => {
+  const userDetails = prisma.user.findUnique({
+    where: {
+      id: userId,
+      validUser: true
+    },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      userDetails: {
+        select: {
+          city: true,
+          country: true,
+          userSkills: {
+            select: {
+              skill: true
+            }
+          }
+        }
+      },
+      socials: {
+        select: {
+          portfolio: true
+        }
+      }
+    }
+  })
+  return userDetails
+}
 interface QueryUsers {
   country?: string
   userSkills?: string[]
@@ -1322,5 +1357,6 @@ export default {
   getCustomDetails,
   getAllCreatorsExceptUser,
   getAllCreators,
-  getHomeDetails
+  getHomeDetails,
+  getApplyDetails
 }
