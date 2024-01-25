@@ -228,7 +228,7 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
           </Button>
           <Button
             className="mt-2 flex gap-1 border-secondary border-[0.1px] py-[10px] px-[20px] font-medium rounded-xl hover:bg-secondary"
-            onClick={() => router.push(`/job/${jobId}/response`)}
+            onClick={() => router.push(`/jobs/${jobId}/response`)}
           >
             View Responses
           </Button>
