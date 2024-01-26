@@ -412,6 +412,11 @@ const getJobById = async (id: number): Promise<Job | object> => {
           id: true
         }
       },
+      appliedUsers: {
+        select: {
+          id: true
+        }
+      },
       user: {
         select: {
           username: true,
@@ -884,6 +889,19 @@ const createUserJobApplication = async (
       jobId,
       resume,
       motivationToApply
+    }
+  })
+
+  await prisma.job.update({
+    where: {
+      id: jobId
+    },
+    data: {
+      appliedUsers: {
+        connect: {
+          id: userId
+        }
+      }
     }
   })
 
