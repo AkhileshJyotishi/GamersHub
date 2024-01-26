@@ -420,18 +420,6 @@ const getJobById = async (id: number): Promise<Job | object> => {
           email: true
         }
       },
-      jobApplications: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              username: true,
-              profileImage: true
-            }
-          },
-          ApplicantInfo: true
-        }
-      },
       rolesNeeded: {
         select: {
           role: true
@@ -692,9 +680,20 @@ interface QueryJobResponse {
 
 const getJobApplication = async (
   jobId: number,
+  userId: number,
   filter: QueryJobResponse
 ): Promise<Partial<JobApplication>[] | []> => {
   const { country, rolesApplied, userSkills, userSoftwares } = filter
+  const job = await prisma.job.findUnique({
+    where: {
+      id: jobId
+    }
+  })
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found')
+  } else if (job.userId != userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Access not granted')
+  }
   const userApplications = await prisma.jobApplication.findMany({
     where: {
       AND: [
@@ -795,6 +794,7 @@ const getJobApplication = async (
   })
   return userApplications || []
 }
+
 /**
  * Get All Particular applicantInfo
  * @param {ObjectId} applicantInfoId
@@ -867,6 +867,15 @@ const createUserJobApplication = async (
 ): Promise<JobApplication> => {
   const { rolesApplied, applyMethod, resume, motivationToApply, jobId, ...applicantBody } =
     jobApplicationBody
+  const oldApplication = await prisma.jobApplication.findFirst({
+    where: {
+      jobId,
+      userId
+    }
+  })
+  if (oldApplication) {
+    throw new ApiError(httpStatus.CONFLICT, 'Job already Applied')
+  }
   const jobApplication = await prisma.jobApplication.create({
     data: {
       rolesApplied,
@@ -894,6 +903,33 @@ const createUserJobApplication = async (
       }
     })
   }
+
+  // if (applyMethod == 'MANUAL' && applicantBody?.skills && applicantBody.skills?.length > 0) {
+  //   const skillPromises = applicantBody.skills?.map((skill) => {
+  //     return prisma.skill.upsert({
+  //       where: {
+  //         skill: skill
+  //       },
+  //       create: {
+  //         skill: skill,
+  //         userDetails: {
+  //           connect: {
+  //             id: userId
+  //           }
+  //         }
+  //       },
+  //       update: {
+  //         userDetails: {
+  //           connect: {
+  //             id: userId
+  //           }
+  //         }
+  //       }
+  //     })
+  //   })
+
+  //   await Promise.all(skillPromises)
+  // }
 
   return jobApplication
 }

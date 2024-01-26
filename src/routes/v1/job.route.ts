@@ -40,6 +40,7 @@ router.get(
 )
 router.get(
   '/jobApplications/:id',
+  auth(),
   validate(jobValidation.getJobResponseValidation),
   jobController.getJobApplication
 )

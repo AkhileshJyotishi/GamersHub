@@ -930,7 +930,8 @@ const getCustomDetails = async (userId: number): Promise<object | null> => {
       userDetails: {
         select: {
           city: true,
-          country: true
+          country: true,
+          resume: true
         }
       },
       profileImage: true,
@@ -974,6 +975,7 @@ const getApplyDetails = async (userId: number): Promise<object | null> => {
         select: {
           city: true,
           country: true,
+          resume: true,
           userBio: true,
           userSkills: {
             select: {

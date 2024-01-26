@@ -71,7 +71,8 @@ const getUserApplication = catchAsync(async (req, res) => {
 const getJobApplication = catchAsync(async (req, res) => {
   const filter = req.query
   const jobId = parseInt(req.params.id)
-  const JobsApplications = await jobService.getJobApplication(jobId, filter)
+  const userId = res.locals.user.id
+  const JobsApplications = await jobService.getJobApplication(jobId, userId, filter)
   const job = await prisma.job.findUnique({
     where: {
       id: jobId
