@@ -4,7 +4,7 @@ import Head from "next/head"
 import { toast } from "react-toastify"
 
 import { getSession } from "@/lib/auth"
-import { fetchWithoutAuthorization } from "@/utils/functions"
+import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import JobResponses from "@/components/jobResponses"
 
@@ -45,22 +45,34 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   }
   const { slug } = query
 
-  const response = await fetchWithoutAuthorization(`/v1/job/jobApplications/${slug}`, "GET")
-
+  const response = await fetchData(
+    `/v1/job/jobApplications/${slug}`,
+    session.user?.name as string,
+    "GET"
+  )
   toast.dismiss()
   if (response?.error) {
-    return {
-      redirect: {
-        destination: `/?emessage="Something went wrong."`,
-        permanent: false,
-      },
+    if (response?.error?.response?.status == 403) {
+      return {
+        redirect: {
+          destination: `/?emessage=${response?.message}`,
+          permanent: false,
+        },
+      }
+    } else {
+      return {
+        redirect: {
+          destination: `/?emessage=Something went wrong.`,
+          permanent: false,
+        },
+      }
     }
   }
   const res2 = await fetchWithoutAuthorization("/v1/users/customJobResponseTags", "GET")
   if (res2?.error) {
     return {
       redirect: {
-        destination: `/?emessage="Something went wrong."`,
+        destination: `/?emessage=Something went wrong.`,
         permanent: false,
       },
     }

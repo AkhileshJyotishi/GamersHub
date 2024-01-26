@@ -140,7 +140,7 @@ const BannerImage = ({
                                 variant="primary"
                                 className=" cursor-pointer flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px] "
                               >
-                                <label htmlFor="file-replace" className="">
+                                <label htmlFor="file-replace" className="cursor-pointer ">
                                   Replace Image
                                 </label>
                                 <input

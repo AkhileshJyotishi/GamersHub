@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (res2?.error) {
     return {
       redirect: {
-        destination: `/?emessage="Something went wrong."`,
+        destination: `/?emessage=Something went wrong.`,
         permanent: false,
       },
     }

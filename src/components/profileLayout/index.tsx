@@ -19,23 +19,6 @@ import ProfileCard from "@/components/profileCard"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 
-interface User {
-  id: number
-  createdAt: string
-  username: string
-  bannerImage: string
-  userDetails: {
-    country: string
-    city: string
-  }
-  _count: {
-    followers_users: number
-    following_users: number
-  }
-  add_on_web: Isocials
-  profileImage: string
-  socials: Isocials
-}
 /**
  * Renders the profile page layout, including the profile card, banner image, profile accordion, and tabs for different sections of the profile.
  * Handles the creation and editing of albums.
