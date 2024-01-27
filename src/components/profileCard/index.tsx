@@ -1,5 +1,5 @@
 // import { MediaHostURL } from "@/utils/apiClient";
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -20,7 +20,6 @@ import PlusIcon from "@/components/icons/plus"
 import TwitterIcon from "@/components/icons/twitter"
 import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
-import { fetchWithoutAuthorization } from "@/utils/functions"
 
 // import ViewIcon from "@/components/icons/viewIcon.svg"
 interface Props {

@@ -1,6 +1,7 @@
 // import { useRouter } from 'next/router'
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import { signOut } from "next-auth/react"
 
 import { getSession } from "@/lib/auth"
@@ -8,7 +9,6 @@ import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
 import UpdateJob from "@/components/updateJob"
-import Head from "next/head"
 
 const index = ({ job }: { job: JobInfo }) => {
   const Title = `Update Job | ${job.title}`

@@ -1,11 +1,11 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { getSession } from "@/lib/auth"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreatePortfolio from "@/components/creatPorfolio"
-import Head from "next/head"
 
 const index = ({ albums, post }: { albums: Allow; post: IPostbackend }) => {
   const Title = `Update-Post | ${post.title}`

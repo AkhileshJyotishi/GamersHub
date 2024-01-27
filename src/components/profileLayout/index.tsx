@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
+// import Modal from "@/components/ui/modal"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 // import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -17,8 +19,6 @@ import BannerImage from "@/components/profile/bannerImage"
 // import ProfileAccordion from "@/components/profile/profileAccordion"
 // import ProfileCard from "@/components/profileCard"
 import Button from "@/components/ui/button"
-// import Modal from "@/components/ui/modal"
-import dynamic from "next/dynamic"
 
 const Modal = dynamic(() => import("@/components/ui/modal"), {
   loading: () => {

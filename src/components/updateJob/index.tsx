@@ -9,8 +9,6 @@ import { fetchData } from "@/utils/functions"
 
 import Filter from "../filter/mainfilter/filter"
 
-// import Layout from "./layout"
-
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
   loading: () => {

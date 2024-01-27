@@ -6,9 +6,9 @@ import clsx from "clsx"
 // import Modal from "../ui/modal"
 import dynamic from "next/dynamic"
 import Image from "next/image"
+import { useSession } from "next-auth/react"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
-import { useSession } from "next-auth/react"
 //  website locaation
 const Modal = dynamic(() => import("../ui/modal"), {
   loading: () => {
