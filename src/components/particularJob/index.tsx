@@ -10,11 +10,13 @@ import Jobsection from "@/components/particularJob/Section"
 import ApplyJob from "../apply-job"
 import Modal from "../ui/modal"
 //  website locaation
-const Particularpage = ({ profileData,JobApplicationInfo }: { profileData: BackendJob,JobApplicationInfo:IBasicInfo }) => {
-  if (!profileData) {
-    return <div>Loading...</div> // or any other handling mechanism
-  }
-
+const Particularpage = ({
+  profileData,
+  JobApplicationInfo,
+}: {
+  profileData: BackendJob
+  JobApplicationInfo: IBasicInfo
+}) => {
   const {
     title,
     city,
@@ -29,6 +31,14 @@ const Particularpage = ({ profileData,JobApplicationInfo }: { profileData: Backe
 
   const [isApplyJobOpen, setisApplyJobOpen] = useState<boolean>(false)
   const [isApplyJobGCHOpen, setisApplyJobGCHOpen] = useState<boolean>(false)
+  const isProfileFilled = () => {
+    const { firstName, email, city, country, skills, bio, portfolio, resume } = JobApplicationInfo
+    if (!firstName || !email || !city || !country || !skills || !bio || !portfolio || !resume) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   return (
     <>
@@ -102,8 +112,10 @@ const Particularpage = ({ profileData,JobApplicationInfo }: { profileData: Backe
           setisApplyJobGCHOpen={setisApplyJobGCHOpen}
           isApplyJobGCHOpen={isApplyJobGCHOpen}
           rolesNeeded={profileData.rolesNeeded}
+          appliedUsers={profileData.appliedUsers}
           jobApplyUrl={profileData.jobApplyUrl}
           jobApplyEmail={profileData.user.email || "##"}
+          isProfileFilled={isProfileFilled()}
         />
         <Jobsection jobData={profileDataJobSection} />
       </div>

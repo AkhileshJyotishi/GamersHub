@@ -16,7 +16,7 @@ declare interface IDetails {
   userExperience?: IuserExperience[]
   userSkills: IuserSkill[]
   userSoftwares?: IuserSoftware[]
-  resume?:File|string|null
+  resume?: File | string | null
   user: {
     profileImage?: string
     bannerImage?: string

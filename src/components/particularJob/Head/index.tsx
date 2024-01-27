@@ -30,11 +30,12 @@ interface JobPageHeaderProps {
   isApplyJobOpen: boolean
   setisApplyJobGCHOpen: React.Dispatch<React.SetStateAction<boolean>>
   isApplyJobGCHOpen: boolean
-  location: string;
+  location: string
   jobApplyUrl: string | null | undefined
   rolesNeeded?: { role: string }[]
   jobApplyEmail?: string
-
+  isProfileFilled?: boolean
+  appliedUsers: { id: number }[]
 }
 const UserImage = ({ href }: { href: string | StaticImageData }) => (
   <span className="my-auto">
@@ -66,7 +67,8 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
   setisApplyJobGCHOpen,
   jobApplyUrl,
   jobApplyEmail,
-  rolesNeeded
+  isProfileFilled,
+  appliedUsers,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -93,91 +95,94 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
     hrefOrState: string | Setjob
     applyWith?: "GCH" | "MANUAL"
     icon: React.JSX.Element
-  }[] = jobApplyUrl && jobApplyUrl !== null ? [
-    {
-      name: "Apply with GameCreators",
-      description: "Easy application directly using your Gamecreators profile and portfolio",
-      hrefOrState: setisApplyJobGCHOpen,
-      applyWith: "GCH",
-      icon: (
-        <>
-          <Image
-            src={logoblackbg}
-            width={60}
-            height={10}
-            alt=""
-            className="block xl:absolute w-[40px]"
-            priority
-            placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-          />
-        </>
-      ),
-    },
-    {
-      name: "Apply Directly",
-      description: "Apply manually by filling details and uploading resume",
-      hrefOrState: setisApplyJobOpen,
-      applyWith: "MANUAL",
-      icon: <div className=""></div>,
-    },
-    {
-      name: "Apply Through Link",
-      description: "",
-      hrefOrState: "##",
-      icon: (
-        <>
-          <FaExternalLinkAlt className="w-5 h-5" />
-        </>
-      ),
-    },
-    {
-      name: "Apply Through Mail",
-      description: "",
-      hrefOrState: jobApplyEmail ? `mailto:${jobApplyEmail}` : "#",
-      icon: (
-        <>
-          <VscMail className="w-5 h-5" />
-        </>
-      ),
-    },
-  ] : [
-      {
-        name: "Apply with GameCreators",
-        description: "Easy application directly using your Gamecreators profile and portfolio",
-        hrefOrState: setisApplyJobGCHOpen,
-        applyWith: "GCH",
-        icon: (
-          <>
-            <Image
-              src={logoblackbg}
-              width={60}
-              height={10}
-              alt=""
-              className="block xl:absolute w-[40px]"
-              priority
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-            />
-          </>
-        ),
-      },
-      {
-        name: "Apply Directly",
-        description: "Apply manually by filling details and uploading resume",
-        hrefOrState: setisApplyJobOpen,
-        applyWith: "MANUAL",
-        icon: <div className=""></div>,
-      },
-      {
-        name: "Apply Through Mail",
-        description: "",
-        hrefOrState: "##",
-        icon: (
-          <>
-            <VscMail className="w-5 h-5" />
-          </>
-        ),
-      },
-    ]
+  }[] =
+    jobApplyUrl && jobApplyUrl !== null
+      ? [
+          {
+            name: "Apply with GameCreators",
+            description: "Easy application directly using your Gamecreators profile and portfolio",
+            hrefOrState: setisApplyJobGCHOpen,
+            applyWith: "GCH",
+            icon: (
+              <>
+                <Image
+                  src={logoblackbg}
+                  width={60}
+                  height={10}
+                  alt=""
+                  className="block xl:absolute w-[40px]"
+                  priority
+                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                />
+              </>
+            ),
+          },
+          {
+            name: "Apply Directly",
+            description: "Apply manually by filling details and uploading resume",
+            hrefOrState: setisApplyJobOpen,
+            applyWith: "MANUAL",
+            icon: <div className=""></div>,
+          },
+          {
+            name: "Apply Through Link",
+            description: "",
+            hrefOrState: "##",
+            icon: (
+              <>
+                <FaExternalLinkAlt className="w-5 h-5" />
+              </>
+            ),
+          },
+          {
+            name: "Apply Through Mail",
+            description: "",
+            hrefOrState: jobApplyEmail ? `mailto:${jobApplyEmail}` : "#",
+            icon: (
+              <>
+                <VscMail className="w-5 h-5" />
+              </>
+            ),
+          },
+        ]
+      : [
+          {
+            name: "Apply with GameCreators",
+            description: "Easy application directly using your Gamecreators profile and portfolio",
+            hrefOrState: setisApplyJobGCHOpen,
+            applyWith: "GCH",
+            icon: (
+              <>
+                <Image
+                  src={logoblackbg}
+                  width={60}
+                  height={10}
+                  alt=""
+                  className="block xl:absolute w-[40px]"
+                  priority
+                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                />
+              </>
+            ),
+          },
+          {
+            name: "Apply Directly",
+            description: "Apply manually by filling details and uploading resume",
+            hrefOrState: setisApplyJobOpen,
+            applyWith: "MANUAL",
+            icon: <div className=""></div>,
+          },
+          {
+            name: "Apply Through Mail",
+            description: "",
+            hrefOrState: "##",
+            icon: (
+              <>
+                <VscMail className="w-5 h-5" />
+              </>
+            ),
+          },
+        ]
 
   return (
     <div>
@@ -213,9 +218,17 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
             <SaveIcon className="w-5 h-5 fill-text" fill="" />
             {isJobSaved ? "Unsave Job" : "Save Job"}
           </Button>
-          {session &&
-            <DynamicPopover buttonText="Apply Now" items={popoverItems} />
-          }
+          {session && appliedUsers.filter((user) => user.id === userData?.id).length > 0 ? (
+            <div className=" flex items-center bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2">
+              Applied
+            </div>
+          ) : (
+            <DynamicPopover
+              buttonText="Apply Now"
+              items={popoverItems}
+              isProfileFilled={isProfileFilled}
+            />
+          )}
         </div>
       ) : (
         <div className="flex mt-3 gap-x-4 ">

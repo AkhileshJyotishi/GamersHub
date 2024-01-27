@@ -1,21 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import MultiStep from "react-multistep"
+import { toast } from "react-toastify"
+
+import { fetchData, fetchFile } from "@/utils/functions"
 
 import RoleSelector from "./role-selector"
 import StepTwo from "./step-two"
-import { fetchData, fetchFile } from "@/utils/functions"
-import { useSession } from "next-auth/react"
-import { toast } from "react-toastify"
-import { ValidationParams } from "@/utils/functions/validationUtils"
 
-const ApplyJob = ({ jobId, collabJob,rolesNeeded,applyMethod,JobApplicationInfo }: { jobId: number; title: string; collabJob: boolean,rolesNeeded?:{role:string}[],applyMethod:"GCH"|"MANUAL"|null,JobApplicationInfo?:IBasicInfo }) => {
+const ApplyJob = ({
+  jobId,
+  collabJob,
+  rolesNeeded,
+  applyMethod,
+  JobApplicationInfo,
+}: {
+  jobId: number
+  title: string
+  collabJob: boolean
+  rolesNeeded?: { role: string }[]
+  applyMethod: "GCH" | "MANUAL" | null
+  JobApplicationInfo?: IBasicInfo
+}) => {
   const [selectedPlans, setSelectedPlans] = useState<ServerPlan[]>([])
-  const {data:session}=useSession()
+  const { data: session } = useSession()
+  const router = useRouter()
   const showtitles = useMemo(() => window.outerWidth >= 500, [])
   const [BasicInfo, setBasicInfo] = useState<IBasicInfo>({
     jobId,
     motivationToApply: "",
-    rolesApplied:undefined,
+    rolesApplied: undefined,
     applyMethod,
     bio: JobApplicationInfo?.bio,
     city: JobApplicationInfo?.city,
@@ -28,36 +43,43 @@ const ApplyJob = ({ jobId, collabJob,rolesNeeded,applyMethod,JobApplicationInfo 
     resume: JobApplicationInfo?.resume,
     skills: JobApplicationInfo?.skills,
   })
-  const hostingPlans =rolesNeeded?.map((role)=>({name:role.role})) ?? []
-const OnSubmit=async()=>{
-  const formdata = new FormData()
-  formdata.append("file", BasicInfo.resume as Blob)
-  formdata.append("type", "jobs")
-  toast.info("Uploading Resume ...")
-  const isuploaded = await fetchFile(
-    "/v1/upload/file",
-    session?.user?.name as string,
-    "POST",
-    formdata
-  )
-  toast.dismiss()
-  if (isuploaded?.error) {
-    toast.error(isuploaded.error)
-    return
-  }else{
-    BasicInfo.resume=isuploaded?.data.image.Location
-  }
-const onSub=await fetchData("/v1/job/application",session?.user?.name as string,"POST",BasicInfo)
-if(onSub?.error){
-  toast.error(onSub.message)
-}else{
-  toast.success(onSub?.message)
-}
-}
+  const hostingPlans = rolesNeeded?.map((role) => ({ name: role.role })) ?? []
+  const OnSubmit = async () => {
+    const formdata = new FormData()
 
-useEffect(()=>{
-setBasicInfo((prev)=>({...prev,rolesApplied:selectedPlans.map(plan=>plan.name)}))
-},[selectedPlans])
+    formdata.append("file", BasicInfo.resume as Blob)
+    formdata.append("type", "jobs")
+    toast.info("Uploading Resume ...")
+    const isuploaded = await fetchFile(
+      "/v1/upload/file",
+      session?.user?.name as string,
+      "POST",
+      formdata
+    )
+    toast.dismiss()
+    if (isuploaded?.error) {
+      toast.error(isuploaded.error)
+      return
+    } else {
+      BasicInfo.resume = isuploaded?.data.image.Location
+    }
+    const onSub = await fetchData(
+      "/v1/job/application",
+      session?.user?.name as string,
+      "POST",
+      BasicInfo
+    )
+    if (onSub?.error) {
+      toast.error(onSub.message)
+    } else {
+      toast.success(onSub?.message)
+      router.reload()
+    }
+  }
+
+  useEffect(() => {
+    setBasicInfo((prev) => ({ ...prev, rolesApplied: selectedPlans.map((plan) => plan.name) }))
+  }, [selectedPlans])
   const steps = collabJob
     ? [
         {
@@ -72,14 +94,18 @@ setBasicInfo((prev)=>({...prev,rolesApplied:selectedPlans.map(plan=>plan.name)})
         },
         {
           title: "step two",
-          component: <StepTwo BasicInfo={BasicInfo} setBasicInfo={setBasicInfo} onSubmit={OnSubmit}/>,
+          component: (
+            <StepTwo BasicInfo={BasicInfo} setBasicInfo={setBasicInfo} onSubmit={OnSubmit} />
+          ),
         },
         // { title: 'step four', component:  },
       ]
     : [
         {
           title: "step One",
-          component: <StepTwo BasicInfo={BasicInfo} setBasicInfo={setBasicInfo} onSubmit={OnSubmit}/>,
+          component: (
+            <StepTwo BasicInfo={BasicInfo} setBasicInfo={setBasicInfo} onSubmit={OnSubmit} />
+          ),
         },
       ]
 
@@ -91,7 +117,6 @@ setBasicInfo((prev)=>({...prev,rolesApplied:selectedPlans.map(plan=>plan.name)})
       padding: "4px",
       color: "#fff",
       marginTop: "25px",
-      
     },
   }
 

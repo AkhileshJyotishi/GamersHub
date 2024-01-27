@@ -108,7 +108,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModaProps) => {
       } else {
         setFormValues({ email: "", password: "" })
         setIsLoginModalOpen(false)
-      toast.dismiss()
+        toast.dismiss()
         toast.success("Login Successfull")
         router.reload()
       }

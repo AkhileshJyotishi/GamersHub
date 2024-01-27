@@ -1,12 +1,12 @@
 import React, { ChangeEvent, Fragment, useEffect, useState } from "react"
 import clsx from "clsx"
+import Fuse from "fuse.js"
 import { PiWarningCircleFill } from "react-icons/pi"
 
 import { Combobox, Transition } from "@headlessui/react"
 
 import CheckIcon from "@/components/icons/tick-white"
 import ChevronUpDownIcon from "@/components/icons/updown"
-import Fuse, { IFuseOptions } from "fuse.js"
 
 interface ComboboxInputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
@@ -140,11 +140,12 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   const [query, setQuery] = useState<string>("")
   const [val, setval] = useState<Option>(
     defaultSelected || (options && options.length > 0 ? options[0] : {})
-  ) 
+  )
   const fuse = new Fuse(options || [], {
-    keys: ['label'], // The properties you want to search
-  });
-  const filteredOptions = query === "" ? options : fuse.search(query).map(item=>item.item) as Option[];
+    keys: ["label"], // The properties you want to search
+  })
+  const filteredOptions =
+    query === "" ? options : (fuse.search(query).map((item) => item.item) as Option[])
 
   useEffect(() => {
     if (value == "") {

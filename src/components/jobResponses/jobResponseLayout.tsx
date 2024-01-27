@@ -18,6 +18,7 @@ interface creatorLayoutProps {
   children: React.ReactNode
   jobTitle: string
   jobResponses: jobApplications[]
+  jobApplicants: jobApplications[]
   setActiveTab: React.Dispatch<React.SetStateAction<string>>
   activeTab: string
   setJobResponses: React.Dispatch<React.SetStateAction<jobApplications[]>>
@@ -30,7 +31,7 @@ const Layout: React.FC<creatorLayoutProps> = ({
   setActiveTab,
   activeTab,
   jobTitle,
-  jobResponses,
+  jobApplicants,
   setJobResponses,
   setLoading,
   loading,
@@ -39,7 +40,6 @@ const Layout: React.FC<creatorLayoutProps> = ({
   const [popup, setPopup] = useState<boolean>(false)
   const session = useSession()
   const router = useRouter()
-  console.log(router.query)
   const [country, setCountry] = useState<{ label?: string; value?: string }[]>([{}])
   // const [city, setCity] = useState<string[]>([])
   const initFilters = {
@@ -133,12 +133,13 @@ const Layout: React.FC<creatorLayoutProps> = ({
       toast.error(x.message)
     } else {
       // const filt = x?.data.creators.map((mp: Creator) => FrontendCompatibleObject(mp))
-      setJobResponses(x?.data.creators)
+      console.log("creators ", x?.data.applications)
+      setJobResponses(x?.data.applications)
     }
   }
   const clearFilters = () => {
     setjobResponseFilters(initFilters)
-    setJobResponses(jobResponses)
+    setJobResponses(jobApplicants)
   }
 
   useEffect(() => {
@@ -152,7 +153,9 @@ const Layout: React.FC<creatorLayoutProps> = ({
     })
     setCountry(countryList)
   }, [])
-
+  useEffect(() => {
+    clearFilters()
+  }, [activeTab])
   return (
     <>
       <div className={"p-4 w-[100%] py-[52px] bg-user_interface_3 mx-auto"}>

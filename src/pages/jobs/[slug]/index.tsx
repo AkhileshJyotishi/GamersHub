@@ -4,11 +4,17 @@ import Head from "next/head"
 import { toast } from "react-toastify"
 
 import { getSession } from "@/lib/auth"
-import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
+import { fetchData } from "@/utils/functions"
 
 import Particularpage from "@/components/particularJob/"
 
-const index = ({ profileData, JobApplicationInfo }: { profileData: BackendJob, JobApplicationInfo: IBasicInfo }) => {
+const index = ({
+  profileData,
+  JobApplicationInfo,
+}: {
+  profileData: BackendJob
+  JobApplicationInfo: IBasicInfo
+}) => {
   return (
     <>
       <Head>
@@ -35,10 +41,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   // }
 
   let profileData = await fetchData(`/v1/job/${slug}`, session?.user?.name as string, "GET")
-  let JobApplicationInfo: IBasicInfo|{}={}
-  let users;
+  let JobApplicationInfo
+  let users
   if (session) {
-    users = await fetchData("/v1/users/applyDetails", session.user?.name as string, "GET");
+    users = await fetchData("/v1/users/applyDetails", session.user?.name as string, "GET")
     if (users?.error) {
       return {
         redirect: {
@@ -48,46 +54,50 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       }
     } else {
       const res3: IinitJobApplication = users?.data.applyDetails
+      console.log(res3)
       JobApplicationInfo = {
         jobId: res3.id,
         firstName: res3.username,
         motivationToApply: null,
         applyMethod: null,
-        bio: res3.userDetails?.userBio ?? null,
-        city: res3.userDetails.city,
-        country: res3.userDetails.country,
-        email: res3.email,
+        bio: res3?.userDetails?.userBio ?? null,
+        city: res3?.userDetails?.city ?? null,
+        country: res3?.userDetails?.country ?? null,
+        email: res3?.email,
         lastName: null,
         phone: null,
-        portfolio: res3.socials.portfolio,
-        resume: res3.userDetails?.resume ?? null,
+        portfolio: res3?.socials?.portfolio ?? null,
+        resume: res3?.userDetails?.resume ?? null,
         rolesApplied: null,
-        skills: res3.userDetails.userSkills?.map((userSkill) => userSkill.skill) ?? null,
+        skills: res3?.userDetails?.userSkills?.map((userSkill) => userSkill?.skill) ?? null,
       }
     }
   }
 
   toast.dismiss()
   if (profileData?.error) {
-    toast.error(profileData?.message)
-  } else {
-    toast.success(profileData?.message)
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
   }
   // return resp.data;
 
   profileData = profileData?.data.job
-if(session){
-  return {
-    props: {
-      profileData,
-      JobApplicationInfo
-    },
-  }
-}else{
-  return {
-    props: {
-      profileData,
+  if (session) {
+    return {
+      props: {
+        profileData,
+        JobApplicationInfo,
+      },
+    }
+  } else {
+    return {
+      props: {
+        profileData,
+      },
     }
   }
-}
 }

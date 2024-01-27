@@ -47,7 +47,7 @@ interface BackendJob {
   remote: boolean
   country: string
   city: string
-  rolesNeeded?: {role:string}[]
+  rolesNeeded?: { role: string }[]
   jobApplyUrl?: string | null
   isExpired: boolean | null
   jobSoftwares: {
@@ -64,13 +64,12 @@ interface BackendJob {
   user: {
     username: string
     profileImage: string
-    email:string
+    email: string
     bannerImage: string | null
   }
-  jobApplications: {
+  appliedUsers: {
     id: number
-    userId: number
-  }
+  }[]
   // website: string;
   // logoSrc: string;
 }
@@ -105,7 +104,7 @@ interface jobApplications {
   resume: string
   job: {
     title: string
-    id:number
+    id: number
   }
   user: {
     id: number
@@ -185,20 +184,19 @@ interface IBasicInfo {
   portfolio?: string | null
   skills?: readonly string[] | null
 }
-interface IinitJobApplication{
-  id:number,
-  username:string,
-  email:string,
-  phone:string|null;
-  userDetails:{
-    city:string|null;
-    country:string|null;
-    resume:string|null;
-    userSkills:{skill:string}[]|null
-    userBio:string|null
+interface IinitJobApplication {
+  id: number
+  username: string
+  email: string
+  phone: string | null
+  userDetails: {
+    city: string | null
+    country: string | null
+    resume: string | null
+    userSkills: { skill: string }[] | null
+    userBio: string | null
   }
-  socials:{portfolio:string|null}
-
+  socials: { portfolio: string | null }
 }
 // {
 //   id: 1,

@@ -18,9 +18,12 @@ interface PopoverItem {
 interface DynamicPopoverProps {
   items: PopoverItem[]
   buttonText: string
+  isProfileFilled?: boolean
 }
 
-interface DynamicPopoverItemProps extends PopoverItem {}
+interface DynamicPopoverItemProps extends PopoverItem {
+  isProfileFilled?: boolean
+}
 
 const DynamicPopoverItem: React.FC<DynamicPopoverItemProps> = ({
   name,
@@ -28,6 +31,7 @@ const DynamicPopoverItem: React.FC<DynamicPopoverItemProps> = ({
   hrefOrState,
   icon: Icon,
   applyWith,
+  isProfileFilled,
 }) => {
   const router = useRouter()
   const session = useSession()
@@ -43,7 +47,6 @@ const DynamicPopoverItem: React.FC<DynamicPopoverItemProps> = ({
       title: <></>,
     }))
   }
-  const isProfileFilled = true
   const handlePopOverItemClick = () => {
     if (!session.data?.user) {
       setIsLoginModalOpen(true)
@@ -100,12 +103,12 @@ const DynamicPopoverItem: React.FC<DynamicPopoverItemProps> = ({
   )
 }
 
-const DynamicPopover: React.FC<DynamicPopoverProps> = ({ items, buttonText }) => (
+const DynamicPopover: React.FC<DynamicPopoverProps> = ({ items, buttonText, isProfileFilled }) => (
   <Popover className="relative">
     {() => (
       <>
         <Popover.Button
-          className={`group inline-flex items-center  bg-secondary  text-base  hover:text-text     hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2`}
+          className={`group inline-flex items-center  bg-secondary  text-base  hover:text-text hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2`}
         >
           <span>{buttonText}</span>
         </Popover.Button>
@@ -122,7 +125,7 @@ const DynamicPopover: React.FC<DynamicPopoverProps> = ({ items, buttonText }) =>
             <div className="overflow-hidden rounded-lg shadow-lg  ">
               <div className="relative gap-2 md:gap-4 bg-user_interface_2 p-3  flex flex-col">
                 {items.map((item) => (
-                  <DynamicPopoverItem key={item.name} {...item} />
+                  <DynamicPopoverItem key={item.name} {...item} isProfileFilled={isProfileFilled} />
                 ))}
               </div>
             </div>

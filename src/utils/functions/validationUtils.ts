@@ -26,7 +26,7 @@ export type ValidationFunction<T> = T extends File
  */
 export const validateStringField: ValidationFunction<string> = (value, params) => {
   // console.log(object)
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
       return "*required"
     }
@@ -37,7 +37,7 @@ export const validateStringField: ValidationFunction<string> = (value, params) =
     return "*required"
   }
 
-  if (params?.maxLength && value.length > params.maxLength) {
+  if (params?.maxLength && value?.length > params.maxLength) {
     return `*exceeds maximum length (${params.maxLength})`
   }
 
@@ -51,7 +51,7 @@ export const validateStringField: ValidationFunction<string> = (value, params) =
  * @returns A promise that resolves to an error message if there are validation errors, or an empty string if the file is valid.
  */
 export const validateFileField: ValidationFunction<File> = async (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
       return "*required"
     }
@@ -107,7 +107,7 @@ export const validateNumberField: ValidationFunction<number> = (value, params) =
    * @param params - An optional object containing validation parameters such as `required`, `minValue`, and `maxValue`.
    * @returns The validation result. It can be an error message or an empty string.
    */
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
       return "*required"
     }
@@ -146,14 +146,14 @@ export const validateBooleanField: ValidationFunction<boolean> = () => {
  * console.log(errorMessage); // Output: "*maximum 2 can be selected"
  */
 export const validateStringArrayField: ValidationFunction<readonly string[]> = (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
       return "*required"
     }
     return ""
   }
 
-  if (params?.required && value.length === 0) {
+  if (params?.required && value?.length === 0) {
     return "*required"
   }
 
@@ -202,7 +202,7 @@ export const validateFileArrayField: ValidationFunction<File[]> = (value, params
 }
 
 export const validatePhoneField: ValidationFunction<string> = (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
       return "*required"
     }
@@ -222,65 +222,65 @@ export const validatePhoneField: ValidationFunction<string> = (value, params) =>
   }
 }
 export const validateEmailField: ValidationFunction<string> = (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
-      return "*required";
+      return "*required"
     }
-    return "";
+    return ""
   }
 
   if (params?.required && value.trim().length === 0) {
-    return "*required";
+    return "*required"
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   if (!emailRegex.test(value)) {
-    return "Invalid email format";
+    return "Invalid email format"
   }
 
-  return "";
-};
+  return ""
+}
 
 export const validatePdfField: ValidationFunction<File> = async (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
-      return "*required";
+      return "*required"
     }
-    return "";
+    return ""
   }
 
-  const maxSizeInBytes = params?.fileMaxSize ?? 5 * 1024 * 1024; // 5MB if not provided
-  const acceptedTypes = ['application/pdf'];
+  const maxSizeInBytes = params?.fileMaxSize ?? 5 * 1024 * 1024 // 5MB if not provided
+  const acceptedTypes = ["application/pdf"]
 
   if (value.size > maxSizeInBytes) {
-    return `File size must be less than ${maxSizeInBytes / (1024 * 1024)}MB`;
+    return `File size must be less than ${maxSizeInBytes / (1024 * 1024)}MB`
   }
 
   if (!acceptedTypes.includes(value.type)) {
-    return "Invalid file type. Please upload a PDF file.";
+    return "Invalid file type. Please upload a PDF file."
   }
 
-  return "";
-};
+  return ""
+}
 export const validateURLField: ValidationFunction<string> = (value, params) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     if (params?.required) {
-      return "*required";
+      return "*required"
     }
-    return "";
+    return ""
   }
 
   if (params?.required && value.trim().length === 0) {
-    return "*required";
+    return "*required"
   }
 
   try {
-    const url = new URL(value);
+    new URL(value)
     // Additional checks if needed
   } catch (error) {
-    return "Invalid URL format";
+    return "Invalid URL format"
   }
 
-  return "";
-};
+  return ""
+}

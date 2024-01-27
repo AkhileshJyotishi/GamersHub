@@ -20,12 +20,13 @@ const Card: React.FC<jobResponseCard> = ({ jobApplication, mode }) => {
   const router = useRouter()
   return (
     <article className="flex flex-col bg-user_interface_2 rounded-[10px] p-[10px] sm:min-w-[200px] gap-[2px] w-full  h-fit capitalize">
-      <div className="flex flex-col items-center rounded-t-[10px] h-[140px] relative ">
+      <div className="flex flex-col items-center rounded-t-[10px] h-[170px] relative ">
         <Image
-          height={500}
-          width={900}
-          alt="banner"
-          className="w-full h-[140px] rounded-t-[10px] absolute"
+          // height={500}
+          // width={900}
+          alt=""
+          fill
+          // className="w-full h-[140px] rounded-t-[10px]"
           src={jobApplication?.user?.bannerImage || defaultbannerImage}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
         />
@@ -121,7 +122,7 @@ const Card: React.FC<jobResponseCard> = ({ jobApplication, mode }) => {
         </div>
       }
       <div
-        className="flex group w-fit flex-row items-center gap-1 text-secondary px-3 cursor-pointer"
+        className="flex group w-fit flex-row items-center gap-1 text-secondary px-3 cursor-pointer mt-2"
         onClick={() => {
           let x
           if (jobApplication.applyMethod == "MANUAL") {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { City, Country } from "country-state-city"
+import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
 import {
@@ -16,24 +17,27 @@ import {
 
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
-import { toast } from "react-toastify"
 
 const StepThree = ({
   BasicInfo,
   setBasicInfo,
-  onSubmit
+  onSubmit,
 }: {
   BasicInfo: IBasicInfo
   setBasicInfo: React.Dispatch<React.SetStateAction<IBasicInfo>>
   onSubmit: () => Promise<void>
 }) => {
-  const country =useMemo(()=>Country.getAllCountries(),[])
-  const countryList =useMemo(()=>country?.map((country) => {
-    return {
-      label: country?.name,
-      value: country?.name,
-    }
-  }),[])
+  const country = useMemo(() => Country.getAllCountries(), [])
+  const countryList = useMemo(
+    () =>
+      country?.map((country) => {
+        return {
+          label: country?.name,
+          value: country?.name,
+        }
+      }),
+    []
+  )
   const initialcitylist = [{ label: "", value: "" }]
 
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
@@ -62,12 +66,14 @@ const StepThree = ({
   })
   const handleCityOptions = (isoCode: string) => {
     const city = City.getCitiesOfCountry(isoCode)
-    const cityList = city?.filter((city,idx)=>idx<=2000).map((city1) => {
-      return {
-        label: city1?.name,
-        value: city1?.name,
-      }
-    })
+    const cityList = city
+      ?.filter((city, idx) => idx <= 2000)
+      .map((city1) => {
+        return {
+          label: city1?.name,
+          value: city1?.name,
+        }
+      })
     setCity(cityList!)
     return cityList!
   }
@@ -154,7 +160,7 @@ const StepThree = ({
       title: "Country",
       inputType: "select",
       onChange: (value) => handleInputChange("country", value as string, validateStringField, {}),
-placeholder:"Select a Country",
+      placeholder: "Select a Country",
       selectOptions: countryList,
       value: BasicInfo.country || "",
       errorMessage: errors.country,
@@ -164,14 +170,13 @@ placeholder:"Select a Country",
       title: "City",
       inputType: "select",
       value: BasicInfo.city || "",
-      placeholder:"Select a City",
+      placeholder: "Select a City",
 
       onChange: (value) => handleInputChange("city", value as string, validateStringField, {}),
 
       selectOptions: city,
       errorMessage: errors.city,
     },
-
   ]
   const applyJobHandler = async () => {
     let flg = true
@@ -185,7 +190,7 @@ placeholder:"Select a Country",
         case "country":
         case "city":
         case "bio":
-        case "motivationToApply":
+        case "motivationToApply": {
           validationFunction = validateStringField
           flg === true && validationFunction(value, validationParams) === ""
             ? (flg = true)
@@ -196,26 +201,30 @@ placeholder:"Select a Country",
             [field]: validationFunction(value as string, validationParams),
           }))
           break
-        case "email":
+        }
+        case "email": {
           validationFunction = validateEmailField
           const z = await validationFunction(value, validationParams)
           flg === true && z === "" ? (flg = true) : (flg = false)
           setErrors((prev) => ({ ...prev, [field]: z }))
           break
+        }
 
-        case "portfolio":
+        case "portfolio": {
           validationFunction = validateURLField
           const p = await validationFunction(value, validationParams)
           flg === true && p === "" ? (flg = true) : (flg = false)
           setErrors((prev) => ({ ...prev, [field]: p }))
           break
+        }
 
-        case "phone":
+        case "phone": {
           validationFunction = validatePhoneField
           const x = await validationFunction(value, validationParams)
           flg === true && x === "" ? (flg = true) : (flg = false)
           setErrors((prev) => ({ ...prev, [field]: x }))
           break
+        }
 
         case "skills": {
           validationFunction = validateStringArrayField
@@ -255,16 +264,16 @@ placeholder:"Select a Country",
   const getValidationParamsForField = (field: string): ValidationParams => {
     // Define validation parameters for each field
     const validationParams: Record<string, ValidationParams> = {
-      motivationToApply:  { required: true, maxLength: 200 },
-      rolesApplied: {required:true},
-      applyMethod:{required: true},
+      motivationToApply: { required: true, maxLength: 200 },
+      rolesApplied: { required: true },
+      applyMethod: { required: true },
       bio: { required: true, maxLength: 200 },
-      email: {required:true},
-      firstName: { required: true, maxLength: 60, },
+      email: { required: true },
+      firstName: { required: true, maxLength: 60 },
       lastName: { required: true, maxLength: 60 },
-      phone: { required: true},
+      phone: { required: true },
       portfolio: { required: true },
-      resume:  { required: true, fileMaxSize: 5*1024 * 1024 },
+      resume: { required: true, fileMaxSize: 5 * 1024 * 1024 },
       skills: { required: true, maxLength: 10 },
       country: {},
       city: {},
@@ -272,9 +281,9 @@ placeholder:"Select a Country",
 
     return validationParams[field] || {}
   }
-useEffect(()=>{
-  handleCityOptions(codemapping[BasicInfo.country as string])
-},[])
+  useEffect(() => {
+    handleCityOptions(codemapping[BasicInfo.country as string])
+  }, [])
   return (
     <>
       <div className="flex p-3 gap-y-2 w-full  mx-auto flex-wrap justify-evenly mt-4">
@@ -308,14 +317,12 @@ useEffect(()=>{
               })
             }}
             value={BasicInfo.skills as string[]}
-
             Variant="flex-col w-full flex"
             className="bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center"
             errorMessage={errors.skills}
           />
         </div>
         <div className="flex items-center p-2 md:gap-2 w-full mt-[8px] flex-col">
-
           <Filter
             title="Bio"
             inputType="text"
@@ -386,7 +393,10 @@ useEffect(()=>{
             errorMessage={errors.resume}
           />
         </div>
-        <Button className={"transition-all  p-2  bg-secondary hover:opacity-80  rounded-md text-text"} onClick={applyJobHandler}>
+        <Button
+          className={"transition-all  p-2  bg-secondary hover:opacity-80  rounded-md text-text"}
+          onClick={applyJobHandler}
+        >
           Submit Application
         </Button>
       </div>

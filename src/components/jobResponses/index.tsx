@@ -23,8 +23,8 @@ const JobResponses = ({
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    setJobResponses(jobResponses)
-  }, [activetab])
+    console.log(jobResponses)
+  }, [jobResponses])
   if (loading) {
     return (
       <>
@@ -33,6 +33,7 @@ const JobResponses = ({
           activeTab={activetab}
           setActiveTab={setactivetab}
           jobResponses={jobResponses}
+          jobApplicants={jobApplicants}
           setJobResponses={setJobResponses}
           setLoading={setLoading}
           loading={loading}
@@ -53,6 +54,7 @@ const JobResponses = ({
         activeTab={activetab}
         setActiveTab={setactivetab}
         jobResponses={jobResponses}
+        jobApplicants={jobApplicants}
         setJobResponses={setJobResponses}
         setLoading={setLoading}
         loading={loading}

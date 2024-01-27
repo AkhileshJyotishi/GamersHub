@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 // import clsx from "clsx"
 import { City, Country } from "country-state-city"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
 import { useUserContext } from "@/providers/user-context"
+import { validatePdfField } from "@/utils/functions/validationUtils"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
-import dynamic from "next/dynamic"
 
 import { uploadUserEducation, uploadUserExperience } from "./editprofileHandler"
 import EducationSection from "./EducationSection"
 import ExperienceSection from "./ExperienceSection"
-import { validatePdfField } from "@/utils/functions/validationUtils"
 // import ProfileSection from "./profileSection"
 const ProfileSection = dynamic(() => import("./profileSection"), {
   ssr: true,
@@ -120,7 +120,7 @@ const EditProfilePage = ({
         ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
         : undefined,
     profileImage: profileDetails?.user?.profileImage ?? "",
-    resume: profileDetails.resume ?? ""
+    resume: profileDetails.resume ?? "",
   }
   interface ProfileInterface {
     userBio: string
@@ -137,7 +137,6 @@ const EditProfilePage = ({
   const [newExpErrors, setnewExpErrors] = useState<{ [key: string]: string | null }>({})
   const [EduErrors, setEduErrors] = useState<{ [key: string]: string | null }>({})
   const [newEduErrors, setnewEduErrors] = useState<{ [key: string]: string | null }>({})
-
 
   const isProfileDataFilled = Object.values(initProfile).some((value) => {
     return value !== null && value !== undefined && value !== "" && value
@@ -268,16 +267,15 @@ const EditProfilePage = ({
           setprofileData((prevState) => ({ ...prevState, [key]: value as string[] }))
         }
         break
-        case "resume": {
-          console.log("key ",key)
-    
-            let x = await validatePdfField(value, { required: true });
-            setFieldErrors((prev => ({ ...prev, resume: x })))
-    
-            setprofileData((prevState) => ({ ...prevState, [key]: value as File }))
-            break;
-          }
+      case "resume": {
+        console.log("key ", key)
 
+        const x = await validatePdfField(value, { required: true })
+        setFieldErrors((prev) => ({ ...prev, resume: x }))
+
+        setprofileData((prevState) => ({ ...prevState, [key]: value as File }))
+        break
+      }
     }
     // setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
@@ -289,7 +287,6 @@ const EditProfilePage = ({
     }
     // else if()
   }
-
 
   const addExperience = () => {
     // console.log("working")
@@ -567,13 +564,14 @@ const EditProfilePage = ({
       title: "Resume Upload (PDF format)",
       inputType: "file",
       accept: ".pdf",
-      multiple:false,
+      multiple: false,
       value: profileData.resume as string,
       onChange: (value) => handleFieldChange("resume", value as File),
       Variant: "flex-col w-full flex",
-      className: "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
-      errorMessage: fieldErrors.resume
-    }
+      className:
+        "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
+      errorMessage: fieldErrors.resume,
+    },
   ]
 
   type exptypes = Array<{ id?: number; detail: FilterDetail[] }>
@@ -864,8 +862,9 @@ const EditProfilePage = ({
                     {!(field.title === "Ending Date" && newExperience[idx].presentWorking) && (
                       <div
                         key={index}
-                        className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                          }`}
+                        className={`flex items-center p-2 md:gap-8 w-full ${
+                          field.inputType == "date" ? "sm:w-[50%]" : ""
+                        }`}
                       >
                         <Filter
                           key={index}
@@ -951,8 +950,9 @@ const EditProfilePage = ({
                   <>
                     <div
                       key={index}
-                      className={`flex items-center p-2 md:gap-8 w-full ${field.inputType == "date" ? "sm:w-[50%]" : ""
-                        }`}
+                      className={`flex items-center p-2 md:gap-8 w-full ${
+                        field.inputType == "date" ? "sm:w-[50%]" : ""
+                      }`}
                     >
                       <Filter
                         key={index}

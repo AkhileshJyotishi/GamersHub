@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 import { Errors, FilterDetail } from "@/interface/filter"
 import {
   validateBooleanField,
-  validateFileField,
   validateNumberField,
   validateStringArrayField,
   validateStringField,
@@ -26,7 +25,14 @@ interface LayoutProps {
   jobRolesSuggestions?: JobRolesSuggestions
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJob,jobRolesSuggestions,jobSoftwareSuggestions }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  setJobInfo,
+  jobInfo,
+  uploadJob,
+  jobRolesSuggestions,
+  jobSoftwareSuggestions,
+}) => {
   const country = Country.getAllCountries()
 
   const countryList = country?.map((country) => {
@@ -89,11 +95,11 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
           setErrors((prev) => ({ ...prev, [field]: null }))
         }
         // if (field !== "banner") {
-          if (field === "country") {
-            handleCityOptions(codemapping[value as string])
-          }
-          setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
-        // } 
+        if (field === "country") {
+          handleCityOptions(codemapping[value as string])
+        }
+        setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
+        // }
       } catch (error) {
         console.error("Async validation error:", error)
       }
@@ -114,8 +120,8 @@ const Layout: React.FC<LayoutProps> = ({ children, setJobInfo, jobInfo, uploadJo
     jobDetails: "",
     jobSoftwares: "",
     publishDate: "",
-    jobApplyUrl:"",
-    rolesNeeded:"",
+    jobApplyUrl: "",
+    rolesNeeded: "",
 
     // userId:""
   })

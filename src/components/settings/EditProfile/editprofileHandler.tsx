@@ -250,7 +250,7 @@ export const uploadProfileData = async (
         userSkills: IuserSkill[] | string[] | undefined
         userSoftwares: IuserSoftware[] | undefined | string[]
         profileImage: string | undefined | File
-        resume?:string|File
+        resume?: string | File
       }
     | undefined,
   token: string,

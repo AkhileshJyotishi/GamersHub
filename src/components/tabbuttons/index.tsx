@@ -94,7 +94,7 @@ export default function TabButtons({
                     !activeTabColor &&
                       activeTab &&
                       activeTab === tabName &&
-                      " !bg-secondary !p-3 rounded-lg"
+                      " !bg-secondary  rounded-lg"
                   )}
                 >
                   {tabName}

@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       aboutRecruiter,
       description,
       jobApplyUrl,
-      rolesNeeded
+      rolesNeeded,
     } = backendJob
 
     // jobSoftwares=
@@ -82,8 +82,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       userId: userId,
       aboutRecruiter,
       description,
-      rolesNeeded:rolesNeeded?.map(role=>role.role)??[],
-      jobApplyUrl:jobApplyUrl?? ""
+      rolesNeeded: rolesNeeded?.map((role) => role.role) ?? [],
+      jobApplyUrl: jobApplyUrl ?? "",
     }
   }
 

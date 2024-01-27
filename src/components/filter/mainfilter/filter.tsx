@@ -2,6 +2,7 @@
 
 import React from "react"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 import DatePicker from "react-date-picker"
 import { PiWarningCircleFill } from "react-icons/pi"
 import { PhoneInput } from "react-international-phone"
@@ -20,7 +21,6 @@ import "react-international-phone/style.css"
 // import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
-import dynamic from "next/dynamic"
 // const DatePicker = dynamic(() => import("react-date-picker"), {
 //   ssr: false,
 // })
@@ -49,6 +49,8 @@ const Filter: React.FC<FilterDetail> = ({
   dimensionsImage,
   fullScreen,
   element,
+  viewonlyPdf,
+  downloadPDF,
   // hidden
 }) => {
   const handleCheckboxChange = (newValue: string[]) => {
@@ -195,6 +197,8 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             errorMessage={errorMessage}
             fullScreen={fullScreen}
+            viewonlyPdf={viewonlyPdf}
+            download={downloadPDF}
           />
           {dimensionsImage &&
             dimensionsImage?.width !== null &&

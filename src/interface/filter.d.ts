@@ -54,6 +54,8 @@ interface FilterDetail<SO = { label: string; value: string | boolean | number }>
   accept?: string
   multiple?: boolean
   initialtags?: readonly string[]
+  viewonlyPdf?: boolean
+  downloadPDF?: boolean
   hidden?: boolean
   preview?: boolean
   errorMessage?: string | null
