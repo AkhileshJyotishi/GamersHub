@@ -8,10 +8,15 @@ import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
 import UpdateJob from "@/components/updateJob"
+import Head from "next/head"
 
 const index = ({ job }: { job: JobInfo }) => {
+  const Title = `Update Job | ${job.title}`
   return (
     <>
+      <Head>
+        <title>{Title}</title>
+      </Head>
       <UpdateJob job={job} />
     </>
   )

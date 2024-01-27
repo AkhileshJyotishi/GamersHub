@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+// import Card from "@/components/ui/card/card2"
+// import Modal from "@/components/ui/modal"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
@@ -18,20 +21,42 @@ import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
 import Filter from "@/components/filter/mainfilter/filter"
-import TalentSection from "@/components/home/banner"
+// import TalentSection from "@/components/home/banner"
 import { OverlayContent } from "@/components/home/home-hero"
 // import { OverlayBackground, OverlayContent, VideoBackground } from "@/components/home/home-hero"
-import JobSection from "@/components/home/Jobs"
+// import JobSection from "@/components/home/Jobs"
 import { Banner } from "@/components/horizontalScroll"
 import CloseIcon from "@/components/icons/closeIcon"
 import Card from "@/components/jobs/Old-GCH-card"
-import ProfileCard from "@/components/newPostCard"
-import GeneralizedComponent from "@/components/news/NewsCard"
+// import ProfileCard from "@/components/newPostCard"
+// import GeneralizedComponent from "@/components/news/NewsCard"
 import TabButtons from "@/components/tabbuttons"
 import Button from "@/components/ui/button"
-// import Card from "@/components/ui/card/card2"
-import Modal from "@/components/ui/modal"
-
+const JobSection = dynamic(() => import("@/components/home/Jobs"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const Modal = dynamic(() => import("@/components/ui/modal"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const GeneralizedComponent = dynamic(() => import("@/components/news/NewsCard"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const ProfileCard = dynamic(() => import("@/components/newPostCard"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const TalentSection = dynamic(() => import("@/components/home/banner"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
 const HomePage = ({
   news,
   jobs,

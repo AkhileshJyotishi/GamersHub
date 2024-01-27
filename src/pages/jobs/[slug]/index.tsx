@@ -2,7 +2,6 @@ import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
 import Head from "next/head"
 import { toast } from "react-toastify"
-
 import { getSession } from "@/lib/auth"
 import { fetchData } from "@/utils/functions"
 
@@ -15,10 +14,11 @@ const index = ({
   profileData: BackendJob
   JobApplicationInfo: IBasicInfo
 }) => {
+  const Title = `Jobs|${profileData.title}`
   return (
     <>
       <Head>
-        <title>Jobs | {profileData.title || ""}</title>
+        <title>{Title}</title>
       </Head>
       <Particularpage profileData={profileData} JobApplicationInfo={JobApplicationInfo} />
     </>
@@ -54,7 +54,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       }
     } else {
       const res3: IinitJobApplication = users?.data.applyDetails
-      console.log(res3)
       JobApplicationInfo = {
         jobId: res3.id,
         firstName: res3.username,

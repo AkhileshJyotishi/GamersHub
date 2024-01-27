@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react"
-import { Cycle, useCycle } from "framer-motion"
 import { signOut, useSession } from "next-auth/react"
 
 import { fetchData } from "@/utils/functions"
@@ -21,8 +20,8 @@ interface IUserContext {
   handleAlbumEdit: ({ AlbumKeywords, banner, id, title }: albumUpdateType) => Promise<void>
   openLoginModal: () => void
   openRegisterModal: () => void
-  isOpen: boolean
-  toggleOpen: Cycle
+  // isOpen: boolean
+  // toggleOpen: Cycle
   tap: boolean
   setTap: React.Dispatch<React.SetStateAction<boolean>>
   drawerOpen: boolean
@@ -85,7 +84,7 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [isCreateAlbumOpen, setisCreateAlbumOpen] = useState<boolean>(false)
   const [verifyMail, setVerifyMail] = useState<string>("")
   const [verifyModal, setVerifyModal] = useState(false)
-  const [isOpen, toggleOpen] = useCycle(false, true)
+  // const [isOpen, toggleOpen] = useCycle(false, true)
   const [drawerOpen, setIsDrawerOpen] = useState(false)
   const [tap, setTap] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -135,8 +134,8 @@ const UserProvider = ({ children }: IUserProvider) => {
         setIsRegisterModalOpen,
         openLoginModal,
         openRegisterModal,
-        isOpen,
-        toggleOpen,
+        // isOpen,
+        // toggleOpen,
         tap,
         setTap,
         drawerOpen,

@@ -20,7 +20,7 @@ const Jobs = ({
   return (
     <>
       <Head>
-        <title>GameCreators | Jobs</title>
+        <title>Jobs | GameCreators</title>
       </Head>
       <JobsPage
         jobs={jobs}

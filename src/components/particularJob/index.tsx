@@ -1,15 +1,36 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+// import JobPageHeader from "@/components/particularJob/Head"
+// import Jobsection from "@/components/particularJob/Section"
+// import ApplyJob from "../apply-job"
+// import Modal from "../ui/modal"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
-
-import JobPageHeader from "@/components/particularJob/Head"
-import Jobsection from "@/components/particularJob/Section"
-
-import ApplyJob from "../apply-job"
-import Modal from "../ui/modal"
+import { useSession } from "next-auth/react"
 //  website locaation
+const Modal = dynamic(() => import("../ui/modal"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const ApplyJob = dynamic(() => import("../apply-job"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const JobPageHeader = dynamic(() => import("@/components/particularJob/Head"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+const Jobsection = dynamic(() => import("@/components/particularJob/Section"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
+
 const Particularpage = ({
   profileData,
   JobApplicationInfo,
@@ -17,6 +38,7 @@ const Particularpage = ({
   profileData: BackendJob
   JobApplicationInfo: IBasicInfo
 }) => {
+  const { data: session } = useSession()
   const {
     title,
     city,
@@ -31,12 +53,16 @@ const Particularpage = ({
 
   const [isApplyJobOpen, setisApplyJobOpen] = useState<boolean>(false)
   const [isApplyJobGCHOpen, setisApplyJobGCHOpen] = useState<boolean>(false)
-  const isProfileFilled = () => {
-    const { firstName, email, city, country, skills, bio, portfolio, resume } = JobApplicationInfo
-    if (!firstName || !email || !city || !country || !skills || !bio || !portfolio || !resume) {
-      return false
-    } else {
-      return true
+  let isProfileFilled
+
+  if (session?.user) {
+    isProfileFilled = () => {
+      const { firstName, email, city, country, skills, bio, portfolio, resume } = JobApplicationInfo
+      if (!firstName || !email || !city || !country || !skills || !bio || !portfolio || !resume) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 
@@ -115,7 +141,7 @@ const Particularpage = ({
           appliedUsers={profileData.appliedUsers}
           jobApplyUrl={profileData.jobApplyUrl}
           jobApplyEmail={profileData.user.email || "##"}
-          isProfileFilled={isProfileFilled()}
+          isProfileFilled={session?.user && isProfileFilled!()}
         />
         <Jobsection jobData={profileDataJobSection} />
       </div>

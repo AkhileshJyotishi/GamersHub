@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react"
+// import Layout from "./newsLayout"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
@@ -6,7 +8,11 @@ import { INewsCategory } from "@/interface/news"
 
 // import { useUserContext } from "@/providers/user-context"
 import { Article } from "./NewsCard"
-import Layout from "./newsLayout"
+const Layout = dynamic(() => import("./newsLayout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 type NewsPageProps = {
   parsedCategoriesDetails: INewsCategory[]

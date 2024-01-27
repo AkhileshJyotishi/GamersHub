@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
@@ -10,9 +11,14 @@ import Tippy from "@tippyjs/react"
 import EditIcon from "@/components/icons/editIcon"
 import ProfilePageLayout from "@/components/profileLayout"
 import { SecondaryTag } from "@/components/ui/badges"
-import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 
+// import SkeletonLoader from "@/components/ui/SkeletonLoader2"
 import "tippy.js/dist/tippy.css"
+const SkeletonLoader = dynamic(() => import("@/components/ui/SkeletonLoader2"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 // const shadeVariant = "absolute bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black"
 const About = () => {

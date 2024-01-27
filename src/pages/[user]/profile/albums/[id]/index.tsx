@@ -112,10 +112,11 @@ const Index = ({
     }))
   }
 
+  const Title = `Album Posts | ${userData?.username}`
   return (
     <>
       <Head>
-        <title>Album Posts | {userData?.username || ""}</title>
+        <title>{Title}</title>
       </Head>
       <div
         className={clsx(

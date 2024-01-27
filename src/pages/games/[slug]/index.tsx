@@ -16,10 +16,11 @@ const Particularpage = ({ parsedgamesDetails }: { parsedgamesDetails: BackendGam
   // user,
   const { title, banner, id, savedUsers } = parsedgamesDetails
   // console.log(profileDataGameSection)
+  const Title = `GameCreators | ${title}`
   return (
     <>
       <Head>
-        <title>GameCreators | {title}</title>
+        <title>{Title}</title>
       </Head>
       <div
         className={clsx(

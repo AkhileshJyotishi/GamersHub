@@ -9,14 +9,13 @@ import { PhoneInput } from "react-international-phone"
 
 import { FilterDetail } from "@/interface/filter"
 
-import CustomCombobox from "@/components/ui/Combobox"
-import TagsInput from "@/components/ui/TagsInput"
+// import CustomCombobox from "@/components/ui/Combobox"
+// import TagsInput from "@/components/ui/TagsInput"
 import TextInput from "@/components/ui/textInput"
 
-import CheckboxFilter from "./checkboxfilter"
+// import CheckboxFilter from "./checkboxfilter"
 // import FileFilter from "./Filefilter"
-import RadioFilter from "./radiofilter"
-
+// import RadioFilter from "./radiofilter"
 import "react-international-phone/style.css"
 // import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
@@ -28,6 +27,26 @@ const FileFilter = dynamic(() => import("./Filefilter"), {
   ssr: false,
   loading: () => {
     return <div className="w-full bg-gray-400 animate-pulse h-[300px]"></div>
+  },
+})
+const CustomCombobox = dynamic(() => import("@/components/ui/Combobox"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const TagsInput = dynamic(() => import("@/components/ui/TagsInput"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const CheckboxFilter = dynamic(() => import("./checkboxfilter"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const RadioFilter = dynamic(() => import("./radiofilter"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
   },
 })
 

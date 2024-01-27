@@ -9,11 +9,11 @@ import { fetchData } from "@/utils/functions"
 import CreateGame from "@/components/createGame"
 
 const index = (game: Allow) => {
-  // console.log("object in back", game)
+  const Title = `Update Game | ${game.title}`
   return (
     <>
       <Head>
-        <title>GameCreators |Games</title>
+        <title>{Title}</title>
       </Head>
       <CreateGame game={game.game} />
     </>

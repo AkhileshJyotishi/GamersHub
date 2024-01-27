@@ -1,9 +1,14 @@
 import React, { useCallback, useState } from "react"
 import clsx from "clsx"
-import { City, Country } from "country-state-city"
 import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
+import {
+  codemapping,
+  countryList,
+  getInitialCityList,
+  handleCityOptions,
+} from "@/utils/functions/country-state-city-utils"
 import {
   validateBooleanField,
   validateNumberField,
@@ -33,45 +38,10 @@ const Layout: React.FC<LayoutProps> = ({
   jobRolesSuggestions,
   jobSoftwareSuggestions,
 }) => {
-  const country = Country.getAllCountries()
+  const initialCityList = getInitialCityList(jobInfo.country)
 
-  const countryList = country?.map((country) => {
-    return {
-      label: country?.name,
-      value: country?.name,
-    }
-  })
-  const codemapping: { [key: string]: string } = {}
-  country.forEach((ctry) => {
-    const name = ctry.name
-    const code = ctry.isoCode
+  const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialCityList || [{}])
 
-    codemapping[name] = code
-  })
-  let initcity
-  let initialcitylist = [{ label: "", value: "" }]
-  if (jobInfo.country) {
-    initcity = City.getCitiesOfCountry(codemapping[jobInfo.country])
-    if (initcity)
-      initialcitylist = initcity?.map((city1) => {
-        return {
-          label: city1?.name,
-          value: city1?.name,
-        }
-      })
-  }
-  const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
-  const handleCityOptions = (isoCode: string) => {
-    const city = City.getCitiesOfCountry(isoCode)
-    const cityList = city?.map((city1) => {
-      return {
-        label: city1?.name,
-        value: city1?.name,
-      }
-    })
-    setCity(cityList!)
-    return cityList!
-  }
   const [dimensions] = useState<{
     height: number | null
     width: number | null
@@ -94,12 +64,11 @@ const Layout: React.FC<LayoutProps> = ({
         } else {
           setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        // if (field !== "banner") {
         if (field === "country") {
-          handleCityOptions(codemapping[value as string])
+          const cityList = handleCityOptions(codemapping[value as string])
+          setCity(cityList)
         }
         setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
-        // }
       } catch (error) {
         console.error("Async validation error:", error)
       }
@@ -464,7 +433,7 @@ const Layout: React.FC<LayoutProps> = ({
                 Update Job
               </Button>
             </div>
-            <div className="h-fit md:h-[74vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
+            <div className="h-fit md:h-[79vh] md:overflow-y-scroll  flex-col min-w-[260px] px-[16px] py-[35px] border-[1px] bg-user_interface_2 border-user_interface_3 rounded-[10px] w-full gap-[30px]    flex">
               {initialDetailsArray?.map((filter, index) => {
                 let hide = false
                 ;(filter.title == "City" || filter.title == "Country") &&

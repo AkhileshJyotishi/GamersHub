@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react"
+// import Layout from "./jobResponseLayout"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import image from "@/assets/image/void.svg"
@@ -7,7 +9,11 @@ import { shimmer, toBase64 } from "@/utils/functions"
 import SkeletonLoader from "../ui/SkeletonLoader2"
 
 import Card from "./jobResponseCard"
-import Layout from "./jobResponseLayout"
+const Layout = dynamic(() => import("./jobResponseLayout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 const JobResponses = ({
   jobApplicants,

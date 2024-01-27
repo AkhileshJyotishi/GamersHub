@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from "react"
 import clsx from "clsx"
-import { motion } from "framer-motion"
+// import { motion } from "framer-motion"
 import Image from "next/image"
 
 import ArrowRightIcon from "@/components/icons/chevrondownicon"
@@ -15,11 +15,6 @@ import thumbnail from "@/components/carousel/thumbnail.module.css"
 interface MultipleFileInputProps {
   onFileChange: (files: File[]) => void
   errorMessage?: string | null
-}
-
-const itemVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
 }
 
 const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, errorMessage }) => {
@@ -81,11 +76,11 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
           <></>
         )}
 
-        <motion.div
+        <div
           key="add-new-files"
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
+          // variants={itemVariants}
+          // initial="hidden"
+          // animate="visible"
           className={clsx(
             thumbnail["thumb-wrapper"],
             "gap-3",
@@ -125,12 +120,12 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
             </>
           )}
           {selectedFiles?.map((item, idx) => (
-            <motion.div
+            <div
               // key={idx}
               key={idx}
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
+              // variants={itemVariants}
+              // initial="hidden"
+              // animate="visible"
               className={clsx(
                 "p-2 relative border-[0.1px]   rounded-xl group",
                 errorMessage ? "border-accent_red" : "border-gray-500"
@@ -145,9 +140,9 @@ const MultipleFileInput: React.FC<MultipleFileInputProps> = ({ onFileChange, err
                   <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
                 </Button>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {fullscreenImage != null && (

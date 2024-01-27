@@ -53,9 +53,7 @@ export default function SignUpPage() {
       })
       toast.info("Signing Up...")
       setCurrentFieldName("")
-      const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", {
-        ...formValues,
-      })
+      const res = await fetchWithoutAuthorization("/v1/auth/register", "POST", formValues)
       if (res?.error) {
         toast.dismiss()
         toast.error(res.error?.response?.data?.message || res.message)
@@ -78,27 +76,6 @@ export default function SignUpPage() {
         setFormValues({ username: "", email: "", password: "" })
         router.replace("/?message=Verification mail sent", "/", { shallow: true })
       }
-      // try {
-      //   const res = await fetch("/v1//register", {
-      //     method: "POST",
-      //     body: JSON.stringify(formValues),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   })
-      //   const res2: APITypes = await res.json()
-
-      //   if (res2.error) {
-      //     toast.error(res2.message)
-      //     console.log("this is res 2 message ", res2.message)
-      //     return
-      //   }
-      //   setFormValues({ username: "", email: "", password: "" })
-      //   res.status === 201 && router.push("/auth/login")
-      // } catch (error: Allow) {
-      //   console.log("auth/signup ", error)
-      //   toast.error(error)
-      // }
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

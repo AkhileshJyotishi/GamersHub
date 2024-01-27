@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react"
 import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { Popover, Transition } from "@headlessui/react"
-
 interface PopoverItem {
   name: string
   description: string

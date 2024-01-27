@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
-import Layout from "@/components/creatPorfolio/layout"
+// import Layout from "@/components/creatPorfolio/layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -18,6 +18,11 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
 })
 
 // import { Editor } from "novel";
+const Layout = dynamic(() => import("@/components/creatPorfolio/layout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 const CreatePortfolio = ({
   albums,

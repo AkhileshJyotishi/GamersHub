@@ -212,13 +212,14 @@ const JobPageHeader: React.FC<JobPageHeaderProps> = ({
           <Button
             className=" flex items-center hover:bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2"
             onClick={() => {
-              !session ? setIsLoginModalOpen(true) : saveJob(jobId)
+              !session?.user ? setIsLoginModalOpen(true) : saveJob(jobId)
             }}
           >
             <SaveIcon className="w-5 h-5 fill-text" fill="" />
             {isJobSaved ? "Unsave Job" : "Save Job"}
           </Button>
-          {session && appliedUsers.filter((user) => user.id === userData?.id).length > 0 ? (
+
+          {appliedUsers.filter((user) => user.id === userData?.id).length > 0 ? (
             <div className=" flex items-center bg-secondary border-secondary border-[0.1px] py-[10px] px-[15px] md:px-[30px] font-medium rounded-xl gap-2">
               Applied
             </div>

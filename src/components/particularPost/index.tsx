@@ -1,12 +1,22 @@
 import React from "react"
 import clsx from "clsx"
+// import spinner from "@/assets/svg/spinner.svg"
+// import JobPageHeader from "@/components/particularPost/Head"
+// import Jobsection from "@/components/particularPost/Section"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
-
-// import spinner from "@/assets/svg/spinner.svg"
-import JobPageHeader from "@/components/particularPost/Head"
-import Jobsection from "@/components/particularPost/Section"
+const Jobsection = dynamic(() => import("@/components/particularPost/Section"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const JobPageHeader = dynamic(() => import("@/components/particularPost/Head"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {

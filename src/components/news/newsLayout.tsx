@@ -1,19 +1,13 @@
 import React, { useEffect } from "react"
+import dynamic from "next/dynamic"
 
-// import { useRouter } from "next/router"
-// import { useSession } from "next-auth/react"
-// import { toast } from "react-toastify"
-// import { FilterDetail } from "@/interface/filter"
 import { INewsCategory } from "@/interface/news"
 
-// import { fetchData, generateQueryParams } from "@/utils/functions"
-// import PlusIcon from "@/components/icons/plus"
-import TabButtons from "@/components/tabbuttons"
+// import TabButtons from "@/components/tabbuttons"
 // import Button from "@/components/ui/button"
 import Select from "@/components/ui/select"
 
 import { BannerComponent } from "../filter"
-// import NewsCategory from "./NewsCategory"
 interface LayoutProps {
   children: React.ReactNode
   AllCategory?: INewsCategory[]
@@ -24,6 +18,12 @@ interface LayoutProps {
   loading?: boolean
   // jobSoftwareSuggestions?: JobSoftwareSuggestions
 }
+
+const TabButtons = dynamic(() => import("@/components/tabbuttons"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[100px]"></div>
+  },
+})
 
 const Layout: React.FC<LayoutProps> = ({
   children,

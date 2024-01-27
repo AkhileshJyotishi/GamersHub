@@ -9,7 +9,7 @@ import { fetchData } from "@/utils/functions"
 
 import Filter from "../filter/mainfilter/filter"
 
-import Layout from "./layout"
+// import Layout from "./layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
@@ -17,6 +17,12 @@ const Editor = dynamic(() => import("@/components/NovalEditor"), {
     return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
   },
 })
+const Layout = dynamic(() => import("./layout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+
 interface CreateJobProps {
   jobSoftwareSuggestions?: JobSoftwareSuggestions
   jobRolesSuggestions?: JobRolesSuggestions

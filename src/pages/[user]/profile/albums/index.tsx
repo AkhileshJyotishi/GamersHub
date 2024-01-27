@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react"
+// import Card from "@/components/ui/card/card2"
+// import HoizontalCard from "@/components/ui/Horizontalcard"
+// import Share from "@/components/ui/Share"
+// import SkeletonLoader from "@/components/ui/SkeletonLoader"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/router"
@@ -11,13 +16,29 @@ import { useModalContext } from "@/providers/modal-context"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchWithoutAuthorization } from "@/utils/functions"
 
-import ProfileCard from "@/components/newPostCard"
+// import ProfileCard from "@/components/newPostCard"
 import ProfilePageLayout from "@/components/profileLayout"
 import Button from "@/components/ui/button"
-// import Card from "@/components/ui/card/card2"
-import HoizontalCard from "@/components/ui/Horizontalcard"
-import Share from "@/components/ui/Share"
-import SkeletonLoader from "@/components/ui/SkeletonLoader"
+const SkeletonLoader = dynamic(() => import("@/components/ui/SkeletonLoader"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Share = dynamic(() => import("@/components/ui/Share"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const HoizontalCard = dynamic(() => import("@/components/ui/Horizontalcard"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const ProfileCard = dynamic(() => import("@/components/newPostCard"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 const Albums = () => {
   const router = useRouter()
@@ -286,22 +307,10 @@ const Albums = () => {
                   />
                 ))
               ) : (
-                <>
-                  {
-                    <>
-                      <div className="flex flex-col items-center w-full gap-20 ">
-                        <h3 className="text-3xl font-bold">No posts yet.</h3>
-                        <Image
-                          width={2060}
-                          height={2060}
-                          alt={""}
-                          className="w-[200px]"
-                          src={image}
-                        />
-                      </div>
-                    </>
-                  }
-                </>
+                <div className="flex flex-col items-center w-full gap-20 ">
+                  <h3 className="text-3xl font-bold">No posts yet.</h3>
+                  <Image width={2060} height={2060} alt={""} className="w-[200px]" src={image} />
+                </div>
               )}
             </div>
           </>
