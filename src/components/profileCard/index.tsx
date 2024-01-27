@@ -1,5 +1,5 @@
 // import { MediaHostURL } from "@/utils/apiClient";
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import defaultbannerImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
+// import { fetchWithoutAuthorization } from "@/utils/functions"
 import ArtstationIcon from "@/components/icons/artstatio"
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -20,7 +21,6 @@ import PlusIcon from "@/components/icons/plus"
 import TwitterIcon from "@/components/icons/twitter"
 import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
-import { fetchWithoutAuthorization } from "@/utils/functions"
 
 // import ViewIcon from "@/components/icons/viewIcon.svg"
 interface Props {

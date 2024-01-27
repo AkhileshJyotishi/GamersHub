@@ -35,16 +35,16 @@ const Sidemenu = () => {
     },
   ]
 
-  const authOptions2 = [
-    {
-      title: "Login",
-      path: "/auth/login",
-    },
-    {
-      title: "Sign Up",
-      path: "/auth/signup",
-    },
-  ]
+  // const authOptions2 = [
+  //   {
+  //     title: "Login",
+  //     path: "/auth/login",
+  //   },
+  //   {
+  //     title: "Sign Up",
+  //     path: "/auth/signup",
+  //   },
+  // ]
 
   return (
     <div>
@@ -59,9 +59,9 @@ const Sidemenu = () => {
         }}
       >
         {navmenu?.map((data, index) => <MenuItem data={data} key={index} />)}
-        {!session?.user?.name
-          ? authOptions2?.map((data, index) => <MenuItem data={data} key={index} />)
-          : authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
+        {session?.user?.name &&
+          //  authOptions2?.map((data, index) => <MenuItem data={data} key={index} />)
+          authOptions?.map((data, index) => <MenuItem data={data} key={index} />)}
       </Drawer>
     </div>
   )

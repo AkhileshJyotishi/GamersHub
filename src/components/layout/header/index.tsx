@@ -77,7 +77,7 @@ const AuthButtons = ({
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   return (
-    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2", className)}>
+    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre", className)}>
       <Button
         variant="nav"
         className="flex px-4 sm:text-sm md:text-md bg-user_interface_4"
@@ -187,6 +187,15 @@ export default function Navbar() {
             tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
           } duration-[1s] ease-in-out`}
         ></div>
+        <Button
+          variant="nav"
+          className="sm:hidden flex px-[12px] py-1 text-sm bg-secondary"
+          onClick={() => {
+            setIsLoginModalOpen(true)
+          }}
+        >
+          Log In
+        </Button>
         <div className="center">
           <Button
             onClick={() => {
@@ -234,7 +243,8 @@ export default function Navbar() {
               <LoggedInUserButtons userSession={session} userData={userData} />
             ) : (
               <AuthButtons
-                className="hidden min-[1280px]:flex"
+                className="hidden sm:flex"
+                // className="hidden min-[1280px]:flex"
                 setIsLoginModalOpen={setIsLoginModalOpen}
                 setIsRegisterModalOpen={setIsRegisterModalOpen}
               />

@@ -58,7 +58,7 @@ const ApplyJob = ({
     )
     toast.dismiss()
     if (isuploaded?.error) {
-      toast.error(isuploaded.error)
+      toast.error(isuploaded?.error)
       return
     } else {
       BasicInfo.resume = isuploaded?.data.image.Location

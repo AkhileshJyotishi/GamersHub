@@ -28,6 +28,7 @@ const StepThree = ({
   onSubmit: () => Promise<void>
 }) => {
   const country = useMemo(() => Country.getAllCountries(), [])
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(false)
   const countryList = useMemo(
     () =>
       country?.map((country) => {
@@ -179,6 +180,7 @@ const StepThree = ({
     },
   ]
   const applyJobHandler = async () => {
+    setIsSubmitDisabled(true)
     let flg = true
 
     const validationPromises = Object.entries(BasicInfo).map(async ([field, value]) => {
@@ -256,9 +258,11 @@ const StepThree = ({
     await Promise.all(validationPromises)
     if (flg) {
       await onSubmit()
+      setIsSubmitDisabled(false)
     } else {
       toast.dismiss()
       toast.info("Please fill the details Correctly")
+      setIsSubmitDisabled(false)
     }
   }
   const getValidationParamsForField = (field: string): ValidationParams => {
@@ -394,10 +398,13 @@ const StepThree = ({
           />
         </div>
         <Button
-          className={"transition-all  p-2  bg-secondary hover:opacity-80  rounded-md text-text"}
+          disabled={isSubmitDisabled}
+          className={
+            "transition-all  p-2 disabled:bg-[#00B87D90]  bg-secondary hover:opacity-80  rounded-md text-text"
+          }
           onClick={applyJobHandler}
         >
-          Submit Application
+          {isSubmitDisabled ? "Submitting" : "Submit Application"}
         </Button>
       </div>
     </>
