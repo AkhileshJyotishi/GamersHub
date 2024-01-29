@@ -2,6 +2,7 @@ import httpStatus from 'http-status'
 import catchAsync from '../utils/catch-async'
 import { jobService } from '../services'
 import { sendResponse } from '../utils/response'
+import prisma from '../client'
 
 const getUserJobs = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id)
@@ -67,6 +68,36 @@ const getUserApplication = catchAsync(async (req, res) => {
     'User Applications fetched Successfully'
   )
 })
+const getJobApplication = catchAsync(async (req, res) => {
+  const filter = req.query
+  const jobId = parseInt(req.params.id)
+  const userId = res.locals.user.id
+  const JobsApplications = await jobService.getJobApplication(jobId, userId, filter)
+  const job = await prisma.job.findUnique({
+    where: {
+      id: jobId
+    }
+  })
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applications: JobsApplications, title: job?.title ?? '' },
+    'Job Applications fetched Successfully'
+  )
+})
+
+const getApplicantInfo = catchAsync(async (req, res) => {
+  const applicantInfoId = parseInt(req.params.id)
+  const ApplicantInfo = await jobService.getapplicantInfo(applicantInfoId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applicantInfo: ApplicantInfo },
+    'ApplicantInfo fetched Successfully'
+  )
+})
 
 const createApplication = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -77,7 +108,7 @@ const createApplication = catchAsync(async (req, res) => {
     httpStatus.CREATED,
     null,
     { jobApplication: userJobApplicatio },
-    'User Job Application Created Successfully'
+    'Job Applied Successfully'
   )
 })
 
@@ -161,6 +192,8 @@ export default {
   deleteApplicationById,
   getSavedJobs,
   toggleSaveJob,
+  getJobApplication,
   getAllJobsExceptCurrentUser,
-  getLatestJobs
+  getLatestJobs,
+  getApplicantInfo
 }

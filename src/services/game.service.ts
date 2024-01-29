@@ -73,7 +73,8 @@ const getUserGames = async (userId: number, filter: QueryGames): Promise<Game[] 
           ]
         }
       },
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       games: {
@@ -157,7 +158,15 @@ const createUserGame = async (userId: number, gameBody: GameBody): Promise<Game>
     genre,
     ...newCreateBody
   } = gameBody
-
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+      validUser: true
+    }
+  })
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
   const game = await prisma.game.create({
     data: {
       userId,
@@ -302,7 +311,18 @@ const createUserGame = async (userId: number, gameBody: GameBody): Promise<Game>
  */
 
 const deleteUserGames = async (userId: number): Promise<void> => {
-  if (!(await prisma.game.findMany({ where: { userId } })).length) {
+  if (
+    !(
+      await prisma.game.findMany({
+        where: {
+          userId,
+          user: {
+            validUser: true
+          }
+        }
+      })
+    ).length
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Games not found')
   }
   await prisma.game.deleteMany({
@@ -382,7 +402,10 @@ const getAllGames = async (filter: QueryGames): Promise<Game[]> => {
               }
             }
           : {}
-      ]
+      ],
+      user: {
+        validUser: true
+      }
     },
     include: {
       platforms: {
@@ -436,7 +459,10 @@ const getAllGames = async (filter: QueryGames): Promise<Game[]> => {
 const getGameById = async (id: number): Promise<Game | object> => {
   const game = await prisma.game.findUnique({
     where: {
-      id
+      id,
+      user: {
+        validUser: true
+      }
     },
     include: {
       user: {
@@ -494,7 +520,17 @@ const updateGameById = async (
   id: number,
   updateGameBody: GameBody
 ): Promise<Game> => {
-  if (!(await prisma.game.findUnique({ where: { id, userId } }))) {
+  if (
+    !(await prisma.game.findUnique({
+      where: {
+        id,
+        userId,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User game not found')
   }
   const {
@@ -837,7 +873,17 @@ const updateGameById = async (
  */
 
 const deleteGameById = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.game.findUnique({ where: { id, userId } }))) {
+  if (
+    !(await prisma.game.findUnique({
+      where: {
+        id,
+        userId,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Game not found')
   }
   await prisma.game.delete({
@@ -857,7 +903,8 @@ const deleteGameById = async (userId: number, id: number): Promise<void> => {
 const getSavedGames = async (userId: number): Promise<Game[]> => {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       savedGames: {
@@ -916,7 +963,10 @@ const getSavedGames = async (userId: number): Promise<Game[]> => {
 const toggleSaveGame = async (userId: number, id: number): Promise<string> => {
   const game = await prisma.game.findUnique({
     where: {
-      id
+      id,
+      user: {
+        validUser: true
+      }
     },
     include: {
       savedUsers: {
@@ -1022,6 +1072,9 @@ const getAllGamesExceptCurrentUser = async (
       ],
       NOT: {
         userId
+      },
+      user: {
+        validUser: true
       }
     },
     include: {

@@ -13,7 +13,8 @@ declare type Allow<T = any> = T | null
 const getUserAlbums = async (userId: number): Promise<Album[] | []> => {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
+      validUser: true
     },
     select: {
       albums: {
@@ -60,6 +61,15 @@ interface albumBody {
 
 const createUserAlbum = async (userId: number, albumBody: albumBody): Promise<Album> => {
   const { keywords, ...newCreateBody } = albumBody
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+      validUser: true
+    }
+  })
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
   const album = await prisma.album.create({
     data: {
       ...newCreateBody,
@@ -103,7 +113,18 @@ const createUserAlbum = async (userId: number, albumBody: albumBody): Promise<Al
  */
 
 const deleteUserAlbums = async (userId: number): Promise<void> => {
-  if (!(await prisma.album.findMany({ where: { userId } })).length) {
+  if (
+    !(
+      await prisma.album.findMany({
+        where: {
+          userId,
+          user: {
+            validUser: true
+          }
+        }
+      })
+    ).length
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Albums not found')
   }
   await prisma.album.deleteMany({
@@ -126,7 +147,17 @@ const updateAlbumById = async (
   id: number,
   updateAlbumBody: albumBody
 ): Promise<Album> => {
-  if (!(await prisma.album.findUnique({ where: { id, userId } }))) {
+  if (
+    !(await prisma.album.findUnique({
+      where: {
+        id,
+        userId,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Album not found')
   }
 
@@ -219,6 +250,11 @@ const updateAlbumById = async (
 
 const getAllAlbums = async (): Promise<Album[]> => {
   const albums = await prisma.album.findMany({
+    where: {
+      user: {
+        validUser: true
+      }
+    },
     include: {
       posts: {
         select: {
@@ -250,7 +286,16 @@ const getAllAlbums = async (): Promise<Album[]> => {
  */
 
 const deleteAlbumById = async (userId: number, id: number): Promise<void> => {
-  if (!(await prisma.album.findUnique({ where: { id } }))) {
+  if (
+    !(await prisma.album.findUnique({
+      where: {
+        id,
+        user: {
+          validUser: true
+        }
+      }
+    }))
+  ) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Album not found')
   }
   await prisma.album.delete({
@@ -270,7 +315,10 @@ const deleteAlbumById = async (userId: number, id: number): Promise<void> => {
 const getAlbumById = async (id: number): Promise<Album> => {
   const album = await prisma.album.findUnique({
     where: {
-      id
+      id,
+      user: {
+        validUser: true
+      }
     },
     include: {
       posts: {

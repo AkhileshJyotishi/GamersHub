@@ -4,11 +4,14 @@ import ApiError from '../utils/api-error'
 import catchAsync from '../utils/catch-async'
 import { userService } from '../services'
 import { sendResponse } from '../utils/response'
+import { validate } from 'deep-email-validator'
 import prisma from '../client'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare type Allow<T = any> = T | null
 const createUser = catchAsync(async (req, res) => {
   const { email, password, username, role } = req.body
+  const emailValid = await validate(email)
+  if (!emailValid.valid) throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Email InActive')
   const user = await userService.createUser(email, password, username, role)
   sendResponse(res, httpStatus.CREATED, null, { user }, 'User Created successfully')
 })
@@ -214,6 +217,17 @@ const getKeywords = catchAsync(async (req, res) => {
   const Keyword = keywords?.map((k: Allow) => k.keyword)
   sendResponse(res, httpStatus.OK, null, { Keyword }, 'Keywords fetched Successfully')
 })
+
+const getJobRoles = catchAsync(async (req, res) => {
+  const jobRoles = await prisma.rolesNeeded.findMany({
+    select: {
+      role: true
+    }
+  })
+  const jobRole = (jobRoles ?? [])?.map((k: Allow) => k?.role)
+  sendResponse(res, httpStatus.OK, null, { jobRole }, 'Roles fetched Successfully')
+})
+
 const getSkills = catchAsync(async (req, res) => {
   const Skills = await prisma.skill.findMany({
     select: {
@@ -299,6 +313,33 @@ const getCustomCreatorsTags = catchAsync(async (req, res) => {
     'Custom Creators Tags fetched Successfully'
   )
 })
+const getCustomJobResponseTags = catchAsync(async (req, res) => {
+  const Skills = await prisma.skill.findMany({
+    select: {
+      skill: true
+    }
+  })
+  const skill = Skills?.map((k: Allow) => k.skill)
+  const Softwares = await prisma.software.findMany({
+    select: {
+      software: true
+    }
+  })
+  const software = Softwares?.map((k: Allow) => k.software)
+  const roles = await prisma.rolesNeeded.findMany({
+    select: {
+      role: true
+    }
+  })
+  const rolesApplied = roles?.map((k: Allow) => k.role)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { skill, software, rolesApplied },
+    'Custom Job Response Tags fetched Successfully'
+  )
+})
 
 const getAllDetails = catchAsync(async (req, res) => {
   const userId = res.locals.user.id
@@ -328,6 +369,9 @@ const getAllDetails = catchAsync(async (req, res) => {
 const getCustomDetails = catchAsync(async (req, res) => {
   const id = parseInt(req.params.id as string)
   const customDetails = await userService.getCustomDetails(id)
+  if (!customDetails) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
   const keywords = await prisma.keyword.findMany({
     select: {
       keyword: true
@@ -347,6 +391,17 @@ const getAllCreatorsExceptUser = catchAsync(async (req, res) => {
   const filter = req.query
   const creators = await userService.getAllCreatorsExceptUser(userId, filter)
   sendResponse(res, httpStatus.OK, null, { creators }, 'Creators Details fetched Successfully')
+})
+const getApplyDetails = catchAsync(async (req, res) => {
+  const userId = res.locals.user.id
+  const applyDetails = await userService.getApplyDetails(userId)
+  sendResponse(
+    res,
+    httpStatus.OK,
+    null,
+    { applyDetails },
+    'Applicant  Details fetched Successfully'
+  )
 })
 const getAllCreators = catchAsync(async (req, res) => {
   const filter = req.query
@@ -414,7 +469,10 @@ export default {
   getPlatforms,
   getCustomGameTags,
   getCustomCreatorsTags,
+  getCustomJobResponseTags,
   getAllDetails,
   getOtherDetails,
-  getHomeDetailsController
+  getHomeDetailsController,
+  getJobRoles,
+  getApplyDetails
 }

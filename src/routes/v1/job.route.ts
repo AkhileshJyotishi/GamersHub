@@ -38,6 +38,19 @@ router.get(
   validate(jobValidation.idValidation),
   jobController.getUserApplication
 )
+router.get(
+  '/jobApplications/:id',
+  auth(),
+  validate(jobValidation.getJobResponseValidation),
+  jobController.getJobApplication
+)
+
+router.get(
+  '/applicantinfo/:id',
+  auth(),
+  validate(jobValidation.idValidation),
+  jobController.getApplicantInfo
+)
 
 router
   .route('/application/:id')
