@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import clsx from "clsx"
+// import Modal from "@/components/ui/modal"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 // import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -10,32 +12,35 @@ import { toast } from "react-toastify"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile, fetchWithoutAuthorization } from "@/utils/functions"
 
-import Filter from "@/components/filter/mainfilter/filter"
+// import Filter from "@/components/filter/mainfilter/filter"
 import CloseIcon from "@/components/icons/closeIcon"
 import Loading from "@/components/Loading"
 import BannerImage from "@/components/profile/bannerImage"
-import ProfileAccordion from "@/components/profile/profileAccordion"
-import ProfileCard from "@/components/profileCard"
+// import ProfileAccordion from "@/components/profile/profileAccordion"
+// import ProfileCard from "@/components/profileCard"
 import Button from "@/components/ui/button"
-import Modal from "@/components/ui/modal"
 
-interface User {
-  id: number
-  createdAt: string
-  username: string
-  bannerImage: string
-  userDetails: {
-    country: string
-    city: string
-  }
-  _count: {
-    followers_users: number
-    following_users: number
-  }
-  add_on_web: Isocials
-  profileImage: string
-  socials: Isocials
-}
+const Modal = dynamic(() => import("@/components/ui/modal"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[30vh]"></div>
+  },
+})
+const ProfileCard = dynamic(() => import("@/components/profileCard"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[30vh]"></div>
+  },
+})
+const ProfileAccordion = dynamic(() => import("@/components/profile/profileAccordion"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[30vh]"></div>
+  },
+})
+const Filter = dynamic(() => import("@/components/filter/mainfilter/filter"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[30vh]"></div>
+  },
+})
+
 /**
  * Renders the profile page layout, including the profile card, banner image, profile accordion, and tabs for different sections of the profile.
  * Handles the creation and editing of albums.
@@ -77,9 +82,8 @@ const ProfileLayout = ({
           // const data = await fetchWithoutAuthorization("/v1/users/keyword","GET")
 
           if (users?.error) {
-            router.replace(`/?emessage=Please Authenticate`)
+            router.replace(`/?emessage=Something Went wrong`)
           } else {
-            // console.log("router ",)
             const x = router.pathname.split("/")
             setInitialKeywords(users?.data?.tags)
             setData(users?.data?.user)
@@ -238,7 +242,7 @@ const ProfileLayout = ({
           <title>Profile | {data?.username}</title>
         </Head>
         {/* flex flex-col gap-5 p-2 sm:p-3 md:p-4 lg:p-5 lg:flex-row */}
-        <div className="lg:grid  lg:grid-cols-[25vw,75vw] xl:grid-cols-[20vw,80vw] gap-5 p-2 sm:p-3 lg:p-5 ">
+        <div className="lg:grid  lg:grid-cols-[25%,75%] xl:grid-cols-[20%,80%] gap-5 p-2 sm:p-3 lg:p-5 ">
           <ProfileCard className="hidden lg:block" currentUser={data} />
           <Modal
             isOpen={isCreateAlbumOpen}

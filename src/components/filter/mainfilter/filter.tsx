@@ -2,25 +2,54 @@
 
 import React from "react"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 import DatePicker from "react-date-picker"
 import { PiWarningCircleFill } from "react-icons/pi"
+import { PhoneInput } from "react-international-phone"
 
 import { FilterDetail } from "@/interface/filter"
 
-import CustomCombobox from "@/components/ui/Combobox"
-import TagsInput from "@/components/ui/TagsInput"
+// import CustomCombobox from "@/components/ui/Combobox"
+// import TagsInput from "@/components/ui/TagsInput"
 import TextInput from "@/components/ui/textInput"
 
-import CheckboxFilter from "./checkboxfilter"
-import FileFilter from "./Filefilter"
-import RadioFilter from "./radiofilter"
-
+// import CheckboxFilter from "./checkboxfilter"
+// import FileFilter from "./Filefilter"
+// import RadioFilter from "./radiofilter"
+import "react-international-phone/style.css"
 // import SelectFilter from "./selectfilter"
 import "react-date-picker/dist/DatePicker.css"
 import "react-calendar/dist/Calendar.css"
 // const DatePicker = dynamic(() => import("react-date-picker"), {
 //   ssr: false,
 // })
+const FileFilter = dynamic(() => import("./Filefilter"), {
+  ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[300px]"></div>
+  },
+})
+const CustomCombobox = dynamic(() => import("@/components/ui/Combobox"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const TagsInput = dynamic(() => import("@/components/ui/TagsInput"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const CheckboxFilter = dynamic(() => import("./checkboxfilter"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+const RadioFilter = dynamic(() => import("./radiofilter"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[150px]"></div>
+  },
+})
+
 const Filter: React.FC<FilterDetail> = ({
   title,
   placeholder,
@@ -39,6 +68,8 @@ const Filter: React.FC<FilterDetail> = ({
   dimensionsImage,
   fullScreen,
   element,
+  viewonlyPdf,
+  downloadPDF,
   // hidden
 }) => {
   const handleCheckboxChange = (newValue: string[]) => {
@@ -130,6 +161,7 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             options={selectOptions}
             errorMessage={errorMessage}
+            // className={className}
             defaultSelected={(selectOptions ?? [])?.filter((item) => item.value == value)[0] ?? []}
             placeholder={placeholder}
           />
@@ -156,9 +188,7 @@ const Filter: React.FC<FilterDetail> = ({
               <PiWarningCircleFill />
               <div>{errorMessage}</div>
             </span>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </>
       )}
       {inputType === "tags" && (
@@ -186,14 +216,43 @@ const Filter: React.FC<FilterDetail> = ({
             value={value as string}
             errorMessage={errorMessage}
             fullScreen={fullScreen}
+            viewonlyPdf={viewonlyPdf}
+            download={downloadPDF}
           />
           {dimensionsImage &&
             dimensionsImage?.width !== null &&
             dimensionsImage?.height !== null && (
-              <>
-                dimensions:{dimensionsImage?.width}x{dimensionsImage?.height}
-              </>
+              <span className="italic">
+                Dimensions:{dimensionsImage?.width}x{dimensionsImage?.height}
+              </span>
             )}
+        </>
+      )}
+      {inputType === "phone" && (
+        <>
+          <PhoneInput
+            defaultCountry="nl"
+            className="bg-transparent w-full"
+            countrySelectorStyleProps={{
+              buttonClassName:
+                "!border-[0.1px] !border-user_interface_4 !p-1 hover:!bg-transparent",
+              dropdownStyleProps: {
+                className: "!text-text !bg-user_interface_4 w-[250px] sm:w-[300px]",
+                listItemClassName: " hover:!bg-user_interface_2",
+              },
+            }}
+            inputClassName={
+              "!bg-transparent !text-text !border-[0.1px] !border-user_interface_4 !w-full !shadow-sm !px-[12px] !py-[9px]"
+            }
+            value={(value as string) || ""}
+            onChange={(phone) => onChange!(phone)}
+          />
+          {errorMessage ? (
+            <span className="flex gap-1 p-1 text-accent_red text-[12px] items-center">
+              <PiWarningCircleFill />
+              <div>{errorMessage}</div>
+            </span>
+          ) : null}
         </>
       )}
     </div>

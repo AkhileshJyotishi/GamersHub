@@ -77,7 +77,7 @@ const AuthButtons = ({
   setIsRegisterModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   return (
-    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre mt-2", className)}>
+    <div className={clsx("flex items-center gap-3 w-fit whitespace-pre", className)}>
       <Button
         variant="nav"
         className="flex px-4 sm:text-sm md:text-md bg-user_interface_4"
@@ -187,6 +187,15 @@ export default function Navbar() {
             tap ? " -translate-x-[20px] opacity-100" : " translate-x-[-500px] opacity-100"
           } duration-[1s] ease-in-out`}
         ></div>
+        <Button
+          variant="nav"
+          className="sm:hidden flex px-[12px] py-1 text-sm bg-secondary"
+          onClick={() => {
+            setIsLoginModalOpen(true)
+          }}
+        >
+          Log In
+        </Button>
         <div className="center">
           <Button
             onClick={() => {
@@ -228,37 +237,38 @@ export default function Navbar() {
           {userSession && <NavbarLink label="Assets" href="/help" />}
         </div>
 
-        <div className="relative flex items-center gap-2 mb-1 xl:gap-12 ">
+        <div className="relative flex items-center gap-4 mb-1 xl:gap-12 ">
           <div className="">
             {session ? (
               <LoggedInUserButtons userSession={session} userData={userData} />
             ) : (
               <AuthButtons
-                className="hidden min-[1280px]:flex"
+                className="hidden sm:flex"
+                // className="hidden min-[1280px]:flex"
                 setIsLoginModalOpen={setIsLoginModalOpen}
                 setIsRegisterModalOpen={setIsRegisterModalOpen}
               />
             )}
           </div>
           <Button
-            className="z-40 flex flex-col gap-1 mt-1 cursor-pointer xl:hidden"
+            className="z-40 flex flex-col gap-[0.48rem] cursor-pointer xl:hidden"
             onClick={() => {
               setIsDrawerOpen(true)
               setTap(!tap)
             }}
           >
             <div
-              className={`w-[20px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff] rounded-lg transform transition-all ${
                 tap ? "rotate-45 translate-y-[6px]" : "rotate-0 translate-y-0"
               } duration-[0.5s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
                 tap ? "opacity-0" : "opacity-100"
               } duration-[1s] ease-out`}
             ></div>
             <div
-              className={`w-[20px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
+              className={`w-[30px] h-[2px] bg-[#fff]  rounded-lg transform transition-all ${
                 tap ? "rotate-[-45deg] translate-y-[-6px]" : "rotate-0 translate-y-0"
               } duration-[1s] ease-out`}
             ></div>

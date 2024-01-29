@@ -8,14 +8,20 @@ import { fetchData } from "@/utils/functions"
 
 import Particularpage from "@/components/particularJob/"
 
-const index = ({ profileData }: { profileData: BackendJob }) => {
-  // console.log("prifle data ti is ", profileData)
+const index = ({
+  profileData,
+  JobApplicationInfo,
+}: {
+  profileData: BackendJob
+  JobApplicationInfo: IBasicInfo
+}) => {
+  const Title = `Jobs|${profileData.title}`
   return (
     <>
       <Head>
-        <title>Jobs | {profileData.title || ""}</title>
+        <title>{Title}</title>
       </Head>
-      <Particularpage profileData={profileData} />
+      <Particularpage profileData={profileData} JobApplicationInfo={JobApplicationInfo} />
     </>
   )
 }
@@ -27,28 +33,71 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   const { slug } = query
 
   // if (!session) {
-  //     return {
-  //         redirect: {
-  //             destination: '/',
-  //             permanent: false,
-  //         },
+  // return {
+  //     redirect: {
+  //         destination: '/',
+  //         permanent: false,
+  //     },
   //     }
   // }
 
   let profileData = await fetchData(`/v1/job/${slug}`, session?.user?.name as string, "GET")
+  let JobApplicationInfo
+  let users
+  if (session) {
+    users = await fetchData("/v1/users/applyDetails", session.user?.name as string, "GET")
+    if (users?.error) {
+      return {
+        redirect: {
+          destination: `/?emessage=${users.message}`,
+          permanent: false,
+        },
+      }
+    } else {
+      const res3: IinitJobApplication = users?.data.applyDetails
+      JobApplicationInfo = {
+        jobId: res3.id,
+        firstName: res3.username,
+        motivationToApply: null,
+        applyMethod: null,
+        bio: res3?.userDetails?.userBio ?? null,
+        city: res3?.userDetails?.city ?? null,
+        country: res3?.userDetails?.country ?? null,
+        email: res3?.email,
+        lastName: null,
+        phone: null,
+        portfolio: res3?.socials?.portfolio ?? null,
+        resume: res3?.userDetails?.resume ?? null,
+        rolesApplied: null,
+        skills: res3?.userDetails?.userSkills?.map((userSkill) => userSkill?.skill) ?? null,
+      }
+    }
+  }
+
   toast.dismiss()
   if (profileData?.error) {
-    toast.error(profileData?.message)
-  } else {
-    toast.success(profileData?.message)
+    return {
+      redirect: {
+        destination: `/?emessage="Something went wrong."`,
+        permanent: false,
+      },
+    }
   }
   // return resp.data;
 
   profileData = profileData?.data.job
-  // console.log("settings detaisls", profileData)
-  return {
-    props: {
-      profileData,
-    },
+  if (session) {
+    return {
+      props: {
+        profileData,
+        JobApplicationInfo,
+      },
+    }
+  } else {
+    return {
+      props: {
+        profileData,
+      },
+    }
   }
 }

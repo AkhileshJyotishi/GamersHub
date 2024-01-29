@@ -1,14 +1,19 @@
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 
 import { getSession } from "@/lib/auth"
 import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreatePortfolio from "@/components/creatPorfolio"
 
-const index = ({ albums, post }: { albums: Allow; post: Allow }) => {
+const index = ({ albums, post }: { albums: Allow; post: IPostbackend }) => {
+  const Title = `Update-Post | ${post.title}`
   return (
     <>
+      <Head>
+        <title>{Title}</title>
+      </Head>
       <CreatePortfolio albums={albums} post={post} />
     </>
   )
@@ -28,7 +33,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   }
 
   if (albums?.error) {
-    // toast.error(jobsDetails.message)
     return {
       redirect: {
         destination: `/?emessage=${albums.message}`,
@@ -37,7 +41,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     }
   }
   if (post?.error) {
-    // toast.error(jobsDetails.message)
     return {
       redirect: {
         destination: `/?emessage=${post?.message}`,
@@ -46,9 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     }
   }
   albums = albums?.data.albums
-  // console.log("posts data", post?.data)
   post = post?.data.post
-  // const parsedgamesDetails: BackendGame[] = gameDetails?.data?.games
 
   return {
     props: {

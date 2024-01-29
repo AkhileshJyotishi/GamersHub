@@ -20,6 +20,7 @@ interface filterprops {
     | React.Dispatch<React.SetStateAction<JobFilterProps>>
     | React.Dispatch<React.SetStateAction<CreatorsFilterProps>>
     | React.Dispatch<React.SetStateAction<GamesFilterProps>>
+    | React.Dispatch<React.SetStateAction<JObResponseFilterProps>>
   // CreatorsFilterProps
   FilterArray?: FilterDetail[]
   country?: { label?: string; value?: string }[]
@@ -33,7 +34,16 @@ interface filterprops {
 
 interface FilterDetail<SO = { label: string; value: string | boolean | number }> {
   title: string
-  inputType: "text" | "checkbox" | "radio" | "select" | "date" | "tags" | "file" | "number"
+  inputType:
+    | "text"
+    | "checkbox"
+    | "radio"
+    | "select"
+    | "date"
+    | "tags"
+    | "file"
+    | "number"
+    | "phone"
   onTagsChange?: (tags: readonly string[]) => void
   placeholder?: string
   value?: string | boolean | Date | number | null | readonly string[]
@@ -44,6 +54,8 @@ interface FilterDetail<SO = { label: string; value: string | boolean | number }>
   accept?: string
   multiple?: boolean
   initialtags?: readonly string[]
+  viewonlyPdf?: boolean
+  downloadPDF?: boolean
   hidden?: boolean
   preview?: boolean
   errorMessage?: string | null

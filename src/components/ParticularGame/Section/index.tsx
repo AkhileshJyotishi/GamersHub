@@ -152,12 +152,7 @@ const Gamesection = ({ GameData }: { GameData: Gamedataprop }) => {
             <GameDetails GameData={GameData} />
           </div>
         </div>
-        <div
-          className={clsx(
-            " carousel-body w-[89vw] md:w-[60vw] lg:w-[70vw]",
-            carousel["carousel-body"]
-          )}
-        >
+        <div className={clsx(" carousel-body w-[89vw] md:w-[60vw]", carousel["carousel-body"])}>
           <Carousel GameAssets={GameData?.gameAssets} />
         </div>
       </div>

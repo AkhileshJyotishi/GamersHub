@@ -1,14 +1,24 @@
 import React, { useState } from "react"
+// import Layout from "./creatorsLayout"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import image from "@/assets/image/void.svg"
 import { shimmer, toBase64 } from "@/utils/functions"
 
-import SkeletonLoader from "../ui/SkeletonLoader2"
-
+// import SkeletonLoader from "../ui/SkeletonLoader2"
 import Card from "./creatorCard"
-import Layout from "./creatorsLayout"
 
+const Layout = dynamic(() => import("./creatorsLayout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const SkeletonLoader = dynamic(() => import("../ui/SkeletonLoader2"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[20vh]"></div>
+  },
+})
 const CreatorsPage = ({
   creatorsData,
   customCreatorsTags,

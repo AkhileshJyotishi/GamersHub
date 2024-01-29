@@ -8,40 +8,65 @@ interface FileInputProps {
   value?: string | null
   errorMessage?: string | null
   fullScreen?: boolean
+  viewonlyPdf?: boolean
+  download?: boolean
 }
 
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 import Image from "next/image"
+import { ErrorBoundary } from "react-error-boundary"
 import { PiWarningCircleFill } from "react-icons/pi"
 
 import { shimmer, toBase64 } from "@/utils/functions"
+import { Viewer, Worker } from "@react-pdf-viewer/core"
+import { SpecialZoomLevel } from "@react-pdf-viewer/core"
+import { Icon, MinimalButton, Position, Tooltip } from "@react-pdf-viewer/core"
+import { fullScreenPlugin } from "@react-pdf-viewer/full-screen"
+import { getFilePlugin, RenderDownloadProps } from "@react-pdf-viewer/get-file"
+import { pageNavigationPlugin, RenderGoToPageProps } from "@react-pdf-viewer/page-navigation"
 
 import CloseIcon from "@/components/icons/closeIcon"
 import FullscreenIcon from "@/components/icons/fullScreenIcon"
 import Button from "@/components/ui/button"
+
+import "@react-pdf-viewer/page-navigation/lib/styles/index.css"
+import "@react-pdf-viewer/full-screen/lib/styles/index.css"
+import "@react-pdf-viewer/core/lib/styles/index.css"
 const FileFilter: React.FC<FileInputProps> = ({
-  // id,
+  id,
   accept,
   multiple,
   onChange,
   className,
   // preview,
+
   value,
   errorMessage,
   fullScreen = true,
+  viewonlyPdf = true,
+  download,
 }) => {
-  const [filePreview, setFilePreview] = useState<string | null>(value || null)
+  const [filePreview, setFilePreview] = useState<string | null>(null)
   const [, setFileType] = useState<string | null>(null)
   const [fullscreenImage, setFullscreenImage] = useState<number | null>(null)
+
+  const pageNavigationPluginInstance = pageNavigationPlugin()
+  const { GoToNextPage, GoToPreviousPage } = pageNavigationPluginInstance
+  const fullScreenPluginInstance = fullScreenPlugin()
+  const { EnterFullScreenButton } = fullScreenPluginInstance
   const imageRef = useRef<HTMLImageElement | null>(null)
+
+  const getFilePluginInstance = getFilePlugin({})
+  const { Download } = getFilePluginInstance
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     // console.log(file.type)
     onChange(file)
     setFilePreview(URL.createObjectURL(file))
+
     setFileType(file.type)
-    // Create an object URL to preview the selected file
   }
 
   const handleFullscreen = () => {
@@ -51,10 +76,81 @@ const FileFilter: React.FC<FileInputProps> = ({
   const handleCloseFullscreen = () => {
     setFullscreenImage(null)
   }
+  useEffect(() => {
+    try {
+      const initFile =
+        accept === ".pdf" && typeof value === "object" && value !== null
+          ? URL.createObjectURL(value as Allow)
+          : value
+      setFilePreview(initFile || null)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
+
+  const PrevProp = (
+    <div
+      style={{
+        left: 0,
+        position: "absolute",
+        top: "50%",
+        transform: "translate(24px, -50%)",
+        zIndex: 1,
+      }}
+    >
+      <GoToPreviousPage>
+        {(props: RenderGoToPageProps) => (
+          <Tooltip
+            position={Position.BottomCenter}
+            target={
+              <MinimalButton onClick={props.onClick}>
+                <Icon size={16}>
+                  <path d="M18.4.5,5.825,11.626a.5.5,0,0,0,0,.748L18.4,23.5" />
+                </Icon>
+              </MinimalButton>
+            }
+            content={() => "Previous page"}
+            offset={{ left: 0, top: 8 }}
+          />
+        )}
+      </GoToPreviousPage>
+    </div>
+  )
+  const NextProp = (
+    <div
+      style={{
+        position: "absolute",
+        right: 0,
+        top: "50%",
+        transform: "translate(-24px, -50%)",
+        zIndex: 1,
+      }}
+    >
+      <GoToNextPage>
+        {(props: RenderGoToPageProps) => (
+          <Tooltip
+            position={Position.BottomCenter}
+            target={
+              <MinimalButton onClick={props.onClick}>
+                <Icon size={16}>
+                  <path d="M5.651,23.5,18.227,12.374a.5.5,0,0,0,0-.748L5.651.5" />
+                </Icon>
+              </MinimalButton>
+            }
+            content={() => "Next page"}
+            offset={{ left: 0, top: 8 }}
+          />
+        )}
+      </GoToNextPage>
+    </div>
+  )
 
   return (
-    <>
-      {/* ghgdh */}
+    <ErrorBoundary
+      fallback={
+        accept === ".pdf" ? <div>Unable to Preview PDF</div> : <div>Unable to Preview Image</div>
+      }
+    >
       <div
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
@@ -68,7 +164,7 @@ const FileFilter: React.FC<FileInputProps> = ({
           }
         }}
         className={clsx(
-          "  shadow-sm  w-full  flex flex-col  gap-4 relative",
+          "  shadow-sm  w-full  flex flex-col  gap-4 ",
           !filePreview ? "items-center justify-center" : "items-center justify-end"
         )}
       >
@@ -79,9 +175,9 @@ const FileFilter: React.FC<FileInputProps> = ({
                 className="p-5 text-[14px] font-medium flex flex-col gap-3 items-center justify-center bg-background border-dotted border-[0.1px]  border-gray-500 rounded-xl space-x-2 w-full"
                 // style={{ zIndex: 17 }}
               >
-                <label htmlFor="asset-upload" className="cursor-pointer w-fit">
+                <label htmlFor={id} className="cursor-pointer w-fit">
                   {" "}
-                  <Button className="p-2 pointer-events-none bg-secondary rounded-md">
+                  <Button className="p-2 pointer-events-none bg-secondary rounded-md text-text">
                     {" "}
                     Browse Files
                   </Button>
@@ -94,7 +190,7 @@ const FileFilter: React.FC<FileInputProps> = ({
 
         <input
           type="file"
-          id={"asset-upload"}
+          id={id}
           accept={accept}
           multiple={multiple}
           className={"appearance-none hidden"}
@@ -105,10 +201,13 @@ const FileFilter: React.FC<FileInputProps> = ({
 
         {filePreview && (
           <>
-            <div className="w-full relative  bg-[#00000050] rounded-xl" style={{ zIndex: 17 }}>
+            <div
+              className={clsx(" w-full relative   rounded-xl", accept === ".pdf" && "h-[450px]")}
+              style={{ zIndex: 17 }}
+            >
               {/* <div className='absolute w-full h-full opacity-50 z-18'></div> */}
 
-              <div className="absolute w-full h-full overflow-hidden opacity-50 z-18 bg-background group">
+              <div className="absolute w-full h-full overflow-hidden opacity-50 z-18  group">
                 <div
                   className={clsx(
                     "p-5 text-[14px] font-medium flex flex-col gap-3 items-center -translate-y-36 overflow-hidden group-hover:translate-y-0 transition duration-200",
@@ -125,17 +224,89 @@ const FileFilter: React.FC<FileInputProps> = ({
                   <div>drag and drop</div>
                 </div>
               </div>
-              <Image
-                src={filePreview}
-                alt="File Preview"
-                width="400"
-                height="400"
-                className="object-cover w-full h-full rounded-xl"
-                style={{ zIndex: 16 }}
-                ref={imageRef}
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              />
-              {fullScreen && (
+
+              {accept === ".pdf" ? (
+                <div
+                  className="rpv-core__viewer"
+                  style={{
+                    height: "100%",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "15px",
+                  }}
+                >
+                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                    <div
+                      style={{
+                        alignItems: "center",
+                        backgroundColor: "#eeeeee",
+                        borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+                        display: "flex",
+                        padding: "4px",
+                        position: "absolute",
+                        top: "0px",
+                        right: "0px",
+                        zIndex: 30,
+                      }}
+                    >
+                      <EnterFullScreenButton />
+                    </div>
+                    {PrevProp}
+                    {NextProp}
+                    {viewonlyPdf && (
+                      <label htmlFor={id} className="cursor-pointer w-fit">
+                        {" "}
+                        <Button className="p-2 pointer-events-none bg-secondary rounded-md text-text">
+                          {" "}
+                          Update PDF
+                        </Button>
+                      </label>
+                    )}
+                    <Viewer
+                      fileUrl={filePreview}
+                      plugins={
+                        !download
+                          ? [pageNavigationPluginInstance, fullScreenPluginInstance]
+                          : [
+                              pageNavigationPluginInstance,
+                              getFilePluginInstance,
+                              fullScreenPluginInstance,
+                            ]
+                      }
+                      defaultScale={SpecialZoomLevel.PageFit}
+                    />
+
+                    <Download>
+                      {(props: RenderDownloadProps) => (
+                        <div className="">
+                          <Button
+                            className={
+                              " px-6 py-2 rounded-lg hover:opacity-90 flex  sm:text-sm md:text-md bg-secondary text-text my-2"
+                            }
+                            onClick={() => props.onClick()}
+                          >
+                            Download
+                          </Button>
+                        </div>
+                      )}
+                    </Download>
+                  </Worker>
+                </div>
+              ) : (
+                <Image
+                  src={filePreview}
+                  alt="File Preview"
+                  width="400"
+                  height="400"
+                  className="object-cover w-full h-full rounded-xl"
+                  style={{ zIndex: 16 }}
+                  ref={imageRef}
+                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                />
+              )}
+
+              {accept !== ".pdf" && fullScreen && (
                 <div className="absolute top-0 right-0 flex p-1 space-x-2">
                   <Button onClick={handleFullscreen}>
                     <FullscreenIcon className="w-8 h-8 text-light hover:scale-125" />
@@ -182,7 +353,7 @@ const FileFilter: React.FC<FileInputProps> = ({
           </span>
         ) : null}
       </div>
-    </>
+    </ErrorBoundary>
   )
 }
 

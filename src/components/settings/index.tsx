@@ -1,10 +1,11 @@
 import React from "react"
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
-
-import { getSession } from "@/lib/auth"
-
-import SettingsLayout from "./settingsLayout"
-
+// import SettingsLayout from "./settingsLayout"
+import dynamic from "next/dynamic"
+const SettingsLayout = dynamic(() => import("./settingsLayout"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 const SettingsPage = ({ settingsDetails }: { settingsDetails: IsettingsDetails }) => {
   return (
     <>
@@ -14,18 +15,3 @@ const SettingsPage = ({ settingsDetails }: { settingsDetails: IsettingsDetails }
 }
 
 export default SettingsPage
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession(req as NextApiRequest, res as NextApiResponse)
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/?emessage=Please Authenticate",
-        permanent: false,
-      },
-    }
-  } else {
-    return {
-      props: {},
-    }
-  }
-}

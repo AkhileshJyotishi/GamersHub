@@ -1,9 +1,14 @@
 import React, { useCallback, useState } from "react"
 import clsx from "clsx"
-import { City, Country } from "country-state-city"
 import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
+import {
+  codemapping,
+  countryList,
+  getInitialCityList,
+  handleCityOptions,
+} from "@/utils/functions/country-state-city-utils"
 import {
   validateBooleanField,
   // validateFileField,
@@ -23,6 +28,7 @@ interface LayoutProps {
   setJobInfo: React.Dispatch<React.SetStateAction<Omit<JobInfo, "userId">>>
   uploadJob: () => Promise<void>
   jobSoftwareSuggestions?: JobSoftwareSuggestions
+  jobRolesSuggestions?: JobRolesSuggestions
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -31,46 +37,12 @@ const Layout: React.FC<LayoutProps> = ({
   jobInfo,
   uploadJob,
   jobSoftwareSuggestions,
+  jobRolesSuggestions,
 }) => {
-  const country = Country.getAllCountries()
+  const initialcitylist = getInitialCityList(jobInfo.country)
 
-  const countryList = country?.map((country) => {
-    return {
-      label: country?.name,
-      value: country?.name,
-    }
-  })
-  const codemapping: { [key: string]: string } = {}
-  country.forEach((ctry) => {
-    const name = ctry.name
-    const code = ctry.isoCode
-
-    codemapping[name] = code
-  })
-  let initcity
-  let initialcitylist = [{ label: "", value: "" }]
-  if (jobInfo.country) {
-    initcity = City.getCitiesOfCountry(codemapping[jobInfo.country])
-    if (initcity)
-      initialcitylist = initcity?.map((city1) => {
-        return {
-          label: city1?.name,
-          value: city1?.name,
-        }
-      })
-  }
   const [city, setCity] = useState<{ label?: string; value?: string }[]>(initialcitylist || [{}])
-  const handleCityOptions = (isoCode: string) => {
-    const city = City.getCitiesOfCountry(isoCode)
-    const cityList = city?.map((city1) => {
-      return {
-        label: city1?.name,
-        value: city1?.name,
-      }
-    })
-    setCity(cityList!)
-    return cityList!
-  }
+
   const [dimensions] = useState<{
     height: number | null
     width: number | null
@@ -94,14 +66,12 @@ const Layout: React.FC<LayoutProps> = ({
         } else {
           setErrors((prev) => ({ ...prev, [field]: null }))
         }
-        if (field !== "banner") {
-          if (field === "country") {
-            handleCityOptions(codemapping[value as string])
-          }
-          setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
-        } else {
-          setJobInfo((prevState) => ({ ...prevState, [field]: value as File }))
+
+        if (field === "country") {
+          const cityList = handleCityOptions(codemapping[value as string])
+          setCity(cityList)
         }
+        setJobInfo((prevState) => ({ ...prevState, [field]: value as string[] }))
       } catch (error) {
         console.error("Async validation error:", error)
       }
@@ -117,13 +87,14 @@ const Layout: React.FC<LayoutProps> = ({
     city: "",
     paymentType: "",
     paymentValue: "",
-    banner: "",
     expertise: "",
     aboutRecruiter: "",
     description: "",
     jobDetails: "",
     jobSoftwares: "",
     publishDate: "",
+    rolesNeeded: "",
+    jobApplyUrl: "",
     // userId:""
   })
   const [touched, setTouched] = useState<boolean>(false)
@@ -181,6 +152,14 @@ const Layout: React.FC<LayoutProps> = ({
           setErrors((prev) => ({ ...prev, [field]: w }))
           break
         }
+        case "rolesNeeded": {
+          validationFunction = validateStringArrayField
+          const w = await validationFunction(value, validationParams)
+          flg === true && w === "" ? (flg = true) : (flg = false)
+          setErrors((prev) => ({ ...prev, [field]: w }))
+          break
+        }
+
         default:
           break
       }
@@ -207,6 +186,18 @@ const Layout: React.FC<LayoutProps> = ({
         }),
       className: "bg-transparent rounded-md",
       errorMessage: errors.title,
+    },
+    {
+      title: "Application Url (if any)",
+      inputType: "text",
+      placeholder: "https://xyz.com",
+      value: jobInfo.jobApplyUrl,
+      onChange: (value) =>
+        handleInputChange("jobApplyUrl", value as string, validateStringField, {
+          maxLength: 30,
+        }),
+      className: "bg-transparent rounded-md",
+      errorMessage: errors.jobApplyUrl,
     },
     {
       title: "Job Type",
@@ -236,6 +227,24 @@ const Layout: React.FC<LayoutProps> = ({
       ],
       className: "bg-transparent rounded-md",
       errorMessage: errors.jobType,
+    },
+    {
+      title: "Roles needed",
+      inputType: "tags",
+      onTagsChange: (value) =>
+        handleInputChange("rolesNeeded", value as string[], validateStringArrayField, {
+          required: true,
+          maxLength: 10,
+        }),
+      value: jobInfo.rolesNeeded || [],
+      selectOptions: [
+        ...((jobRolesSuggestions && jobRolesSuggestions) ?? []).map((s) => ({
+          label: s,
+          value: s,
+        })),
+      ],
+      placeholder: "Freelancer, Designer etc. ",
+      errorMessage: errors.rolesNeeded,
     },
     {
       title: "Job Location *",
@@ -443,7 +452,7 @@ const Layout: React.FC<LayoutProps> = ({
                 filter.title == "Payment Amount" &&
                   jobInfo.paymentType == "NEGOTIABLE" &&
                   (hide = true)
-
+                filter.title === "Roles needed" && jobInfo.jobType !== "COLLAB" && (hide = true)
                 return (
                   <Filter
                     key={index}

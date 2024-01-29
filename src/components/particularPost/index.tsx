@@ -1,26 +1,42 @@
 import React from "react"
 import clsx from "clsx"
+// import spinner from "@/assets/svg/spinner.svg"
+// import JobPageHeader from "@/components/particularPost/Head"
+// import Jobsection from "@/components/particularPost/Section"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import defaultbannerImage from "@/assets/image/user-banner.png"
+const Jobsection = dynamic(() => import("@/components/particularPost/Section"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const JobPageHeader = dynamic(() => import("@/components/particularPost/Head"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
-// import spinner from "@/assets/svg/spinner.svg"
-import JobPageHeader from "@/components/particularPost/Head"
-import Jobsection from "@/components/particularPost/Section"
 //  website locaation
 const Particularpage = ({ profileData }: { profileData: IPostbackend }) => {
   if (!profileData) {
     // Handle the case when profileData is undefined
     return <div>Loading...</div> // or any other handling mechanism
   }
-
   const { title, banner, ...profileDataJobSection } = profileData
   const user = profileData?.user
   const userId = profileData?.userId
 
   return (
     <>
-      <div className={clsx("absolute w-full ", ` bg-cover  bg-no-repeat bg-top`, "h-[490px]")}>
+      <div
+        className={clsx(
+          "absolute w-full max-w-[2000px]",
+          ` bg-cover  bg-no-repeat bg-top`,
+          "h-[490px]"
+        )}
+      >
         <Image
           alt=""
           src={banner || defaultbannerImage}

@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import defaultbannerImage from "@/assets/image/user-profile.svg"
 import { useUserContext } from "@/providers/user-context"
 
+// import { fetchWithoutAuthorization } from "@/utils/functions"
 import ArtstationIcon from "@/components/icons/artstatio"
 import EditIcon from "@/components/icons/editIcon"
 import FaceBookIcon from "@/components/icons/facebook"
@@ -22,23 +23,6 @@ import YoutubeIcon from "@/components/icons/youtube"
 import Button from "@/components/ui/button"
 
 // import ViewIcon from "@/components/icons/viewIcon.svg"
-interface User {
-  id: number
-  createdAt: string
-  username: string
-  userDetails: {
-    country: string
-    city: string
-  }
-  _count: {
-    followers_users: number
-    following_users: number
-  }
-  add_on_web: Isocials
-  profileImage: string
-  socials: Isocials
-}
-
 interface Props {
   currentUser: User | null
   authUser?: Allow
@@ -117,15 +101,50 @@ export default function ProfileCard({
                 </span>
               </Button>
 
-              <Button
-                variant="secondary"
-                className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
-              >
-                <span className="flex flex-row items-center gap-2">
-                  {/* <ViewIcon className="w-4 h-4 text-user_interface_7" /> */}
-                  <p className="whitespace-nowrap">View resume</p>
-                </span>
-              </Button>
+              {currentUser?.userDetails?.resume ? (
+                currentUser.userDetails.resume != "" ? (
+                  <Link
+                    href={currentUser.userDetails.resume}
+                    // variant="primary"
+                    target="_blank"
+                    // onClick={() => {
+                    //   convertLinktoObjectUrl(currentUser?.userDetails?.resume)
+                    // }}
+                    className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                  >
+                    <span className="flex flex-row items-center gap-2">
+                      {/* <ViewIcon className="w-4 h-4 text-user_interface_7" /> */}
+                      <p className="whitespace-nowrap">View resume</p>
+                    </span>
+                  </Link>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      router.push("/settings")
+                    }}
+                    className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                  >
+                    <span className="flex flex-row items-center gap-2">
+                      {/* <ViewIcon className="w-4 h-4 text-user_interface_7" /> */}
+                      <p className="whitespace-nowrap">Upload resume</p>
+                    </span>
+                  </Button>
+                )
+              ) : (
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    router.push("/settings")
+                  }}
+                  className="flex justify-center w-full p-2 bg-secondary rounded-xl max-w-[200px]"
+                >
+                  <span className="flex flex-row items-center gap-2">
+                    {/* <ViewIcon className="w-4 h-4 text-user_interface_7" /> */}
+                    <p className="whitespace-nowrap">Upload resume</p>
+                  </span>
+                </Button>
+              )}
             </>
           ) : (
             <>

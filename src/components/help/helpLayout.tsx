@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react"
 import Fuse, { IFuseOptions } from "fuse.js"
+import dynamic from "next/dynamic"
 
-import Accordion from "@/components/ui/accordion"
-import Sidebar from "@/components/ui/Sidebar"
-
+// import Accordion from "@/components/ui/accordion"
+// import Sidebar from "@/components/ui/Sidebar"
 import { BannerComponent } from "../filter"
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
@@ -32,6 +32,17 @@ interface FAQItem {
 interface SettingsLayoutProps {
   HelpCategories: IFAQCategory[]
 }
+const Sidebar = dynamic(() => import("@/components/ui/Sidebar"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Accordion = dynamic(() => import("@/components/ui/accordion"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[30vh]"></div>
+  },
+})
+
 const HelpLayout: React.FC<SettingsLayoutProps> = ({ HelpCategories }) => {
   const sortedCategories = HelpCategories.sort((a, b) => a.position - b.position).filter(
     (cat) => cat.helpQuestions.length != 0

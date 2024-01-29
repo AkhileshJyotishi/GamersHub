@@ -49,9 +49,9 @@ const Drawer: React.FC<DrawerProps> = ({
               setIsDrawerOpen(false)
               setTap(!tap)
             }}
-            className="absolute cursor-pointer top-4 right-7"
+            className="absolute cursor-pointer top-[0.6rem] right-7"
           >
-            <IoMdClose className="h-7 w-7" />
+            <IoMdClose className="h-9 w-9" />
           </div>
           {children}
         </article>

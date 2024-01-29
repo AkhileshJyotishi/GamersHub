@@ -9,10 +9,15 @@ import { BackendGame, CustomGameTags, GameInfo } from "@/interface/games"
 import { useUserContext } from "@/providers/user-context"
 import { fetchData, fetchFile } from "@/utils/functions"
 
-import Layout from "@/components/createGame/layout"
+// import Layout from "@/components/createGame/layout"
 
 const Editor = dynamic(() => import("@/components/NovalEditor"), {
   ssr: false,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const Layout = dynamic(() => import("@/components/createGame/layout"), {
   loading: () => {
     return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
   },

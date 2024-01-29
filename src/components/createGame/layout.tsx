@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 import { toast } from "react-toastify"
 
 import { Errors, FilterDetail } from "@/interface/filter"
@@ -13,11 +14,19 @@ import {
   ValidationParams,
 } from "@/utils/functions/validationUtils"
 
-import InitMultipleFileInput from "@/components/ui/initialMultifile"
-
 import Filter from "../filter/mainfilter/filter"
 import Button from "../ui/button"
-import MultipleFileInput from "../ui/multifileInput"
+
+const MultipleFileInput = dynamic(() => import("../ui/multifileInput"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
+const InitMultipleFileInput = dynamic(() => import("@/components/ui/initialMultifile"), {
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[80vh]"></div>
+  },
+})
 
 interface LayoutProps {
   children: React.ReactNode

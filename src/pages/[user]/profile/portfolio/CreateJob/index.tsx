@@ -8,13 +8,22 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 
 import CreateJob from "@/components/createJob"
 
-const index = ({ jobSoftwareSuggestions }: { jobSoftwareSuggestions: JobSoftwareSuggestions }) => {
+const index = ({
+  jobSoftwareSuggestions,
+  jobRolesSuggestions,
+}: {
+  jobSoftwareSuggestions: JobSoftwareSuggestions
+  jobRolesSuggestions: JobRolesSuggestions
+}) => {
   return (
     <>
       <Head>
         <title>GameCreators | CreateJob</title>
       </Head>
-      <CreateJob jobSoftwareSuggestions={jobSoftwareSuggestions} />
+      <CreateJob
+        jobSoftwareSuggestions={jobSoftwareSuggestions}
+        jobRolesSuggestions={jobRolesSuggestions}
+      />
     </>
   )
 }
@@ -33,20 +42,31 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
   const res2 = await fetchWithoutAuthorization("/v1/users/software", "GET")
+  const res3 = await fetchWithoutAuthorization("/v1/users/jobRoles", "GET")
 
   if (res2?.error) {
     return {
       redirect: {
-        destination: `/?emessage="Something went wrong."`,
+        destination: `/?emessage=Something went wrong.`,
+        permanent: false,
+      },
+    }
+  }
+  if (res3?.error) {
+    return {
+      redirect: {
+        destination: `/?emessage=Something went wrong.`,
         permanent: false,
       },
     }
   }
   const jobSoftwareSuggestions: JobSoftwareSuggestions = res2?.data
-
+  const jobRolesSuggestions: JobRolesSuggestions = res3?.data.jobRole
+  console.log("data", res3?.data)
   return {
     props: {
       jobSoftwareSuggestions,
+      jobRolesSuggestions,
     },
   }
 }

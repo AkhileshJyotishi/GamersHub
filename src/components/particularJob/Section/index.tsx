@@ -79,6 +79,22 @@ const sections: Section[] = [
       </div>
     ),
   },
+  {
+    title: "Roles Needed",
+    dataKey: "RolesNeeded",
+    render: (data) => (
+      <div className="flex flex-wrap gap-2">
+        {data?.rolesNeeded?.map((role, index) => (
+          <span
+            key={index}
+            className="w-fit flex flex-row items-center flex-wrap p-[6px] gap-[4px] bg-user_interface_4 rounded-[5px] text-[12px] cursor-pointer"
+          >
+            {role.role}
+          </span>
+        ))}
+      </div>
+    ),
+  },
   // {
   //     title: "Experience",
   //     dataKey: "requirements",
@@ -107,9 +123,8 @@ const JobDetails: React.FC<{ jobData: jobdataprop }> = ({ jobData }) => (
 )
 
 const Jobsection = ({ jobData }: { jobData: jobdataprop }) => {
-  // console.log("jobdetails from backend", jobData.jobDetails)
   return (
-    <div className="flex flex-col gap-5 p-3">
+    <div className="flex flex-col gap-5 sm:p-3">
       <div className="text-[25px] font-bold">Job Description</div>
       <div className="flex flex-col gap-8 md:flex-row">
         <div

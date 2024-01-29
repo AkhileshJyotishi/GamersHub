@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 // import clsx from "clsx"
 import { City, Country } from "country-state-city"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 
 import { FilterDetail } from "@/interface/filter"
 import { useUserContext } from "@/providers/user-context"
+import { validatePdfField } from "@/utils/functions/validationUtils"
 
 import Filter from "@/components/filter/mainfilter/filter"
 import Button from "@/components/ui/button"
@@ -14,8 +16,13 @@ import Button from "@/components/ui/button"
 import { uploadUserEducation, uploadUserExperience } from "./editprofileHandler"
 import EducationSection from "./EducationSection"
 import ExperienceSection from "./ExperienceSection"
-import ProfileSection from "./profileSection"
-// import dynamic from "next/dynamic"
+// import ProfileSection from "./profileSection"
+const ProfileSection = dynamic(() => import("./profileSection"), {
+  ssr: true,
+  loading: () => {
+    return <div className="w-full bg-gray-400 animate-pulse h-[40vh]"></div>
+  },
+})
 // const { City, Country }=dynamic(import("country-state-city").then())
 
 export const Tab = ({
@@ -113,6 +120,7 @@ const EditProfilePage = ({
         ? profileDetails?.userSoftwares?.map((usersofware) => usersofware?.software as string)
         : undefined,
     profileImage: profileDetails?.user?.profileImage ?? "",
+    resume: profileDetails.resume ?? "",
   }
   interface ProfileInterface {
     userBio: string
@@ -121,6 +129,7 @@ const EditProfilePage = ({
     userSkills: string[] | undefined
     userSoftwares: string[] | undefined
     profileImage: string | File
+    resume?: File | string | null
   }
   const [profileData, setprofileData] = useState<ProfileInterface>(initProfile)
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string | null }>({})
@@ -128,8 +137,6 @@ const EditProfilePage = ({
   const [newExpErrors, setnewExpErrors] = useState<{ [key: string]: string | null }>({})
   const [EduErrors, setEduErrors] = useState<{ [key: string]: string | null }>({})
   const [newEduErrors, setnewEduErrors] = useState<{ [key: string]: string | null }>({})
-
-  // console.log(initProfile)
 
   const isProfileDataFilled = Object.values(initProfile).some((value) => {
     return value !== null && value !== undefined && value !== "" && value
@@ -163,7 +170,7 @@ const EditProfilePage = ({
     return cityList!
   }
 
-  const handleFieldChange = (key: string, value: string | string[] | File) => {
+  const handleFieldChange = async (key: string, value: string | string[] | File) => {
     switch (key) {
       case "profileImage":
         if (value instanceof File) {
@@ -260,8 +267,17 @@ const EditProfilePage = ({
           setprofileData((prevState) => ({ ...prevState, [key]: value as string[] }))
         }
         break
+      case "resume": {
+        console.log("key ", key)
+
+        const x = await validatePdfField(value, { required: true })
+        setFieldErrors((prev) => ({ ...prev, resume: x }))
+
+        setprofileData((prevState) => ({ ...prevState, [key]: value as File }))
+        break
+      }
     }
-    setprofileData((prevState) => ({ ...prevState, [key]: value }))
+    // setprofileData((prevState) => ({ ...prevState, [key]: value }))
     if (key == "country") {
       handleCityOptions(codemapping[value as string])
     } else if (key == "userSoftwares") {
@@ -544,7 +560,20 @@ const EditProfilePage = ({
       Variant: "flex-col w-full flex",
       errorMessage: fieldErrors.userSoftwares,
     },
+    {
+      title: "Resume Upload (PDF format)",
+      inputType: "file",
+      accept: ".pdf",
+      multiple: false,
+      value: profileData.resume as string,
+      onChange: (value) => handleFieldChange("resume", value as File),
+      Variant: "flex-col w-full flex",
+      className:
+        "bg-gray_dull text-text bg-user_interface_3 rounded-md border-2 border-transparent hover:bg-transparent focus:outline-none focus:border-secondary active:bg-transparent focus:shadow-secondary_2 shadow-sm w-full px-3 py-2 flex flex-row items-center",
+      errorMessage: fieldErrors.resume,
+    },
   ]
+
   type exptypes = Array<{ id?: number; detail: FilterDetail[] }>
 
   // FilterDetail[] | number

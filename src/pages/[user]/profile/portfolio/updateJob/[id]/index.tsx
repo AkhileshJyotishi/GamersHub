@@ -1,6 +1,7 @@
 // import { useRouter } from 'next/router'
 import React from "react"
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next"
+import Head from "next/head"
 import { signOut } from "next-auth/react"
 
 import { getSession } from "@/lib/auth"
@@ -10,8 +11,12 @@ import { fetchData } from "@/utils/functions"
 import UpdateJob from "@/components/updateJob"
 
 const index = ({ job }: { job: JobInfo }) => {
+  const Title = `Update Job | ${job.title}`
   return (
     <>
+      <Head>
+        <title>{Title}</title>
+      </Head>
       <UpdateJob job={job} />
     </>
   )
@@ -53,7 +58,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       city,
       paymentType,
       paymentValue,
-      banner,
       expertise,
       jobSoftwares,
       title,
@@ -62,6 +66,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       userId,
       aboutRecruiter,
       description,
+      jobApplyUrl,
+      rolesNeeded,
     } = backendJob
 
     // jobSoftwares=
@@ -73,7 +79,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       city: city || "", // Adjust based on your needs
       paymentType,
       paymentValue,
-      banner,
       expertise,
       jobSoftwares: jobSoftwares?.map((software) => software.software),
       title,
@@ -82,6 +87,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       userId: userId,
       aboutRecruiter,
       description,
+      rolesNeeded: rolesNeeded?.map((role) => role.role) ?? [],
+      jobApplyUrl: jobApplyUrl ?? "",
     }
   }
 

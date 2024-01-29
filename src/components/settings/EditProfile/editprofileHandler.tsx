@@ -250,6 +250,7 @@ export const uploadProfileData = async (
         userSkills: IuserSkill[] | string[] | undefined
         userSoftwares: IuserSoftware[] | undefined | string[]
         profileImage: string | undefined | File
+        resume?: string | File
       }
     | undefined,
   token: string,
@@ -257,6 +258,7 @@ export const uploadProfileData = async (
   setProfileFilled: Allow
 ) => {
   const formdata = new FormData()
+  const formdata2 = new FormData()
 
   toast.info("Uploading Your Profile...")
   if (profileData?.profileImage && typeof profileData?.profileImage == "object") {
@@ -271,7 +273,18 @@ export const uploadProfileData = async (
     }
     profileData.profileImage = isuploaded?.data?.image?.Location
   }
-
+  if (profileData?.resume && typeof profileData?.resume == "object") {
+    formdata2.append("file", profileData?.resume as File)
+    formdata2.append("type", "jobs")
+    const isuploaded2 = await fetchFile("/v1/upload/file", token, "POST", formdata2)
+    // console.log("is uploaded", isuploaded)
+    toast.dismiss()
+    if (isuploaded2?.error) {
+      toast.error(isuploaded2?.message)
+      return
+    }
+    profileData.resume = isuploaded2?.data?.image?.Location
+  }
   const response = await fetchData(`/v1/users/details`, token, method, profileData)
   toast.dismiss()
   if (response?.error) {

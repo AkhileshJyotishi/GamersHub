@@ -8,10 +8,11 @@ import { fetchWithoutAuthorization } from "@/utils/functions"
 import Particularpage from "@/components/particularNews"
 
 const index = ({ newsData }: { newsData: BackendNews }) => {
+  const Title = `News | ${newsData.title}`
   return (
     <>
       <Head>
-        <title>News | {newsData.title || ""}</title>
+        <title>{Title}</title>
       </Head>
       <Particularpage newsData={newsData} />
     </>
