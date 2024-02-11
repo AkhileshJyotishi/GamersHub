@@ -25,6 +25,9 @@ CREATE TYPE "JobPaymentType" AS ENUM ('FIXED', 'HOURLY', 'NEGOTIABLE');
 -- CreateEnum
 CREATE TYPE "JobType" AS ENUM ('FREELANCE', 'FULL_TIME', 'COLLAB');
 
+-- CreateEnum
+CREATE TYPE "ApplicationMethod" AS ENUM ('MANUAL', 'GCH');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -49,6 +52,7 @@ CREATE TABLE "UserDetails" (
     "country" TEXT,
     "city" TEXT,
     "userBio" TEXT,
+    "resume" TEXT,
 
     CONSTRAINT "UserDetails_pkey" PRIMARY KEY ("id")
 );
@@ -242,6 +246,8 @@ CREATE TABLE "Job" (
     "remote" BOOLEAN NOT NULL,
     "country" TEXT,
     "city" TEXT,
+    "jobApplyUrl" TEXT,
+    "isExpired" BOOLEAN NOT NULL DEFAULT false,
     "expertise" "Expertise",
     "paymentType" "JobPaymentType" NOT NULL,
     "paymentValue" DOUBLE PRECISION,
@@ -254,12 +260,31 @@ CREATE TABLE "Job" (
 -- CreateTable
 CREATE TABLE "JobApplication" (
     "id" SERIAL NOT NULL,
+    "rolesApplied" TEXT[],
+    "applyMethod" "ApplicationMethod" NOT NULL,
     "userId" INTEGER NOT NULL,
     "jobId" INTEGER NOT NULL,
     "resume" TEXT,
     "motivationToApply" TEXT NOT NULL,
 
     CONSTRAINT "JobApplication_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ApplicantInfo" (
+    "id" SERIAL NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "country" TEXT,
+    "city" TEXT,
+    "bio" TEXT,
+    "portfolio" TEXT,
+    "skills" TEXT[],
+    "applicationId" INTEGER NOT NULL,
+
+    CONSTRAINT "ApplicantInfo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -276,6 +301,14 @@ CREATE TABLE "Software" (
     "software" TEXT NOT NULL,
 
     CONSTRAINT "Software_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RolesNeeded" (
+    "id" SERIAL NOT NULL,
+    "role" TEXT NOT NULL,
+
+    CONSTRAINT "RolesNeeded_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -394,7 +427,19 @@ CREATE TABLE "_SoftwareToJobs" (
 );
 
 -- CreateTable
+CREATE TABLE "_RolesToJobs" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_SavedJobs" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_AppliedUsers" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
@@ -445,10 +490,16 @@ CREATE UNIQUE INDEX "Game_developerId_key" ON "Game"("developerId");
 CREATE UNIQUE INDEX "Report_userId_key" ON "Report"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "ApplicantInfo_applicationId_key" ON "ApplicantInfo"("applicationId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Skill_skill_key" ON "Skill"("skill");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Software_software_key" ON "Software"("software");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RolesNeeded_role_key" ON "RolesNeeded"("role");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Platform_name_key" ON "Platform"("name");
@@ -526,10 +577,22 @@ CREATE UNIQUE INDEX "_SoftwareToJobs_AB_unique" ON "_SoftwareToJobs"("A", "B");
 CREATE INDEX "_SoftwareToJobs_B_index" ON "_SoftwareToJobs"("B");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_RolesToJobs_AB_unique" ON "_RolesToJobs"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_RolesToJobs_B_index" ON "_RolesToJobs"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_SavedJobs_AB_unique" ON "_SavedJobs"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_SavedJobs_B_index" ON "_SavedJobs"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_AppliedUsers_AB_unique" ON "_AppliedUsers"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_AppliedUsers_B_index" ON "_AppliedUsers"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_SkillToUserDetails_AB_unique" ON "_SkillToUserDetails"("A", "B");
@@ -610,6 +673,9 @@ ALTER TABLE "JobApplication" ADD CONSTRAINT "JobApplication_userId_fkey" FOREIGN
 ALTER TABLE "JobApplication" ADD CONSTRAINT "JobApplication_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ApplicantInfo" ADD CONSTRAINT "ApplicantInfo_applicationId_fkey" FOREIGN KEY ("applicationId") REFERENCES "JobApplication"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "News" ADD CONSTRAINT "News_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "NewsCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -682,10 +748,22 @@ ALTER TABLE "_SoftwareToJobs" ADD CONSTRAINT "_SoftwareToJobs_A_fkey" FOREIGN KE
 ALTER TABLE "_SoftwareToJobs" ADD CONSTRAINT "_SoftwareToJobs_B_fkey" FOREIGN KEY ("B") REFERENCES "Software"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "_RolesToJobs" ADD CONSTRAINT "_RolesToJobs_A_fkey" FOREIGN KEY ("A") REFERENCES "Job"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_RolesToJobs" ADD CONSTRAINT "_RolesToJobs_B_fkey" FOREIGN KEY ("B") REFERENCES "RolesNeeded"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "_SavedJobs" ADD CONSTRAINT "_SavedJobs_A_fkey" FOREIGN KEY ("A") REFERENCES "Job"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_SavedJobs" ADD CONSTRAINT "_SavedJobs_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_AppliedUsers" ADD CONSTRAINT "_AppliedUsers_A_fkey" FOREIGN KEY ("A") REFERENCES "Job"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_AppliedUsers" ADD CONSTRAINT "_AppliedUsers_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_SkillToUserDetails" ADD CONSTRAINT "_SkillToUserDetails_A_fkey" FOREIGN KEY ("A") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
