@@ -1,0 +1,408 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// USER MODEL
+model User {
+  id              Int              @id @default(autoincrement())
+  email           String           @unique
+  username        String           @unique
+  password        String?
+  isEmailVerified Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  profileImage    String?
+  bannerImage     String?
+  matureContent   Boolean          @default(false)
+  validUser       Boolean          @default(true)
+  role            Role?
+  userDetails     UserDetails?
+  tokens          Token[]
+  provider        Provider?
+  followers_users User[]           @relation("FollowUsers")
+  following_users User[]           @relation("FollowUsers")
+  socials         UserSocials?
+  jobs            Job[]            @relation("UserJobs")
+  jobApplications JobApplication[]
+  report          Report?
+  games           Game[]
+  albums          Album[]
+  posts           Post[]
+  likedPosts      PostLikes[]      @relation("UserLikesToPosts")
+  postComments    PostComment[]
+  savedPosts      Post[]           @relation("SavedPosts")
+  savedGames      Game[]           @relation("SavedGames")
+  savedJobs       Job[]            @relation("SavedJobs")
+  appliedJobs     Job[]            @relation("AppliedUsers")
+  News            News[]
+}
+
+model UserDetails {
+  id             Int              @id @default(autoincrement())
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int              @unique
+  country        String?
+  city           String?
+  userBio        String?          @db.Text
+  resume         String?
+  userEducation  UserEducation[]
+  userExperience UserExperience[]
+  userSkills     Skill[]          @relation("SkillToUserDetails")
+  userSoftwares  Software[]       @relation("SoftwareToUserDetails")
+}
+
+model UserEducation {
+  id            Int         @id @default(autoincrement())
+  university    String
+  degree        String
+  startingDate  DateTime
+  endingDate    DateTime?
+  description   String?
+  userDetailsId Int
+  userDetails   UserDetails @relation(fields: [userDetailsId], references: id, onDelete: Cascade)
+}
+
+model UserExperience {
+  id             Int         @id @default(autoincrement())
+  role           String
+  company        String
+  startingDate   DateTime
+  endingDate     DateTime?
+  presentWorking Boolean     @default(false)
+  description    String?
+  userDetailsId  Int
+  userDetails    UserDetails @relation(fields: [userDetailsId], references: id, onDelete: Cascade)
+}
+
+model UserSocials {
+  id         Int     @id @default(autoincrement())
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int     @unique
+  twitter    String?
+  facebook   String?
+  linkedin   String?
+  youtube    String?
+  github     String?
+  portfolio  String?
+  artstation String?
+}
+
+model Role {
+  id     Int       @id @default(autoincrement())
+  user   User      @relation(fields: [userId], references: id, onDelete: Cascade)
+  userId Int       @unique
+  role   RoleType?
+}
+
+enum RoleType {
+  MOD
+  ADMIN
+}
+
+// TOKEN MODEL
+model Token {
+  id          Int       @id @default(autoincrement())
+  token       String
+  type        TokenType
+  expires     DateTime
+  blacklisted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+}
+
+enum TokenType {
+  ACCESS
+  REFRESH
+  RESET_PASSWORD
+  VERIFY_EMAIL
+}
+
+// PROVIDER MODEL
+model Provider {
+  id           Int          @id @default(autoincrement())
+  data         Json
+  providerType ProviderType
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int          @unique
+}
+
+enum ProviderType {
+  GOOGLE
+  FACEBOOK
+}
+
+// PORTFOLIO ALBUM
+model Album {
+  id      Int       @id @default(autoincrement())
+  title   String
+  banner  String?
+  userId  Int
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts   Post[]
+  keyword Keyword[] @relation("AlbumKeywords")
+  slug    String?   @default(uuid())
+}
+
+// POST MODEL
+model Post {
+  id            Int           @id @default(autoincrement())
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  slug          String?       @default(uuid())
+  title         String
+  description   String?
+  banner        String?
+  matureContent Boolean       @default(false)
+  postKeywords  Keyword[]     @relation("PostKeywords")
+  postSkills    Skill[]       @relation("SkillToPosts")
+  content       Json
+  Album         Album?        @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  albumId       Int?
+  comments      PostComment[]
+  postLikes     PostLikes?
+  savedUsers    User[]        @relation("SavedPosts")
+}
+
+model PostLikes {
+  id         Int    @id @default(autoincrement())
+  post       Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     Int    @unique
+  likedUsers User[] @relation("UserLikesToPosts")
+}
+
+model PostComment {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  createdAt DateTime @default(now())
+}
+
+// MODEL GAME
+model Game {
+  id                    Int            @id @default(autoincrement())
+  title                 String
+  description           Json?
+  banner                String?
+  genre                 Genre[]        @relation("GenreToGames")
+  developer             GameDeveloper? @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  developerId           Int?           @unique
+  gameMode              GameMode?
+  gameAssets            String[]
+  releaseDate           DateTime?
+  platforms             Platform[]     @relation("gamePlatforms")
+  distributionPlatforms Platform[]     @relation("distributionPlatforms")
+  tags                  Keyword[]      @relation("GameKeywords")
+  user                  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                Int
+  slug                  String         @default(uuid())
+  savedUsers            User[]         @relation("SavedGames")
+}
+
+model GameDeveloper {
+  id            Int            @id @default(autoincrement())
+  developerName String?
+  developerType DeveloperType?
+  game          Game?
+}
+
+enum DeveloperType {
+  indie
+  studio
+  collaboration
+}
+
+enum GameMode {
+  singlePlayer
+  multiPlayer
+}
+
+// MODEL REPORT
+model Report {
+  id          Int        @id @default(autoincrement())
+  type        ReportType
+  description String?    @db.Text
+  subject     String
+  user        User       @relation(fields: [userId], references: id, onDelete: Cascade)
+  userId      Int        @unique
+  what        Int?
+}
+
+enum ReportType {
+  post
+  asset
+  user
+  marketplace
+  tutorials
+  others
+  game
+  job
+}
+
+model HelpQuestion {
+  id             Int          @id @default(autoincrement())
+  solution       String?      @db.Text
+  question       String
+  helpCategory   HelpCategory @relation(fields: [helpCategoryId], references: id, onDelete: Cascade)
+  helpCategoryId Int
+}
+
+model HelpCategory {
+  id            Int            @id @default(autoincrement())
+  title         String
+  order         Int[]
+  position      Int
+  helpQuestions HelpQuestion[]
+}
+
+// JOB MODEL
+model Job {
+  id              Int              @id @default(autoincrement())
+  slug            String?          @default(uuid())
+  banner          String?
+  publishDate     DateTime?
+  title           String
+  description     String?
+  jobDetails      Json?
+  aboutRecruiter  Json?
+  remote          Boolean
+  country         String?
+  city            String?
+  jobApplyUrl     String?
+  isExpired       Boolean          @default(false)
+  jobSoftwares    Software[]       @relation("SoftwareToJobs")
+  rolesNeeded     RolesNeeded[]    @relation("RolesToJobs")
+  expertise       Expertise?
+  paymentType     JobPaymentType
+  paymentValue    Float?
+  jobType         JobType
+  user            User             @relation("UserJobs", fields: [userId], references: id, onDelete: Cascade)
+  userId          Int
+  jobApplications JobApplication[]
+  savedUsers      User[]           @relation("SavedJobs")
+  appliedUsers    User[]           @relation("AppliedUsers")
+}
+
+enum Expertise {
+  ENTRY
+  INTERMEDIATE
+  EXPERT
+}
+
+enum JobPaymentType {
+  FIXED
+  HOURLY
+  NEGOTIABLE
+}
+
+enum JobType {
+  FREELANCE
+  FULL_TIME
+  COLLAB
+}
+
+model JobApplication {
+  id                Int               @id @default(autoincrement())
+  rolesApplied      String[]
+  applyMethod       ApplicationMethod
+  user              User              @relation(fields: [userId], references: id, onDelete: Cascade)
+  userId            Int
+  job               Job               @relation(fields: [jobId], references: id, onDelete: Cascade)
+  jobId             Int
+  resume            String?
+  motivationToApply String
+  ApplicantInfo     ApplicantInfo?
+}
+
+model ApplicantInfo {
+  id            Int            @id @default(autoincrement())
+  firstName     String
+  lastName      String?
+  email         String
+  phone         String
+  country       String?
+  city          String?
+  bio           String?
+  portfolio     String?
+  skills        String[]
+  relatedJob    JobApplication @relation(fields: [applicationId], references: id, onDelete: Cascade)
+  applicationId Int            @unique
+}
+
+enum ApplicationMethod {
+  MANUAL
+  GCH
+}
+
+// MODEL JOB ENDS
+
+model Skill {
+  id          Int           @id @default(autoincrement())
+  skill       String        @unique
+  userDetails UserDetails[] @relation("SkillToUserDetails")
+  posts       Post[]        @relation("SkillToPosts")
+}
+
+model Software {
+  id          Int           @id @default(autoincrement())
+  software    String        @unique
+  userDetails UserDetails[] @relation("SoftwareToUserDetails")
+  job         Job[]         @relation("SoftwareToJobs")
+}
+
+model RolesNeeded {
+  id   Int    @id @default(autoincrement())
+  role String @unique
+  job  Job[]  @relation("RolesToJobs")
+}
+
+model Platform {
+  id                    Int    @id @default(autoincrement())
+  name                  String @unique
+  gamePlatforms         Game[] @relation("gamePlatforms")
+  distributionPlatforms Game[] @relation("distributionPlatforms")
+}
+
+model Genre {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  games Game[] @relation("GenreToGames")
+}
+
+model Keyword {
+  id      Int     @id @default(autoincrement())
+  keyword String  @unique
+  posts   Post[]  @relation("PostKeywords")
+  games   Game[]  @relation("GameKeywords")
+  albums  Album[] @relation("AlbumKeywords")
+}
+
+model News {
+  id          Int          @id @default(autoincrement())
+  category    NewsCategory @relation(fields: [categoryId], references: id, onDelete: Cascade)
+  categoryId  Int
+  title       String
+  subtitle    String?
+  content     Json?
+  bannerImage String?
+  publishedAt DateTime?
+  isSaved     Boolean      @default(true)
+  isPublished Boolean      @default(false)
+  publisher   User         @relation(fields: [userId], references: id, onDelete: Cascade)
+  userId      Int
+}
+
+model NewsCategory {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  News        News[]
+}
