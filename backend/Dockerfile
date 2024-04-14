@@ -8,7 +8,7 @@ RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
 WORKDIR /usr/src/node-app
 
 # Copy package files
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .env ./
 
 # Switch to non-root user
 USER node
